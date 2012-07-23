@@ -12,9 +12,105 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.core.version>3.1.1.RELEASE</spring.core.version>
+        <spring.webflow.version>2.3.1.RELEASE</spring.webflow.version>
     </properties>
 
     <dependencies>
+        
+        <!-- Spring Dependencies -->
+        <dependency>
+            <artifactId>spring-aop</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-webmvc</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-web</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-expression</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-core</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-context-support</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-context</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-beans</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-asm</artifactId>
+            <groupId>org.springframework</groupId>
+            <type>jar</type>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-webflow</artifactId>
+            <groupId>org.springframework.webflow</groupId>
+            <version>${spring.webflow.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-js</artifactId>
+            <groupId>org.springframework.webflow</groupId>
+            <type>jar</type>
+            <version>${spring.webflow.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-js-resources</artifactId>
+            <groupId>org.springframework.webflow</groupId>
+            <type>jar</type>
+            <version>${spring.webflow.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-binding</artifactId>
+            <groupId>org.springframework.webflow</groupId>
+            <type>jar</type>
+            <version>${spring.webflow.version}</version>
+        </dependency>
+        
+        
+        <!-- Misc Dependencies-->
+        <dependency>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+            <type>jar</type>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <artifactId>aopalliance</artifactId>
+            <groupId>aopalliance</groupId>
+            <type>jar</type>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
