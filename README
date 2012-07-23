@@ -1,1 +1,13 @@
-readme
+[MySQL] Konfiguracja
+
+Link:
+
+http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.25a-winx64.msi/from/http://cdn.mysql.com/
+
+Utworzenie bazy danych:
+
+mysql> drop database chessclan; create database chessclan DEFAULT CHARACTER SET = UTF8;
+
+Utworzenie usera:
+
+mysql> grant all privileges on chessclan.* to 'chessclan'@'localhost' identified by 'chessclan';
