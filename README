@@ -4,10 +4,29 @@ Link:
 
 http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.25a-winx64.msi/from/http://cdn.mysql.com/
 
-Utworzenie bazy danych:
+
+[Automatyczna konfiguracja MySQL]
+
+1. Nale¿y wyedytowaæ plik: 
+ChessClan\src\main\resources\db-root.properties
+
+Wystarczy podaæ has³o dla root-a.
+
+2. Nastêpnie w NetBeans-ie nale¿y wybraæ profil database-rebuild
+i uruchomiæ projekt.
+
+3. Profit ?!
+
+
+[Reczna konfiguracja MySQL (NIE ZALECANE)]
+
+1. Utworzenie bazy danych:
 
 mysql> drop database chessclan; create database chessclan DEFAULT CHARACTER SET = UTF8;
 
-Utworzenie usera:
+2. Utworzenie usera:
 
 mysql> grant all privileges on chessclan.* to 'chessclan'@'localhost' identified by 'chessclan';
+
+3. Profit ?!
+
