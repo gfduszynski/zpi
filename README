@@ -1,19 +1,18 @@
-[MySQL] Konfiguracja
+ï»¿[MySQL] Konfiguracja
 
 Link:
-
 http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.25a-winx64.msi/from/http://cdn.mysql.com/
 
 
 [Automatyczna konfiguracja MySQL]
 
-1. Nale¿y wyedytowaæ plik: 
+1. NaleÅ¼y wyedytowaÄ‡ plik: 
 ChessClan\src\main\resources\db-root.properties
 
-Wystarczy podaæ has³o dla root-a.
+Wystarczy podaÄ‡ hasÅ‚o dla root-a.
 
-2. Nastêpnie w NetBeans-ie nale¿y wybraæ profil database-rebuild
-i uruchomiæ projekt.
+2. NastÄ™pnie w NetBeans-ie naleÅ¼y wybraÄ‡ profil database-rebuild
+i uruchomiÄ‡ projekt.
 
 3. Profit ?!
 
@@ -30,3 +29,8 @@ mysql> grant all privileges on chessclan.* to 'chessclan'@'localhost' identified
 
 3. Profit ?!
 
+[Edycja schematu MySQL]
+
+Wszelkie zmiany odbywaa sie bedÄ… za pomocÄ… liquibase i pliku z changesetami 
+znajdujÄ…cego sie w:
+ChessClan\src\main\resources\changeLog.xml
