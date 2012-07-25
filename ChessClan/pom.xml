@@ -299,7 +299,7 @@
                         <executions>
                             <execution>
                                 <id>insert-test-content</id>
-                                <phase>process-resources</phase>
+                                <phase>pre-integration-test</phase>
                                 <configuration>
                                     <propertyFile>src/main/resources/liquibase-selenium.properties</propertyFile>
                                 </configuration>
