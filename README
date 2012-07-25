@@ -34,3 +34,30 @@ mysql> grant all privileges on chessclan.* to 'chessclan'@'localhost' identified
 Wszelkie zmiany odbywaa sie bedą za pomocą liquibase i pliku z changesetami 
 znajdującego sie w:
 ChessClan\src\main\resources\changeLog.xml
+
+[GitHub]
+Obsługę prywatnego branch-a można śmiało prowadzić za pomocą klienta
+z gui dostępnego na stronie githuba, jendak wszelkie interakcje z masterem
+powinny odbywać się z użyciem konsoli.
+
+[Pobieranie najnowszej wersji z master-a]
+
+W konsoli git podajemy następujące polecenie:
+git pull origin master
+
+[Commit-owanie do prywatnego branch-a]
+
+W konsoli git podajemy następujące polecenie:
+git commit -am "treść komentarza"
+git push
+
+[Pull request do master-a]
+
+1. Należy zawsze na początku pobrać najnowszą wersję z master-a celem naprawy ewentualnych
+konfliktów.
+
+2. Na stronie GitHub w projekcie zpi należy przełączyć się do brancha master.
+
+3. Następnie klikamy "Pull Request" i akceptujemy.
+
+4. Ktoś kompetentny powinien zweryfikować poprawność i zaakceptować request-a.

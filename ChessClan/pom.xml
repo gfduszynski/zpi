@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -17,9 +18,8 @@
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
         <mysql.version>5.1.10</mysql.version>
     </properties>
-
+    
     <dependencies>
-        
         <!-- Spring Dependencies -->
         <dependency>
             <artifactId>spring-aop</artifactId>
@@ -150,7 +150,7 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
+    
     <build>
         <plugins>
             <plugin>
@@ -198,6 +198,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.1.3</version>
+                <configuration>
+                    <wait>true</wait>
+                    <container>
+                        <containerId>jetty7x</containerId>
+                        <type>embedded</type>
+                    </container>
+                    <configuration>
+                        <properties>
+                            <cargo.servlet.port>10001</cargo.servlet.port>
+                        </properties>
+                    </configuration>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*SeleniumTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     
@@ -219,9 +246,115 @@
     <profiles>
         <profile>
             <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
         </profile>
         <profile>
-            <id>testing</id>
+            <id>integration</id>
+            <dependencies>
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                    <version>4.8.1</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                    <version>2.25.0</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-api</artifactId>
+                    <version>2.25.0</version>
+                    <scope>test</scope>
+                    <type>jar</type>
+                </dependency>
+                <dependency>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-firefox-driver</artifactId>
+                    <version>2.25.0</version>
+                    <scope>test</scope>
+                    <type>jar</type>
+                </dependency>
+            </dependencies>            
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>2.0.1</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>mysql</groupId>
+                                <artifactId>mysql-connector-java</artifactId>
+                                <version>${mysql.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>insert-test-content</id>
+                                <phase>process-resources</phase>
+                                <configuration>
+                                    <propertyFile>src/main/resources/liquibase-selenium.properties</propertyFile>
+                                </configuration>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+<!-- Selenium integration tests-->
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <configuration>
+                            <wait>false</wait>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start-server</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>stop-server</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>none</exclude>
+                                    </excludes>
+                                    <includes>
+                                        <include>**/*SeleniumTest.java</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>database-rebuild</id>
@@ -250,6 +383,7 @@
 <!-- We will drop and create testdroid MySQL database using plain SQL -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>sql-maven-plugin</artifactId>
+                        <version>1.5</version>
                         <configuration>
 <!-- common configuration shared by all executions -->
                             <driver>${db.driverClass}</driver>
@@ -308,9 +442,20 @@
                         </dependencies>
                         <executions>
                             <execution>
+                                <id>update-tables</id>
                                 <phase>process-resources</phase>
                                 <configuration>
                                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                                </configuration>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>insert-initial-content</id>
+                                <phase>process-resources</phase>
+                                <configuration>
+                                    <propertyFile>src/main/resources/liquibase-initial.properties</propertyFile>
                                 </configuration>
                                 <goals>
                                     <goal>update</goal>
@@ -322,5 +467,4 @@
             </build>
         </profile> 
     </profiles>
-    
 </project>
