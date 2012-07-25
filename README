@@ -9,6 +9,11 @@ http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.25a-winx64.msi/from/http:
 1. Należy wyedytować plik: 
 ChessClan\src\main\resources\db-root.properties
 
+Warto wywołać jeśli git będzie chciał commitować niechciane pliki:
+git update-index --assume-unchanged <file>
+
+Wypadało by też dodać wpis w .gitignore
+
 Wystarczy podać hasło dla root-a.
 
 2. Następnie w NetBeans-ie należy wybrać profil database-rebuild
