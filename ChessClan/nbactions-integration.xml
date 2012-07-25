@@ -2,6 +2,9 @@
 <actions>
         <action>
             <actionName>rebuild</actionName>
+            <properties>
+                <netbeans.deploy>false</netbeans.deploy>
+            </properties>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
@@ -13,6 +16,9 @@
         </action>
         <action>
             <actionName>run</actionName>
+            <properties>
+                <netbeans.deploy>false</netbeans.deploy>
+            </properties>
             <goals>
                 <goal>clean</goal>
                 <goal>install</goal>
