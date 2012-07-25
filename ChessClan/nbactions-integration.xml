@@ -17,10 +17,6 @@
                 <goal>clean</goal>
                 <goal>install</goal>
             </goals>
-            <properties>
-                <netbeans.deploy>false</netbeans.deploy>
-                <skipTests>true</skipTests>
-            </properties>
             <activatedProfiles>
                 <activatedProfile>database-rebuild</activatedProfile>
                 <activatedProfile>integration</activatedProfile>
