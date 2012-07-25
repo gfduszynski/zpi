@@ -49,6 +49,7 @@ git pull origin master
 
 W konsoli git podajemy następujące polecenie:
 git commit -am "treść komentarza"
+git push
 
 [Pull request do master-a]
 
