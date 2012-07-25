@@ -27,4 +27,7 @@ Any value defined here will override the pom.xml file value but is only applicab
             </config-file-group>
         </config-file-groups>
     </spring-data>
+    <config-data xmlns="http://www.netbeans.org/ns/maven-config-data/1">
+        <configurations/>
+    </config-data>
 </project-shared-configuration>

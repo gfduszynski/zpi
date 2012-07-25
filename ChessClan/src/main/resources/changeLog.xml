@@ -14,4 +14,7 @@
     <changeSet id="3" author="gfduszynski">
         <modifyDataType tableName="test" columnName="name" newDataType="varchar(55)"/>
     </changeSet>
+    <changeSet id="4" author="gfduszynski">
+        <modifyDataType tableName="test" columnName="name" newDataType="varchar(50)"/>
+    </changeSet>
 </databaseChangeLog>
