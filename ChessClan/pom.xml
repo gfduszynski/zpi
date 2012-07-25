@@ -255,6 +255,9 @@
         </profile>
         <profile>
             <id>integration</id>
+            <properties>
+                <skipTests>false</skipTests>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>junit</groupId>
@@ -299,7 +302,7 @@
                         <executions>
                             <execution>
                                 <id>insert-test-content</id>
-                                <phase>process-resources</phase>
+                                <phase>pre-integration-test</phase>
                                 <configuration>
                                     <propertyFile>src/main/resources/liquibase-selenium.properties</propertyFile>
                                 </configuration>
@@ -359,6 +362,7 @@
         <profile>
             <id>database-rebuild</id>
             <build>
+                <defaultGoal>process-resources</defaultGoal>
                 <plugins>
                     <plugin>
 <!-- Load data-rebuild properties-->
