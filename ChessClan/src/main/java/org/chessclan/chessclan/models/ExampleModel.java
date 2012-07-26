@@ -14,8 +14,9 @@ public class ExampleModel {
      * Java doc is required.
      */
     public ExampleModel() {
-        while (true) {
-            int i = 1 + 1;
+        int i = 0;
+        if (i == 1) {
+            i = 1 + 1;
         }
     }
 
