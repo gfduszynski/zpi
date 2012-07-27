@@ -13,94 +13,235 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.core.version>3.1.1.RELEASE</spring.core.version>
-        <spring.webflow.version>2.3.1.RELEASE</spring.webflow.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+        
+        <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
+        <org.jsf.version>2.1.11</org.jsf.version>
+        
+        <org.hibernate.version>4.1.5.Final</org.hibernate.version>
+        <org.hibernate.persistance.version>3.3.2.Beta1</org.hibernate.persistance.version>
+        
         <mysql.version>5.1.10</mysql.version>
+        
+        <org.richfaces.bom.version>4.1.0.Final</org.richfaces.bom.version>
     </properties>
     
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.richfaces</groupId>
+                <artifactId>richfaces-bom</artifactId>
+                <version>${org.richfaces.bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
-        <!-- Spring Dependencies -->
+        <!-- Spring Dependencies --> 
+        <!--
+            Core utilities used by other modules.
+            Define this if you use Spring Utility APIs (org.springframework.core.*/org.springframework.util.*)
+        -->
         <dependency>
-            <artifactId>spring-aop</artifactId>
             <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
-        </dependency>
-        <dependency>
-            <artifactId>spring-webmvc</artifactId>
-            <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
-        </dependency>
-        <dependency>
-            <artifactId>spring-web</artifactId>
-            <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
-        </dependency>
-        <dependency>
-            <artifactId>spring-expression</artifactId>
-            <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
-        </dependency>
-        <dependency>
             <artifactId>spring-core</artifactId>
-            <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
+            <version>${org.springframework.version}</version>
         </dependency>
+ 
+        <!--
+            Expression Language (depends on spring-core)
+            Define this if you use Spring Expression APIs (org.springframework.expression.*)
+        -->
         <dependency>
-            <artifactId>spring-context-support</artifactId>
             <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
+            <artifactId>spring-expression</artifactId>
+            <version>${org.springframework.version}</version>
         </dependency>
+ 
+        <!--
+            Bean Factory and JavaBeans utilities (depends on spring-core)
+            Define this if you use Spring Bean APIs (org.springframework.beans.*)
+        -->
         <dependency>
-            <artifactId>spring-context</artifactId>
             <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
-        </dependency>
-        <dependency>
             <artifactId>spring-beans</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Aspect Oriented Programming (AOP) Framework (depends on spring-core, spring-beans)
+            Define this if you use Spring AOP APIs (org.springframework.aop.*)
+        -->
+        <dependency>
             <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
+            <artifactId>spring-aop</artifactId>
+            <version>${org.springframework.version}</version>
         </dependency>
+ 
+        <!--
+            Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans)
+            This is the central artifact for Spring's Dependency Injection Container and is generally always defined
+        -->
         <dependency>
-            <artifactId>spring-asm</artifactId>
             <groupId>org.springframework</groupId>
-            <type>jar</type>
-            <version>${spring.core.version}</version>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Various Application Context utilities, including EhCache, JavaMail, Quartz, and Freemarker integration
+            Define this if you need any of these integrations
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Transaction Management Abstraction (depends on spring-core, spring-beans, spring-aop, spring-context)
+            Define this if you use Spring Transactions or DAO Exception Hierarchy
+            (org.springframework.transaction.*/org.springframework.dao.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, spring-tx)
+            Define this if you use Spring's JdbcTemplate API (org.springframework.jdbc.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA, and iBatis.
+            (depends on spring-core, spring-beans, spring-context, spring-tx)
+            Define this if you need ORM (org.springframework.orm.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Object-to-XML Mapping (OXM) abstraction and integration with JAXB, JiBX, Castor, XStream, and XML Beans.
+            (depends on spring-core, spring-beans, spring-context)
+            Define this if you need OXM (org.springframework.oxm.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Web application development utilities applicable to both Servlet and Portlet Environments
+            (depends on spring-core, spring-beans, spring-context)
+            Define this if you use Spring MVC, or wish to use Struts, JSF, or another web framework with Spring (org.springframework.web.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Spring MVC for Servlet Environments (depends on spring-core, spring-beans, spring-context, spring-web)
+            Define this if you use Spring MVC with a Servlet Container such as Apache Tomcat (org.springframework.web.servlet.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Spring MVC for Portlet Environments (depends on spring-core, spring-beans, spring-context, spring-web)
+            Define this if you use Spring MVC with a Portlet Container (org.springframework.web.portlet.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+ 
+        <!--
+            Support for testing Spring applications with tools such as JUnit and TestNG
+            This artifact is generally always defined with a 'test' scope for the integration testing framework and unit testing stubs
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>test</scope>
+        </dependency>
+            
+        <!-- Hibernate Dependecies -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate.version}</version>
         </dependency>
         <dependency>
-            <artifactId>spring-webflow</artifactId>
-            <groupId>org.springframework.webflow</groupId>
-            <version>${spring.webflow.version}</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${org.hibernate.version}</version>
         </dependency>
         <dependency>
-            <artifactId>spring-js</artifactId>
-            <groupId>org.springframework.webflow</groupId>
-            <type>jar</type>
-            <version>${spring.webflow.version}</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>ejb3-persistence</artifactId>
+            <version>${org.hibernate.persistance.version}</version>
+        </dependency>
+            
+        <!-- MySQL Dependencies -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+            
+        <!-- JSF -->
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>${org.jsf.version}</version>
         </dependency>
         <dependency>
-            <artifactId>spring-js-resources</artifactId>
-            <groupId>org.springframework.webflow</groupId>
-            <type>jar</type>
-            <version>${spring.webflow.version}</version>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>${org.jsf.version}</version>
         </dependency>
         <dependency>
-            <artifactId>spring-binding</artifactId>
-            <groupId>org.springframework.webflow</groupId>
-            <type>jar</type>
-            <version>${spring.webflow.version}</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
-        
-        
-        <!-- Misc Dependencies-->
+            
+        <!-- RichFaces Dependencies-->
+        <dependency>
+            <groupId>org.richfaces.ui</groupId>
+            <artifactId>richfaces-components-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.richfaces.core</groupId>
+            <artifactId>richfaces-core-impl</artifactId>
+        </dependency>
+            
+        <!-- Others-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <artifactId>commons-logging</artifactId>
             <groupId>commons-logging</groupId>
@@ -114,16 +255,6 @@
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-            <version>3.2.5.ga</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.3.2.GA</version>
-        </dependency>
-        <dependency>
             <groupId>javax.sql</groupId>
             <artifactId>jdbc-stdext</artifactId>
             <version>2.0</version>
@@ -131,17 +262,12 @@
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
-            <version>1.0.1B</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>ejb3-persistence</artifactId>
-            <version>1.0.1.GA</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -156,7 +282,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>2.5.1</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -168,7 +294,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
+                <version>2.2</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
@@ -176,7 +302,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.4</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -201,7 +327,7 @@
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.1.3</version>
+                <version>1.2.3</version>
                 <configuration>
                     <wait>true</wait>
                     <container>
@@ -218,7 +344,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.10</version>
+                <version>2.12</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*SeleniumTest.java</exclude>
@@ -227,7 +353,6 @@
             </plugin>
         </plugins>
     </build>
-    
     <repositories>
         <repository>
             <url>http://download.java.net/maven/2/</url>
@@ -262,7 +387,7 @@
                 <dependency>
                     <groupId>junit</groupId>
                     <artifactId>junit</artifactId>
-                    <version>4.8.1</version>
+                    <version>4.10</version>
                     <scope>test</scope>
                 </dependency>
                 <dependency>
@@ -291,7 +416,7 @@
                     <plugin>
                         <groupId>org.liquibase</groupId>
                         <artifactId>liquibase-maven-plugin</artifactId>
-                        <version>2.0.1</version>
+                        <version>2.0.5</version>
                         <dependencies>
                             <dependency>
                                 <groupId>mysql</groupId>
@@ -312,7 +437,7 @@
                             </execution>
                         </executions>
                     </plugin>
-<!-- Selenium integration tests-->
+                    <!-- Selenium integration tests-->
                     <plugin>
                         <groupId>org.codehaus.cargo</groupId>
                         <artifactId>cargo-maven2-plugin</artifactId>
@@ -356,6 +481,13 @@
                             </execution>
                         </executions>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>reporting</id>
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -382,7 +514,7 @@
                 <defaultGoal>process-resources</defaultGoal>
                 <plugins>
                     <plugin>
-<!-- Load data-rebuild properties-->
+                        <!-- Load data-rebuild properties-->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>properties-maven-plugin</artifactId>
                         <version>1.0-alpha-2</version>
@@ -401,12 +533,12 @@
                         </executions>
                     </plugin>
                     <plugin>
-<!-- We will drop and create testdroid MySQL database using plain SQL -->
+                        <!-- We will drop and create testdroid MySQL database using plain SQL -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>sql-maven-plugin</artifactId>
                         <version>1.5</version>
                         <configuration>
-<!-- common configuration shared by all executions -->
+                            <!-- common configuration shared by all executions -->
                             <driver>${db.driverClass}</driver>
                             <username>${db.username.root}</username>
                             <password>${db.password.root}</password>
@@ -421,7 +553,7 @@
                         </dependencies>
                         <executions>
                             <execution>
-<!-- Drop database -->
+                                <!-- Drop database -->
                                 <id>drop-db</id>
                                 <phase>process-resources</phase>
                                 <goals>
@@ -434,7 +566,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-<!-- Create database and grant privileges -->
+                                <!-- Create database and grant privileges -->
                                 <id>create-db</id>
                                 <phase>process-resources</phase>
                                 <goals>
@@ -453,7 +585,7 @@
                     <plugin>
                         <groupId>org.liquibase</groupId>
                         <artifactId>liquibase-maven-plugin</artifactId>
-                        <version>2.0.1</version>
+                        <version>2.0.5</version>
                         <dependencies>
                             <dependency>
                                 <groupId>mysql</groupId>
@@ -488,4 +620,32 @@
             </build>
         </profile> 
     </profiles>
+    
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <threshold>Low</threshold><!-- High|Normal|Low|Exp|Ignore -->
+                    <effort>Default</effort><!-- Min|Default|Max -->
+                    <xmlOutput>true</xmlOutput>
+                    <!-- Optional directory to put findbugs xdoc xml report -->
+                    <xmlOutputDirectory>target/site</xmlOutputDirectory>
+                </configuration>
+            </plugin>
+                    
+        </plugins>
+    </reporting>
 </project>
