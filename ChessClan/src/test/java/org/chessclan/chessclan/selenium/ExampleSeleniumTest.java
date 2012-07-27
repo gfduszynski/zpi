@@ -32,7 +32,7 @@ public class ExampleSeleniumTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        siteBase = new URI("http://localhost:10001/ChessClan-1.0-SNAPSHOT/index.html");
+        siteBase = new URI("http://localhost:10001/ChessClan-1.0-SNAPSHOT/default.xhtml");
         drv = new FirefoxDriver();
     }
 
@@ -43,6 +43,6 @@ public class ExampleSeleniumTest extends TestCase {
 
     public void testWeSeeHelloWorld() {
         drv.get(siteBase.toString());
-        assertTrue(drv.getPageSource().contains("Hello"));
+        assertTrue(drv.getPageSource().contains("test"));
     }
 }
