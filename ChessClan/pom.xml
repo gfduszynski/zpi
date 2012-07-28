@@ -16,6 +16,7 @@
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
         
         <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
+        <org.springframework.security.version>3.1.1.RELEASE</org.springframework.security.version>
         <org.jsf.version>2.1.11</org.jsf.version>
         
         <org.hibernate.version>4.1.5.Final</org.hibernate.version>
@@ -182,6 +183,29 @@
             <artifactId>spring-test</artifactId>
             <version>${org.springframework.version}</version>
             <scope>test</scope>
+        </dependency>
+        
+        
+        <!--
+            Support for Spring Security
+        -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${org.springframework.security.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${org.springframework.security.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${org.springframework.security.version}</version>
+            <type>jar</type>
         </dependency>
             
         <!-- Hibernate Dependecies -->

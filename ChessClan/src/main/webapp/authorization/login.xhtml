@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Bike Shop 2.0</title>
+</h:head>
+
+<h:body>
+	<h:form>
+		<div style="text-align:center;">
+			<h:outputText value="#{msg['loginscreen.loginmessage']}" />
+			<br />
+			<br />
+			<h:outputText value="#{msg['loginscreen.loginfield']} " /><h:inputText value="#{loginBean.login}" />
+			<br />
+			<h:outputText value="#{msg['loginscreen.passfield']} " /><h:inputSecret value="#{loginBean.password}" />
+			<br />
+			<h:messages />
+			<br />			
+			<h:commandButton action="#{loginBean.login}" value="#{msg['loginscreen.loginbutton']}" />
+			<br />
+			<br />
+			<h:outputText value="#{msg['loginscreen.backmessage']}" />
+			<br />
+			<br />
+			<h:commandButton action="shopTemplate" value="#{msg['loginscreen.backbutton']}" />			
+		</div>
+	</h:form>
+</h:body>
+</html>

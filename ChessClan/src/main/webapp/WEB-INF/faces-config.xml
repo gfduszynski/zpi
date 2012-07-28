@@ -1,20 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<faces-config
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
-    version="2.1">
- 
-    <!-- JSF and Spring are integrated -->
+<?xml version='1.0' encoding='UTF-8'?>
+
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+                http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
+
     <application>
-        <el-resolver>
-            org.springframework.web.jsf.el.SpringBeanFacesELResolver
-        </el-resolver>
+
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+
+        <locale-config>
+            <default-locale>pl</default-locale>
+            <supported-locale>en</supported-locale>
+            <supported-locale>pl</supported-locale>
+        </locale-config>
+
+        <message-bundle>Resources</message-bundle>
+
+        <resource-bundle>
+            <base-name>Messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+
+
     </application>
- 
-    <!-- configuration of navigation rules -->
-    <navigation-rule>
-    </navigation-rule>
- 
+
 </faces-config>
