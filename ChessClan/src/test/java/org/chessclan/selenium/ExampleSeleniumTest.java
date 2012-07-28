@@ -1,4 +1,4 @@
-package org.chessclan.chessclan.selenium;
+package org.chessclan.selenium;
 
 import java.net.URI;
 import junit.framework.TestCase;

@@ -6,62 +6,113 @@
          id="WebApp_ID"
          version="3.0">
  
-      <display-name>ChessClan</display-name>
+    <display-name>ChessClan</display-name>
+    
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+    
+        <!-- Welcome Page -->
+    <welcome-file-list>
+        <welcome-file>/default.xhtml</welcome-file>
+    </welcome-file-list>
+    <error-page>
+        <exception-type>org.springframework.security.access.AccessDeniedException</exception-type>
+        <location>/errorPages/403-AccessDenied.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/errorPages/403-AccessDenied.xhtml</location>
+    </error-page>
+    
+    <!-- Spring Context Configuration' s Path definition -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext.xml, /WEB-INF/applicationContext-security.xml
+        </param-value>
+    </context-param>
+    
  
-      <!-- Spring Context Configuration' s Path definition -->
-      <context-param>
-         <param-name>contextConfigLocation</param-name>
-         <param-value>
-            /WEB-INF/applicationContext.xml
-         </param-value>
-      </context-param>
- 
-      <!-- The Bootstrap listener to start up and shut down Spring's root WebApplicationContext. It is registered to Servlet Container -->
-      <listener>
+    <!-- The Bootstrap listener to start up and shut down Spring's root WebApplicationContext. It is registered to Servlet Container -->
+    <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
-      </listener>
-      <listener>
+    </listener>
+    <listener>
         <listener-class>
             org.springframework.web.context.request.RequestContextListener
         </listener-class>
-      </listener>
+    </listener>
  
-      <!-- Project Stage Level -->
-      <context-param>
+    <!-- Project Stage Level -->
+    <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
-      </context-param>
+    </context-param>
       
-      <context-param>
-          <param-name>org.richfaces.skin</param-name>
-          <param-value>classic</param-value>
-      </context-param>
-      <context-param>
-          <param-name>org.richfaces.enableControlSkinning</param-name>
-          <param-value>true</param-value>
-      </context-param>
+    <context-param>
+        <param-name>org.richfaces.skin</param-name>
+        <param-value>classic</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.richfaces.enableControlSkinning</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
+
+<!-- JSF Config -->
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>
+			/WEB-INF/faces-config.xml,/WEB-INF/faces-managed-beans.xml,/WEB-INF/faces-navigation.xml
+		</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.enabledLoadBundle11Compatibility</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.validateXml</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.verifyObjects</param-name>
+		<param-value>true</param-value>
+	</context-param>
+        <context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+    <!-- Spring Security Filter -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
  
-      <!-- Welcome Page -->
-      <welcome-file-list>
-        <welcome-file>faces/default.xhtml</welcome-file>
-      </welcome-file-list>
- 
-      <!-- JSF Servlet is defined to container -->
-      <servlet>
+    <!-- JSF Servlet is defined to container -->
+    <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-      </servlet>
+    </servlet>
  
-      <!-- Mapping with servlet and url for the http requests. -->
-      <servlet-mapping>
-          <servlet-name>Faces Servlet</servlet-name>
-          <url-pattern>*.xhtml</url-pattern>
-          <url-pattern>*.faces</url-pattern>
-          <url-pattern>*.jsf</url-pattern>
-          <url-pattern>/faces/*</url-pattern>
-      </servlet-mapping>
+    <!-- Mapping with servlet and url for the http requests. -->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+        <url-pattern>*.faces</url-pattern>
+        <url-pattern>*.jsf</url-pattern>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
 </web-app>
