@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:b="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- 
+	resource security 
+	
+	Note: 
+	Access-denied-page is invoked when user is AUTHENTICATED but is not AUTHORIZED to access protected resources.
+	When user is NOT AUTHENTICATED, he is moved into form-login instead of access-denied-page.
+	-->
+	<http auto-config="true" access-denied-page="/errorPages/403-AccessDenied.xhtml">
+		<form-login login-page="/authorization/login.xhtml" />
+		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+                <intercept-url pattern="/test/**" access="ROLE_ADMIN" />	    
+	</http>
+
+	<!-- 
+	business logic (method) security 
+	-->
+
+	<global-method-security
+		secured-annotations="enabled" jsr250-annotations="enabled" >		
+	</global-method-security>
+	
+	<!-- 
+	manager responsible for loading user account with assigned roles 
+	-->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider
+			user-service-ref="userDetailsService" />
+	</authentication-manager>
+
+</b:beans>
