@@ -2,22 +2,30 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.chessclan.businessTier.models;
+package org.chessclan.dataTier.models;
 
+import java.sql.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 /**
  *
- * @author Giorgio
+ * @author Daniel
  */
-public class ExampleModel {
+@Entity
+public class Tournament {
 
-    /**
-     * Java doc is required.
-     */
-    public ExampleModel() {
-        int i = 0;
-        if (i == 1) {
-            i = 1 + 1;
-        }
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Date tournamentDate;
+
+    public Long getId() {
+        return id;
     }
 
+    public Date getTournamentDate() {
+        return tournamentDate;
+    }
 }
