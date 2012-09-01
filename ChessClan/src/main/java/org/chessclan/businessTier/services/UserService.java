@@ -4,6 +4,7 @@
  */
 package org.chessclan.businessTier.services;
 
+import java.io.Serializable;
 import java.util.List;
 import org.chessclan.businessTier.exceptions.UserNotFoundException;
 import org.chessclan.dataTier.models.User;
