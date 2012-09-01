@@ -5,7 +5,6 @@
 package org.chessclan.dataTier.services;
 
 import java.util.List;
-import org.chessclan.dataTier.DTO.UserDTO;
 import org.chessclan.dataTier.exceptions.UserNotFoundException;
 import org.chessclan.dataTier.models.User;
 
@@ -20,7 +19,7 @@ public interface UserService {
      * @param created   The information of the created person.
      * @return  The created person.
      */
-    public User create(UserDTO created);
+    public User create(User created);
 
     /**
      * Deletes a person.
@@ -49,5 +48,5 @@ public interface UserService {
      * @return  The updated person.
      * @throws UserNotFoundException  if no person is found with given id.
      */
-    public User update(UserDTO updated) throws UserNotFoundException;
+    public User update(User updated) throws UserNotFoundException;
 }
