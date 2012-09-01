@@ -41,23 +41,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@PostConstruct
 	public void init() {
 		
-//		// sample roles		
-//		Collection<GrantedAuthority> adminAuthorities = new ArrayList<GrantedAuthority>();
-//		adminAuthorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
-//		
-//		Collection<GrantedAuthority> userAuthorities = new ArrayList<GrantedAuthority>();
-//		userAuthorities.add(new GrantedAuthorityImpl("ROLE_REGISTERED"));
+		// sample roles		
+		Collection<GrantedAuthority> adminAuthorities = new ArrayList<GrantedAuthority>();
+		adminAuthorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
 		
-//		boolean enabled = true;
-//		boolean accountNonExpired = true;
-//		boolean credentialsNonExpired = true;
-//		boolean accountNonLocked = true;
-//		
-//		// sample users with roles set
-//		users.put("admin", new org.springframework.security.core.userdetails.User("admin", "admin", enabled, accountNonExpired,
-//				credentialsNonExpired, accountNonLocked, adminAuthorities));
-//		
-//		users.put("user", new org.springframework.security.core.userdetails.User("user", "user", enabled, accountNonExpired,
-//				credentialsNonExpired, accountNonLocked, userAuthorities));
+		Collection<GrantedAuthority> userAuthorities = new ArrayList<GrantedAuthority>();
+		userAuthorities.add(new GrantedAuthorityImpl("ROLE_REGISTERED"));
+	
+		boolean enabled = true;
+		boolean accountNonExpired = true;
+		boolean credentialsNonExpired = true;
+		boolean accountNonLocked = true;
+		
+		// sample users with roles set
+		users.put("admin", new org.springframework.security.core.userdetails.User("admin", "admin", enabled, accountNonExpired,
+				credentialsNonExpired, accountNonLocked, adminAuthorities));
+		
+		users.put("user", new org.springframework.security.core.userdetails.User("user", "user", enabled, accountNonExpired,
+				credentialsNonExpired, accountNonLocked, userAuthorities));
 	}
 }

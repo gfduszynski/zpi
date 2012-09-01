@@ -6,7 +6,7 @@ package org.chessclan.dataTier;
 
 import org.chessclan.dataTier.jpa.RepositoryUserService;
 import org.chessclan.dataTier.DTO.UserDTO;
-import org.chessclan.dataTier.exceptions.UserNotFoundException;
+import org.chessclan.businessTier.exceptions.UserNotFoundException;
 import org.chessclan.dataTier.jpa.RepositoryUserService;
 import org.chessclan.dataTier.jpa.UserRepository;
 import org.chessclan.dataTier.models.User;
