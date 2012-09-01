@@ -30,19 +30,8 @@
 	manager responsible for loading user account with assigned roles 
 	-->
 	<authentication-manager alias="authenticationManager">
-	   <authentication-provider>
-		<jdbc-user-service data-source-ref="dataSource"
- 
-		   users-by-username-query="
-		      select username,password, enabled 
-		      from users where username=?" 
- 
-		   authorities-by-username-query="
-		      select u.username, ur.authority from users u, user_roles ur 
-		      where u.user_id = ur.user_id and u.username =?  " 
- 
-		/>
-	   </authentication-provider>
+		<authentication-provider
+			user-service-ref="userDetailsService" />
 	</authentication-manager>
 
 </b:beans>

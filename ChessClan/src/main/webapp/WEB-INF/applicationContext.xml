@@ -2,62 +2,56 @@
 <beans
     xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
     xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="http://www.springframework.org/schema/beans 
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/data/jpa
+   http://www.springframework.org/schema/data/jpa/spring-jpa-1.1.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <context:annotation-config />
     <context:component-scan
         base-package="org.chessclan" />
-
+    
     <bean 
         id="passwordEncoder"
         class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
 
-        
-        
-    <!--bean id="propertyConfigurer"
-    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-    p:location="/WEB-INF/jdbc.properties" />-->
-
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
- 
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/chessclan" />
-        <property name="username" value="root" />
-        <property name="password" value="admin" />
-    </bean>
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
-    
-    <bean id="sessionFactory" class=
-    "org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="org.chessclan.rest" />
-   
-        <property name="hibernateProperties">
-            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-            <prop key="hibernate.hbm2ddl.auto">update</prop>
-            <prop key="hibernate.show_sql">false</prop>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:db-user.properties</value>
         </property>
     </bean>
-    <bean id="dataSource" class=
-    "org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${driverClassName}" />
-        <property name="url" value="${url}" />
-        <property name="username" value="root" />
-        <property name="password" value="admin" />
-<!--        tutaj powinno dac sie innego usera-->
-    </bean>
-
-    <bean id="txManager" class=
-    "org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+    
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="org.chessclan" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="${hibernate.show_sql}" />
+                <property name="generateDdl" value="false" />
+                <property name="databasePlatform" value="${hibernate.dialect}" />
+            </bean>
+        </property>
     </bean>
     
-    <jpa:repositories base-package="org.chessclan.dataTier.jpa"/>
-    
-    <tx:annotation-driven transaction-manager="txManager" />
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${db.driverClass}" />
+        <property name="jdbcUrl" value="${db.connectionURL.user}" />
+        <property name="username" value="${db.username.user}"/>
+        <property name="password" value="${db.password.user}"/>
+        <property name="idleConnectionTestPeriod" value="60"/>
+        <property name="idleMaxAge" value="240"/>
+        <property name="maxConnectionsPerPartition" value="30"/>
+        <property name="minConnectionsPerPartition" value="10"/>
+        <property name="partitionCount" value="3"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+        <property name="releaseHelperThreads" value="3"/>
+    </bean>
+    <jpa:repositories base-package="org.chessclan.dataTier.repositories"/>
 </beans>

@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.chessclan.dataTier.services;
+package org.chessclan.businessTier.services;
 
+import java.io.Serializable;
 import java.util.List;
-import org.chessclan.dataTier.exceptions.UserNotFoundException;
+import org.chessclan.businessTier.exceptions.UserNotFoundException;
 import org.chessclan.dataTier.models.User;
 
 /**
