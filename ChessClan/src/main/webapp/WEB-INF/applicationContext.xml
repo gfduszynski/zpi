@@ -54,4 +54,7 @@
         <property name="releaseHelperThreads" value="3"/>
     </bean>
     <jpa:repositories base-package="org.chessclan.dataTier.repositories"/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emf"/>
+    </bean>
 </beans>
