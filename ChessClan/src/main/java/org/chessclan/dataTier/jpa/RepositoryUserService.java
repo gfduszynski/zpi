@@ -29,7 +29,7 @@ public class RepositoryUserService implements UserService {
     public User create(UserDTO created) {
         LOGGER.debug("Creating a new user with information: " + created);
         
-        User person = User.getBuilder(created.getFirstName(), created.getLastName()).build();
+        //User person = User.getBuilder(created.getFirstName(), created.getLastName()).build();
         
         return personRepository.save(person);
     }
@@ -76,7 +76,7 @@ public class RepositoryUserService implements UserService {
             throw new UserNotFoundException();
         }
         
-        user.update(updated.getFirstName(), updated.getLastName());
+        //user.update(updated.getFirstName(), updated.getLastName());
 
         return user;
     }

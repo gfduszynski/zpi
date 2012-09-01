@@ -9,4 +9,45 @@
             <column name="name" value="Fred"/>
         </insert>
     </changeSet>
+    <changeSet id="2" author="danielengel">
+        <createTable tableName="clubs">
+            <column name="club_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)"/>
+        </createTable>
+        <createTable tableName="users">
+            <column name="user_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_club" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="email" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birth_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_club" constraintName="user_club_ref" referencedTableName="clubs" referencedColumnNames="club_id"/>
+    </changeSet>
 </databaseChangeLog>
