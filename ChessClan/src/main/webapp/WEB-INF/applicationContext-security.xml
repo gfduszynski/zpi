@@ -14,8 +14,7 @@
 	-->
 	<http auto-config="true" access-denied-page="/errorPages/403-AccessDenied.xhtml">
 		<form-login login-page="/authorization/login.xhtml" />
-		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
-                <intercept-url pattern="/test/**" access="ROLE_ADMIN" />	    
+		<intercept-url pattern="/administration/**" access="ROLE_ADMIN" />    
 	</http>
 
 	<!-- 
