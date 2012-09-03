@@ -1,6 +1,5 @@
 package org.chessclan.businessTier.services;
 
-import java.io.Serializable;
 import javax.annotation.security.RolesAllowed;
 
 public interface AuthenticationService{
