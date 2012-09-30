@@ -4,7 +4,13 @@
  */
 package org.chessclan.dataTier.models;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import java.lang.reflect.Type;
+import com.google.gson.JsonSerializer;
+import com.google.gson.JsonSerializationContext;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -29,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "users")
 @XmlRootElement
 public class User implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,12 +70,20 @@ public class User implements Serializable {
     private Date creationDate;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "sex")
+    private Integer sex;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
     @JoinColumn(name = "user_club", referencedColumnName = "club_id")
     @ManyToOne
     private Club userClub;
+    //field nessesary for edit in view
+    private boolean editable;
+    //field nessesary for edit in view
+    private int clubId;
 
     public User() {
     }
@@ -77,14 +92,33 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    public User(Integer userId, String firstName, String lastName, String email, Date birthDate, Date creationDate, String password) {
+    public User(Integer userId, String firstName, String lastName, String email, Date birthDate, Date creationDate, Integer sex, String password, Club userClub) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.birthDate = birthDate;
         this.creationDate = creationDate;
+        this.sex = sex;
         this.password = password;
+        this.userClub = userClub;
+        this.editable = false;
+    }
+
+    public int getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(int clubId) {
+        this.clubId = clubId;
+    }
+ 
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 
     public Integer getUserId() {
@@ -151,6 +185,14 @@ public class User implements Serializable {
         this.userClub = userClub;
     }
 
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -175,5 +217,23 @@ public class User implements Serializable {
     public String toString() {
         return "org.chessclan.dataTier.models.User[ userId=" + userId + " ]";
     }
-    
+
+    public class UserSerializer implements JsonSerializer<User> {
+
+        @Override
+        public JsonElement serialize(User src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("id", src.userId);
+            obj.addProperty("firstName", src.firstName);
+            obj.addProperty("lastName", src.lastName);
+            obj.addProperty("email", src.email);
+            DateFormat format = DateFormat.getDateInstance(DateFormat.DATE_FIELD);
+            obj.addProperty("birthDate", format.format(src.birthDate));
+            obj.addProperty("creationDate", format.format(src.creationDate));
+            obj.addProperty("sex", src.sex);
+            obj.addProperty("clubId", src.userClub.getClubId());
+            
+            return obj;
+        }
+    }
 }

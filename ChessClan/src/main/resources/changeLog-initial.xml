@@ -46,6 +46,9 @@
             <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="sex" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_club" constraintName="user_club_ref" referencedTableName="clubs" referencedColumnNames="club_id"/>
     </changeSet>
