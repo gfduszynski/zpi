@@ -16,13 +16,13 @@
                 <h:outputText value="#{msg['loginscreen.loginmessage']}" />
                 <br />
                 <br />
-                <h:outputText value="#{msg['loginscreen.loginfield']} " /><h:inputText value="#{loginBean.login}" />
+                <h:outputText value="#{msg['loginscreen.loginfield']} " /><h:inputText value="#{sessionBean.login}" />
                 <br />
-                <h:outputText value="#{msg['loginscreen.passfield']} " /><h:inputSecret value="#{loginBean.password}" />
+                <h:outputText value="#{msg['loginscreen.passfield']} " /><h:inputSecret value="#{sessionBean.password}" />
                 <br />
                 <h:messages />
                 <br />			
-                <h:commandButton action="#{loginBean.login}" value="#{msg['loginscreen.loginbutton']}" />
+                <h:commandButton action="#{sessionBean.login}" value="#{msg['loginscreen.loginbutton']}" />
                 <br />
                 <br />
                 <h:outputText value="#{msg['loginscreen.backmessage']}" />

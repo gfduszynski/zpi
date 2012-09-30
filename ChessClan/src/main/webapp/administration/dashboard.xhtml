@@ -2,31 +2,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>Administration dashboard</title>
+        <h:outputScript name="js/adminScripts.js"/>
         <h:outputScript name="js/jquery-1.8.0.min.js"/>
         <h:outputScript name="js/jquery-ui-1.8.23.custom.min.js"/>
+        <h:outputStylesheet name="css/normalize.css"/>
         <h:outputStylesheet name="css/jqueryui-admin-1.8.23.custom.css"/>
         <h:outputStylesheet name="css/adminPages.css"/>
-        <h:outputStylesheet name="css/normalize.css"/>
-        <script>
+        <script type="text/javascript">
             $(function() {
                 $( "#tabs" ).tabs();
-                $( "#updateForm\\:birthDate" ).datepicker();
-                $( "#updateForm\\:creationDate" ).datepicker();
+
             });
         </script>
     </h:head>
     <h:body>
-        <div class="leftContainer">
-            <h1>Dashboard</h1>
-        </div>
-        <div class="rightContainer">
+        <div style="width:100%;">
+            <h1 style="width:50%">Dashboard</h1>
             <h:form>
-                <h:commandLink value="logout" action="#{dashboardBean.logout()}"/>
+                <h:commandLink value="logout" action="#{sessionBean.logout}"/>
             </h:form>
         </div>
+
         <div id="tabs">
             <ul>
                 <li><a href="#tabs-1">USERS</a></li>
@@ -34,86 +34,15 @@
                 <li><a href="#tabs-3">CHAMPIONSHIPS</a></li>
             </ul>
             <div id="tabs-1">
-                <div class="leftContainer">
-                    <h:dataTable value="#{dashboardBean.users}" var="user"
-                                 styleClass="order-table"
-                                 headerClass="order-table-header"
-                                 rowClasses="order-table-odd-row,order-table-even-row"
-                                 >
-
-                        <h:column>
-                            <!-- column header -->
-                            <f:facet name="header">Order No</f:facet>
-                            <!-- row record -->
-                            #{user.userId}
-                        </h:column>
-
-                        <h:column>
-                            <f:facet name="header">first name</f:facet>
-                            #{user.firstName}
-                        </h:column>
-
-                        <h:column>
-                            <f:facet name="header">last name</f:facet>
-                            #{user.lastName}
-                        </h:column>
-
-                        <h:column>
-                            <f:facet name="header">email</f:facet>
-                            #{user.email}
-                        </h:column>
-
-                        <h:column>
-                            <f:facet name="header">birth date</f:facet>
-                            #{user.birthDate}
-                        </h:column>
-
-                        <h:column>
-                            <f:facet name="header">creation date</f:facet>
-                            #{user.creationDate}
-                        </h:column>
-
-                        <h:column>
-                            <f:facet name="header">club id</f:facet>
-                            #{user.userClub.clubId}
-                        </h:column>
-
-                    </h:dataTable>
-                </div>
-                <div class="columnSpacer"/>
-                <div class="rightContainer">
-                    <h3>Selected user data</h3>
-                    <h:form id="updateForm">
-                        <h:outputText styleClass="output" value="ID."/><br/>
-                        <h:inputText styleClass="input" /><br/>
-                        <h:outputText styleClass="output" value="first name"/><br/>
-                        <h:inputText styleClass="input" /><br/>
-                        <h:outputText styleClass="output" value="last name"/><br/>
-                        <h:inputText styleClass="input" /><br/>
-                        <h:outputText styleClass="output" value="email"/><br/>
-                        <h:inputText styleClass="input" /><br/>
-                        <h:outputText styleClass="output" value="birth date"/><br/>
-                        <h:inputText styleClass="input" id="birthDate"/><br/>
-                        <h:outputText styleClass="output" value="creation date"/><br/>
-                        <h:inputText styleClass="input" id="creationDate"/><br/>
-                        <h:outputText styleClass="output" value="sex"/><br/>
-                        <h:selectOneMenu styleClass="output">
-                            <f:selectItem itemValue="1" itemLabel="M" />
-                            <f:selectItem itemValue="0" itemLabel="F" />
-                        </h:selectOneMenu><br/>
-                        <h:outputText styleClass="output" value="club id"/><br/>
-                        <h:inputText styleClass="input" /><br/>
-                        <h:commandButton styleClass="input" value="update user"/>
-                    </h:form>
-                </div>
+                <ui:insert name="users" >
+                    <ui:include src="usersTab.xhtml" />
+                </ui:insert>
             </div>
             <div id="tabs-2">
-                <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
             </div>
             <div id="tabs-3">
-                <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-                <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
             </div>
+
         </div>
 
     </h:body>
