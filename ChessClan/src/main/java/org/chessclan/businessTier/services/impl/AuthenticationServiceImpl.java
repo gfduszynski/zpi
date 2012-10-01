@@ -31,13 +31,5 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
 		} catch (AuthenticationException e) {			
 		}
 		return false;
-	}
-
-	@Override
-	public void logout() {
-		SecurityContextHolder.getContext().setAuthentication(null);
-		//currentUser.unauthenticate();
-	}
-
-	
+	}	
 }
