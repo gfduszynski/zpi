@@ -25,6 +25,9 @@
             <column name="user_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="enabled" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
             <column name="first_name" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
@@ -43,6 +46,9 @@
             <column name="creation_date" type="date">
                 <constraints nullable="false"/>
             </column>
+            <column name="login" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
             <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -54,34 +60,32 @@
     </changeSet>
     <changeSet id="3" author="danielengel">
         <createTable tableName="roles">
-            <column name="role_id" type="int" autoIncrement="true">
+            <column name="user_role_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="role_name" type="varchar(45)">
+            <column name="login" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addColumn tableName="users">
-            <column name="user_role" type="int"/>
-        </addColumn>
-        <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_role" constraintName="user_role_ref" referencedTableName="roles" referencedColumnNames="role_id"/>
-        <insert tableName="roles">
-            <column name="role_id" valueNumeric="1"/>
-            <column name="role_name" value="admin"/>
-        </insert>
-        <insert tableName="roles">
-            <column name="role_id" valueNumeric="2"/>
-            <column name="role_name" value="logged_user"/>
-        </insert>
+        <!--addForeignKeyConstraint baseTableName="roles" baseColumnNames="login" constraintName="user_role_ref" referencedTableName="users" referencedColumnNames="login"/-->
         <insert tableName="users">
             <column name="user_id" valueNumeric="1"/>
+            <column name="enabled" valueNumeric="true"/>
             <column name="first_name" value="admin"/>
             <column name="last_name" value="admin"/>
             <column name="email" value="admin@chessclan.pl"/>
             <column name="birth_date" valueDate="now()"/>
             <column name="creation_date" valueDate="now()"/> 
-            <column name="password" value="passwd"/>
-            <column name="user_role" valueNumeric="1"/>
+            <column name="login" value="admin"/>
+            <column name="password" value="76a2173be6393254e72ffa4d6df1030a"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="user_role_id" valueNumeric="1"/>
+            <column name="login" value="admin"/>
+            <column name="authority" value="ROLE_ADMIN"/>
         </insert>
     </changeSet>
 </databaseChangeLog>
