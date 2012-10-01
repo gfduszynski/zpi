@@ -9,10 +9,10 @@
     <display-name>ChessClan</display-name>
     
     <session-config>
-        <session-timeout>10</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
     
-        <!-- Welcome Page -->
+    <!-- Welcome Page -->
     <welcome-file-list>
         <welcome-file>/default.xhtml</welcome-file>
     </welcome-file-list>
@@ -53,33 +53,23 @@
     </context-param>
 
 
-<!-- JSF Config -->
-	<context-param>
-		<param-name>javax.faces.CONFIG_FILES</param-name>
-		<param-value>
-			/WEB-INF/faces-config.xml,/WEB-INF/faces-managed-beans.xml,/WEB-INF/faces-navigation.xml
-		</param-value>
-	</context-param>
-	<context-param>
-		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-		<param-value>client</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.enabledLoadBundle11Compatibility</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.validateXml</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.verifyObjects</param-name>
-		<param-value>true</param-value>
-	</context-param>
-        <context-param>
-		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
-		<param-value>true</param-value>
-	</context-param>
+    <!-- JSF Config -->
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.sun.faces.validateXml</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.richfaces.SKIN</param-name>
+        <param-value>NULL</param-value>
+    </context-param>
 
     <!-- Spring Security Filter -->
     <filter>

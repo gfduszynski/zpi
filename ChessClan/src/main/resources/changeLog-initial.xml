@@ -1,4 +1,3 @@
-
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
@@ -47,7 +46,42 @@
             <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="sex" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_club" constraintName="user_club_ref" referencedTableName="clubs" referencedColumnNames="club_id"/>
+    </changeSet>
+    <changeSet id="3" author="danielengel">
+        <createTable tableName="roles">
+            <column name="role_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role_name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addColumn tableName="users">
+            <column name="user_role" type="int"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_role" constraintName="user_role_ref" referencedTableName="roles" referencedColumnNames="role_id"/>
+        <insert tableName="roles">
+            <column name="role_id" valueNumeric="1"/>
+            <column name="role_name" value="admin"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role_id" valueNumeric="2"/>
+            <column name="role_name" value="logged_user"/>
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="first_name" value="admin"/>
+            <column name="last_name" value="admin"/>
+            <column name="email" value="admin@chessclan.pl"/>
+            <column name="birth_date" valueDate="now()"/>
+            <column name="creation_date" valueDate="now()"/> 
+            <column name="password" value="passwd"/>
+            <column name="user_role" valueNumeric="1"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
