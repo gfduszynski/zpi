@@ -17,7 +17,7 @@
         
         <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
         <org.springframework.security.version>3.1.2.RELEASE</org.springframework.security.version>
-        <org.jsf.version>2.1.12</org.jsf.version>
+        <org.jsf.version>2.2.0-m05</org.jsf.version>
         
         <org.hibernate.version>3.6.10.Final</org.hibernate.version>
         <org.hibernate.persistance.version>3.3.2.Beta1</org.hibernate.persistance.version>
@@ -110,7 +110,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>1.1.0.RELEASE</version>
+            <version>1.1.2.RELEASE</version>
         </dependency> 
         <!--
             Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA, and iBatis.
@@ -217,7 +217,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <version>3.1-b02</version>
             <scope>provided</scope>
         </dependency>
         <!-- JSF -->
@@ -534,6 +534,8 @@
                         <configuration>
                             <enableRulesSummary>false</enableRulesSummary>
                             <configLocation>config/sun_checks.xml</configLocation>
+                            <failsOnError>false</failsOnError>
+                            <failOnViolation>false</failOnViolation>
                         </configuration>
                         <executions>
                             <execution>
@@ -541,6 +543,7 @@
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
+                                
                             </execution>
                         </executions>
                     </plugin>
@@ -670,12 +673,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.8.1</version>
+                <version>2.9</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.5.1</version>
+                <version>2.5.2</version>
                 <configuration>
                     <threshold>Low</threshold><!-- High|Normal|Low|Exp|Ignore -->
                     <effort>Default</effort><!-- Min|Default|Max -->
