@@ -14,7 +14,7 @@
     
     <!-- Welcome Page -->
     <welcome-file-list>
-        <welcome-file>/default.xhtml</welcome-file>
+        <welcome-file>/index.xhtml</welcome-file>
     </welcome-file-list>
     <error-page>
         <exception-type>org.springframework.security.access.AccessDeniedException</exception-type>
@@ -65,10 +65,6 @@
     <context-param>
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
-    </context-param>
-    <context-param>
-        <param-name>org.richfaces.SKIN</param-name>
-        <param-value>NULL</param-value>
     </context-param>
 
     <!-- Spring Security Filter -->
