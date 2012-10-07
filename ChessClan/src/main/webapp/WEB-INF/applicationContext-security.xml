@@ -30,16 +30,16 @@
 	-->
 	<authentication-manager alias="authenticationManager">
 	   <authentication-provider>
-           <password-encoder hash="md5"/>
+           <password-encoder ref="passwordEncoder"/>
 		<jdbc-user-service data-source-ref="dataSource"
  
 		   users-by-username-query="
-		      select login,password, enabled 
-		      from users where login=?" 
+		      select email,password, enabled 
+		      from users where email=?" 
  
 		   authorities-by-username-query="
-		      select login, authority from roles 
-		      where login=?  " 
+		      select u.email, r.role_name from users u,user_roles ur,roles r 
+		      where u.email=? and u.user_id = ur.user_id and ur.role_id = r.role_id" 
  
 		/>
 	   </authentication-provider>

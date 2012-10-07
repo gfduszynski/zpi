@@ -39,70 +39,66 @@
                     <!-- column header -->
                     <f:facet name="header">No</f:facet>
                     <!-- row record -->
-                    <h:outputText value="#{user.userId}" rendered="#{not user.editable}"/>
-                    <h:inputText value="#{user.userId}" rendered="#{user.editable}" class="input-edit-row"/>
+                    <h:outputText value="#{user.userId}" rendered="#{not user.enabled}"/>
+                    <h:inputText value="#{user.userId}" rendered="#{user.enabled}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">First name</f:facet>
-                    <h:outputText value="#{user.firstName}" rendered="#{not user.editable}"/>
-                    <h:inputText value="#{user.firstName}" rendered="#{user.editable}" class="input-edit-row"/>
+                    <h:outputText value="#{user.firstName}" rendered="#{not user.enabled}"/>
+                    <h:inputText value="#{user.firstName}" rendered="#{user.enabled}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Last name</f:facet>
-                    <h:outputText value="#{user.lastName}" rendered="#{not user.editable}"/>
-                    <h:inputText value="#{user.lastName}" rendered="#{user.editable}" class="input-edit-row"/>
+                    <h:outputText value="#{user.lastName}" rendered="#{not user.enabled}"/>
+                    <h:inputText value="#{user.lastName}" rendered="#{user.enabled}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">E-mail</f:facet>
-                    <h:outputText value="#{user.email}" rendered="#{not user.editable}"/>
-                    <h:inputText value="#{user.email}" rendered="#{user.editable}" class="input-edit-row"/>
+                    <h:outputText value="#{user.email}" rendered="#{not user.enabled}"/>
+                    <h:inputText value="#{user.email}" rendered="#{user.enabled}" class="input-edit-row"/>
 
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Birth date</f:facet>
-                    <h:outputText value="#{user.birthDate}" rendered="#{not user.editable}">
+                    <h:outputText value="#{user.birthDate}" rendered="#{not user.enabled}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{user.birthDate}" rendered="#{user.editable}" class="userBirthDateForm input-edit-row">
+                    <h:inputText value="#{user.birthDate}" rendered="#{user.enabled}" class="userBirthDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Creation date</f:facet>
-                    <h:outputText value="#{user.creationDate}" rendered="#{not user.editable}">
+                    <h:outputText value="#{user.creationDate}" rendered="#{not user.enabled}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{user.creationDate}" rendered="#{user.editable}" class="userCreationDateForm input-edit-row">
+                    <h:inputText value="#{user.creationDate}" rendered="#{user.enabled}" class="userCreationDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Sex</f:facet>
-                    <h:outputText value="#{user.sex}" rendered="#{not user.editable}"/>
-                    <h:inputText value="#{user.sex}" rendered="#{user.editable}"/>
+                    <h:outputText value="#{user.sex}" rendered="#{not user.enabled}"/>
+                    <h:inputText value="#{user.sex}" rendered="#{user.enabled}"/>
                 </h:column>
 
-                <h:column>
-                    <f:facet name="header">Club</f:facet>
-                    <h:outputText value="#{user.clubId}" rendered="#{not user.editable}"/>
-                    <h:inputText value="#{user.clubId}" rendered="#{user.editable}" class="input-edit-row"/>
-                </h:column>
+
                 <h:column>
                     <f:facet name="header"></f:facet>
-                    <h:commandLink value="edit" rendered="#{not user.editable}">
+                    <h:commandLink value="edit" rendered="#{not user.enabled}">
                         <f:ajax execute="@form" render="@form" listener="#{udBean.editUser(user)}"/>
                     </h:commandLink>
                     <h:panelGrid columns="1" class="buttons-column">
-                        <h:commandLink value="update" rendered="#{user.editable}">
+                        <h:commandLink value="update" rendered="#{user.enabled}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.updateUser(user)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{user.editable}">
+                        <h:commandLink value="remove" rendered="#{user.enabled}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.removeUser(user)}"/>
                         </h:commandLink>
                     </h:panelGrid>
