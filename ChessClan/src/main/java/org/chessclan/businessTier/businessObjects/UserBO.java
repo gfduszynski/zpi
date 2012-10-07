@@ -5,11 +5,9 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
-import java.util.Collection;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
