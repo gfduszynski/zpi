@@ -34,13 +34,13 @@
 		<jdbc-user-service data-source-ref="dataSource"
  
 		   users-by-username-query="
-		      select login,password, enabled 
-		      from users where login=?" 
+		      select email, password, enabled 
+		      from users where email=?" 
  
 		   authorities-by-username-query="
-		      select login, authority from roles 
-		      where login=?  " 
- 
+		      select us.email, r.role_name from users us join user_roles ur on us.user_id=ur.user_id join roles r on r.role_id=ur.role_id 
+		      where email=?  " 
+                      
 		/>
 	   </authentication-provider>
 	</authentication-manager>
