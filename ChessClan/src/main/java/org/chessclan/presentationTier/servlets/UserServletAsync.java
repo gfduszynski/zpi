@@ -30,7 +30,7 @@ public class UserServletAsync extends HttpServlet {
     {
         Integer userId = (Integer) request.getAttribute("userid");
         
-        User u = new User(1,"daniel", "engel", "email", new Date(), new Date(), 1, "passwd", new Club(6,"name", new Date()));
+        User u = null;// new User(1,"daniel", "engel", "email", new Date(), new Date(), 1, "passwd", new Club(6,"name", new Date()));
         
         Gson gson = new GsonBuilder().create();
         String s = gson.toJson(u);

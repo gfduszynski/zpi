@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.chessclan.businessTier.businessObjects.UserBO;
 import org.chessclan.businessTier.services.AuthenticationService;
 
 @ManagedBean(name = "loginBean")
@@ -14,11 +15,10 @@ public class LoginBean implements Serializable {
 
     private String login;
     private String password;
-    @ManagedProperty(value = "#{authenticationService}")
+    @ManagedProperty("#{authenticationService}")
     private AuthenticationService authenticationService; // injected Spring defined service for bikes
 
     public String login() {
-
         boolean success = authenticationService.login(login, password);
 
         if (success) {
@@ -58,4 +58,5 @@ public class LoginBean implements Serializable {
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
+
 }
