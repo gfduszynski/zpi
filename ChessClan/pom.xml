@@ -17,7 +17,7 @@
         
         <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
         <org.springframework.security.version>3.1.2.RELEASE</org.springframework.security.version>
-        <org.jsf.version>2.2.0-m05</org.jsf.version>
+        <org.jsf.version>2.1.12</org.jsf.version>
         
         <org.hibernate.version>3.6.10.Final</org.hibernate.version>
         <org.hibernate.persistance.version>3.3.2.Beta1</org.hibernate.persistance.version>

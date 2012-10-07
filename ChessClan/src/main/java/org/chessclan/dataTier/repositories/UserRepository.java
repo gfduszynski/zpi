@@ -5,12 +5,12 @@
 package org.chessclan.dataTier.repositories;
 
 import org.chessclan.dataTier.models.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author Daniel
  */
-public interface UserRepository extends JpaRepository<User, Long> {
-    
+public interface UserRepository extends CrudRepository<User, Integer> {
+    User findByEmail(String email);
 }

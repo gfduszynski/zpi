@@ -18,8 +18,6 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
 	@Resource(name = "authenticationManager")
 	private AuthenticationManager authenticationManager; // specific for Spring Security
 
-        @Resource(name = "passwordEncoder")
-        private ShaPasswordEncoder sha; 
         
 	@Override
 	public boolean login(String username, String password) {
