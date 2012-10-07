@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.apache.log4j.Logger;
 import org.chessclan.dataTier.models.User;
 
 /**
@@ -23,7 +22,6 @@ import org.chessclan.dataTier.models.User;
 @ViewScoped
 public class UsersDashboardBean implements Serializable {
 
-    private Logger logger;
     private List<User> users;
     private Map<Integer, Boolean> checked;
     //form vars
@@ -39,7 +37,6 @@ public class UsersDashboardBean implements Serializable {
     //end
 
     public UsersDashboardBean() {
-        this.logger = Logger.getLogger(UsersDashboardBean.class);
         users = new ArrayList<User>();
         checked = new HashMap<Integer, Boolean>();
         users.add(new User(1, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
@@ -51,32 +48,25 @@ public class UsersDashboardBean implements Serializable {
     }
 
     public void removeUser(User user) {
-        logger.info("Removing " + user.toString());
-
         users.remove(user);
     }
 
     public void editUser(User user) {
-        logger.info("Editing...");
-
         user.setEditable(true);
     }
 
     public void updateUser(User user) {
-        logger.info("Updating...");
-
         user.setEditable(false);
     }
 
     public void addNewUser(User user) {
-        logger.info("Adding...");
         users.add(new User(100, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
 
     }
     
     public void selectAll(){
         for(int i=0;i<users.size();i++){
-            if(!checked.get(users.get(i).getUserId())) {
+            if(!checked.get(users.get(i).getUserId()) || !checked.containsKey(users.get(i).getUserId())) {
                 checked.put(users.get(i).getUserId(), true);
             }
         }

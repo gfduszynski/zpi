@@ -2,18 +2,95 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:h="http://java.sun.com/jsf/html"
-
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>ChessClan</title>
+        <h:outputStylesheet library="css" name="normalize.css"/>
+        <h:outputStylesheet library="css" name="mainStyles.css"/>
+        <h:outputStylesheet library="css" name="jqueryui-admin-1.8.23.custom.css"/>
+        <h:outputScript library="js" name="jquery-1.8.0.min.js"/>
+        <h:outputScript library="js" name="jquery-ui-1.8.23.custom.min.js"/>
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine"/>
+        <script type="text/javascript">
+            $(function() {
+                $( "#birthDateReg" ).datepicker({ dateFormat: 'dd-mm-yy' });
+            });
+            function validate(event){
+                if(3 > $.trim($('#firstNameReg').val()).length){
+                    event.preventDefault();
+                }
+            }
+        </script>
+    </h:head>
 
     <h:body>
 
-        <h1>JSF 2.0 + Spring Example - test</h1>
-        <ul> Lista userów
-            <li>user:user</li>
-            <li>admin:passwd</li>
-        </ul>
-        <h:outputLink value="/ChessClan/administration/dashboard.xhtml">Obszar administracyjny</h:outputLink>
+        <h:panelGroup layout="block" class="content">
+            <h:panelGroup layout="block" class="header">
+                <h:panelGroup layout="block" class="logo">
+
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="loginStuff">
+                    <h:form id="rgsForm">
+                        <h:panelGrid columns="1">
+                            <h:outputText value="login:"/>
+                            <h:inputText value="#{sessionBean.login}" />
+                            <h:outputText value="password:"/>
+                            <h:inputText value="#{sessionBean.password}"/>
+                            <h:commandButton value="login" action="#{sessionBean.login()}"/>
+                        </h:panelGrid>
+                    </h:form>
+                </h:panelGroup>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="elements">
+                <h:panelGroup layout="block" class="firstColumn">
+                    <h:panelGroup layout="block" class="one">
+
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" class="two">
+
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="secondColumn">
+                    <h:panelGroup layout="block" class="three">
+                        <h2><h:outputText value="Rejestracja"/></h2>
+                        <h:form prependId="false">
+                            <h:outputText value="Imię"/><br/>
+                            <h:inputText value="#{rgsBean.firstName}" id="firstNameReg"/><br/>
+                            <h:outputText value="Nazwisko"/><br/>
+                            <h:inputText value="#{rgsBean.lastName}"/><br/>
+                            <h:outputText value="Data urodzenia"/><br/>
+                            <h:inputText value="#{rgsBean.birthDate}" id="birthDateReg"/><br/>
+                            <h:outputText value="Płeć"/><br/>
+                            <h:inputText value="#{rgsBean.firstName}"/><br/>
+                            <h:outputText value="Email"/><br/>
+                            <h:inputText value="#{rgsBean.firstName}"/><br/>
+                            <h:outputText value="Hasło"/><br/>
+                            <h:inputSecret value="#{rgsBean.firstName}"/><br/>
+                            <h:selectBooleanCheckbox /><h:outputText value="Akceptuję "/><h:commandLink value="regulamin."/><br/>
+                            <h:commandButton value="Rejestruj" onclick="validate(event);" action="#{rgsBean.register()}"/>
+                        </h:form>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="thirdColumn">
+                    <h:panelGroup layout="block" class="four">
+
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" class="five">
+
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="fourthColumn">
+                    <h:panelGroup layout="block" class="six">
+
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" class="seven">
+
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
     </h:body>
 
 </html>

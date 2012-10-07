@@ -31,14 +31,14 @@ public class SessionBean implements Serializable{
         if (success) {
             boolean isAdmin = true;
             if (isAdmin) {
-                return "/administration/dashboard.xhtml";
+                return "/administration/dashboard.xhtml?faces-redirect=true";
             } else {
-                return "/default.xhtml"; // return to application but being logged now 
+                return "/default.xhtml?faces-redirect=true"; // return to application but being logged now 
             }
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login or password incorrect."));
-            return "/authorization/login.xhtml";
+            return "/authorization/login.xhtml?faces-redirect=true";
         }
     }
 
