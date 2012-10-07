@@ -8,17 +8,9 @@ import java.io.Serializable;
 import java.util.*;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-<<<<<<< HEAD
-=======
 import javax.persistence.Transient;
-import org.apache.log4j.Logger;
 import org.chessclan.businessTier.businessObjects.UserBO;
-import org.chessclan.businessTier.services.AuthenticationService;
-import org.chessclan.dataTier.models.Role;
->>>>>>> 81f790d89ecc711f059e524326efc5163fc14e4d
 import org.chessclan.dataTier.models.User;
 
 /**
@@ -62,33 +54,16 @@ public class UsersDashboardBean implements Serializable {
     }
 
     public void editUser(User user) {
-<<<<<<< HEAD
-        user.setEditable(true);
-    }
-
-    public void updateUser(User user) {
-        user.setEditable(false);
-    }
-
-    public void addNewUser(User user) {
-        users.add(new User(100, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
-=======
-        logger.info("Editing...");
-
         //user.setEditable(true);
     }
 
     public void updateUser(User user) {
-        logger.info("Updating...");
-
         //user.setEditable(false);
     }
 
     public void addNewUser(User user) {
-        logger.info("Adding...");
         //users.add(new User(100, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
->>>>>>> 81f790d89ecc711f059e524326efc5163fc14e4d
-
+        //user.setEditable(true);
     }
     
     public void selectAll(){

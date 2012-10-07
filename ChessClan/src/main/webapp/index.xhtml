@@ -32,14 +32,15 @@
 
                 </h:panelGroup>
                 <h:panelGroup layout="block" class="loginStuff">
-                    <h:form id="rgsForm">
-                        <h:panelGrid columns="1">
-                            <h:outputText value="login:"/>
-                            <h:inputText value="#{sessionBean.login}" />
-                            <h:outputText value="password:"/>
-                            <h:inputText value="#{sessionBean.password}"/>
-                            <h:commandButton value="login" action="#{sessionBean.login()}"/>
-                        </h:panelGrid>
+                    <h:form id="loginForm" prependId="false">
+                        <h:messages/>
+                        <label for="j_username"><h:outputText value="Username:" /><br />
+                        </label>
+                        <h:inputText id="j_username" required="true"/><br /><br />
+                        <label for="j_password"><h:outputText value="Password:" /><br />
+                        </label>
+                        <h:inputSecret id="j_password" required="true"/>
+                        <h:commandButton  type="submit" id="login" action="#{sessionBean.doLogin}" value="Login" />
                     </h:form>
                 </h:panelGroup>
             </h:panelGroup>

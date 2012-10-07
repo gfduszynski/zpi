@@ -93,7 +93,5 @@
         <url-pattern>*.faces</url-pattern>
         <url-pattern>*.jsf</url-pattern>
         <url-pattern>/faces/*</url-pattern>
-        <url-pattern>*.css</url-pattern>
-        <url-pattern>*.js</url-pattern>
     </servlet-mapping>
 </web-app>
