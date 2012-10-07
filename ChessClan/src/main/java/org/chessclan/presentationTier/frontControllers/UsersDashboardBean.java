@@ -17,6 +17,7 @@ import org.chessclan.businessTier.businessObjects.UserBO;
 import org.chessclan.businessTier.services.AuthenticationService;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
+import org.springframework.security.core.Authentication;
 
 /**
  *
@@ -81,7 +82,7 @@ public class UsersDashboardBean implements Serializable {
     }
     
     public void selectAll(){
-        boolean b  = userBO.isEmailRegistered("admin@chessclan.pl");
+        Authentication b  = userBO.getLoggedUserAuthentication();
         for(int i=0;i<users.size();i++){
             if(!checked.get(users.get(i).getUserId())) {
                 checked.put(users.get(i).getUserId(), true);

@@ -8,6 +8,8 @@ import java.io.Serializable;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +21,10 @@ public class UserBO implements Serializable{
     
     @Autowired
     private UserRepository userRepo;
+    
+    public Authentication getLoggedUserAuthentication(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
     
     public User saveUser(User u){
         return userRepo.save(u);
