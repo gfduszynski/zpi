@@ -5,35 +5,24 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Daniel
+ * @author Giorgio
  */
 @Entity
 @Table(name = "clubs")
-@XmlRootElement
 public class Club implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "club_id")
     private Integer clubId;
     @Basic(optional = false)
@@ -50,7 +39,7 @@ public class Club implements Serializable {
     @Column(name = "description")
     private String description;
     @OneToMany(mappedBy = "userClub")
-    private List<User> userList;
+    private Collection<User> usersCollection;
 
     public Club() {
     }
@@ -97,30 +86,29 @@ public class Club implements Serializable {
         this.description = description;
     }
 
-    @XmlTransient
-    public List<User> getUserList() {
-        return userList;
+    public Collection<User> getUsersCollection() {
+        return usersCollection;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUsersCollection(Collection<User> usersCollection) {
+        this.usersCollection = usersCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (clubId != null ? clubId.hashCode() : 0);
+        hash += ( clubId != null ? clubId.hashCode() : 0 );
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Club)) {
+        if (!( object instanceof Club )) {
             return false;
         }
         Club other = (Club) object;
-        if ((this.clubId == null && other.clubId != null) || (this.clubId != null && !this.clubId.equals(other.clubId))) {
+        if (( this.clubId == null && other.clubId != null ) || ( this.clubId != null && !this.clubId.equals(other.clubId) )) {
             return false;
         }
         return true;
@@ -128,7 +116,7 @@ public class Club implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Club[ clubId=" + clubId + " ]";
+        return "org.chessclan.dataTier.models.Clubs[ clubId=" + clubId + " ]";
     }
     
 }

@@ -4,44 +4,48 @@
  */
 package org.chessclan.dataTier.models;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import java.lang.reflect.Type;
-import com.google.gson.JsonSerializer;
-import com.google.gson.JsonSerializationContext;
 import java.io.Serializable;
-import java.text.DateFormat;
+import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Daniel
+ * @author Giorgio
  */
 @Entity
 @Table(name = "users")
-@XmlRootElement
 public class User implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "user_id")
     private Integer userId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "login")
+    private String login;
+    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "email")
+    private String email;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "enabled")
+    private boolean enabled;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "password")
+    private String password;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -52,12 +56,6 @@ public class User implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "last_name")
     private String lastName;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "email")
-    private String email;
     @Basic(optional = false)
     @NotNull
     @Column(name = "birth_date")
@@ -71,19 +69,12 @@ public class User implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "sex")
-    private Integer sex;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "password")
-    private String password;
+    private int sex;
+    @ManyToMany(mappedBy = "usersCollection")
+    private Collection<Role> rolesCollection;
     @JoinColumn(name = "user_club", referencedColumnName = "club_id")
     @ManyToOne
     private Club userClub;
-    //field nessesary for edit in view
-    private boolean editable;
-    //field nessesary for edit in view
-    private int clubId;
 
     public User() {
     }
@@ -92,33 +83,17 @@ public class User implements Serializable {
         this.userId = userId;
     }
 
-    public User(Integer userId, String firstName, String lastName, String email, Date birthDate, Date creationDate, Integer sex, String password, Club userClub) {
+    public User(Integer userId, String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, Date creationDate, int sex) {
         this.userId = userId;
+        this.login = login;
+        this.email = email;
+        this.enabled = enabled;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.birthDate = birthDate;
         this.creationDate = creationDate;
         this.sex = sex;
-        this.password = password;
-        this.userClub = userClub;
-        this.editable = false;
-    }
-
-    public int getClubId() {
-        return clubId;
-    }
-
-    public void setClubId(int clubId) {
-        this.clubId = clubId;
-    }
- 
-    public boolean isEditable() {
-        return editable;
-    }
-
-    public void setEditable(boolean editable) {
-        this.editable = editable;
     }
 
     public Integer getUserId() {
@@ -127,6 +102,38 @@ public class User implements Serializable {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -145,14 +152,6 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Date getBirthDate() {
         return birthDate;
     }
@@ -169,12 +168,20 @@ public class User implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public String getPassword() {
-        return password;
+    public int getSex() {
+        return sex;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public Collection<Role> getRolesCollection() {
+        return rolesCollection;
+    }
+
+    public void setRolesCollection(Collection<Role> rolesCollection) {
+        this.rolesCollection = rolesCollection;
     }
 
     public Club getUserClub() {
@@ -185,29 +192,21 @@ public class User implements Serializable {
         this.userClub = userClub;
     }
 
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userId != null ? userId.hashCode() : 0);
+        hash += ( userId != null ? userId.hashCode() : 0 );
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
+        if (!( object instanceof User )) {
             return false;
         }
         User other = (User) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+        if (( this.userId == null && other.userId != null ) || ( this.userId != null && !this.userId.equals(other.userId) )) {
             return false;
         }
         return true;
@@ -215,25 +214,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.User[ userId=" + userId + " ]";
+        return "org.chessclan.dataTier.models.Users[ userId=" + userId + " ]";
     }
-
-    public class UserSerializer implements JsonSerializer<User> {
-
-        @Override
-        public JsonElement serialize(User src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject obj = new JsonObject();
-            obj.addProperty("id", src.userId);
-            obj.addProperty("firstName", src.firstName);
-            obj.addProperty("lastName", src.lastName);
-            obj.addProperty("email", src.email);
-            DateFormat format = DateFormat.getDateInstance(DateFormat.DATE_FIELD);
-            obj.addProperty("birthDate", format.format(src.birthDate));
-            obj.addProperty("creationDate", format.format(src.creationDate));
-            obj.addProperty("sex", src.sex);
-            obj.addProperty("clubId", src.userClub.getClubId());
-            
-            return obj;
-        }
-    }
+    
 }
