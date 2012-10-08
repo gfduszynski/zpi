@@ -3,17 +3,74 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
-
       xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>ChessClan</title>
+        <h:outputStylesheet library="css" name="normalize.css"/>
+        <h:outputStylesheet library="css" name="mainStyles.css"/>
+        <h:outputStylesheet library="css" name="jqueryui-admin-1.8.23.custom.css"/>
+        <h:outputScript library="js" name="jquery-1.8.0.min.js"/>
+        <h:outputScript library="js" name="jquery-ui-1.8.23.custom.min.js"/>
+        <!--        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine"/>-->
+
+    </h:head>
 
     <h:body>
 
-        <h1>JSF 2.0 + Spring Example - test</h1>
-        <ul> Lista userów
-            <li>user:user</li>
-            <li>admin@chessclan.pl:passwd</li>
-        </ul>
-        <h:outputLink value="/ChessClan/administration/dashboard.xhtml">Obszar administracyjny</h:outputLink>
+        <h:panelGroup layout="block" class="content">
+            <h:panelGroup layout="block" class="header">
+                <h:panelGroup layout="block" class="logo">
+
+                </h:panelGroup>
+                <h:form id="loginForm" prependId="false" class="loginStuff">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Username:" />
+                        <h:outputText value="Password:" />
+                        <h:outputText value="" />
+                        <h:inputText id="j_username" value="#{loginBean.username}" required="true"/>
+                        <h:inputSecret id="j_password" value="#{loginBean.password}" required="true"/>
+                        <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" />
+                        <h:panelGroup layout="block">
+                            <h:selectBooleanCheckbox /><h:outputText value="Zapamiętaj hasło"/>
+                        </h:panelGroup>
+                        <h:commandLink value="Zapomniałeś hasło?"/>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="elements">
+                <h:panelGroup layout="block" class="firstColumn">
+                    <h:panelGroup layout="block" class="one">
+
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" class="two">
+
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="secondColumn">
+                    <h:panelGroup layout="block" class="three">
+                        <ui:include src="pages/registration.xhtml"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="thirdColumn">
+                    <h:panelGroup layout="block" class="four">
+
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" class="five">
+
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="fourthColumn">
+                    <h:panelGroup layout="block" class="six">
+
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" class="seven">
+
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+        <h:messages/>
     </h:body>
 
 </html>

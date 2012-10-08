@@ -1,13 +1,15 @@
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.IOException;
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.persistence.Transient;
-import org.chessclan.businessTier.services.AuthenticationService;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 /**
  *
@@ -15,31 +17,24 @@ import org.chessclan.businessTier.services.AuthenticationService;
  */
 @ManagedBean
 @SessionScoped
-public class SessionBean implements Serializable{
-    
+public class SessionBean implements Serializable {
 
     private String login;
     private String password;
-    @Transient
-    @ManagedProperty(value = "#{authenticationService}")
-    private AuthenticationService authenticationService; // injected Spring defined service
 
-    public String login() {
+    public String doLogin() throws IOException, ServletException {
+       /* ExternalContext context =
+                FacesContext.getCurrentInstance().getExternalContext();
 
-        boolean success = authenticationService.login(login, password);
+        RequestDispatcher dispatcher =
+                ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_security_check");
 
-        if (success) {
-            boolean isAdmin = true;
-            if (isAdmin) {
-                return "/administration/dashboard.xhtml";
-            } else {
-                return "/default.xhtml"; // return to application but being logged now 
-            }
+        dispatcher.forward((ServletRequest) context.getRequest(),
+                (ServletResponse) context.getResponse());
 
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Login or password incorrect."));
-            return "/authorization/login.xhtml";
-        }
+        FacesContext.getCurrentInstance().responseComplete();
+        // It's OK to return null here because Faces is just going to exit.*/
+        return null;
     }
 
     public String getLogin() {
@@ -56,13 +51,5 @@ public class SessionBean implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public AuthenticationService getAuthenticationService() {
-        return this.authenticationService;
-    }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
     }
 }

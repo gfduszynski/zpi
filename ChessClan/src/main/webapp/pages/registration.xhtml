@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+        <ui:composition>
+            <script type="text/javascript">
+                regType = 0;
+                $(function() {
+                    $( "#birthDateReg" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                });
+                function validate(event){
+                    if(3 > $.trim($('#firstNameReg').val()).length){
+                        event.preventDefault();
+                        $('#fnEmpty').removeClass('hidden');
+                    }
+                }
+            </script>
+            <h:form prependId="false" >
+                <h:outputText value="Jako kto chcesz się zalogować?"/><br/>
+                <h:commandButton value="Gracz" onclick="regType = 0;">
+                    <f:ajax event="click" render="@form" listener="#{rgsBean.changeRegType}"/>
+                </h:commandButton>
+                <h:commandButton value="Organizator" onclick="regType = 1;">
+                    <f:ajax event="click" render="@form" listener="#{rgsBean.changeRegType}"/>
+                </h:commandButton>
+                <h2><h:outputText value="Rejestracja"/></h2>
+
+                <h:panelGroup rendered="#{rgsBean.regOption == 0}">
+
+                    <h:outputText value="Imię"/><br/>
+                    <h:outputText value="Pole wymagane." styleClass="error hidden" id="fnEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.firstName}" id="firstNameReg"/><br/>
+                    <h:outputText value="Nazwisko"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="lnEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.lastName}"/><br/>
+                    <h:outputText value="Data urodzenia"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="bdEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.birthDate}" id="birthDateReg"/><br/>
+                    <h:outputText value="Płeć"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="sEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.sex}"/><br/>
+                    <h:outputText value="Email"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="eEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.email}"/><br/>
+                    <h:outputText value="Hasło"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="pEmpty"/><br/>
+                    <h:inputSecret value="#{rgsBean.password}"/><br/>
+                    <h:selectBooleanCheckbox /><h:outputText value="Akceptuję "/><h:commandLink value="regulamin."/><br/>
+                    <h:commandButton value="Rejestruj" onclick="validate(event);" action="#{rgsBean.register()}"/>
+
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{rgsBean.regOption == 1}">
+
+                    <h:outputText value="Imię"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="cnEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.clubName}" id="clubNameReg"/><br/>
+                    <h:outputText value="Email"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="ceEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.email}"/><br/>
+                    <h:outputText value="Hasło"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="cpEmpty"/><br/>
+                    <h:inputSecret value="#{rgsBean.password}"/><br/>
+                    <h:outputText value="Nazwisko"/><br/>
+                    <h:outputText value="Pole wymagane" styleClass="error hidden" id="cdEmpty"/><br/>
+                    <h:inputText value="#{rgsBean.clubDescription}"/><br/>
+                    <h:selectBooleanCheckbox /><h:outputText value="Akceptuję "/><h:commandLink value="regulamin."/><br/>
+                    <h:commandButton value="Rejestruj" onclick="validate(event);" action="#{rgsBean.register()}"/>
+
+                </h:panelGroup>
+            </h:form>
+        </ui:composition>
+
+    </h:body>
+</html>

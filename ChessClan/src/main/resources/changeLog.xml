@@ -77,4 +77,33 @@
         <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role_id" constraintName="user_roles_role_id_to_role_id_ref" referencedTableName="roles" referencedColumnNames="role_id"/>
         
     </changeSet>
+    
+        <changeSet id="2" author="tjp">        
+        <createTable tableName="posts">
+            <column name="post_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="varchar(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="published" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="date">
+                <constraints nullable="false"/>
+            </column>            
+            <column name="date_published" type="date"/>
+            <column name="date_expires" type="date"/>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <addForeignKeyConstraint baseTableName="posts" baseColumnNames="user_id" constraintName="posts_user_ref" referencedTableName="users" referencedColumnNames="user_id"/>
+                
+    </changeSet>
+
 </databaseChangeLog>

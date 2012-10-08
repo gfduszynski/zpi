@@ -8,14 +8,9 @@ import java.io.Serializable;
 import java.util.*;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
-import org.apache.log4j.Logger;
 import org.chessclan.businessTier.businessObjects.UserBO;
-import org.chessclan.businessTier.services.AuthenticationService;
-import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 import org.springframework.security.core.Authentication;
 
@@ -27,7 +22,6 @@ import org.springframework.security.core.Authentication;
 @SessionScoped
 public class UsersDashboardBean implements Serializable {
 
-    private Logger logger;
     private List<User> users;
     private Map<Integer, Boolean> checked;
     //form vars
@@ -46,7 +40,6 @@ public class UsersDashboardBean implements Serializable {
     private UserBO userBO;
 
     public UsersDashboardBean() {
-        this.logger = Logger.getLogger(UsersDashboardBean.class);
         users = new ArrayList<User>();
         checked = new HashMap<Integer, Boolean>();
         users.add(new User(1, "login", "d@d.pl", true, "pass","n","ln", new Date(), new Date(),1));
@@ -58,33 +51,26 @@ public class UsersDashboardBean implements Serializable {
     }
 
     public void removeUser(User user) {
-        logger.info("Removing " + user.toString());
-
         users.remove(user);
     }
 
     public void editUser(User user) {
-        logger.info("Editing...");
-
         //user.setEditable(true);
     }
 
     public void updateUser(User user) {
-        logger.info("Updating...");
-
         //user.setEditable(false);
     }
 
     public void addNewUser(User user) {
-        logger.info("Adding...");
         //users.add(new User(100, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
-
+        //user.setEditable(true);
     }
     
     public void selectAll(){
         Authentication b  = userBO.getLoggedUserAuthentication();
         for(int i=0;i<users.size();i++){
-            if(!checked.get(users.get(i).getUserId())) {
+            if(!checked.get(users.get(i).getUserId()) || !checked.containsKey(users.get(i).getUserId())) {
                 checked.put(users.get(i).getUserId(), true);
             }
         }
