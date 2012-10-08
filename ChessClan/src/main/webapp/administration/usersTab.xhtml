@@ -28,7 +28,7 @@
                     <!-- column header -->
                     <f:facet name="header">
                         <h:selectBooleanCheckbox> 
-                            <f:ajax listener="#{udBean.selectAll}"/>
+                            <f:ajax listener="#{udBean.selectAll}" render="@form" execute="@form"/>
                         </h:selectBooleanCheckbox>
                     </f:facet>
                     <!-- row record -->
