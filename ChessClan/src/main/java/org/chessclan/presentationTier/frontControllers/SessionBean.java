@@ -23,7 +23,7 @@ public class SessionBean implements Serializable {
     private String password;
 
     public String doLogin() throws IOException, ServletException {
-        ExternalContext context =
+       /* ExternalContext context =
                 FacesContext.getCurrentInstance().getExternalContext();
 
         RequestDispatcher dispatcher =
@@ -33,7 +33,7 @@ public class SessionBean implements Serializable {
                 (ServletResponse) context.getResponse());
 
         FacesContext.getCurrentInstance().responseComplete();
-        // It's OK to return null here because Faces is just going to exit.
+        // It's OK to return null here because Faces is just going to exit.*/
         return null;
     }
 
