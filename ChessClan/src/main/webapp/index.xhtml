@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>ChessClan</title>
@@ -11,17 +12,8 @@
         <h:outputStylesheet library="css" name="jqueryui-admin-1.8.23.custom.css"/>
         <h:outputScript library="js" name="jquery-1.8.0.min.js"/>
         <h:outputScript library="js" name="jquery-ui-1.8.23.custom.min.js"/>
-        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine"/>
-        <script type="text/javascript">
-            $(function() {
-                $( "#birthDateReg" ).datepicker({ dateFormat: 'dd-mm-yy' });
-            });
-            function validate(event){
-                if(3 > $.trim($('#firstNameReg').val()).length){
-                    event.preventDefault();
-                }
-            }
-        </script>
+        <!--        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine"/>-->
+
     </h:head>
 
     <h:body>
@@ -31,18 +23,20 @@
                 <h:panelGroup layout="block" class="logo">
 
                 </h:panelGroup>
-                <h:panelGroup layout="block" class="loginStuff">
-                    <h:form id="loginForm" prependId="false">
-                        <h:messages/>
-                        <label for="j_username"><h:outputText value="Username:" /><br />
-                        </label>
-                        <h:inputText id="j_username" required="true"/><br /><br />
-                        <label for="j_password"><h:outputText value="Password:" /><br />
-                        </label>
+                <h:form id="loginForm" prependId="false" class="loginStuff">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Username:" />
+                        <h:outputText value="Password:" />
+                        <h:outputText value="" />
+                        <h:inputText id="j_username" required="true"/>
                         <h:inputSecret id="j_password" required="true"/>
                         <h:commandButton  type="submit" id="login" action="#{sessionBean.doLogin}" value="Login" />
-                    </h:form>
-                </h:panelGroup>
+                        <h:panelGroup layout="block">
+                            <h:selectBooleanCheckbox /><h:outputText value="Zapamiętaj hasło"/>
+                        </h:panelGroup>
+                        <h:commandLink value="Zapomniałeś hasło?"/>
+                    </h:panelGrid>
+                </h:form>
             </h:panelGroup>
             <h:panelGroup layout="block" class="elements">
                 <h:panelGroup layout="block" class="firstColumn">
@@ -55,23 +49,7 @@
                 </h:panelGroup>
                 <h:panelGroup layout="block" class="secondColumn">
                     <h:panelGroup layout="block" class="three">
-                        <h2><h:outputText value="Rejestracja"/></h2>
-                        <h:form prependId="false">
-                            <h:outputText value="Imię"/><br/>
-                            <h:inputText value="#{rgsBean.firstName}" id="firstNameReg"/><br/>
-                            <h:outputText value="Nazwisko"/><br/>
-                            <h:inputText value="#{rgsBean.lastName}"/><br/>
-                            <h:outputText value="Data urodzenia"/><br/>
-                            <h:inputText value="#{rgsBean.birthDate}" id="birthDateReg"/><br/>
-                            <h:outputText value="Płeć"/><br/>
-                            <h:inputText value="#{rgsBean.firstName}"/><br/>
-                            <h:outputText value="Email"/><br/>
-                            <h:inputText value="#{rgsBean.firstName}"/><br/>
-                            <h:outputText value="Hasło"/><br/>
-                            <h:inputSecret value="#{rgsBean.firstName}"/><br/>
-                            <h:selectBooleanCheckbox /><h:outputText value="Akceptuję "/><h:commandLink value="regulamin."/><br/>
-                            <h:commandButton value="Rejestruj" onclick="validate(event);" action="#{rgsBean.register()}"/>
-                        </h:form>
+                        <ui:include src="registration.xhtml"/>
                     </h:panelGroup>
                 </h:panelGroup>
                 <h:panelGroup layout="block" class="thirdColumn">
@@ -92,6 +70,7 @@
                 </h:panelGroup>
             </h:panelGroup>
         </h:panelGroup>
+        <h:messages/>
     </h:body>
 
 </html>

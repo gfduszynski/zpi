@@ -13,7 +13,7 @@
 	When user is NOT AUTHENTICATED, he is moved into form-login instead of access-denied-page.
 	-->
 	<http auto-config="true" once-per-request="false" access-denied-page="/errorPages/403-AccessDenied.xhtml">
-		<form-login login-page="index.xhtml" />
+		<form-login login-page="/index.xhtml" />
 		<intercept-url pattern="/administration/**" access="ROLE_ADMIN" />    
 	</http>
 

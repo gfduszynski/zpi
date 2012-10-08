@@ -4,8 +4,6 @@
  */
 package org.chessclan.presentationTier.servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,10 +23,8 @@ public class UserServletAsync extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException 
     {
-        Integer userId = (Integer) request.getAttribute("userid");
-
-        Gson gson = new GsonBuilder().create();
-        String s = gson.toJson(null);
-        response.getWriter().write(s);
+        String email = (String) request.getAttribute("email");
+        
+        response.getWriter().write("true");
     }
 }
