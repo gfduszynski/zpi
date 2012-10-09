@@ -2,7 +2,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <changeSet id="1" author="tjp">
-        <!--addForeignKeyConstraint baseTableName="roles" baseColumnNames="login" constraintName="user_role_ref" referencedTableName="users" referencedColumnNames="login"/-->
         <insert tableName="users">
             <column name="user_id" valueNumeric="1"/>
             <column name="enabled" valueNumeric="true"/>
@@ -25,6 +24,19 @@
         
         <insert tableName="user_roles">
             <column name="role_id" valueNumeric="1"/>
+            <column name="user_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="2" author="tjp">
+        <insert tableName="posts">
+            <column name="post_id" valueNumeric="1"/>
+            <column name="title" value=" Post testowy"/>
+            <column name="content" value="Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. "/>
+            <column name="published" valueNumeric="true"/>
+            <column name="date_created" valueDate="now()"/>
+            <column name="date_published" valueDate="now()"/>
+            <column name="date_expires" valueDate="now()"/>
             <column name="user_id" valueNumeric="1"/>
         </insert>
     </changeSet>
