@@ -6,6 +6,13 @@
     <class>org.chessclan.dataTier.models.Club</class>
     <class>org.chessclan.dataTier.models.Role</class>
     <class>org.chessclan.dataTier.models.Post</class>
+    <class>org.chessclan.businessTier.businessObjects.Game</class>
+    <class>org.chessclan.businessTier.businessObjects.Databasechangeloglock</class>
+    <class>org.chessclan.businessTier.businessObjects.Results</class>
+    <class>org.chessclan.businessTier.businessObjects.Category</class>
+    <class>org.chessclan.businessTier.businessObjects.Tournament</class>
+    <class>org.chessclan.businessTier.businessObjects.Databasechangelog</class>
+    <class>org.chessclan.businessTier.businessObjects.Round</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/chessclan?zeroDateTimeBehavior=convertToNull"/>
