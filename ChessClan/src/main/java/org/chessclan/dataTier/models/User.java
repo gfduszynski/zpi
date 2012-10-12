@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -19,6 +20,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Post> postCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -215,6 +218,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.Users[ userId=" + userId + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Post> getPostCollection() {
+        return postCollection;
+    }
+
+    public void setPostCollection(Collection<Post> postCollection) {
+        this.postCollection = postCollection;
     }
     
 }

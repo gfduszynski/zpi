@@ -84,12 +84,16 @@ body{
 }
 
 .four{
+    float:left;
+    width:290px;
     height:290px;
     background-color:#661F0A;
-    margin: 0px 5px 10px 5px;
+    margin: 10px 5px 0px 5px;
 }
 
 .five{
+    float:left;
+    width:290px;
     height:290px;
     background-color:#D19956;
     margin: 10px 5px 0px 5px;

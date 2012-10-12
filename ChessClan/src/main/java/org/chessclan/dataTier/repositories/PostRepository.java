@@ -4,13 +4,13 @@
  */
 package org.chessclan.dataTier.repositories;
 
-import org.chessclan.dataTier.models.User;
+import org.chessclan.dataTier.models.Post;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  *
- * @author Daniel
+ * @author Xcays
  */
-public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
-    User findByEmail(String email);
+public interface PostRepository extends PagingAndSortingRepository<Post, Integer> {
+    //Post findByAuthorId(Integer id);
 }

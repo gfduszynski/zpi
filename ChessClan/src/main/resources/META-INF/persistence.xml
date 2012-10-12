@@ -5,6 +5,7 @@
     <class>org.chessclan.dataTier.models.User</class>
     <class>org.chessclan.dataTier.models.Club</class>
     <class>org.chessclan.dataTier.models.Role</class>
+    <class>org.chessclan.dataTier.models.Post</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/chessclan?zeroDateTimeBehavior=convertToNull"/>
