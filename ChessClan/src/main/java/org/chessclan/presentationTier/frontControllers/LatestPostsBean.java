@@ -4,11 +4,12 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.PostBO;
 import org.chessclan.dataTier.models.Post;
@@ -30,7 +31,11 @@ public class LatestPostsBean {
 
     @PostConstruct
     public void initialize() {
-        postBO.findAllPosts();
+        this.latestPosts = new ArrayList<Post>();
+        Iterator<Post> posts = postBO.findAllPosts().iterator();
+        while(posts.hasNext()){
+            latestPosts.add(posts.next());
+        }
     }
 
     public List<Post> getLatestPosts() {

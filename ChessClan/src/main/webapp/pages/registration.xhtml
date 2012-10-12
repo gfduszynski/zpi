@@ -30,19 +30,19 @@
                     </script>
                     <h:outputText value="Imię"/><br/>
                     <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidFN}" escape="false"/>
-                    <h:inputText value="#{rgsBean.firstName}">
-                        <f:ajax event="change" execute="@form" render="@form" listener="#{rgsBean.validateFirstName}"/>
+                    <h:inputText value="#{rgsBean.firstName}" styleClass="regInput">
+                        <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateFirstName}"/>
                     </h:inputText><br/>
                     <h:outputText value="Nazwisko"/><br/>
                     <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidLN}" escape="false"/>
                     <h:inputText value="#{rgsBean.lastName}">
-                        <f:ajax event="change" execute="@form" render="@form" listener="#{rgsBean.validateLastName}"/>
+                        <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateLastName}"/>
                     </h:inputText><br/>
                     <h:outputText value="Data urodzenia"/><br/>
                     <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidBD}" escape="false"/>
                     <h:inputText value="#{rgsBean.birthDate}" id="bdReg">
                         <f:convertDateTime pattern="d-M-yyyy" />
-                        <f:ajax event="change" execute="@form" render="@form" listener="#{rgsBean.validateBD}"/>  
+                        <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateBD}"/>  
                     </h:inputText><br/>
                     <h:outputText value="Płeć"/><br/>
                     <h:selectOneMenu value="#{rgsBean.sex}">
@@ -54,12 +54,12 @@
                     <h:outputText value="Login niepoprawny.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidEmail}" escape="false"/>
                     <h:outputText value="Login zajęty.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.occupiedEmail}" escape="false"/>
                     <h:inputText value="#{rgsBean.email}">
-                        <f:ajax event="change" execute="@form" render="@form" listener="#{rgsBean.validateEmail}"/>
+                        <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateEmail}"/>
                     </h:inputText><br/>
                     <h:outputText value="Hasło"/><br/>
                     <h:outputText value="Pole wymagane, musi mieć więcej niż 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidP}" escape="false"/>
                     <h:inputSecret value="#{rgsBean.password}" redisplay="true" >
-                        <f:ajax event="change" execute="@this" render="@form" listener="#{rgsBean.validatePassword}"/>
+                        <f:ajax event="blur" execute="@this" render="@form" listener="#{rgsBean.validatePassword}"/>
                     </h:inputSecret><br/>
                     <h:outputText value="Musisz zaakceptować regulamin.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.statuteError}" escape="false"/>
                     <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}">

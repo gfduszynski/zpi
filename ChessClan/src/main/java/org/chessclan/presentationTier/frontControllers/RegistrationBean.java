@@ -32,7 +32,7 @@ public class RegistrationBean {
     private String password;
     private String clubName;
     private String clubDescription;
-    private int regOption;
+    private long regOption;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private Pattern pattern;
     private Matcher matcher;
@@ -257,11 +257,11 @@ public class RegistrationBean {
         this.password = password;
     }
 
-    public int getRegOption() {
+    public long getRegOption() {
         return regOption;
     }
 
-    public void setRegOption(int regOption) {
+    public void setRegOption(long regOption) {
         this.regOption = regOption;
     }
 
