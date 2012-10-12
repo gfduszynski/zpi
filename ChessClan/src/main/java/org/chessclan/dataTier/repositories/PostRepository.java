@@ -12,5 +12,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author Xcays
  */
 public interface PostRepository extends PagingAndSortingRepository<Post, Integer> {
-    Post findByAuthorId(Integer id);
+    //Post findByAuthorId(Integer id);
 }
