@@ -5,9 +5,24 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.*;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,7 +39,6 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "user_id")
     private Integer userId;
     @Basic(optional = false)
@@ -71,13 +85,11 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "sex")
     private int sex;
-    @ManyToMany(mappedBy = "userCollection",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
-    private Collection<Role> roleCollection;
+    @ManyToMany(mappedBy = "userSet",fetch= FetchType.EAGER,cascade= CascadeType.PERSIST)
+    private Set<Role> roleSet;
     @JoinColumn(name = "user_club", referencedColumnName = "club_id")
     @ManyToOne
     private Club userClub;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Post> postCollection;
 
     public User() {
     }
@@ -179,12 +191,12 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
-    public Collection<Role> getRoleCollection() {
-        return roleCollection;
+    public Set<Role> getRoleSet() {
+        return roleSet;
     }
 
-    public void setRoleCollection(Collection<Role> roleCollection) {
-        this.roleCollection = roleCollection;
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
     }
 
     public Club getUserClub() {
@@ -195,29 +207,21 @@ public class User implements Serializable {
         this.userClub = userClub;
     }
 
-    public Collection<Post> getPostCollection() {
-        return postCollection;
-    }
-
-    public void setPostCollection(Collection<Post> postCollection) {
-        this.postCollection = postCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += ( userId != null ? userId.hashCode() : 0 );
+        hash += (userId != null ? userId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!( object instanceof User )) {
+        if (!(object instanceof User)) {
             return false;
         }
         User other = (User) object;
-        if (( this.userId == null && other.userId != null ) || ( this.userId != null && !this.userId.equals(other.userId) )) {
+        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
             return false;
         }
         return true;

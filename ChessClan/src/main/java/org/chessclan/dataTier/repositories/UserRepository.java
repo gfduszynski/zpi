@@ -5,12 +5,12 @@
 package org.chessclan.dataTier.repositories;
 
 import org.chessclan.dataTier.models.User;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Daniel
  */
-public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 }
