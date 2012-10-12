@@ -111,9 +111,19 @@ body{
 
 .error{
     color:red;
+    font-size: 70%;
 } 
+
+.errorInput{
+    border-color:red;
+}
+
+.loginAvail{
+    color:green;
+    font-size: 70%;
+}
 
 .hidden{
     visibility: collapse;
-    font-size: 50%;
+    font-size: 0%;
 }
