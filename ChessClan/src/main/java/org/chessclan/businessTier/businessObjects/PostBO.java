@@ -21,11 +21,7 @@ public class PostBO implements Serializable{
     
     @Autowired
     private PostRepository postRepo;
-    
-    public Post findPostByAuthorId(Integer id)
-    {
-        return postRepo.findByAuthorId(id);
-    }
+
     
     public void deletePost(int id)
     {
