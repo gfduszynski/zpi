@@ -4,13 +4,13 @@
  */
 package org.chessclan.dataTier.repositories;
 
-import org.chessclan.dataTier.models.User;
+import org.chessclan.dataTier.models.Role;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  *
  * @author Daniel
  */
-public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
-    User findByEmail(String email);
+public interface RoleRepository extends PagingAndSortingRepository<Role, Integer> {
+    Role findByRoleName(String roleName);
 }
