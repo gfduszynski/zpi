@@ -130,11 +130,13 @@ public class RegistrationBean {
     }
 
     public boolean validateBD() {
-        System.out.println("Validating bd: " + birthDate.toString());
+
         if (this.birthDate == null) {
+            System.out.println("birth date reg is null.");
             this.invalidBD = true;
             return false;
         } else {
+            System.out.println("Validating bd: " + birthDate.toString());
             this.invalidBD = false;
             return true;
         }

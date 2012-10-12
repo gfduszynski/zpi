@@ -24,7 +24,8 @@
                             $( "#bdReg" ).datepicker({
                                 changeMonth: true,
                                 changeYear: true,
-                                dateFormat: "dd-mm-yy"
+                                dateFormat: "dd-mm-yy",
+                                defaultDate: "-15y"
                             });
                         });
                     </script>
@@ -41,8 +42,8 @@
                     <h:outputText value="Data urodzenia"/><br/>
                     <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidBD}" escape="false"/>
                     <h:inputText value="#{rgsBean.birthDate}" id="bdReg">
-                        <f:convertDateTime pattern="d-M-yyyy" />
-                        <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateBD}"/>  
+                        <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                        <f:ajax event="change" execute="@form" render="@form" listener="#{rgsBean.validateBD}"/>  
                     </h:inputText><br/>
                     <h:outputText value="Płeć"/><br/>
                     <h:selectOneMenu value="#{rgsBean.sex}">
@@ -64,7 +65,7 @@
                     <h:outputText value="Musisz zaakceptować regulamin.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.statuteError}" escape="false"/>
                     <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}">
                         <!--<f:ajax event="change" execute="@this" render="@form" listener="#{rgsBean.validatePassword}"/>-->
-                    </h:selectBooleanCheckbox><h:outputText value="Akceptuję "/><h:commandLink value="regulamin."/><br/>
+                    </h:selectBooleanCheckbox><h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin"/><br/>
                     <h:commandButton value="Rejestruj">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.register}"/>
                     </h:commandButton>
@@ -90,7 +91,7 @@
                     <h:outputText value="Hasło"/><br/>
                     <h:outputText value="Pole wymagane, musi mieć więcej niż 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidP}" escape="false"/>
                     <h:inputSecret value="#{rgsBean.password}" redisplay="true" /><br/>
-                    <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}"/><h:outputText value="Akceptuję "/><h:commandLink value="regulamin." /><br/>
+                    <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}"/><h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin"/><br/>
                     <h:commandButton value="Rejestruj">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>
                     </h:commandButton>
