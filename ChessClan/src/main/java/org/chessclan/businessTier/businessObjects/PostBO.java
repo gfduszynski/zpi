@@ -49,11 +49,6 @@ public class PostBO implements Serializable{
         return postRepo.findAll();
     }
     
-   /* public Iterable<Post> findLatestPosts(int num)
-    {
-        return postRepo.
-    }*/
-    
     public Iterable<Post> findAllPostsSelected(Iterable<Integer> iter)
     {
         return postRepo.findAll(iter);
