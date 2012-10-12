@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
+import org.chessclan.dataTier.repositories.RoleRepository;
 import org.chessclan.dataTier.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,8 @@ public class UserBO implements Serializable{
     
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private RoleRepository roleRepo;
     
     public Authentication getLoggedUserAuthentication(){
         return SecurityContextHolder.getContext().getAuthentication();
@@ -38,13 +41,14 @@ public class UserBO implements Serializable{
         return userRepo.save(u);
     }
     
-    public User assignRole(User u, Role r){
-        if(u.getRolesCollection() == null){
-            u.setRolesCollection(new ArrayList<Role>());
-        }
-        u.getRolesCollection().add(r);
+    public User assignRole(int userId, String roleName){
+        User u = userRepo.findOne(userId);
+        Role r = roleRepo.findByRoleName(roleName);
+        u.getRoleCollection().add(r);
         return userRepo.save(u);
     }
+    
+    
     
     public User saveUser(User u){
         return userRepo.save(u);

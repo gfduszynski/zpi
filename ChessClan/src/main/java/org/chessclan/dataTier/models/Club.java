@@ -17,6 +17,8 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "clubs")
+@NamedQueries({
+    @NamedQuery(name = "Club.findAll", query = "SELECT c FROM Club c")})
 public class Club implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,7 +41,7 @@ public class Club implements Serializable {
     @Column(name = "description")
     private String description;
     @OneToMany(mappedBy = "userClub")
-    private Collection<User> usersCollection;
+    private Collection<User> userCollection;
 
     public Club() {
     }
@@ -86,12 +88,12 @@ public class Club implements Serializable {
         this.description = description;
     }
 
-    public Collection<User> getUsersCollection() {
-        return usersCollection;
+    public Collection<User> getUserCollection() {
+        return userCollection;
     }
 
-    public void setUsersCollection(Collection<User> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     @Override
@@ -116,7 +118,7 @@ public class Club implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Clubs[ clubId=" + clubId + " ]";
+        return "org.chessclan.dataTier.models.Club[ clubId=" + clubId + " ]";
     }
     
 }

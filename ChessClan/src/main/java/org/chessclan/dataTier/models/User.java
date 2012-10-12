@@ -9,9 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -19,9 +17,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "users")
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
 public class User implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Post> postCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +32,7 @@ public class User implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "login")
     private String login;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -73,11 +71,13 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "sex")
     private int sex;
-    @ManyToMany(mappedBy = "usersCollection")
-    private Collection<Role> rolesCollection;
+    @ManyToMany(mappedBy = "userCollection",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    private Collection<Role> roleCollection;
     @JoinColumn(name = "user_club", referencedColumnName = "club_id")
     @ManyToOne
     private Club userClub;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Post> postCollection;
 
     public User() {
     }
@@ -179,12 +179,12 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
-    public Collection<Role> getRolesCollection() {
-        return rolesCollection;
+    public Collection<Role> getRoleCollection() {
+        return roleCollection;
     }
 
-    public void setRolesCollection(Collection<Role> rolesCollection) {
-        this.rolesCollection = rolesCollection;
+    public void setRoleCollection(Collection<Role> roleCollection) {
+        this.roleCollection = roleCollection;
     }
 
     public Club getUserClub() {
@@ -193,6 +193,14 @@ public class User implements Serializable {
 
     public void setUserClub(Club userClub) {
         this.userClub = userClub;
+    }
+
+    public Collection<Post> getPostCollection() {
+        return postCollection;
+    }
+
+    public void setPostCollection(Collection<Post> postCollection) {
+        this.postCollection = postCollection;
     }
 
     @Override
@@ -217,16 +225,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Users[ userId=" + userId + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Post> getPostCollection() {
-        return postCollection;
-    }
-
-    public void setPostCollection(Collection<Post> postCollection) {
-        this.postCollection = postCollection;
+        return "org.chessclan.dataTier.models.User[ userId=" + userId + " ]";
     }
     
 }
