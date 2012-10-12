@@ -6,24 +6,43 @@ package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
+import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
- * @author Giorgio
+ * @author Xcays
  */
 @Entity
 @Table(name = "posts")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p")})
+    @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p"),
+    @NamedQuery(name = "Post.findByPostId", query = "SELECT p FROM Post p WHERE p.postId = :postId"),
+    @NamedQuery(name = "Post.findByTitle", query = "SELECT p FROM Post p WHERE p.title = :title"),
+    @NamedQuery(name = "Post.findByContent", query = "SELECT p FROM Post p WHERE p.content = :content"),
+    @NamedQuery(name = "Post.findByPublished", query = "SELECT p FROM Post p WHERE p.published = :published"),
+    @NamedQuery(name = "Post.findByDateCreated", query = "SELECT p FROM Post p WHERE p.dateCreated = :dateCreated"),
+    @NamedQuery(name = "Post.findByDatePublished", query = "SELECT p FROM Post p WHERE p.datePublished = :datePublished"),
+    @NamedQuery(name = "Post.findByDateExpires", query = "SELECT p FROM Post p WHERE p.dateExpires = :dateExpires")})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "post_id")
     private Integer postId;
     @Basic(optional = false)
@@ -137,18 +156,18 @@ public class Post implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += ( postId != null ? postId.hashCode() : 0 );
+        hash += (postId != null ? postId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!( object instanceof Post )) {
+        if (!(object instanceof Post)) {
             return false;
         }
         Post other = (Post) object;
-        if (( this.postId == null && other.postId != null ) || ( this.postId != null && !this.postId.equals(other.postId) )) {
+        if ((this.postId == null && other.postId != null) || (this.postId != null && !this.postId.equals(other.postId))) {
             return false;
         }
         return true;
@@ -156,7 +175,7 @@ public class Post implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Post[ postId=" + postId + " ]";
+        return "org.chessclan.businessTier.businessObjects.Post[ postId=" + postId + " ]";
     }
     
 }
