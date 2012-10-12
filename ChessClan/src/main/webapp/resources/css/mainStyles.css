@@ -121,3 +121,15 @@ body{
     visibility: collapse;
     font-size: 50%;
 }
+
+.regInput{
+    width: 270px;
+}
+
+.regChoose{
+    width: 275px;
+}
+.regButton{
+    width: 138px;
+    height: 30px;
+}
