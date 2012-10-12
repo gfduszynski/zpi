@@ -1,6 +1,6 @@
 body{
     text-align: center;
-    background-color:wheat;
+    background-color:white;
     /*    font-family: 'Tangerine', serif;*/
 }
 
@@ -21,8 +21,8 @@ body{
     background-image: url("logo.png.xhtml?ln=images");
     background-repeat:no-repeat;
     background-position:left top;
-    width:300px;
-    height:100px;
+    width:190px;
+    height:130px;
 }
 
 .loginStuff{
@@ -64,20 +64,20 @@ body{
 
 .one{
     height:290px;
-    background-color:#35414f;
+    background-color:#661F0A;
     margin: 0px 5px 10px 0px;
 }
 
 .two{
     height:290px;
-    background-color:#b4d100;
+    background-color:#D19956;
     margin: 10px 5px 0px 0px;
 }
 
 .three{
     float:left;
     height:590px;
-    background-color:#93c3cd;
+    background-color:#164760;
     margin: 0px 5px 0px 5px;
     width:280px;
     padding:0px 5px 0px 5px;
@@ -87,7 +87,7 @@ body{
     float:left;
     width:290px;
     height:290px;
-    background-color:coral;
+    background-color:#661F0A;
     margin: 10px 5px 0px 5px;
 }
 
@@ -95,39 +95,29 @@ body{
     float:left;
     width:290px;
     height:290px;
-    background-color:coral;
+    background-color:#D19956;
     margin: 10px 5px 0px 5px;
 }
 
 .six{
     height:290px;
-    background-color:darkgreen;
+    background-color:#D19956;
     margin: 0px 0px 10px 5px;
 
 }
 
 .seven{
     height:290px;
-    background-color:plum;
+    background-color:#661F0A;
     margin: 10px 0px 0px 5px;
 
 }
 
 .error{
     color:red;
-    font-size: 70%;
 } 
-
-.errorInput{
-    border-color:red;
-}
-
-.loginAvail{
-    color:green;
-    font-size: 70%;
-}
 
 .hidden{
     visibility: collapse;
-    font-size: 0%;
+    font-size: 50%;
 }
