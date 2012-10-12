@@ -5,8 +5,10 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,14 @@ public class UserBO implements Serializable{
     
     public User registerUser(String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, int sex){
         User u = new User(null, login, email, enabled, password, firstName, lastName, birthDate, Calendar.getInstance().getTime(), sex);
+        return userRepo.save(u);
+    }
+    
+    public User assignRole(User u, Role r){
+        if(u.getRolesCollection() == null){
+            u.setRolesCollection(new ArrayList<Role>());
+        }
+        u.getRolesCollection().add(r);
         return userRepo.save(u);
     }
     
