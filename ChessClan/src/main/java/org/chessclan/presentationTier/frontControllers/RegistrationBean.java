@@ -10,7 +10,10 @@ import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.chessclan.businessTier.businessObjects.ClubBO;
+import org.chessclan.businessTier.businessObjects.RoleBO;
 import org.chessclan.businessTier.businessObjects.UserBO;
+import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 
 /**
@@ -43,8 +46,13 @@ public class RegistrationBean {
     private boolean statuteError;
     private boolean invalidP;
     private boolean regError;
+    private boolean invalidCN;
     @ManagedProperty("#{UserBO}")
     UserBO userBO;
+    @ManagedProperty("#{RoleBO}")
+    RoleBO roleBO;
+    @ManagedProperty("#{ClubBO}")
+    ClubBO clubBO;
     @ManagedProperty("#{sessionBean}")
     SessionBean sessionBean;
 
@@ -59,7 +67,6 @@ public class RegistrationBean {
         this.regError = false;
         this.statuteError = false;
         pattern = Pattern.compile(EMAIL_PATTERN);
-        System.out.println("Registration bean constructor.");
     }
 
     public boolean validateFirstName() {
@@ -73,6 +80,21 @@ public class RegistrationBean {
             }
         } else {
             this.invalidFN = true;
+            return false;
+        }
+    }
+
+    public boolean validateClubName() {
+        if (clubName != null) {
+            if (clubName.length() > 0) {
+                this.invalidCN = false;
+                return true;
+            } else {
+                this.invalidCN = true;
+                return false;
+            }
+        } else {
+            this.invalidCN = true;
             return false;
         }
     }
@@ -108,7 +130,7 @@ public class RegistrationBean {
     }
 
     public boolean validateBD() {
-        System.out.println("Validating bd: "+birthDate.toString());
+        System.out.println("Validating bd: " + birthDate.toString());
         if (this.birthDate == null) {
             this.invalidBD = true;
             return false;
@@ -154,24 +176,37 @@ public class RegistrationBean {
         return matcher.matches();
     }
 
-    public String register() {
+    public void registerClub() {
+        boolean val1 = validateClubName();
+        boolean val2 = validateEmail();
+        boolean val3 = validatePassword();
+        if (val1 && val2 && val3) {
+            User u = userBO.registerUser(email, email, true, password, null, null, null, 0);
+            Role r = roleBO.findRoleByName("ROLE_CLUB");
+            u = userBO.assignRole(u, r);
+            sessionBean.setUser(u);
+        }
+    }
+
+    public void register() {
 
         boolean val1 = validateFirstName();
         boolean val2 = validateLastName();
         boolean val3 = validateBD();
         boolean val4 = validateEmail();
         boolean val5 = validateStatute();
-
+        System.out.print("registrating...");
+        System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4 + " : " + val5 + " : ");
         if (val1 && val2 && val3 && val4 && val5) {
-            
-            User newUser = new User(null, null, email, true, password, firstName, lastName, birthDate, new Date(), sex);
-            userBO.saveUser(newUser);
-            return "index.xhtml";
+            User u = userBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
+            Role r = roleBO.findRoleByName("ROLE_USER");
+            u = userBO.assignRole(u, r);
+            sessionBean.setUser(u);
+
         } else {
             this.regError = true;
-            return "";
         }
-        
+
     }
 
     public String getFirstName() {
@@ -340,5 +375,29 @@ public class RegistrationBean {
 
     public void setStatuteError(boolean statuteError) {
         this.statuteError = statuteError;
+    }
+
+    public RoleBO getRoleBO() {
+        return roleBO;
+    }
+
+    public void setRoleBO(RoleBO roleBO) {
+        this.roleBO = roleBO;
+    }
+
+    public boolean isInvalidCN() {
+        return invalidCN;
+    }
+
+    public void setInvalidCN(boolean invalidCN) {
+        this.invalidCN = invalidCN;
+    }
+
+    public ClubBO getClubBO() {
+        return clubBO;
+    }
+
+    public void setClubBO(ClubBO clubBO) {
+        this.clubBO = clubBO;
     }
 }
