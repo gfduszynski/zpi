@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "roles")
+@NamedQueries({
+    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")})
 public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,8 +34,8 @@ public class Role implements Serializable {
     @JoinTable(name = "user_roles", joinColumns = {
         @JoinColumn(name = "role_id", referencedColumnName = "role_id")}, inverseJoinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")})
-    @ManyToMany
-    private Collection<User> usersCollection;
+    @ManyToMany(fetch= FetchType.EAGER)
+    private Collection<User> userCollection;
 
     public Role() {
     }
@@ -63,12 +65,12 @@ public class Role implements Serializable {
         this.roleName = roleName;
     }
 
-    public Collection<User> getUsersCollection() {
-        return usersCollection;
+    public Collection<User> getUserCollection() {
+        return userCollection;
     }
 
-    public void setUsersCollection(Collection<User> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     @Override
@@ -93,7 +95,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Roles[ roleId=" + roleId + " ]";
+        return "org.chessclan.dataTier.models.Role[ roleId=" + roleId + " ]";
     }
     
 }

@@ -182,8 +182,7 @@ public class RegistrationBean {
         boolean val3 = validatePassword();
         if (val1 && val2 && val3) {
             User u = userBO.registerUser(email, email, true, password, null, null, null, 0);
-            Role r = roleBO.findRoleByName("ROLE_CLUB");
-            u = userBO.assignRole(u, r);
+            u = userBO.assignRole(u.getUserId(), "ROLE_CLUB");
             sessionBean.setUser(u);
         }
     }
@@ -199,8 +198,7 @@ public class RegistrationBean {
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4 + " : " + val5 + " : ");
         if (val1 && val2 && val3 && val4 && val5) {
             User u = userBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
-            Role r = roleBO.findRoleByName("ROLE_USER");
-            u = userBO.assignRole(u, r);
+            u = userBO.assignRole(u.getUserId(), "ROLE_USER");
             sessionBean.setUser(u);
 
         } else {
