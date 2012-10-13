@@ -23,7 +23,7 @@
             <h:panelGroup layout="block" class="header">
                 <h:panelGroup layout="block" class="logo">
                 </h:panelGroup>
-                <c:if test="#{not sessionBean.loggedUser}">
+                <c:if test="#{not loginBean.loggedUser}">
                     <h:form id="loginForm" prependId="false" class="loginStuff">
                         <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
                         <h:message for="j_username" style="color:red"/><br/>
@@ -42,13 +42,13 @@
                         </h:panelGrid>
                     </h:form>
                 </c:if>
-                <c:if test="#{sessionBean.loggedUser}">
+                <c:if test="#{loginBean.loggedUser}">
                     <h:outputText value="Witaj, "/>
-                    <h:outputText value="#{sessionBean.user.firstName} #{sessionBean.user.lastName} "/>
+                    <h:outputText value="#{loginBean.user.firstName} #{loginBean.user.lastName} "/>
                     <h:outputLink value="#{request.contextPath}/j_spring_security_logout">(Wyloguj)</h:outputLink>
                 </c:if>
             </h:panelGroup>
-            <c:if test="#{not sessionBean.loggedUser}">
+            <c:if test="#{not loginBean.loggedUser}">
                 <h:panelGroup layout="block" class="elements">
                     <h:panelGroup layout="block" class="firstColumn">
                         <h:panelGroup layout="block" class="one">
@@ -81,8 +81,16 @@
                     </h:panelGroup>
                 </h:panelGroup>
             </c:if>
-            <c:if test="#{sessionBean.loggedUser}">
-                <ui:include src="userPages/userDashboard.xhtml"/>
+            <c:if test="#{loginBean.loggedUser}">
+<!--                <c:if test="#{loginBean.user.isUser}">
+                    <ui:include src="userPages/userDashboard.xhtml"/>
+                </c:if>
+                <c:if test="#{loginBean.user.isClub}">
+                    <ui:include src="clubPages/clubDashboard.xhtml"/>
+                </c:if>
+                <c:if test="#{loginBean.user.isAdmin}">
+                    <ui:include src="administration/dashboard.xhtml"/>
+                </c:if>-->
             </c:if>
         </h:panelGroup>
     </h:body>

@@ -16,7 +16,7 @@
 		<form-login login-page="/index.xhtml" />
 		<intercept-url pattern="/administration/**" access="ROLE_ADMIN" />  
                 <remember-me token-validity-seconds="604800" key="fha74hfa7wia83ah8akufhau4a" /> 
-                <logout invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" logout-success-url="/ChessClan"/> 
+                <logout invalidate-session="true" delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" logout-success-url="/"/> 
 	</http>
 
 	<!-- 
