@@ -10,10 +10,10 @@
         <ui:composition>
             <h:form prependId="false" >
                 <h:outputText value="Jako kto chcesz się zalogować?"/><br/>
-                <h:commandButton value="Gracz">
+                <h:commandButton value="Gracz"  styleClass="regButton">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(0)}"/>
                 </h:commandButton>
-                <h:commandButton value="Organizator">
+                <h:commandButton value="Organizator" styleClass="regButton">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(1)}"/>
                 </h:commandButton>
                 <h2><h:outputText value="Rejestracja"/></h2>
@@ -36,37 +36,37 @@
                     </h:inputText><br/>
                     <h:outputText value="Nazwisko"/><br/>
                     <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidLN}" escape="false"/>
-                    <h:inputText value="#{rgsBean.lastName}">
+                    <h:inputText value="#{rgsBean.lastName}" styleClass="regInput">
                         <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateLastName}"/>
                     </h:inputText><br/>
                     <h:outputText value="Data urodzenia"/><br/>
                     <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidBD}" escape="false"/>
-                    <h:inputText value="#{rgsBean.birthDate}" id="bdReg">
-                        <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                    <h:inputText value="#{rgsBean.birthDate}" id="bdReg"  styleClass="regInput" >
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
                         <f:ajax event="change" execute="@form" render="@form" listener="#{rgsBean.validateBD}"/>  
                     </h:inputText><br/>
                     <h:outputText value="Płeć"/><br/>
-                    <h:selectOneMenu value="#{rgsBean.sex}">
+                    <h:selectOneRadio value="#{rgsBean.sex}" styleClass="regChoose">
                         <f:selectItem itemValue="0" itemLabel="mężczyzna"/>
                         <f:selectItem itemValue="1" itemLabel="kobieta"/>
-                    </h:selectOneMenu><br/>
+                    </h:selectOneRadio><br/>
                     <h:outputText value="Email"/><br/>
                     <h:outputText value="Login dostępny.&lt;br/&gt;" styleClass="loginAvail" rendered="#{rgsBean.validEmail}" escape="false"/>
                     <h:outputText value="Login niepoprawny.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidEmail}" escape="false"/>
                     <h:outputText value="Login zajęty.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.occupiedEmail}" escape="false"/>
-                    <h:inputText value="#{rgsBean.email}">
+                    <h:inputText value="#{rgsBean.email}" styleClass="regInput">
                         <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateEmail}"/>
                     </h:inputText><br/>
                     <h:outputText value="Hasło"/><br/>
                     <h:outputText value="Pole wymagane, musi mieć więcej niż 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidP}" escape="false"/>
-                    <h:inputSecret value="#{rgsBean.password}" redisplay="true" >
+                    <h:inputSecret value="#{rgsBean.password}" redisplay="true" styleClass="regInput" >
                         <f:ajax event="blur" execute="@this" render="@form" listener="#{rgsBean.validatePassword}"/>
                     </h:inputSecret><br/>
                     <h:outputText value="Musisz zaakceptować regulamin.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.statuteError}" escape="false"/>
                     <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}">
                         <!--<f:ajax event="change" execute="@this" render="@form" listener="#{rgsBean.validatePassword}"/>-->
                     </h:selectBooleanCheckbox><h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin"/><br/>
-                    <h:commandButton value="Rejestruj">
+                    <h:commandButton value="Rejestruj" styleClass="regButton">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.register}"/>
                     </h:commandButton>
 
@@ -76,23 +76,23 @@
 
                     <h:outputText value="Nazwa klubu"/><br/>
                     <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidCN}" escape="false"/>
-                    <h:inputText value="#{rgsBean.clubName}">
+                    <h:inputText value="#{rgsBean.clubName}" styleClass="regInput">
                         <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateClubName}"/>
                     </h:inputText><br/>
                     <h:outputText value="Opis klubu (opcjonalne)"/><br/>
-                    <h:inputText value="#{rgsBean.clubDescription}"/><br/>
+                    <h:inputText value="#{rgsBean.clubDescription}" styleClass="regInput"/><br/>
                     <h:outputText value="Email"/><br/>
                     <h:outputText value="Login dostępny.&lt;br/&gt;" styleClass="loginAvail" rendered="#{rgsBean.validEmail}" escape="false"/>
                     <h:outputText value="Login niepoprawny.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidEmail}" escape="false"/>
                     <h:outputText value="Login zajęty.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.occupiedEmail}" escape="false"/>
-                    <h:inputText value="#{rgsBean.email}">
+                    <h:inputText value="#{rgsBean.email}" styleClass="regInput">
                         <f:ajax event="blur" execute="@form" render="@form" listener="#{rgsBean.validateEmail}"/>
                     </h:inputText><br/>
                     <h:outputText value="Hasło"/><br/>
                     <h:outputText value="Pole wymagane, musi mieć więcej niż 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidP}" escape="false"/>
-                    <h:inputSecret value="#{rgsBean.password}" redisplay="true" /><br/>
-                    <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}"/><h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin"/><br/>
-                    <h:commandButton value="Rejestruj">
+                    <h:inputSecret value="#{rgsBean.password}" redisplay="true" styleClass="regInput"/><br/>
+                    <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}"/><h:outputText value="Akceptuję "/><h:commandLink value="regulamin." /><br/>
+                    <h:commandButton value="Rejestruj" styleClass="regButton">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>
                     </h:commandButton>
                 </h:panelGroup>
