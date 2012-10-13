@@ -25,14 +25,15 @@
                 </h:panelGroup>
                 <c:if test="#{not sessionBean.loggedUser}">
                     <h:form id="loginForm" prependId="false" class="loginStuff">
-                        <h:message for="j_username" style="color:red"/>
-                        <h:message for="j_password" style="color:red"/>
+                        <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
+                        <h:message for="j_username" style="color:red"/><br/>
+                        <h:message for="j_password" style="color:red"/><br/>
                         <h:panelGrid columns="3">
                             <h:outputText value="Username:" />
                             <h:outputText value="Password:" />
                             <h:outputText value="" />
                             <h:inputText id="j_username" value="#{loginBean.username}" required="true"/>
-                            <h:inputSecret id="j_password" value="#{loginBean.password}" required="true"/>
+                            <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true"/>
                             <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" />
                             <h:panelGroup layout="block">
                                 <h:selectBooleanCheckbox /><h:outputText value="Zapamiętaj hasło"/>
@@ -43,7 +44,8 @@
                 </c:if>
                 <c:if test="#{sessionBean.loggedUser}">
                     <h:outputText value="Witaj, "/>
-                    <h:outputText value="#{sessionBean.user.firstName} #{sessionBean.user.lastName} (Wyloguj)"/>
+                    <h:outputText value="#{sessionBean.user.firstName} #{sessionBean.user.lastName} "/>
+                    <h:outputLink value="#{request.contextPath}/j_spring_security_logout">(Wyloguj)</h:outputLink>
                 </c:if>
             </h:panelGroup>
             <c:if test="#{not sessionBean.loggedUser}">
