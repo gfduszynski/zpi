@@ -18,6 +18,11 @@ public class SessionBean implements Serializable {
     private String login;
     private String password;
     private User user;
+    private boolean loggedUser;
+    
+    public SessionBean(){
+        this.loggedUser = false;
+    }
 
     public String doLogin() throws IOException, ServletException {
        /* ExternalContext context =
@@ -32,6 +37,14 @@ public class SessionBean implements Serializable {
         FacesContext.getCurrentInstance().responseComplete();
         // It's OK to return null here because Faces is just going to exit.*/
         return null;
+    }
+    
+    public boolean getLoggedUser(){
+        return loggedUser;
+    }
+    
+    public void setLoggedUser(boolean loggedUser){
+        this.loggedUser = loggedUser;
     }
 
     public String getLogin() {
