@@ -15,11 +15,15 @@
         </insert>
         <insert tableName="roles">
             <column name="role_id" valueNumeric="1"/>
-            <column name="role_name" value="ROLE_ADMIN"/>
+            <column name="role_name" value="ADMIN"/>
         </insert>
         <insert tableName="roles">
             <column name="role_id" valueNumeric="2"/>
-            <column name="role_name" value="ROLE_USER"/>
+            <column name="role_name" value="USER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role_id" valueNumeric="3"/>
+            <column name="role_name" value="CLUB_OWNER"/>
         </insert>
         
         <insert tableName="user_roles">
