@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,20 +25,22 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Grzegorz Duszyski <gfduszynski@gmail.com>
  */
-@Service("UserBO")
-public class UserBO implements Serializable{    
+@Service("UserManagementBO")
+public class UserManagementBO implements Serializable{    
     
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private RoleRepository roleRepo;
+    @Autowired 
+    private ShaPasswordEncoder passwordEncoder;
     
     public Authentication getLoggedUserAuthentication(){
         return SecurityContextHolder.getContext().getAuthentication();
     }
     
     public User registerUser(String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, int sex){
-        User u = new User(null, login, email, enabled, password, firstName, lastName, birthDate, Calendar.getInstance().getTime(), sex);
+        User u = new User(null, login, email, enabled, passwordEncoder.encodePassword(password,null), firstName, lastName, birthDate, Calendar.getInstance().getTime(), sex);
         return userRepo.save(u);
     }
     
@@ -49,9 +52,7 @@ public class UserBO implements Serializable{
         roleRepo.saveAndFlush(r);
         return u;
     }
-    
-    
-    
+        
     public User saveUser(User u){
         return userRepo.save(u);
     }
