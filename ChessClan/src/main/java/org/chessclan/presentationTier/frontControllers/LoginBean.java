@@ -37,6 +37,8 @@ public class LoginBean {
 
         FacesContext.getCurrentInstance().responseComplete();
 
+        //TODO checking if registration completed or user not found
+        
         // Faces are going to exit, sot it'sok to return null
         return null;
     }

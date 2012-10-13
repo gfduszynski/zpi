@@ -25,6 +25,8 @@
                 </h:panelGroup>
                 <c:if test="#{not sessionBean.loggedUser}">
                     <h:form id="loginForm" prependId="false" class="loginStuff">
+                        <h:message for="j_username" style="color:red"/>
+                        <h:message for="j_password" style="color:red"/>
                         <h:panelGrid columns="3">
                             <h:outputText value="Username:" />
                             <h:outputText value="Password:" />
@@ -81,7 +83,6 @@
                 <ui:include src="userPages/userDashboard.xhtml"/>
             </c:if>
         </h:panelGroup>
-        <h:messages/>
     </h:body>
 
 </html>
