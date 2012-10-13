@@ -12,9 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.User;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 
 /**
  *
@@ -30,8 +30,8 @@ public class LoginBean {
     @ManagedProperty("#{UserManagementBO}")
     UserManagementBO umBO;
     private boolean loginError;
-    @ManagedProperty("#{sessionBean}")
-    SessionBean sessionBean;
+    private User user;
+    private boolean loggedUser;
 
     /**
      * @return @throws IOException
@@ -57,8 +57,8 @@ public class LoginBean {
         } else {
             Authentication auth = umBO.getLoggedUserAuthentication();
             if (auth != null) {
-                sessionBean.setUser(umBO.findUserByEmail(((User)auth.getPrincipal()).getUsername()));
-                sessionBean.setLoggedUser(true);
+                setUser(umBO.findUserByEmail(((org.springframework.security.core.userdetails.User)auth.getPrincipal()).getUsername()));
+                setLoggedUser(true);
             } else {
                 this.loginError = true;
             }
@@ -126,13 +126,19 @@ public class LoginBean {
         this.loginError = loginError;
     }
 
-    public SessionBean getSessionBean() {
-        return sessionBean;
+    public User getUser() {
+        return user;
     }
 
-    public void setSessionBean(SessionBean sessionBean) {
-        this.sessionBean = sessionBean;
+    public void setUser(User user) {
+        this.user = user;
     }
-    
-    
+
+    public boolean isLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(boolean loggedUser) {
+        this.loggedUser = loggedUser;
+    }
 }

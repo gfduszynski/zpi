@@ -52,8 +52,6 @@ public class RegistrationBean {
     UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
-    @ManagedProperty("#{sessionBean}")
-    SessionBean sessionBean;
     @ManagedProperty("#{loginBean}")
     LoginBean loginBean;
 
@@ -186,7 +184,6 @@ public class RegistrationBean {
         if (val1 && val2 && val3 && val4) {
             User u = umBO.registerUser(email, email, true, password, null, null, null, 0);
             u = umBO.assignRole(u.getUserId(), "ROLE_CLUB");
-            sessionBean.setUser(u);
         } else {
             regError = true;
         }
@@ -361,14 +358,6 @@ public class RegistrationBean {
 
     public void setRegError(boolean regError) {
         this.regError = regError;
-    }
-
-    public SessionBean getSessionBean() {
-        return sessionBean;
-    }
-
-    public void setSessionBean(SessionBean sessionBean) {
-        this.sessionBean = sessionBean;
     }
 
     public boolean isStatuteError() {
