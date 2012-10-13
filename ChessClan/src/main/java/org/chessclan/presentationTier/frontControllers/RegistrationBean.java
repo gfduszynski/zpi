@@ -205,7 +205,7 @@ public class RegistrationBean {
             u = umBO.assignRole(u.getUserId(), "ROLE_USER");
 
             loginBean.setUsername(u.getEmail());
-            loginBean.setPassword(u.getPassword());
+            loginBean.setPassword(this.password);
             loginBean.doLogin();
         } else {
             this.regError = true;

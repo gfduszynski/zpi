@@ -36,7 +36,7 @@
                             <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true"/>
                             <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" />
                             <h:panelGroup layout="block">
-                                <h:selectBooleanCheckbox /><h:outputText value="Zapamiętaj hasło"/>
+                                <h:selectBooleanCheckbox id="_spring_security_remember_me" /><h:outputText value="Zapamiętaj hasło"/>
                             </h:panelGroup>
                             <h:commandLink value="Zapomniałeś hasło?"/>
                         </h:panelGrid>
