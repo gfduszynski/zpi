@@ -43,9 +43,9 @@ public class UserManagementBO implements Serializable{
         return userRepo.save(u);
     }
     
-    public User assignRole(int userId, String roleName){
+    public User assignRole(int userId, Role.Type role){
         User u = userRepo.findOne(userId);
-        Role r = roleRepo.findByRoleName(roleName);
+        Role r = roleRepo.findByRoleName(role.name());
         u.getRoleSet().add(r);
         r.getUserSet().add(u);
         roleRepo.saveAndFlush(r);
