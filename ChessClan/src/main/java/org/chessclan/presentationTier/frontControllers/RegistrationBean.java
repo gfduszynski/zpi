@@ -4,12 +4,14 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+import javax.servlet.ServletException;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Role;
@@ -20,7 +22,7 @@ import org.chessclan.dataTier.models.User;
  * @author Daniel
  */
 @ManagedBean(name = "rgsBean")
-@ViewScoped
+@SessionScoped
 public class RegistrationBean {
 
     private String firstName;
@@ -46,12 +48,13 @@ public class RegistrationBean {
     private boolean invalidP;
     private boolean regError;
     private boolean invalidCN;
+    private boolean regSucceeded;
     @ManagedProperty("#{UserManagementBO}")
     UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
-    @ManagedProperty("#{sessionBean}")
-    SessionBean sessionBean;
+    @ManagedProperty("#{loginBean}")
+    LoginBean loginBean;
 
     public RegistrationBean() {
         regOption = 0;
@@ -64,7 +67,7 @@ public class RegistrationBean {
         this.regError = false;
         this.statuteError = false;
         pattern = Pattern.compile(EMAIL_PATTERN);
-        this.sex=0;
+        this.sex = 0;
     }
 
     public boolean validateFirstName() {
@@ -181,15 +184,13 @@ public class RegistrationBean {
         boolean val4 = validateStatute();
         if (val1 && val2 && val3 && val4) {
             User u = umBO.registerUser(email, email, true, password, null, null, null, 0);
-            u = umBO.assignRole(u.getUserId(), Role.Type.CLUB_OWNER);
-            sessionBean.setUser(u);
-        }
-        else{
+            umBO.assignRole(u.getUserId(), Role.Type.CLUB_OWNER);
+        } else {
             regError = true;
         }
     }
 
-    public void register() {
+    public void register() throws IOException, ServletException {
 
         boolean val1 = validateFirstName();
         boolean val2 = validateLastName();
@@ -200,9 +201,8 @@ public class RegistrationBean {
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4 + " : " + val5 + " : ");
         if (val1 && val2 && val3 && val4 && val5) {
             User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
-            u = umBO.assignRole(u.getUserId(), Role.Type.USER);
-            sessionBean.setUser(u);
-
+            umBO.assignRole(u.getUserId(), Role.Type.USER);
+            this.regSucceeded = true;
         } else {
             this.regError = true;
         }
@@ -361,14 +361,6 @@ public class RegistrationBean {
         this.regError = regError;
     }
 
-    public SessionBean getSessionBean() {
-        return sessionBean;
-    }
-
-    public void setSessionBean(SessionBean sessionBean) {
-        this.sessionBean = sessionBean;
-    }
-
     public boolean isStatuteError() {
         return statuteError;
     }
@@ -400,4 +392,22 @@ public class RegistrationBean {
     public void setUmBO(UserManagementBO umBO) {
         this.umBO = umBO;
     }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+
+    public boolean isRegSucceeded() {
+        return regSucceeded;
+    }
+
+    public void setRegSucceeded(boolean regSucceeded) {
+        this.regSucceeded = regSucceeded;
+    }
+    
+    
 }
