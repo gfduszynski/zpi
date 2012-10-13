@@ -4,13 +4,14 @@
  */
 package org.chessclan.dataTier.repositories;
 
+import java.io.Serializable;
 import org.chessclan.dataTier.models.Role;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Daniel
  */
-public interface RoleRepository extends PagingAndSortingRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
     Role findByRoleName(String roleName);
 }

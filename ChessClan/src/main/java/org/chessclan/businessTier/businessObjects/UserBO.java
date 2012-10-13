@@ -5,7 +5,6 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import org.chessclan.dataTier.models.Role;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -44,8 +44,10 @@ public class UserBO implements Serializable{
     public User assignRole(int userId, String roleName){
         User u = userRepo.findOne(userId);
         Role r = roleRepo.findByRoleName(roleName);
-        u.getRoleCollection().add(r);
-        return userRepo.save(u);
+        u.getRoleSet().add(r);
+        r.getUserSet().add(u);
+        roleRepo.saveAndFlush(r);
+        return u;
     }
     
     

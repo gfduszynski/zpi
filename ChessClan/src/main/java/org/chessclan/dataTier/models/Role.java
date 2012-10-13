@@ -5,8 +5,20 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.*;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,7 +35,6 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "role_id")
     private Integer roleId;
     @Basic(optional = false)
@@ -35,7 +46,7 @@ public class Role implements Serializable {
         @JoinColumn(name = "role_id", referencedColumnName = "role_id")}, inverseJoinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")})
     @ManyToMany(fetch= FetchType.EAGER)
-    private Collection<User> userCollection;
+    private Set<User> userSet;
 
     public Role() {
     }
@@ -65,29 +76,29 @@ public class Role implements Serializable {
         this.roleName = roleName;
     }
 
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Set<User> getUserSet() {
+        return userSet;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setUserSet(Set<User> userSet) {
+        this.userSet = userSet;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += ( roleId != null ? roleId.hashCode() : 0 );
+        hash += (roleId != null ? roleId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!( object instanceof Role )) {
+        if (!(object instanceof Role)) {
             return false;
         }
         Role other = (Role) object;
-        if (( this.roleId == null && other.roleId != null ) || ( this.roleId != null && !this.roleId.equals(other.roleId) )) {
+        if ((this.roleId == null && other.roleId != null) || (this.roleId != null && !this.roleId.equals(other.roleId))) {
             return false;
         }
         return true;
