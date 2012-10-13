@@ -11,9 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.ClubBO;
-import org.chessclan.businessTier.businessObjects.RoleBO;
-import org.chessclan.businessTier.businessObjects.UserBO;
-import org.chessclan.dataTier.models.Role;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.User;
 
 /**
@@ -47,10 +45,8 @@ public class RegistrationBean {
     private boolean invalidP;
     private boolean regError;
     private boolean invalidCN;
-    @ManagedProperty("#{UserBO}")
-    UserBO userBO;
-    @ManagedProperty("#{RoleBO}")
-    RoleBO roleBO;
+    @ManagedProperty("#{UserManagementBO}")
+    UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
     @ManagedProperty("#{sessionBean}")
@@ -141,7 +137,7 @@ public class RegistrationBean {
     }
 
     public boolean validateEmail() {
-        if (userBO.isEmailRegistered(this.email)) {
+        if (umBO.isEmailRegistered(this.email)) {
             this.validEmail = false;
             this.invalidEmail = false;
             this.occupiedEmail = true;
@@ -181,8 +177,8 @@ public class RegistrationBean {
         boolean val2 = validateEmail();
         boolean val3 = validatePassword();
         if (val1 && val2 && val3) {
-            User u = userBO.registerUser(email, email, true, password, null, null, null, 0);
-            u = userBO.assignRole(u.getUserId(), "ROLE_CLUB");
+            User u = umBO.registerUser(email, email, true, password, null, null, null, 0);
+            u = umBO.assignRole(u.getUserId(), "ROLE_CLUB");
             sessionBean.setUser(u);
         }
     }
@@ -197,8 +193,8 @@ public class RegistrationBean {
         System.out.print("registrating...");
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4 + " : " + val5 + " : ");
         if (val1 && val2 && val3 && val4 && val5) {
-            User u = userBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
-            u = userBO.assignRole(u.getUserId(), "ROLE_USER");
+            User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
+            u = umBO.assignRole(u.getUserId(), "ROLE_USER");
             sessionBean.setUser(u);
 
         } else {
@@ -279,12 +275,12 @@ public class RegistrationBean {
         this.clubDescription = clubDescription;
     }
 
-    public UserBO getUserBO() {
-        return userBO;
+    public UserManagementBO getUserBO() {
+        return umBO;
     }
 
-    public void setUserBO(UserBO userBO) {
-        this.userBO = userBO;
+    public void setUserBO(UserManagementBO userBO) {
+        this.umBO = userBO;
     }
 
     public boolean getValidEmail() {
@@ -373,14 +369,6 @@ public class RegistrationBean {
 
     public void setStatuteError(boolean statuteError) {
         this.statuteError = statuteError;
-    }
-
-    public RoleBO getRoleBO() {
-        return roleBO;
-    }
-
-    public void setRoleBO(RoleBO roleBO) {
-        this.roleBO = roleBO;
     }
 
     public boolean isInvalidCN() {
