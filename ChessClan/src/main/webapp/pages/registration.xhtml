@@ -37,7 +37,7 @@
                     <h:panelGroup id="bdGroup">
                         <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidBD}" escape="false"/>
                         <h:inputText value="#{rgsBean.birthDate}" id="bdInput"  styleClass="regInput" >
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                            <f:convertDateTime pattern="d-M-yyyy" />
                             <f:ajax event="change" execute="bdInput" render="bdGroup" listener="#{rgsBean.validateBD}"/>  
                         </h:inputText><br/>
                         <script type="text/javascript" charset="UTF-8">
@@ -45,7 +45,7 @@
                                 $( "#bdInput" ).datepicker({
                                     changeMonth: true,
                                     changeYear: true,
-                                    dateFormat: "dd-mm-yy",
+                                    dateFormat: "d-m-yy",
                                     defaultDate: "-15y"
                                 });
                             });
@@ -102,6 +102,23 @@
                     </h:panelGroup>
                     <h:outputText value="Opis klubu (opcjonalne)"/><br/>
                     <h:inputText value="#{rgsBean.clubDescription}" styleClass="regInput"/><br/>
+                    <h:outputText value="Data założenia klubu"/><br/>
+                    <h:panelGroup id="cfGroup">
+                        <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidBD}" escape="false"/>
+                        <h:inputText value="#{rgsBean.birthDate}" id="cfInput"  styleClass="regInput" >
+                            <f:convertDateTime pattern="d-M-yyyy" />
+                            <f:ajax event="change" execute="cfInput" render="cfGroup" listener="#{rgsBean.validateBD}"/>  
+                        </h:inputText><br/>
+                        <script type="text/javascript" charset="UTF-8">
+                            $(function() {
+                                $( "#cfInput" ).datepicker({
+                                    changeMonth: true,
+                                    changeYear: true,
+                                    dateFormat: "d-m-yy"
+                                });
+                            });
+                        </script>
+                    </h:panelGroup>
                     <h:outputText value="Email"/><br/>
                     <h:panelGroup id="emGroup">
                         <h:outputText value="Login dostępny.&lt;br/&gt;" styleClass="loginAvail" rendered="#{rgsBean.validEmail}" escape="false"/>
