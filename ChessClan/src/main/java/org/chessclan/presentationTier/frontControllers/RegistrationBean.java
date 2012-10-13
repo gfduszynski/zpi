@@ -391,4 +391,12 @@ public class RegistrationBean {
     public void setClubBO(ClubBO clubBO) {
         this.clubBO = clubBO;
     }
+
+    public UserManagementBO getUmBO() {
+        return umBO;
+    }
+
+    public void setUmBO(UserManagementBO umBO) {
+        this.umBO = umBO;
+    }
 }
