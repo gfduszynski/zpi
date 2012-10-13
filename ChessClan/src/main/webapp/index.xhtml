@@ -83,13 +83,13 @@
                 </h:panelGroup>
             </c:if>
             <c:if test="#{loginBean.loggedUser}">
-                <sec:authorize access="hasAnyRole('ROLE_USER')">
-                    <ui:include src="userPages/userDashboard.xhtml"/>
+                <sec:authorize access="hasRole('USER')">
+                    <ui:include src="userPages/userDashboard.xhtml" rendered="#{sec:areAnyGranted('USER')}"/>
                 </sec:authorize>
-                <sec:authorize access="hasAnyRole('ROLE_CLUB')">
+                <sec:authorize access="hasRole('CLUB_OWNER')">
                     <ui:include src="clubPages/clubDashboard.xhtml"/>
                 </sec:authorize>
-                <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+                <sec:authorize access="hasRole('ADMIN')">
                     <ui:include src="administration/dashboard.xhtml"/>
                 </sec:authorize>
             </c:if>
