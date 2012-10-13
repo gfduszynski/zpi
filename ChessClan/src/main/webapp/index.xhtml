@@ -23,30 +23,32 @@
             <h:panelGroup layout="block" class="header">
                 <h:panelGroup layout="block" class="logo">
                 </h:panelGroup>
-                <c:if test="#{not sessionBean.loggedUser}">
+                <c:if test="#{not loginBean.loggedUser}">
                     <h:form id="loginForm" prependId="false" class="loginStuff">
-                        <h:message for="j_username" style="color:red"/>
-                        <h:message for="j_password" style="color:red"/>
+                        <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
+                        <h:message for="j_username" style="color:red"/><br/>
+                        <h:message for="j_password" style="color:red"/><br/>
                         <h:panelGrid columns="3">
                             <h:outputText value="Username:" />
                             <h:outputText value="Password:" />
                             <h:outputText value="" />
                             <h:inputText id="j_username" value="#{loginBean.username}" required="true"/>
-                            <h:inputSecret id="j_password" value="#{loginBean.password}" required="true"/>
+                            <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true"/>
                             <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" />
                             <h:panelGroup layout="block">
-                                <h:selectBooleanCheckbox /><h:outputText value="Zapamiętaj hasło"/>
+                                <h:selectBooleanCheckbox id="_spring_security_remember_me" /><h:outputText value="Zapamiętaj hasło"/>
                             </h:panelGroup>
                             <h:commandLink value="Zapomniałeś hasło?"/>
                         </h:panelGrid>
                     </h:form>
                 </c:if>
-                <c:if test="#{sessionBean.loggedUser}">
+                <c:if test="#{loginBean.loggedUser}">
                     <h:outputText value="Witaj, "/>
-                    <h:outputText value="#{sessionBean.user.firstName} #{sessionBean.user.lastName} (Wyloguj)"/>
+                    <h:outputText value="#{loginBean.user.firstName} #{loginBean.user.lastName} "/>
+                    <h:outputLink value="#{request.contextPath}/j_spring_security_logout">(Wyloguj)</h:outputLink>
                 </c:if>
             </h:panelGroup>
-            <c:if test="#{not sessionBean.loggedUser}">
+            <c:if test="#{not loginBean.loggedUser}">
                 <h:panelGroup layout="block" class="elements">
                     <h:panelGroup layout="block" class="firstColumn">
                         <h:panelGroup layout="block" class="one">
@@ -79,8 +81,16 @@
                     </h:panelGroup>
                 </h:panelGroup>
             </c:if>
-            <c:if test="#{sessionBean.loggedUser}">
-                <ui:include src="userPages/userDashboard.xhtml"/>
+            <c:if test="#{loginBean.loggedUser}">
+<!--                <c:if test="#{loginBean.user.isUser}">
+                    <ui:include src="userPages/userDashboard.xhtml"/>
+                </c:if>
+                <c:if test="#{loginBean.user.isClub}">
+                    <ui:include src="clubPages/clubDashboard.xhtml"/>
+                </c:if>
+                <c:if test="#{loginBean.user.isAdmin}">
+                    <ui:include src="administration/dashboard.xhtml"/>
+                </c:if>-->
             </c:if>
         </h:panelGroup>
     </h:body>
