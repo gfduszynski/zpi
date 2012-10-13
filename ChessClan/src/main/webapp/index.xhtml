@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>ChessClan</title>
@@ -82,15 +83,15 @@
                 </h:panelGroup>
             </c:if>
             <c:if test="#{loginBean.loggedUser}">
-<!--                <c:if test="#{loginBean.user.isUser}">
-                    <ui:include src="userPages/userDashboard.xhtml"/>
-                </c:if>
-                <c:if test="#{loginBean.user.isClub}">
+                <sec:authorize access="hasRole('USER')">
+                    <ui:include src="userPages/userDashboard.xhtml" rendered="#{sec:areAnyGranted('USER')}"/>
+                </sec:authorize>
+                <sec:authorize access="hasRole('CLUB_OWNER')">
                     <ui:include src="clubPages/clubDashboard.xhtml"/>
-                </c:if>
-                <c:if test="#{loginBean.user.isAdmin}">
+                </sec:authorize>
+                <sec:authorize access="hasRole('ADMIN')">
                     <ui:include src="administration/dashboard.xhtml"/>
-                </c:if>-->
+                </sec:authorize>
             </c:if>
         </h:panelGroup>
     </h:body>

@@ -164,18 +164,12 @@ public class UsersDashboardBean implements Serializable {
     public void setUserClubId(Integer userClubId) {
         this.userClubId = userClubId;
     }
-    
-    /**
-     * @return the userBO
-     */
-    public UserManagementBO getUserBO() {
+
+    public UserManagementBO getUmBO() {
         return umBO;
     }
 
-    /**
-     * @param userBO the userBO to set
-     */
-    public void setUserBO(UserManagementBO userBO) {
-        this.umBO = userBO;
-    }
+    public void setUmBO(UserManagementBO umBO) {
+        this.umBO = umBO;
+    }    
 }

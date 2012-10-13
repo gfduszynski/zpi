@@ -183,7 +183,7 @@ public class RegistrationBean {
         boolean val3 = validatePassword();
         boolean val4 = validateStatute();
         if (val1 && val2 && val3 && val4) {
-            User u = umBO.registerUser(email, email, true, password, null, null, null, 0);
+            User u = umBO.registerUser(email, email, true, password, null, null, birthDate, 0);
             umBO.assignRole(u.getUserId(), Role.Type.CLUB_OWNER);
         } else {
             regError = true;
