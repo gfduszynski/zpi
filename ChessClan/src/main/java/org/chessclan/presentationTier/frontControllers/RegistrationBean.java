@@ -47,6 +47,7 @@ public class RegistrationBean {
     private boolean invalidP;
     private boolean regError;
     private boolean invalidCN;
+    private boolean regSucceeded;
     @ManagedProperty("#{UserManagementBO}")
     UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
@@ -203,10 +204,7 @@ public class RegistrationBean {
         if (val1 && val2 && val3 && val4 && val5) {
             User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
             u = umBO.assignRole(u.getUserId(), "ROLE_USER");
-
-            loginBean.setUsername(u.getEmail());
-            loginBean.setPassword(this.password);
-            loginBean.doLogin();
+            this.regSucceeded = true;
         } else {
             this.regError = true;
         }
@@ -411,6 +409,14 @@ public class RegistrationBean {
 
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
+    }
+
+    public boolean isRegSucceeded() {
+        return regSucceeded;
+    }
+
+    public void setRegSucceeded(boolean regSucceeded) {
+        this.regSucceeded = regSucceeded;
     }
     
     
