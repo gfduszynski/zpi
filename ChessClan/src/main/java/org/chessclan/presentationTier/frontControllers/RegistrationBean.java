@@ -33,7 +33,7 @@ public class RegistrationBean {
     private String clubName;
     private String clubDescription;
     private long regOption;
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private Pattern pattern;
     private Matcher matcher;
     private boolean validEmail;
@@ -67,6 +67,7 @@ public class RegistrationBean {
         this.regError = false;
         this.statuteError = false;
         pattern = Pattern.compile(EMAIL_PATTERN);
+        this.sex=0;
     }
 
     public boolean validateFirstName() {
@@ -102,7 +103,7 @@ public class RegistrationBean {
     public boolean validateLastName() {
         if (lastName != null) {
             if (lastName.length() > 2) {
-                this.invalidFN = false;
+                this.invalidLN = false;
                 return true;
             } else {
                 this.invalidLN = true;
@@ -132,11 +133,9 @@ public class RegistrationBean {
     public boolean validateBD() {
 
         if (this.birthDate == null) {
-            System.out.println("birth date reg is null.");
             this.invalidBD = true;
             return false;
         } else {
-            System.out.println("Validating bd: " + birthDate.toString());
             this.invalidBD = false;
             return true;
         }
@@ -182,10 +181,14 @@ public class RegistrationBean {
         boolean val1 = validateClubName();
         boolean val2 = validateEmail();
         boolean val3 = validatePassword();
-        if (val1 && val2 && val3) {
+        boolean val4 = validateStatute();
+        if (val1 && val2 && val3 && val4) {
             User u = userBO.registerUser(email, email, true, password, null, null, null, 0);
             u = userBO.assignRole(u.getUserId(), "ROLE_CLUB");
             sessionBean.setUser(u);
+        }
+        else{
+            regError = true;
         }
     }
 
