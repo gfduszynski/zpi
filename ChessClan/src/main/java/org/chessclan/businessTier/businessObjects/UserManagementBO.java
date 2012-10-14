@@ -39,8 +39,13 @@ public class UserManagementBO implements Serializable{
     }
     
     public User registerUser(String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, int sex){
-        User u = new User(null, login, email, enabled, passwordEncoder.encodePassword(password,null), firstName, lastName, birthDate, Calendar.getInstance().getTime(), sex);
-        return userRepo.save(u);
+        User u = new User(null, login, email, enabled, password, firstName, lastName, birthDate, Calendar.getInstance().getTime(), sex);
+        return userRepo.save(encodePassword(u));
+    }
+    
+    public User encodePassword(User u){
+        u.setPassword(passwordEncoder.encodePassword(u.getPassword(),null));
+        return u;
     }
     
     public User assignRole(int userId, Role.Type role){
