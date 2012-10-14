@@ -4,6 +4,7 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +21,7 @@ import org.chessclan.dataTier.models.Post;
  */
 @ManagedBean(name="lpBean")
 @ViewScoped
-public class LatestPostsBean {
+public class LatestPostsBean implements Serializable{
 
     private List<Post> latestPosts;
     @ManagedProperty("#{PostBO}")

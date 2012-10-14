@@ -26,8 +26,13 @@ body{
 }
 
 .loginStuff{
-    width:420px;
     float:right;
+    margin-top: -50px;
+}
+
+.logoutStuff{
+    float:right;
+    text-align: center;
 }
 
 .elements{

@@ -1,6 +1,7 @@
 package org.chessclan.presentationTier.frontControllers;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -22,7 +23,7 @@ import org.springframework.security.core.Authentication;
  */
 @SessionScoped
 @ManagedBean(name = "loginBean")
-public class LoginBean {
+public class LoginBean implements Serializable{
 
     private String username = "";
     private String password = "";

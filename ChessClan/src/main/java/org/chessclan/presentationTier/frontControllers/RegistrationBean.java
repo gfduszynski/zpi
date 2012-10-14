@@ -5,6 +5,7 @@
 package org.chessclan.presentationTier.frontControllers;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +24,7 @@ import org.chessclan.dataTier.models.User;
  */
 @ManagedBean(name = "rgsBean")
 @SessionScoped
-public class RegistrationBean {
+public class RegistrationBean implements Serializable{
 
     private String firstName;
     private String lastName;
