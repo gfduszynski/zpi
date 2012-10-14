@@ -77,7 +77,7 @@
         
     </changeSet>
     
-        <changeSet id="2" author="tjp">        
+    <changeSet id="2" author="tjp">        
         <createTable tableName="posts">
             <column name="post_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -105,4 +105,99 @@
                 
     </changeSet>
 
+
+
+
+    <changeSet id="3" author="tjp">        
+        <createTable tableName="results">
+            <column name="results_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="player" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+            <column name="category" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="place" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tournament_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="tournament">
+            <column name="tournament_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>         
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(2048)">
+                <constraints nullable="false" />
+            </column>
+            <column name="organizer" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+            <column name="category_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="category">
+            <column name="category_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false" /> 
+            </column>
+            <column name="players" type="varchar(512)">
+                <constraints nullable="false" />
+            </column>
+            <column name="round_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="round">
+            <column name="round_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number"  type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="game_id" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        
+        <createTable tableName="game">
+            <column name="game_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_player" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+            <column name="second_player" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+            <column name="played_with_black" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+            <column name="winner" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        
+    <addForeignKeyConstraint baseTableName="results"    baseColumnNames="tournament_id" constraintName="results_tournament_ref"  referencedTableName="tournament" referencedColumnNames="tournament_id"/>
+    <addForeignKeyConstraint baseTableName="tournament" baseColumnNames="category_id"   constraintName="tournament_category_ref" referencedTableName="category"   referencedColumnNames="category_id"/>
+    <addForeignKeyConstraint baseTableName="category"   baseColumnNames="round_id"      constraintName="category_round_ref"      referencedTableName="round"      referencedColumnNames="round_id"/>
+    <addForeignKeyConstraint baseTableName="round"      baseColumnNames="game_id"       constraintName="round_game_ref"          referencedTableName="game"       referencedColumnNames="game_id"/>
+            
+    </changeSet>
+    
 </databaseChangeLog>
