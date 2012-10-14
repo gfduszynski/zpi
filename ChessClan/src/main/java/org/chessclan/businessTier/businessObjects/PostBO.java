@@ -6,6 +6,7 @@ package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import org.chessclan.dataTier.models.Post;
 import org.chessclan.dataTier.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,15 @@ public class PostBO implements Serializable{
     public Page<Post> findLatestPosts(Pageable pgbl)
     {
          return postRepo.findByDateExpiresAfter(new Date(), pgbl);
+    }
+    
+    public List<Post> findLatestPosts(int numberOfPosts)
+    {
+         List<Post> postList;
+         postList = postRepo.findByDateExpiresAfter(new Date());
+         if(postList.size()<= numberOfPosts) {
+            return postList;
+        }else { return postList.subList(0, numberOfPosts-1);}
     }
     
     public Iterable<Post> findAllPosts(Sort s)
