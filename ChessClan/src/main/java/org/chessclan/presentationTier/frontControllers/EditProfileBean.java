@@ -190,8 +190,8 @@ public class EditProfileBean implements Serializable {
         System.out.print("updateing...");
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4);
         if (val1 && val2 && val3 && val4) {
-//            User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
-//            umBO.assignRole(u.getUserId(), Role.Type.USER);
+            User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
+            umBO.assignRole(u.getUserId(), Role.Type.USER);
             this.actSucceded = true;
         } else {
             this.regError = true;
