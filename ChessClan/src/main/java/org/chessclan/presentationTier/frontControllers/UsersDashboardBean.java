@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.Transient;
-import org.chessclan.businessTier.businessObjects.UserBO;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.User;
 import org.springframework.security.core.Authentication;
 
@@ -36,8 +36,8 @@ public class UsersDashboardBean implements Serializable {
     private Integer userClubId;
     //end
     @Transient
-    @ManagedProperty("#{UserBO}")
-    private UserBO userBO;
+    @ManagedProperty("#{UserManagementBO}")
+    private UserManagementBO umBO;
 
     public UsersDashboardBean() {
         users = new ArrayList<User>();
@@ -68,7 +68,7 @@ public class UsersDashboardBean implements Serializable {
     }
     
     public void selectAll(){
-        Authentication b  = userBO.getLoggedUserAuthentication();
+        Authentication b  = umBO.getLoggedUserAuthentication();
         for(int i=0;i<users.size();i++){
             if(!checked.get(users.get(i).getUserId()) || !checked.containsKey(users.get(i).getUserId())) {
                 checked.put(users.get(i).getUserId(), true);
@@ -164,18 +164,12 @@ public class UsersDashboardBean implements Serializable {
     public void setUserClubId(Integer userClubId) {
         this.userClubId = userClubId;
     }
-    
-    /**
-     * @return the userBO
-     */
-    public UserBO getUserBO() {
-        return userBO;
+
+    public UserManagementBO getUmBO() {
+        return umBO;
     }
 
-    /**
-     * @param userBO the userBO to set
-     */
-    public void setUserBO(UserBO userBO) {
-        this.userBO = userBO;
-    }
+    public void setUmBO(UserManagementBO umBO) {
+        this.umBO = umBO;
+    }    
 }

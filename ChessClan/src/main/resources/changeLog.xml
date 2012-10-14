@@ -71,9 +71,8 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-        
+        <addPrimaryKey tableName="user_roles" columnNames="user_id,role_id" constraintName="user_roles_PK"/>
         <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id" constraintName="user_roles_user_id_to_user_id_ref" referencedTableName="users" referencedColumnNames="user_id"/>
-        
         <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role_id" constraintName="user_roles_role_id_to_role_id_ref" referencedTableName="roles" referencedColumnNames="role_id"/>
         
     </changeSet>
