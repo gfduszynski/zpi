@@ -4,15 +4,16 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+import javax.servlet.ServletException;
 import org.chessclan.businessTier.businessObjects.ClubBO;
-import org.chessclan.businessTier.businessObjects.RoleBO;
-import org.chessclan.businessTier.businessObjects.UserBO;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 
@@ -21,7 +22,7 @@ import org.chessclan.dataTier.models.User;
  * @author Daniel
  */
 @ManagedBean(name = "rgsBean")
-@ViewScoped
+@SessionScoped
 public class RegistrationBean {
 
     private String firstName;
@@ -32,8 +33,8 @@ public class RegistrationBean {
     private String password;
     private String clubName;
     private String clubDescription;
-    private int regOption;
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private long regOption;
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private Pattern pattern;
     private Matcher matcher;
     private boolean validEmail;
@@ -47,14 +48,13 @@ public class RegistrationBean {
     private boolean invalidP;
     private boolean regError;
     private boolean invalidCN;
-    @ManagedProperty("#{UserBO}")
-    UserBO userBO;
-    @ManagedProperty("#{RoleBO}")
-    RoleBO roleBO;
+    private boolean regSucceeded;
+    @ManagedProperty("#{UserManagementBO}")
+    UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
-    @ManagedProperty("#{sessionBean}")
-    SessionBean sessionBean;
+    @ManagedProperty("#{loginBean}")
+    LoginBean loginBean;
 
     public RegistrationBean() {
         regOption = 0;
@@ -67,6 +67,7 @@ public class RegistrationBean {
         this.regError = false;
         this.statuteError = false;
         pattern = Pattern.compile(EMAIL_PATTERN);
+        this.sex = 0;
     }
 
     public boolean validateFirstName() {
@@ -102,7 +103,7 @@ public class RegistrationBean {
     public boolean validateLastName() {
         if (lastName != null) {
             if (lastName.length() > 2) {
-                this.invalidFN = false;
+                this.invalidLN = false;
                 return true;
             } else {
                 this.invalidLN = true;
@@ -130,7 +131,7 @@ public class RegistrationBean {
     }
 
     public boolean validateBD() {
-        System.out.println("Validating bd: " + birthDate.toString());
+
         if (this.birthDate == null) {
             this.invalidBD = true;
             return false;
@@ -141,7 +142,7 @@ public class RegistrationBean {
     }
 
     public boolean validateEmail() {
-        if (userBO.isEmailRegistered(this.email)) {
+        if (umBO.isEmailRegistered(this.email)) {
             this.validEmail = false;
             this.invalidEmail = false;
             this.occupiedEmail = true;
@@ -180,15 +181,16 @@ public class RegistrationBean {
         boolean val1 = validateClubName();
         boolean val2 = validateEmail();
         boolean val3 = validatePassword();
-        if (val1 && val2 && val3) {
-            User u = userBO.registerUser(email, email, true, password, null, null, null, 0);
-            Role r = roleBO.findRoleByName("ROLE_CLUB");
-            u = userBO.assignRole(u, r);
-            sessionBean.setUser(u);
+        boolean val4 = validateStatute();
+        if (val1 && val2 && val3 && val4) {
+            User u = umBO.registerUser(email, email, true, password, null, null, birthDate, 0);
+            umBO.assignRole(u.getId(), Role.Type.CLUB_OWNER);
+        } else {
+            regError = true;
         }
     }
 
-    public void register() {
+    public void register() throws IOException, ServletException {
 
         boolean val1 = validateFirstName();
         boolean val2 = validateLastName();
@@ -198,11 +200,9 @@ public class RegistrationBean {
         System.out.print("registrating...");
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4 + " : " + val5 + " : ");
         if (val1 && val2 && val3 && val4 && val5) {
-            User u = userBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
-            Role r = roleBO.findRoleByName("ROLE_USER");
-            u = userBO.assignRole(u, r);
-            sessionBean.setUser(u);
-
+            User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
+            umBO.assignRole(u.getId(), Role.Type.USER);
+            this.regSucceeded = true;
         } else {
             this.regError = true;
         }
@@ -257,11 +257,11 @@ public class RegistrationBean {
         this.password = password;
     }
 
-    public int getRegOption() {
+    public long getRegOption() {
         return regOption;
     }
 
-    public void setRegOption(int regOption) {
+    public void setRegOption(long regOption) {
         this.regOption = regOption;
     }
 
@@ -281,12 +281,12 @@ public class RegistrationBean {
         this.clubDescription = clubDescription;
     }
 
-    public UserBO getUserBO() {
-        return userBO;
+    public UserManagementBO getUserBO() {
+        return umBO;
     }
 
-    public void setUserBO(UserBO userBO) {
-        this.userBO = userBO;
+    public void setUserBO(UserManagementBO userBO) {
+        this.umBO = userBO;
     }
 
     public boolean getValidEmail() {
@@ -361,28 +361,12 @@ public class RegistrationBean {
         this.regError = regError;
     }
 
-    public SessionBean getSessionBean() {
-        return sessionBean;
-    }
-
-    public void setSessionBean(SessionBean sessionBean) {
-        this.sessionBean = sessionBean;
-    }
-
     public boolean isStatuteError() {
         return statuteError;
     }
 
     public void setStatuteError(boolean statuteError) {
         this.statuteError = statuteError;
-    }
-
-    public RoleBO getRoleBO() {
-        return roleBO;
-    }
-
-    public void setRoleBO(RoleBO roleBO) {
-        this.roleBO = roleBO;
     }
 
     public boolean isInvalidCN() {
@@ -400,4 +384,30 @@ public class RegistrationBean {
     public void setClubBO(ClubBO clubBO) {
         this.clubBO = clubBO;
     }
+
+    public UserManagementBO getUmBO() {
+        return umBO;
+    }
+
+    public void setUmBO(UserManagementBO umBO) {
+        this.umBO = umBO;
+    }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+
+    public boolean isRegSucceeded() {
+        return regSucceeded;
+    }
+
+    public void setRegSucceeded(boolean regSucceeded) {
+        this.regSucceeded = regSucceeded;
+    }
+    
+    
 }

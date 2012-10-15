@@ -97,6 +97,7 @@ body{
 }
 
 .three{
+    color:white;
     float:left;
     height:590px;
     background-color:#164760;
@@ -106,6 +107,7 @@ body{
 }
 
 .four{
+    color:white;
     float:left;
     width:290px;
     height:290px;
@@ -114,6 +116,7 @@ body{
 }
 
 .five{
+    color:white;
     float:left;
     width:290px;
     height:290px;

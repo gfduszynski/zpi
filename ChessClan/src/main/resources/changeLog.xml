@@ -4,7 +4,7 @@
 
     <changeSet id="1" author="tjp">        
         <createTable tableName="users">
-            <column name="user_id" type="int" autoIncrement="true">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="varchar(45)">
@@ -40,7 +40,7 @@
         </createTable>
                 
         <createTable tableName="clubs">
-            <column name="club_id" type="int" autoIncrement="true">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(45)">
@@ -52,10 +52,10 @@
             <column name="description" type="varchar(1000)"/>
         </createTable>
         
-        <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_club" constraintName="user_club_ref" referencedTableName="clubs" referencedColumnNames="club_id"/>
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_club" constraintName="user_club_ref" referencedTableName="clubs" referencedColumnNames="id"/>
         
         <createTable tableName="roles">
-            <column name="role_id" type="int" autoIncrement="true">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="role_name" type="varchar(45)">
@@ -64,23 +64,22 @@
         </createTable>
         
         <createTable tableName="user_roles">
-            <column name="user_id" type="int">
+            <column name="user" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="role_id" type="int">
+            <column name="role" type="int">
                 <constraints nullable="false" />
             </column>
         </createTable>
-        
-        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id" constraintName="user_roles_user_id_to_user_id_ref" referencedTableName="users" referencedColumnNames="user_id"/>
-        
-        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role_id" constraintName="user_roles_role_id_to_role_id_ref" referencedTableName="roles" referencedColumnNames="role_id"/>
+        <addPrimaryKey tableName="user_roles" columnNames="user,role" constraintName="user_roles_PK"/>
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user" constraintName="user_roles_user_to_id_ref" referencedTableName="users" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role" constraintName="user_roles_role_to_id_ref" referencedTableName="roles" referencedColumnNames="id"/>
         
     </changeSet>
     
-        <changeSet id="2" author="tjp">        
+    <changeSet id="2" author="tjp">        
         <createTable tableName="posts">
-            <column name="post_id" type="int" autoIncrement="true">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="varchar(512)">
@@ -97,13 +96,122 @@
             </column>            
             <column name="date_published" type="date"/>
             <column name="date_expires" type="date"/>
-            <column name="user_id" type="int">
+            <column name="user" type="int">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         
-        <addForeignKeyConstraint baseTableName="posts" baseColumnNames="user_id" constraintName="posts_user_ref" referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint baseTableName="posts" baseColumnNames="user" constraintName="posts_user_ref" referencedTableName="users" referencedColumnNames="id"/>
                 
     </changeSet>
 
+
+
+
+    <changeSet id="3" author="tjp">        
+        <createTable tableName="results">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="player" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+            <column name="category" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="place" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tournament" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="tournaments">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>         
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(2048)">
+                <constraints nullable="false" />
+            </column>
+            <column name="club" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="category" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="category">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false" /> 
+            </column>
+            <column name="player" type="varchar(512)">
+                <constraints nullable="false" />
+            </column>
+            <column name="round" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="rounds">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number"  type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="prev_round" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="tournament" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="state" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="start" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="end" type="date">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+        
+        <createTable tableName="pairing_cards">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="player" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="opponent" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="tournament" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="score" type="float">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        
+    <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="category"   constraintName="tournament_category_ref" referencedTableName="category"     referencedColumnNames="id"/>    
+    <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="club"       constraintName="tournament_club_ref"     referencedTableName="clubs"        referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="prev_round" constraintName="round_round_ref"         referencedTableName="rounds"       referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="tournament" constraintName="round_tournament_ref"    referencedTableName="tournaments"  referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="results"     baseColumnNames="tournament" constraintName="results_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="category"    baseColumnNames="round"      constraintName="category_round_ref"      referencedTableName="rounds"       referencedColumnNames="id"/>
+            
+    </changeSet>
+    
 </databaseChangeLog>

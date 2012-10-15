@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,32 +22,22 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.chessclan.dataTier.models.User;
 
 /**
  *
- * @author Xcays
+ * @author Giorgio
  */
 @Entity
 @Table(name = "posts")
-@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p"),
-    @NamedQuery(name = "Post.findByPostId", query = "SELECT p FROM Post p WHERE p.postId = :postId"),
-    @NamedQuery(name = "Post.findByTitle", query = "SELECT p FROM Post p WHERE p.title = :title"),
-    @NamedQuery(name = "Post.findByContent", query = "SELECT p FROM Post p WHERE p.content = :content"),
-    @NamedQuery(name = "Post.findByPublished", query = "SELECT p FROM Post p WHERE p.published = :published"),
-    @NamedQuery(name = "Post.findByDateCreated", query = "SELECT p FROM Post p WHERE p.dateCreated = :dateCreated"),
-    @NamedQuery(name = "Post.findByDatePublished", query = "SELECT p FROM Post p WHERE p.datePublished = :datePublished"),
-    @NamedQuery(name = "Post.findByDateExpires", query = "SELECT p FROM Post p WHERE p.dateExpires = :dateExpires")})
+    @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p")})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "post_id")
-    private Integer postId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 512)
@@ -72,31 +63,31 @@ public class Post implements Serializable {
     @Column(name = "date_expires")
     @Temporal(TemporalType.DATE)
     private Date dateExpires;
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    @ManyToOne(optional = false)
-    private User userId;
+    @JoinColumn(name = "user", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private User user;
 
     public Post() {
     }
 
-    public Post(Integer postId) {
-        this.postId = postId;
+    public Post(Integer id) {
+        this.id = id;
     }
 
-    public Post(Integer postId, String title, String content, boolean published, Date dateCreated) {
-        this.postId = postId;
+    public Post(Integer id, String title, String content, boolean published, Date dateCreated) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.published = published;
         this.dateCreated = dateCreated;
     }
 
-    public Integer getPostId() {
-        return postId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPostId(Integer postId) {
-        this.postId = postId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -147,18 +138,18 @@ public class Post implements Serializable {
         this.dateExpires = dateExpires;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (postId != null ? postId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -169,7 +160,7 @@ public class Post implements Serializable {
             return false;
         }
         Post other = (Post) object;
-        if ((this.postId == null && other.postId != null) || (this.postId != null && !this.postId.equals(other.postId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -177,7 +168,7 @@ public class Post implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.businessTier.businessObjects.Post[ postId=" + postId + " ]";
+        return "org.chessclan.dataTier.models.Post[ id=" + id + " ]";
     }
     
 }

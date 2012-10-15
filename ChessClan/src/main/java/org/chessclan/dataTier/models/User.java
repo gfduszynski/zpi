@@ -5,13 +5,27 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.*;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -19,22 +33,21 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "users")
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
 public class User implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Post> postCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "login")
     private String login;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -73,21 +86,23 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "sex")
     private int sex;
-    @ManyToMany(mappedBy = "usersCollection")
-    private Collection<Role> rolesCollection;
-    @JoinColumn(name = "user_club", referencedColumnName = "club_id")
-    @ManyToOne
+    @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER)
+    private Set<Role> roleSet;
+    @JoinColumn(name = "user_club", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Club userClub;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Post> postSet;
 
     public User() {
     }
 
-    public User(Integer userId) {
-        this.userId = userId;
+    public User(Integer id) {
+        this.id = id;
     }
 
-    public User(Integer userId, String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, Date creationDate, int sex) {
-        this.userId = userId;
+    public User(Integer id, String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, Date creationDate, int sex) {
+        this.id = id;
         this.login = login;
         this.email = email;
         this.enabled = enabled;
@@ -99,12 +114,12 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -179,12 +194,12 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
-    public Collection<Role> getRolesCollection() {
-        return rolesCollection;
+    public Set<Role> getRoleSet() {
+        return roleSet;
     }
 
-    public void setRolesCollection(Collection<Role> rolesCollection) {
-        this.rolesCollection = rolesCollection;
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
     }
 
     public Club getUserClub() {
@@ -195,21 +210,29 @@ public class User implements Serializable {
         this.userClub = userClub;
     }
 
+    public Set<Post> getPostSet() {
+        return postSet;
+    }
+
+    public void setPostSet(Set<Post> postSet) {
+        this.postSet = postSet;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += ( userId != null ? userId.hashCode() : 0 );
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!( object instanceof User )) {
+        if (!(object instanceof User)) {
             return false;
         }
         User other = (User) object;
-        if (( this.userId == null && other.userId != null ) || ( this.userId != null && !this.userId.equals(other.userId) )) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -217,16 +240,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Users[ userId=" + userId + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Post> getPostCollection() {
-        return postCollection;
-    }
-
-    public void setPostCollection(Collection<Post> postCollection) {
-        this.postCollection = postCollection;
+        return "org.chessclan.dataTier.models.User[ id=" + id + " ]";
     }
     
 }

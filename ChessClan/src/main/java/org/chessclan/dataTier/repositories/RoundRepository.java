@@ -4,14 +4,12 @@
  */
 package org.chessclan.dataTier.repositories;
 
-import java.io.Serializable;
-import org.chessclan.dataTier.models.Role;
+import org.chessclan.dataTier.models.Round;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
- * @author Daniel
+ * @author Xcays
  */
-public interface RoleRepository extends JpaRepository<Role, Integer> {
-    Role findByRoleName(String roleName);
+public interface RoundRepository extends JpaRepository<Round, Integer> {
 }

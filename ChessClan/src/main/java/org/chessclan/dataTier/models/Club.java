@@ -5,9 +5,22 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.*;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -17,14 +30,15 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "clubs")
+@NamedQueries({
+    @NamedQuery(name = "Club.findAll", query = "SELECT c FROM Club c")})
 public class Club implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "club_id")
-    private Integer clubId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -38,28 +52,30 @@ public class Club implements Serializable {
     @Size(max = 1000)
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "userClub")
-    private Collection<User> usersCollection;
+    @OneToMany(mappedBy = "userClub", fetch = FetchType.EAGER)
+    private Set<User> userSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club", fetch = FetchType.EAGER)
+    private Set<Tournament> tournamentSet;
 
     public Club() {
     }
 
-    public Club(Integer clubId) {
-        this.clubId = clubId;
+    public Club(Integer id) {
+        this.id = id;
     }
 
-    public Club(Integer clubId, String name, Date creationDate) {
-        this.clubId = clubId;
+    public Club(Integer id, String name, Date creationDate) {
+        this.id = id;
         this.name = name;
         this.creationDate = creationDate;
     }
 
-    public Integer getClubId() {
-        return clubId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setClubId(Integer clubId) {
-        this.clubId = clubId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -86,29 +102,37 @@ public class Club implements Serializable {
         this.description = description;
     }
 
-    public Collection<User> getUsersCollection() {
-        return usersCollection;
+    public Set<User> getUserSet() {
+        return userSet;
     }
 
-    public void setUsersCollection(Collection<User> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUserSet(Set<User> userSet) {
+        this.userSet = userSet;
+    }
+
+    public Set<Tournament> getTournamentSet() {
+        return tournamentSet;
+    }
+
+    public void setTournamentSet(Set<Tournament> tournamentSet) {
+        this.tournamentSet = tournamentSet;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += ( clubId != null ? clubId.hashCode() : 0 );
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!( object instanceof Club )) {
+        if (!(object instanceof Club)) {
             return false;
         }
         Club other = (Club) object;
-        if (( this.clubId == null && other.clubId != null ) || ( this.clubId != null && !this.clubId.equals(other.clubId) )) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -116,7 +140,7 @@ public class Club implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Clubs[ clubId=" + clubId + " ]";
+        return "org.chessclan.dataTier.models.Club[ id=" + id + " ]";
     }
     
 }
