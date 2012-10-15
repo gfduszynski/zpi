@@ -26,10 +26,32 @@ body{
 }
 
 .loginStuff{
-    width:420px;
+    width:475px;
     float:right;
 }
 
+.logUser{
+    width: 230px;
+    height: 30px;
+    margin: 0px 5px 0px 0px;
+    }
+
+.logPass{
+    width: 230px;
+    height: 30px;
+    margin: 0px 0px 0px 0px;
+}
+
+.logLog{
+    width: 175px;
+    height: 30px;
+    float: right;
+}
+
+.logForget{
+    float: right;
+    font-size: 75%;
+}
 .elements{
     padding:0px;
 }

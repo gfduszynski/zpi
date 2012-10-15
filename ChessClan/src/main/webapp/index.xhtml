@@ -29,17 +29,19 @@
                         <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
                         <h:message for="j_username" style="color:red"/><br/>
                         <h:message for="j_password" style="color:red"/><br/>
-                        <h:panelGrid columns="3">
+                        <h:panelGrid columns="2">
                             <h:outputText value="Username:" />
                             <h:outputText value="Password:" />
-                            <h:outputText value="" />
-                            <h:inputText id="j_username" value="#{loginBean.username}" required="true"/>
-                            <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true"/>
-                            <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" />
+                            <!-- <h:outputText value="" /> -->
+                            <h:inputText id="j_username" value="#{loginBean.username}" required="true" styleClass="logUser"/>
+                            <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true" styleClass="logPass"/>
                             <h:panelGroup layout="block">
+                            <!-- <h:selectBooleanCheckbox /><h:outputText value="Zapamiętaj hasło"/><h:outputText value="&lt;br/&gt;" escape="false" /> -->
                                 <h:selectBooleanCheckbox id="_spring_security_remember_me" /><h:outputText value="Zapamiętaj hasło"/>
                             </h:panelGroup>
-                            <h:commandLink value="Zapomniałeś hasło?"/>
+                            <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" styleClass="logLog"/>
+                            <h:outputText value="" />
+                            <h:commandLink value="Nie mogę się zalogować" styleClass="logForget"/>
                         </h:panelGrid>
                     </h:form>
                 </c:if>
