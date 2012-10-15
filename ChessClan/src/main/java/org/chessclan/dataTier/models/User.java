@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,13 +33,15 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -83,21 +86,23 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "sex")
     private int sex;
-    @ManyToMany(mappedBy = "userSet",fetch= FetchType.EAGER,cascade= CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER)
     private Set<Role> roleSet;
-    @JoinColumn(name = "user_club", referencedColumnName = "club_id")
-    @ManyToOne
+    @JoinColumn(name = "user_club", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Club userClub;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Post> postSet;
 
     public User() {
     }
 
-    public User(Integer userId) {
-        this.userId = userId;
+    public User(Integer id) {
+        this.id = id;
     }
 
-    public User(Integer userId, String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, Date creationDate, int sex) {
-        this.userId = userId;
+    public User(Integer id, String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, Date creationDate, int sex) {
+        this.id = id;
         this.login = login;
         this.email = email;
         this.enabled = enabled;
@@ -109,12 +114,12 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -205,10 +210,18 @@ public class User implements Serializable {
         this.userClub = userClub;
     }
 
+    public Set<Post> getPostSet() {
+        return postSet;
+    }
+
+    public void setPostSet(Set<Post> postSet) {
+        this.postSet = postSet;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userId != null ? userId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -219,7 +232,7 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -227,7 +240,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.User[ userId=" + userId + " ]";
+        return "org.chessclan.dataTier.models.User[ id=" + id + " ]";
     }
     
 }
