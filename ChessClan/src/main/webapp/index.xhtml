@@ -24,6 +24,7 @@
             <h:panelGroup layout="block" class="header">
                 <h:panelGroup layout="block" class="logo">
                 </h:panelGroup>
+
                 <c:if test="#{not loginBean.loggedUser}">
                     <h:form id="loginForm" prependId="false" class="loginStuff">
                         <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
@@ -36,12 +37,12 @@
                             <h:inputText id="j_username" value="#{loginBean.username}" required="true" styleClass="logUser"/>
                             <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true" styleClass="logPass"/>
                             <h:panelGroup layout="block">
-                            <!-- <h:selectBooleanCheckbox /><h:outputText value="Zapamiętaj hasło"/><h:outputText value="&lt;br/&gt;" escape="false" /> -->
                                 <h:selectBooleanCheckbox id="_spring_security_remember_me" /><h:outputText value="Zapamiętaj hasło"/>
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <h:commandLink value="Nie mogę się zalogować"/>
                             </h:panelGroup>
                             <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" styleClass="logLog"/>
                             <h:outputText value="" />
-                            <h:commandLink value="Nie mogę się zalogować" styleClass="logForget"/>
                         </h:panelGrid>
                     </h:form>
                 </c:if>
@@ -50,6 +51,7 @@
                     <h:outputText value="#{loginBean.user.firstName} #{loginBean.user.lastName} "/>
                     <h:outputLink value="#{request.contextPath}/j_spring_security_logout">(Wyloguj)</h:outputLink>
                 </c:if>
+
             </h:panelGroup>
             <c:if test="#{not loginBean.loggedUser}">
                 <h:panelGroup layout="block" class="elements">
