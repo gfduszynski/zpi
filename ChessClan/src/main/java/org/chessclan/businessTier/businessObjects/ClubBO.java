@@ -8,8 +8,6 @@ import java.io.Serializable;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.repositories.ClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
