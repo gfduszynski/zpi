@@ -56,8 +56,9 @@ public class Tournament implements Serializable {
     @Size(min = 1, max = 2048)
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
-    private Set<Result> resultSet;
+    @JoinColumn(name = "current_round", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Round currentRound;
     @JoinColumn(name = "category", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Category category;
@@ -114,12 +115,12 @@ public class Tournament implements Serializable {
         this.description = description;
     }
 
-    public Set<Result> getResultSet() {
-        return resultSet;
+    public Round getCurrentRound() {
+        return currentRound;
     }
 
-    public void setResultSet(Set<Result> resultSet) {
-        this.resultSet = resultSet;
+    public void setCurrentRound(Round currentRound) {
+        this.currentRound = currentRound;
     }
 
     public Category getCategory() {
