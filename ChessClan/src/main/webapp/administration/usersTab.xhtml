@@ -32,15 +32,15 @@
                         </h:selectBooleanCheckbox>
                     </f:facet>
                     <!-- row record -->
-                    <h:selectBooleanCheckbox value="#{udBean.checked[user.userId]}"/>
+                    <h:selectBooleanCheckbox value="#{udBean.checked[user.id]}"/>
                 </h:column>
 
                 <h:column>
                     <!-- column header -->
                     <f:facet name="header">No</f:facet>
                     <!-- row record -->
-                    <h:outputText value="#{user.userId}" rendered="#{not user.enabled}"/>
-                    <h:inputText value="#{user.userId}" rendered="#{user.enabled}" class="input-edit-row"/>
+                    <h:outputText value="#{user.id}" rendered="#{not user.enabled}"/>
+                    <h:inputText value="#{user.id}" rendered="#{user.enabled}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>

@@ -4,12 +4,12 @@
  */
 package org.chessclan.dataTier.repositories;
 
-import org.chessclan.dataTier.models.Results;
+import org.chessclan.dataTier.models.Result;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Xcays
  */
-public interface ResultsRepository extends JpaRepository<Results, Integer> {
+public interface ResultRepository extends JpaRepository<Result, Integer> {
 }

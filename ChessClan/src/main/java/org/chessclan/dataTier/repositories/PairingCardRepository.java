@@ -4,12 +4,12 @@
  */
 package org.chessclan.dataTier.repositories;
 
-import org.chessclan.dataTier.models.Game;
+import org.chessclan.dataTier.models.PairingCard;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Xcays
  */
-public interface GameRepository extends JpaRepository<Game, Integer> {
+public interface PairingCardRepository extends JpaRepository<PairingCard, Integer> {
 }

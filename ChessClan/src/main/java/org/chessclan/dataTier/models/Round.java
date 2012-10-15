@@ -5,11 +5,13 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,14 +21,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author Xcays
+ * @author Giorgio
  */
 @Entity
-@Table(name = "round")
+@Table(name = "rounds")
 @NamedQueries({
     @NamedQuery(name = "Round.findAll", query = "SELECT r FROM Round r")})
 public class Round implements Serializable {
@@ -34,36 +38,52 @@ public class Round implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "round_id")
-    private Integer roundId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "number")
     private int number;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roundId")
-    private Collection<Category> categoryCollection;
-    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
-    @ManyToOne(optional = false)
-    private Game gameId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "state")
+    private int state;
+    @Column(name = "start")
+    @Temporal(TemporalType.DATE)
+    private Date start;
+    @Column(name = "end")
+    @Temporal(TemporalType.DATE)
+    private Date end;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
+    private Set<Category> categorySet;
+    @OneToMany(mappedBy = "prevRound", fetch = FetchType.EAGER)
+    private Set<Round> roundSet;
+    @JoinColumn(name = "prev_round", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Round prevRound;
+    @JoinColumn(name = "tournament", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Tournament tournament;
 
     public Round() {
     }
 
-    public Round(Integer roundId) {
-        this.roundId = roundId;
+    public Round(Integer id) {
+        this.id = id;
     }
 
-    public Round(Integer roundId, int number) {
-        this.roundId = roundId;
+    public Round(Integer id, int number, int state) {
+        this.id = id;
         this.number = number;
+        this.state = state;
     }
 
-    public Integer getRoundId() {
-        return roundId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRoundId(Integer roundId) {
-        this.roundId = roundId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getNumber() {
@@ -74,26 +94,66 @@ public class Round implements Serializable {
         this.number = number;
     }
 
-    public Collection<Category> getCategoryCollection() {
-        return categoryCollection;
+    public int getState() {
+        return state;
     }
 
-    public void setCategoryCollection(Collection<Category> categoryCollection) {
-        this.categoryCollection = categoryCollection;
+    public void setState(int state) {
+        this.state = state;
     }
 
-    public Game getGameId() {
-        return gameId;
+    public Date getStart() {
+        return start;
     }
 
-    public void setGameId(Game gameId) {
-        this.gameId = gameId;
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+    public Set<Category> getCategorySet() {
+        return categorySet;
+    }
+
+    public void setCategorySet(Set<Category> categorySet) {
+        this.categorySet = categorySet;
+    }
+
+    public Set<Round> getRoundSet() {
+        return roundSet;
+    }
+
+    public void setRoundSet(Set<Round> roundSet) {
+        this.roundSet = roundSet;
+    }
+
+    public Round getPrevRound() {
+        return prevRound;
+    }
+
+    public void setPrevRound(Round prevRound) {
+        this.prevRound = prevRound;
+    }
+
+    public Tournament getTournament() {
+        return tournament;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (roundId != null ? roundId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -104,7 +164,7 @@ public class Round implements Serializable {
             return false;
         }
         Round other = (Round) object;
-        if ((this.roundId == null && other.roundId != null) || (this.roundId != null && !this.roundId.equals(other.roundId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -112,7 +172,7 @@ public class Round implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.businessTier.businessObjects.Round[ roundId=" + roundId + " ]";
+        return "org.chessclan.dataTier.models.Round[ id=" + id + " ]";
     }
     
 }

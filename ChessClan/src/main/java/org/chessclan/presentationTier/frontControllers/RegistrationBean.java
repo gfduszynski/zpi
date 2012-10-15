@@ -184,7 +184,7 @@ public class RegistrationBean {
         boolean val4 = validateStatute();
         if (val1 && val2 && val3 && val4) {
             User u = umBO.registerUser(email, email, true, password, null, null, birthDate, 0);
-            umBO.assignRole(u.getUserId(), Role.Type.CLUB_OWNER);
+            umBO.assignRole(u.getId(), Role.Type.CLUB_OWNER);
         } else {
             regError = true;
         }
@@ -201,7 +201,7 @@ public class RegistrationBean {
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4 + " : " + val5 + " : ");
         if (val1 && val2 && val3 && val4 && val5) {
             User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
-            umBO.assignRole(u.getUserId(), Role.Type.USER);
+            umBO.assignRole(u.getId(), Role.Type.USER);
             this.regSucceeded = true;
         } else {
             this.regError = true;

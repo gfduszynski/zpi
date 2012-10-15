@@ -5,12 +5,13 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,10 +28,10 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Xcays
+ * @author Giorgio
  */
 @Entity
-@Table(name = "tournament")
+@Table(name = "tournaments")
 @NamedQueries({
     @NamedQuery(name = "Tournament.findAll", query = "SELECT t FROM Tournament t")})
 public class Tournament implements Serializable {
@@ -38,8 +39,8 @@ public class Tournament implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "tournament_id")
-    private Integer tournamentId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 256)
@@ -55,38 +56,38 @@ public class Tournament implements Serializable {
     @Size(min = 1, max = 2048)
     @Column(name = "description")
     private String description;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 256)
-    @Column(name = "organizer")
-    private String organizer;
-    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
-    @ManyToOne(optional = false)
-    private Category categoryId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournamentId")
-    private Collection<Results> resultsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
+    private Set<Result> resultSet;
+    @JoinColumn(name = "category", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Category category;
+    @JoinColumn(name = "club", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Club club;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
+    private Set<Round> roundSet;
 
     public Tournament() {
     }
 
-    public Tournament(Integer tournamentId) {
-        this.tournamentId = tournamentId;
+    public Tournament(Integer id) {
+        this.id = id;
     }
 
-    public Tournament(Integer tournamentId, String name, Date date, String description, String organizer) {
-        this.tournamentId = tournamentId;
+    public Tournament(Integer id, String name, Date date, String description, Club club) {
+        this.id = id;
         this.name = name;
         this.date = date;
         this.description = description;
-        this.organizer = organizer;
+        this.club = club;
     }
 
-    public Integer getTournamentId() {
-        return tournamentId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTournamentId(Integer tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -113,34 +114,42 @@ public class Tournament implements Serializable {
         this.description = description;
     }
 
-    public String getOrganizer() {
-        return organizer;
+    public Set<Result> getResultSet() {
+        return resultSet;
     }
 
-    public void setOrganizer(String organizer) {
-        this.organizer = organizer;
+    public void setResultSet(Set<Result> resultSet) {
+        this.resultSet = resultSet;
     }
 
-    public Category getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public Collection<Results> getResultsCollection() {
-        return resultsCollection;
+    public Club getClub() {
+        return club;
     }
 
-    public void setResultsCollection(Collection<Results> resultsCollection) {
-        this.resultsCollection = resultsCollection;
+    public void setClub(Club club) {
+        this.club = club;
+    }
+
+    public Set<Round> getRoundSet() {
+        return roundSet;
+    }
+
+    public void setRoundSet(Set<Round> roundSet) {
+        this.roundSet = roundSet;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tournamentId != null ? tournamentId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -151,7 +160,7 @@ public class Tournament implements Serializable {
             return false;
         }
         Tournament other = (Tournament) object;
-        if ((this.tournamentId == null && other.tournamentId != null) || (this.tournamentId != null && !this.tournamentId.equals(other.tournamentId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -159,7 +168,7 @@ public class Tournament implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.businessTier.businessObjects.Tournament[ tournamentId=" + tournamentId + " ]";
+        return "org.chessclan.dataTier.models.Tournament[ id=" + id + " ]";
     }
     
 }

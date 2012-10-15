@@ -36,37 +36,37 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "role_id")
-    private Integer roleId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "role_name")
     private String roleName;
     @JoinTable(name = "user_roles", joinColumns = {
-        @JoinColumn(name = "role_id", referencedColumnName = "role_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "user_id", referencedColumnName = "user_id")})
-    @ManyToMany(fetch= FetchType.EAGER)
+        @JoinColumn(name = "role", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "user", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> userSet;
 
     public Role() {
     }
 
-    public Role(Integer roleId) {
-        this.roleId = roleId;
+    public Role(Integer id) {
+        this.id = id;
     }
 
-    public Role(Integer roleId, String roleName) {
-        this.roleId = roleId;
+    public Role(Integer id, String roleName) {
+        this.id = id;
         this.roleName = roleName;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getRoleName() {
@@ -88,7 +88,7 @@ public class Role implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (roleId != null ? roleId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -99,7 +99,7 @@ public class Role implements Serializable {
             return false;
         }
         Role other = (Role) object;
-        if ((this.roleId == null && other.roleId != null) || (this.roleId != null && !this.roleId.equals(other.roleId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -107,7 +107,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.dataTier.models.Role[ roleId=" + roleId + " ]";
+        return "org.chessclan.dataTier.models.Role[ id=" + id + " ]";
     }
     
 }
