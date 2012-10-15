@@ -5,8 +5,8 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
-import org.chessclan.dataTier.models.Results;
-import org.chessclan.dataTier.repositories.ResultsRepository;
+import org.chessclan.dataTier.models.Result;
+import org.chessclan.dataTier.repositories.ResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,41 +14,41 @@ import org.springframework.stereotype.Service;
  *
  * @author Xcays
  */
-@Service("ResultsBO")
+@Service("ResultBO")
 public class ResultsBO implements Serializable{    
     
     @Autowired
-    private ResultsRepository resultsRepo;
+    private ResultRepository resultRepo;
     
-    public Results saveResult(Results r){
-        return resultsRepo.save(r);
+    public Result saveResult(Result r){
+        return resultRepo.save(r);
     }
     
-    public Iterable<Results> saveResults(Iterable<Results> r){
-        return resultsRepo.save(r);
+    public Iterable<Result> saveResults(Iterable<Result> r){
+        return resultRepo.save(r);
     }
     
-    public Results findResultById(int id){
-        return resultsRepo.findOne(id);
+    public Result findResultById(int id){
+        return resultRepo.findOne(id);
     }
     
-    public Iterable<Results> findResultsById(Iterable<Integer> ids){
-        return resultsRepo.findAll(ids);
+    public Iterable<Result> findResultsById(Iterable<Integer> ids){
+        return resultRepo.findAll(ids);
     }
     
-    public Iterable<Results> findAll(){
-        return resultsRepo.findAll();
+    public Iterable<Result> findAll(){
+        return resultRepo.findAll();
     }
     
     public void deleteResult(int id){
-        resultsRepo.delete(id);
+        resultRepo.delete(id);
     }
     
-    public void deleteResult(Results r){
-        resultsRepo.delete(r);
+    public void deleteResult(Result r){
+        resultRepo.delete(r);
     }
     
-    public void deleteResults(Iterable<Results> rs){
-        resultsRepo.delete(rs);
+    public void deleteResults(Iterable<Result> rs){
+        resultRepo.delete(rs);
     }
 }
