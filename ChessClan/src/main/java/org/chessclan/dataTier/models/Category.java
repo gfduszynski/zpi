@@ -5,11 +5,12 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Xcays
+ * @author Giorgio
  */
 @Entity
 @Table(name = "category")
@@ -35,8 +36,8 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "category_id")
-    private Integer categoryId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 256)
@@ -45,33 +46,33 @@ public class Category implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 512)
-    @Column(name = "players")
-    private String players;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
-    private Collection<Tournament> tournamentCollection;
-    @JoinColumn(name = "round_id", referencedColumnName = "round_id")
-    @ManyToOne(optional = false)
-    private Round roundId;
+    @Column(name = "player")
+    private String player;
+    @JoinColumn(name = "round", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Round round;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
+    private Set<Tournament> tournamentSet;
 
     public Category() {
     }
 
-    public Category(Integer categoryId) {
-        this.categoryId = categoryId;
+    public Category(Integer id) {
+        this.id = id;
     }
 
-    public Category(Integer categoryId, String name, String players) {
-        this.categoryId = categoryId;
+    public Category(Integer id, String name, String player) {
+        this.id = id;
         this.name = name;
-        this.players = players;
+        this.player = player;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -82,34 +83,34 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public String getPlayers() {
-        return players;
+    public String getPlayer() {
+        return player;
     }
 
-    public void setPlayers(String players) {
-        this.players = players;
+    public void setPlayer(String player) {
+        this.player = player;
     }
 
-    public Collection<Tournament> getTournamentCollection() {
-        return tournamentCollection;
+    public Round getRound() {
+        return round;
     }
 
-    public void setTournamentCollection(Collection<Tournament> tournamentCollection) {
-        this.tournamentCollection = tournamentCollection;
+    public void setRound(Round round) {
+        this.round = round;
     }
 
-    public Round getRoundId() {
-        return roundId;
+    public Set<Tournament> getTournamentSet() {
+        return tournamentSet;
     }
 
-    public void setRoundId(Round roundId) {
-        this.roundId = roundId;
+    public void setTournamentSet(Set<Tournament> tournamentSet) {
+        this.tournamentSet = tournamentSet;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (categoryId != null ? categoryId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -120,7 +121,7 @@ public class Category implements Serializable {
             return false;
         }
         Category other = (Category) object;
-        if ((this.categoryId == null && other.categoryId != null) || (this.categoryId != null && !this.categoryId.equals(other.categoryId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -128,7 +129,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.businessTier.businessObjects.Category[ categoryId=" + categoryId + " ]";
+        return "org.chessclan.dataTier.models.Category[ id=" + id + " ]";
     }
     
 }

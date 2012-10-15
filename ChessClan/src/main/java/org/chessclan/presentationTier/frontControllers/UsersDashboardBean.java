@@ -70,8 +70,8 @@ public class UsersDashboardBean implements Serializable {
     public void selectAll(){
         Authentication b  = umBO.getLoggedUserAuthentication();
         for(int i=0;i<users.size();i++){
-            if(!checked.get(users.get(i).getUserId()) || !checked.containsKey(users.get(i).getUserId())) {
-                checked.put(users.get(i).getUserId(), true);
+            if(!checked.get(users.get(i).getId()) || !checked.containsKey(users.get(i).getId())) {
+                checked.put(users.get(i).getId(), true);
             }
         }
     }

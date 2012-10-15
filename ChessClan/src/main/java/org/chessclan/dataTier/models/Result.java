@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,19 +22,19 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Xcays
+ * @author Giorgio
  */
 @Entity
 @Table(name = "results")
 @NamedQueries({
-    @NamedQuery(name = "Results.findAll", query = "SELECT r FROM Results r")})
-public class Results implements Serializable {
+    @NamedQuery(name = "Result.findAll", query = "SELECT r FROM Result r")})
+public class Result implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "results_id")
-    private Integer resultsId;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 256)
@@ -48,30 +49,30 @@ public class Results implements Serializable {
     @NotNull
     @Column(name = "place")
     private int place;
-    @JoinColumn(name = "tournament_id", referencedColumnName = "tournament_id")
-    @ManyToOne(optional = false)
-    private Tournament tournamentId;
+    @JoinColumn(name = "tournament", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Tournament tournament;
 
-    public Results() {
+    public Result() {
     }
 
-    public Results(Integer resultsId) {
-        this.resultsId = resultsId;
+    public Result(Integer id) {
+        this.id = id;
     }
 
-    public Results(Integer resultsId, String player, String category, int place) {
-        this.resultsId = resultsId;
+    public Result(Integer id, String player, String category, int place) {
+        this.id = id;
         this.player = player;
         this.category = category;
         this.place = place;
     }
 
-    public Integer getResultsId() {
-        return resultsId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setResultsId(Integer resultsId) {
-        this.resultsId = resultsId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getPlayer() {
@@ -98,29 +99,29 @@ public class Results implements Serializable {
         this.place = place;
     }
 
-    public Tournament getTournamentId() {
-        return tournamentId;
+    public Tournament getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(Tournament tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (resultsId != null ? resultsId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Results)) {
+        if (!(object instanceof Result)) {
             return false;
         }
-        Results other = (Results) object;
-        if ((this.resultsId == null && other.resultsId != null) || (this.resultsId != null && !this.resultsId.equals(other.resultsId))) {
+        Result other = (Result) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -128,7 +129,7 @@ public class Results implements Serializable {
 
     @Override
     public String toString() {
-        return "org.chessclan.businessTier.businessObjects.Results[ resultsId=" + resultsId + " ]";
+        return "org.chessclan.dataTier.models.Result[ id=" + id + " ]";
     }
     
 }
