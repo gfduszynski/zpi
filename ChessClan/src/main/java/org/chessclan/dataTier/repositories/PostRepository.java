@@ -20,4 +20,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
     Page<Post> findByDateExpiresAfter(Date date_expires, Pageable pgbl);
     List<Post> findByDateExpiresAfter(Date date_expires);
 
+    
+    Page<Post> findByDateExpiresAfterAndPublishedTrue(Date date_expires, Pageable pgbl);
+    List<Post> findByDateExpiresAfterAndPublishedTrue(Date date_expires);
+
 }

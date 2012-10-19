@@ -65,6 +65,7 @@ public class PostBO implements Serializable{
          return postRepo.findByDateExpiresAfter(new Date(), pgbl);
     }
     
+    
     public List<Post> findLatestPosts(int numberOfPosts)
     {
          List<Post> postList;
@@ -74,6 +75,20 @@ public class PostBO implements Serializable{
         }else { return postList.subList(0, numberOfPosts-1);}
     }
     
+    public Page<Post> findLatestPublishedPosts(Pageable pgbl)
+    {
+         return postRepo.findByDateExpiresAfterAndPublishedTrue(new Date(), pgbl);
+    }
+    
+    
+    public List<Post> findLatestPublishedPosts(int numberOfPosts)
+    {
+         List<Post> postList;
+         postList = postRepo.findByDateExpiresAfterAndPublishedTrue(new Date());
+         if(postList.size()<= numberOfPosts) {
+            return postList;
+        }else { return postList.subList(0, numberOfPosts-1);}
+    }
     public Iterable<Post> findAllPosts(Sort s)
     {
         return postRepo.findAll(s);

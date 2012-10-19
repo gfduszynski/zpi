@@ -14,8 +14,6 @@
         <h:outputStylesheet library="css" name="jquery-ui-1.9.0.custom.css"/>
         <h:outputScript library="js" name="jquery-1.8.2.js"/>
         <h:outputScript library="js" name="jquery-ui-1.9.0.custom.min.js"/>
-        <!--        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine"/>-->
-
     </h:head>
 
     <h:body>
@@ -28,20 +26,18 @@
                 <c:if test="#{not loginBean.loggedUser}">
                     <h:form id="loginForm" prependId="false" class="loginStuff">
                         <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
-                        <h:message for="j_username" style="color:red"/><!--<br/> -->
-                        <h:message for="j_password" style="color:red"/><!--<br/> -->
+                        <h:message for="j_username" style="color:red"/>
+                        <h:message for="j_password" style="color:red"/>
                         <h:panelGrid columns="2">
                             <h:outputText value="Username:" />
                             <h:outputText value="Password:" />
-                            <!-- <h:outputText value="" /> -->
                             <h:inputText id="j_username" value="#{loginBean.username}" required="true" styleClass="logUser"/>
                             <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true" styleClass="logPass"/>
                             <h:panelGroup layout="block">
                                 <h:selectBooleanCheckbox id="_spring_security_remember_me" /><h:outputText value="Zapamiętaj hasło"/>
-                               <!-- <h:outputText value="&lt;br/&gt;" escape="false" /> -->
                             </h:panelGroup>
                             <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" styleClass="logLog"/>
-                                <h:commandLink value="Nie mogę się zalogować"/>
+                            <h:commandLink value="Nie mogę się zalogować"/>
                             <h:outputText value="" />
                         </h:panelGrid>
                     </h:form>

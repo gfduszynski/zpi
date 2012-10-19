@@ -86,7 +86,7 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "sex")
     private int sex;
-    @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER, cascade= CascadeType.REMOVE)
     private Set<Role> roleSet;
     @JoinColumn(name = "user_club", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
