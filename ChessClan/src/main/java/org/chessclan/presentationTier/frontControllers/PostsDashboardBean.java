@@ -170,6 +170,23 @@ public class PostsDashboardBean implements Serializable {
         this.dateExpires = dateExpires;
     }
     
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
+    
+    
+    public Integer getUser() {
+        return user;
+    }
+
+    public void setUser(Integer user) {
+        this.user = user;
+    }
+    
     public PostBO getPoBO() {
         return poBO;
     }
