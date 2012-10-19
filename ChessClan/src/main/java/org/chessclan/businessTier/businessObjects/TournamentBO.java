@@ -7,6 +7,7 @@ package org.chessclan.businessTier.businessObjects;
 import java.io.Serializable;
 import java.util.Date;
 import org.chessclan.dataTier.models.Club;
+import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.repositories.PairingCardRepository;
 import org.chessclan.dataTier.repositories.RoundRepository;
@@ -35,6 +36,14 @@ public class TournamentBO implements Serializable{
         return tRepo.saveAndFlush(t);
     }
     
+    
+    public Tournament goToNextRound(Tournament t) throws Round.NotFinished{
+    
+        return tRepo.saveAndFlush(t);
+    }
+    
+    
+    // DAO Wrappers
     public Tournament saveTournament(Tournament t){
         return tRepo.save(t);
     }

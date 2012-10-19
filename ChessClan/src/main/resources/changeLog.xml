@@ -108,7 +108,7 @@
 
 
 
-    <changeSet id="3" author="tjp">        
+    <changeSet id="3" author="tjp+gfduszynski">        
         <createTable tableName="results">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -146,6 +146,9 @@
             <column name="category" type="int">
                 <constraints nullable="false"/>
             </column>
+            <column name="current_round" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="category">
@@ -176,13 +179,13 @@
             <column name="tournament" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="state" type="int">
+            <column name="round_state" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="start" type="date">
+            <column name="round_start" type="date">
                 <constraints nullable="true" />
             </column>
-            <column name="end" type="date">
+            <column name="round_end" type="date">
                 <constraints nullable="true" />
             </column>
         </createTable>
@@ -205,12 +208,13 @@
             </column>
         </createTable>
         
-    <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="category"   constraintName="tournament_category_ref" referencedTableName="category"     referencedColumnNames="id"/>    
-    <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="club"       constraintName="tournament_club_ref"     referencedTableName="clubs"        referencedColumnNames="id"/>
-    <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="prev_round" constraintName="round_round_ref"         referencedTableName="rounds"       referencedColumnNames="id"/>
-    <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="tournament" constraintName="round_tournament_ref"    referencedTableName="tournaments"  referencedColumnNames="id"/>
-    <addForeignKeyConstraint baseTableName="results"     baseColumnNames="tournament" constraintName="results_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
-    <addForeignKeyConstraint baseTableName="category"    baseColumnNames="round"      constraintName="category_round_ref"      referencedTableName="rounds"       referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="category"         constraintName="tournament_category_ref" referencedTableName="category"     referencedColumnNames="id"/>    
+    <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="current_round"    constraintName="tournament_round_ref"    referencedTableName="rounds"       referencedColumnNames="id"/>    
+    <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="club"             constraintName="tournament_club_ref"     referencedTableName="clubs"        referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="prev_round"       constraintName="round_round_ref"         referencedTableName="rounds"       referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="tournament"       constraintName="round_tournament_ref"    referencedTableName="tournaments"  referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="results"     baseColumnNames="tournament"       constraintName="results_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="category"    baseColumnNames="round"            constraintName="category_round_ref"      referencedTableName="rounds"       referencedColumnNames="id"/>
             
     </changeSet>
     
