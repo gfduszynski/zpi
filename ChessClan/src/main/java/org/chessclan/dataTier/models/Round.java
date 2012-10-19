@@ -11,14 +11,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -47,7 +47,8 @@ public class Round implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "round_state")
-    private int roundState;
+    @Enumerated(EnumType.ORDINAL)
+    private State roundState;
     @Column(name = "round_start")
     @Temporal(TemporalType.DATE)
     private Date roundStart;
@@ -74,7 +75,7 @@ public class Round implements Serializable {
         this.id = id;
     }
 
-    public Round(Integer id, int number, int roundState) {
+    public Round(Integer id, int number, State roundState) {
         this.id = id;
         this.number = number;
         this.roundState = roundState;
@@ -96,11 +97,11 @@ public class Round implements Serializable {
         this.number = number;
     }
 
-    public int getRoundState() {
+    public State getRoundState() {
         return roundState;
     }
 
-    public void setRoundState(int roundState) {
+    public void setRoundState(State roundState) {
         this.roundState = roundState;
     }
 
