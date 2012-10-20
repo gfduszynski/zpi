@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import org.chessclan.dataTier.models.Post;
+import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -92,6 +93,11 @@ public class PostBO implements Serializable{
     public Iterable<Post> findAllPosts(Sort s)
     {
         return postRepo.findAll(s);
+    }
+    
+    public List<Post> findUserPosts(User u)
+    {
+        return postRepo.findByUser(u);
     }
     
     public Post findOnePost(Integer id)

@@ -31,7 +31,7 @@ public class TournamentBO implements Serializable{
     private RoundRepository rRepo;
     
     @Autowired
-    private PairingCardRepository gRepo;
+    private PairingCardRepository pcRepo;
     
     @Autowired
     private UserManagementBO umBO;
@@ -45,10 +45,12 @@ public class TournamentBO implements Serializable{
         return tRepo.saveAndFlush(t);
     }
     
-    public Tournament joinTorunament(Tournament t){return joinTournament(t, umBO.getLoggedUser());}
-    public Tournament joinTournament(Tournament t, User u){
+    public PairingCard joinTorunament(Tournament t){return joinTournament(t, umBO.getLoggedUser());}
+    public PairingCard joinTournament(Tournament t, User u){
         PairingCard pc = new PairingCard(null, u, null, t, 0);
-        return tRepo.save(t);
+        t.getPairingCardSet().add(pc);
+        u.getPairingCardSet().add(pc);
+        return pcRepo.saveAndFlush(pc);
     }
     
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers{
