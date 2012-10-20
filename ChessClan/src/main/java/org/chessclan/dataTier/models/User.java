@@ -93,6 +93,10 @@ public class User implements Serializable {
     private Set<Post> postSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Club> clubSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "opponent", fetch = FetchType.EAGER)
+    private Set<PairingCard> opponentPairingCardSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player", fetch = FetchType.EAGER)
+    private Set<PairingCard> pairingCardSet;
 
     public User() {
     }
@@ -249,6 +253,22 @@ public class User implements Serializable {
 
     public void setClubSet(Set<Club> clubSet) {
         this.clubSet = clubSet;
+    }
+
+    public Set<PairingCard> getOpponentPairingCardSet() {
+        return opponentPairingCardSet;
+    }
+
+    public void setOpponentPairingCardSet(Set<PairingCard> pairingCardSet) {
+        this.opponentPairingCardSet = pairingCardSet;
+    }
+
+    public Set<PairingCard> getPairingCardSet() {
+        return pairingCardSet;
+    }
+
+    public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
+        this.pairingCardSet = pairingCardSet;
     }
     
 }

@@ -23,11 +23,28 @@ public class ClubBO implements Serializable{
     @Autowired
     private ClubRepository clubRepo;
     
+    @Autowired
+    private UserManagementBO umBO;
+    
     public Club registerClub(String name, String description, Date creationDate, User owner){
         Club c =  new Club(null, name, creationDate, owner);
         c.setDescription(description);
         owner.getClubSet().add(c);
         return clubRepo.saveAndFlush(c);
+    }
+    
+    public Club joinClub(Club c){return joinClub(c,umBO.getLoggedUser());}
+    public Club joinClub(Club c, User u){
+        c.getUserSet().add(u);
+        u.getClubSet().add(c);
+        return clubRepo.save(c);
+    }
+    
+    public Club leaveClub(Club c){return leaveClub(c,umBO.getLoggedUser());}
+    public Club leaveClub(Club c, User u){
+        c.getUserSet().remove(u);
+        u.getClubSet().remove(c);
+        return clubRepo.save(c);
     }
     
     public Club saveClub(Club c){
