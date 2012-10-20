@@ -40,7 +40,7 @@ public class ClubBO implements Serializable{
         return clubRepo.save(c);
     }
     
-    public Club leaveClub(Club c){return leaveClub(c,umBO.getLoggedUser());}
+    public Club leaveClub(){return leaveClub(umBO.getLoggedUser().getUserClub(),umBO.getLoggedUser());}
     public Club leaveClub(Club c, User u){
         c.getUserSet().remove(u);
         u.getClubSet().remove(c);

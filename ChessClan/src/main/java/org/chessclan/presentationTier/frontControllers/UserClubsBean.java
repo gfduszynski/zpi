@@ -43,10 +43,11 @@ public class UserClubsBean {
     }
 
     public void signOutFromClub() {
-    
+        clubBO.leaveClub();
     }
 
     public void signToClub(Club club) {
+        clubBO.joinClub(club);
     }
 
     public ClubBO getClubBO() {
@@ -80,6 +81,4 @@ public class UserClubsBean {
     public void setUmBO(UserManagementBO umBO) {
         this.umBO = umBO;
     }
-    
-    
 }
