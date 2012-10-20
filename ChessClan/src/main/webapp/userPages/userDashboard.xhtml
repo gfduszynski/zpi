@@ -16,6 +16,10 @@
                         collapsible: true,
                         heightStyle: "content"
                     });
+                    $( "#accordion2" ).accordion({
+                        collapsible: true,
+                        heightStyle: "content"
+                    });
                     $( "#tabs" ).tabs();
                 });
             </script>
@@ -131,8 +135,32 @@
                     </div>
                 </div>
                 <div id="tabs-4">
-                    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-                    <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+                    <div id="accordion2">
+                        <h3>Mój klub</h3>
+                        <div>
+                            <c:if test="#{loginBean.user.userClub == null}">
+                                <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+                                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                        Nie jesteś zapisana/y do żadnego klubu. Aby to zrobić, przejdź do następnej zakładki.
+                                    </p>
+                                </h:panelGroup>
+                            </c:if>
+                            <c:if test="#{loginBean.user.userClub != null}">
+                                <h:panelGroup layout="block">
+                                    <h4>#{loginBean.user.userClub.name}</h4>
+                                    <h:panelGroup>
+                                        <h:outputText value="Data utworzenia: #{loginBean.user.userClub.creationDate}"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:outputText value="#{loginBean.user.userClub.description}"/>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </c:if>
+                        </div>
+
+                        <h3>Wszystkie kluby w systemie</h3>
+                        <div></div>
+                    </div>
                 </div>
             </div>
         </ui:composition>
