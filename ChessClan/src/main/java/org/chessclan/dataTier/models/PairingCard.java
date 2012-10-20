@@ -33,15 +33,15 @@ public class PairingCard implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "player")
-    private int player;
+    private User player;
     @Basic(optional = false)
     @NotNull
     @Column(name = "opponent")
-    private int opponent;
+    private User opponent;
     @Basic(optional = false)
     @NotNull
     @Column(name = "tournament")
-    private int tournament;
+    private Tournament tournament;
     @Basic(optional = false)
     @NotNull
     @Column(name = "score")
@@ -57,7 +57,7 @@ public class PairingCard implements Serializable {
         this.id = id;
     }
 
-    public PairingCard(Integer id, int player, int opponent, int tournament, float score) {
+    public PairingCard(Integer id, User player, User opponent, Tournament tournament, float score) {
         this.id = id;
         this.player = player;
         this.opponent = opponent;
@@ -73,27 +73,27 @@ public class PairingCard implements Serializable {
         this.id = id;
     }
 
-    public int getPlayer() {
+    public User getPlayer() {
         return player;
     }
 
-    public void setPlayer(int player) {
+    public void setPlayer(User player) {
         this.player = player;
     }
 
-    public int getOpponent() {
+    public User getOpponent() {
         return opponent;
     }
 
-    public void setOpponent(int opponent) {
+    public void setOpponent(User opponent) {
         this.opponent = opponent;
     }
 
-    public int getTournament() {
+    public Tournament getTournament() {
         return tournament;
     }
 
-    public void setTournament(int tournament) {
+    public void setTournament(Tournament tournament) {
         this.tournament = tournament;
     }
 

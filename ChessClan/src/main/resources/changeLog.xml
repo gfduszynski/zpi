@@ -222,7 +222,10 @@
     <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="tournament"       constraintName="round_tournament_ref"    referencedTableName="tournaments"  referencedColumnNames="id"/>
     <addForeignKeyConstraint baseTableName="results"     baseColumnNames="tournament"       constraintName="results_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
     <addForeignKeyConstraint baseTableName="category"    baseColumnNames="round"            constraintName="category_round_ref"      referencedTableName="rounds"       referencedColumnNames="id"/>
-    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="round"       constraintName="pcard_round_ref"         referencedTableName="rounds"       referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="round"       constraintName="pcard_round_ref"       referencedTableName="rounds"       referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="tournament"  constraintName="pcard_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="opponent"    constraintName="pcard_opponent_ref"    referencedTableName="users"        referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="player"      constraintName="pcard_player_ref"      referencedTableName="users"        referencedColumnNames="id"/>
             
     </changeSet>
     

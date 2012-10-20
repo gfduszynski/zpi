@@ -10,6 +10,7 @@ import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Tournament;
+import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.PairingCardRepository;
 import org.chessclan.dataTier.repositories.RoundRepository;
 import org.chessclan.dataTier.repositories.TournamentRepository;
@@ -32,6 +33,9 @@ public class TournamentBO implements Serializable{
     @Autowired
     private PairingCardRepository gRepo;
     
+    @Autowired
+    private UserManagementBO umBO;
+    
     public Tournament registerTournament(String tName, Date tDate, String tDesc, Club tClub){
         Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
         t = tRepo.save(t);
@@ -41,6 +45,11 @@ public class TournamentBO implements Serializable{
         return tRepo.saveAndFlush(t);
     }
     
+    public Tournament joinTorunament(Tournament t){return joinTournament(t, umBO.getLoggedUser());}
+    public Tournament joinTournament(Tournament t, User u){
+        PairingCard pc = new PairingCard(null, u, null, t, 0);
+        return tRepo.save(t);
+    }
     
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers{
         t = tRepo.findOne(t.getId());
@@ -64,6 +73,7 @@ public class TournamentBO implements Serializable{
         t.getRoundSet().add(nextRound);
         
         // Provide new pairing cards for next round
+        
         
         return tRepo.saveAndFlush(t);
     }
