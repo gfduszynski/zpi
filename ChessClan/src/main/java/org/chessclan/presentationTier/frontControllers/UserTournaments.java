@@ -4,6 +4,7 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -18,7 +19,7 @@ import org.chessclan.dataTier.models.Tournament;
  */
 @ManagedBean(name="utBean")
 @ViewScoped
-public class UserTournaments {
+public class UserTournaments implements Serializable{
 
     @ManagedProperty("#{UserManagementBO}")
     UserManagementBO umBO;

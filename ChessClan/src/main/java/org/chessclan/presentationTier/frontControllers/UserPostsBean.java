@@ -6,7 +6,6 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -33,7 +32,6 @@ public class UserPostsBean implements Serializable {
     private boolean postWrong;
     @ManagedProperty("#{PostBO}")
     PostBO postBO;
-    
     @ManagedProperty("#{loginBean}")
     LoginBean loginBean;
 
@@ -53,53 +51,55 @@ public class UserPostsBean implements Serializable {
     }
 
     public void saveAndPublish() {
-        Post publishedPost = postBO.savePost(new Post(title, content, true, loginBean.getUser()));
-        if (publishedPost != null) {
-            this.postPublished = true;
+        if (validateContent() && validateTitle()) {
+            Post publishedPost = postBO.savePost(new Post(title, content, true, loginBean.getUser()));
+            if (publishedPost != null) {
+                this.postPublished = true;
+            }
+            this.title = "";
+            this.content = "";
         }
-        this.title = "";
-        this.content = "";
     }
 
     public void save() {
-        Post publishedPost = postBO.savePost(new Post(title, content, false, loginBean.getUser()));
-        if (publishedPost != null) {
-            this.postSaved = true;
+        if (validateContent() && validateTitle()) {
+            Post publishedPost = postBO.savePost(new Post(title, content, false, loginBean.getUser()));
+            if (publishedPost != null) {
+                this.postSaved = true;
+            }
+            this.title = "";
+            this.content = "";
         }
-        this.title = "";
-        this.content = "";
     }
 
-    public void validateTitle() {
+    public boolean validateTitle() {
         if (title != null) {
             if (title.length() > 0) {
                 this.postWrong = false;
+                return true;
             } else {
                 this.postWrong = true;
+                return false;
             }
         } else {
             this.postWrong = true;
+            return false;
         }
     }
 
-    public void validateContent() {
+    public boolean validateContent() {
         if (content != null) {
             if (content.length() > 0) {
                 this.postWrong = false;
+                return true;
             } else {
                 this.postWrong = true;
+                return false;
             }
         } else {
             this.postWrong = true;
+            return false;
         }
-    }
-
-    public List<Post> getAllPosts() {
-        return allPosts;
-    }
-
-    public void setAllPosts(List<Post> allPosts) {
-        this.allPosts = allPosts;
     }
 
     public PostBO getPostBO() {
@@ -108,6 +108,14 @@ public class UserPostsBean implements Serializable {
 
     public void setPostBO(PostBO postBO) {
         this.postBO = postBO;
+    }
+
+    public List<Post> getAllPosts() {
+        return allPosts;
+    }
+
+    public void setAllPosts(List<Post> allPosts) {
+        this.allPosts = allPosts;
     }
 
     public List<Post> getUserPosts() {
@@ -165,5 +173,4 @@ public class UserPostsBean implements Serializable {
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
     }
-
 }
