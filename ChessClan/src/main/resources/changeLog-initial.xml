@@ -133,6 +133,7 @@
 
         <insert tableName="clubs">
             <column name="id" valueNumeric="1"/>
+            <column name="owner" valueNumeric="1"/>
             <column name="name" value="Szarak"/>
             <column name="creation_date" valueDate="now()"/>
             <column name="description" value=" Tutaj znajduje się prosty opis klubu Szarak."/>

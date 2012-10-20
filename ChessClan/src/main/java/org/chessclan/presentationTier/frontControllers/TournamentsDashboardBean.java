@@ -12,7 +12,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Tournament;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 /**
  *
@@ -36,6 +39,10 @@ public class TournamentsDashboardBean implements Serializable {
     @Transient
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
+    
+    @Transient
+    @ManagedProperty("#{UserManagementBO}")
+    private UserManagementBO umBO;
 
     public TournamentsDashboardBean() {
 
@@ -58,6 +65,10 @@ public class TournamentsDashboardBean implements Serializable {
 
     public void generateTournaments()
     {
+        UsernamePasswordAuthenticationToken lUAuth = umBO.getLoggedUserAuthentication();
+        String lolek = lUAuth.getName();
+        umBO.findUserByEmail(lUAuth.getName());
+        tmBO.registerTournament("tname", new Date(), "tDescc", null);
     }
     public void removeTournament(Tournament t) {
         
@@ -175,4 +186,12 @@ public class TournamentsDashboardBean implements Serializable {
     public void setTmBO(TournamentBO tmBO) {
         this.tmBO = tmBO;
     }    
+    
+    public UserManagementBO getUmBO() {
+        return umBO;
+    }
+
+    public void setUmBO(UserManagementBO umBO) {
+        this.umBO = umBO;
+    }
 }

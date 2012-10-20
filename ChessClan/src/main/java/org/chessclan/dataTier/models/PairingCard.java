@@ -8,9 +8,12 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -42,7 +45,10 @@ public class PairingCard implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "score")
-    private float score;
+    private float score = -1;
+    @JoinColumn(name = "round", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Round round;
 
     public PairingCard() {
     }
@@ -122,6 +128,14 @@ public class PairingCard implements Serializable {
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.PairingCard[ id=" + id + " ]";
+    }
+
+    public Round getRound() {
+        return round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
     }
     
 }

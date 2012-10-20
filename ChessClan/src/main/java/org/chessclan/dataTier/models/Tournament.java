@@ -32,9 +32,8 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "tournaments")
-@NamedQueries({
-    @NamedQuery(name = "Tournament.findAll", query = "SELECT t FROM Tournament t")})
 public class Tournament implements Serializable {
+    public class Exists extends Exception {}
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

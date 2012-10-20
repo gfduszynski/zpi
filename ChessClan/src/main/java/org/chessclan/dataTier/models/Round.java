@@ -32,7 +32,16 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "rounds")
 public class Round implements Serializable {
-    public class NotFinished extends Exception{}
+    public static class NotFinished extends Exception{
+        public NotFinished(String string) {
+            super(string);
+        }
+    }
+    public static class NoPlayers extends Exception{
+        public NoPlayers(String string) {
+            super(string);
+        }
+    }
     public enum State{ JOINING,STARTED,FINISHED;}
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,11 +53,6 @@ public class Round implements Serializable {
     @NotNull
     @Column(name = "number")
     private int number;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "round_state")
-    @Enumerated(EnumType.ORDINAL)
-    private State roundState;
     @Column(name = "round_start")
     @Temporal(TemporalType.DATE)
     private Date roundStart;
@@ -67,6 +71,12 @@ public class Round implements Serializable {
     private Tournament tournament;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
     private Set<Category> categorySet;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "round_state")
+    private State roundState;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
+    private Set<PairingCard> pairingCardSet;
 
     public Round() {
     }
@@ -184,6 +194,14 @@ public class Round implements Serializable {
 
     public void setCategorySet(Set<Category> categorySet) {
         this.categorySet = categorySet;
+    }
+
+    public Set<PairingCard> getPairingCardSet() {
+        return pairingCardSet;
+    }
+
+    public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
+        this.pairingCardSet = pairingCardSet;
     }
     
 }

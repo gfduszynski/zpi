@@ -33,8 +33,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
-@NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,6 +91,8 @@ public class User implements Serializable {
     private Club userClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Post> postSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
+    private Set<Club> clubSet;
 
     public User() {
     }
@@ -241,6 +241,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.User[ id=" + id + " ]";
+    }
+
+    public Set<Club> getClubSet() {
+        return clubSet;
+    }
+
+    public void setClubSet(Set<Club> clubSet) {
+        this.clubSet = clubSet;
     }
     
 }
