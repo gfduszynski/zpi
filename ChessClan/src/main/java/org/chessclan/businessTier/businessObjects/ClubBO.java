@@ -26,7 +26,7 @@ public class ClubBO implements Serializable{
     public Club registerClub(String name, String description, Date creationDate, User owner){
         Club c =  new Club(null, name, creationDate, owner);
         c.setDescription(description);
-        owner.getClubSet().add(c);
+//        owner.getClubSet().add(c);
         return clubRepo.saveAndFlush(c);
     }
     
