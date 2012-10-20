@@ -33,8 +33,14 @@ public class UserPostsBean implements Serializable {
     private boolean postWrong;
     @ManagedProperty("#{PostBO}")
     PostBO postBO;
+    
+    @ManagedProperty("#{loginBean}")
+    LoginBean loginBean;
 
     public UserPostsBean() {
+        this.postPublished = false;
+        this.postSaved = false;
+        this.postWrong = false;
     }
 
     @PostConstruct
@@ -47,7 +53,7 @@ public class UserPostsBean implements Serializable {
     }
 
     public void saveAndPublish() {
-        Post publishedPost = postBO.savePost(new Post(0, title, content, true, new Date()));
+        Post publishedPost = postBO.savePost(new Post(title, content, true, loginBean.getUser()));
         if (publishedPost != null) {
             this.postPublished = true;
         }
@@ -56,7 +62,7 @@ public class UserPostsBean implements Serializable {
     }
 
     public void save() {
-        Post publishedPost = postBO.savePost(new Post(0, title, content, false, new Date()));
+        Post publishedPost = postBO.savePost(new Post(title, content, false, loginBean.getUser()));
         if (publishedPost != null) {
             this.postSaved = true;
         }
@@ -151,4 +157,13 @@ public class UserPostsBean implements Serializable {
     public void setPostWrong(boolean postWrong) {
         this.postWrong = postWrong;
     }
+
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
+
 }

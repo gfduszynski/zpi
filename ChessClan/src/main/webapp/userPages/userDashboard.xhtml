@@ -38,31 +38,33 @@
                         <h3>Dodaj ogłoszenie</h3>
                         <div>
                             <h:form prependId="false">
-                                <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-                                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                        <strong>Uwaga!</strong> Twoje ogłoszenie zostało opublikowane. Teraz widzą je inni użytkownicy.</p>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{upBean.postSaved}" layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-                                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                        <strong>Uwaga!</strong> Twoje ogłoszenie zostało zapisane. Aby widzieli je inni użytkownicy, przejdź do zakładki "Moje ogłoszenia" i je opublikuj.</p>
-                                </h:panelGroup>
-                                <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-                                    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                                        <strong>Hej!</strong> Dodawanie ogłoszeń to nie zabawa. Proszę wpisać prawidłowe ogłoszenie!</p>
+                                <h:panelGroup id="messages">
+                                    <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+                                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                            <strong>Uwaga!</strong> Twoje ogłoszenie zostało opublikowane. Teraz widzą je inni użytkownicy.</p>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{upBean.postSaved}" layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+                                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                            <strong>Uwaga!</strong> Twoje ogłoszenie zostało zapisane. Aby widzieli je inni użytkownicy, przejdź do zakładki "Moje ogłoszenia" i je opublikuj.</p>
+                                    </h:panelGroup>
+                                    <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+                                        <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                                            <strong>Hej!</strong> Dodawanie ogłoszeń to nie zabawa. Proszę wpisać prawidłowe ogłoszenie!</p>
+                                    </h:panelGroup>
                                 </h:panelGroup>
                                 <h:outputText value="Tytuł"/>
-                                <h:inputText value="#{upBean.title}" id="titlePost">
-                                    <f:ajax event="blur" execute="titlePost" render="wrongPost" listener="#{upBean.validateTitle}"/>
+                                <h:inputText value="#{upBean.title}">
+                                    <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateTitle}"/>
                                 </h:inputText>
                                 <h:outputText value="Treść"/>
-                                <h:inputText value="#{upBean.content}" id="contentPost">
-                                    <f:ajax event="blur" execute="contentPost" render="wrongPost" listener="#{upBean.validateContent}"/>
+                                <h:inputText value="#{upBean.content}">
+                                    <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateContent}"/>
                                 </h:inputText>
                                 <h:commandButton value="Zapisz i opublikuj">
                                     <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
                                 </h:commandButton>
                                 <h:commandButton value="Zapisz">
-                                    <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
+                                    <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
                                 </h:commandButton>
                             </h:form>
                         </div>

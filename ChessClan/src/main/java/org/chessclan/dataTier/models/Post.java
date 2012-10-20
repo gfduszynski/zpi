@@ -73,6 +73,14 @@ public class Post implements Serializable {
     public Post(Integer id) {
         this.id = id;
     }
+    
+    public Post(String title, String content, boolean published, User user){
+        this.title = title;
+        this.content = content;
+        this.published = published;
+        this.user = user;
+        this.dateCreated = new Date();
+    }
 
     public Post(Integer id, String title, String content, boolean published, Date dateCreated) {
         this.id = id;
