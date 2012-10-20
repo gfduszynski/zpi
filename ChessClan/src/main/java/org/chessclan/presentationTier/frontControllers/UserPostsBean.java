@@ -35,6 +35,9 @@ public class UserPostsBean implements Serializable {
     PostBO postBO;
 
     public UserPostsBean() {
+        this.postPublished = false;
+        this.postSaved = false;
+        this.postWrong = false;
     }
 
     @PostConstruct

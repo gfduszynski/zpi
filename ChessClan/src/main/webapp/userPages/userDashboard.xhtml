@@ -52,11 +52,11 @@
                                 </h:panelGroup>
                                 <h:outputText value="Tytuł"/>
                                 <h:inputText value="#{upBean.title}" id="titlePost">
-                                    <f:ajax event="blur" execute="titlePost" render="wrongPost" listener="#{upBean.validateTitle}"/>
+                                    <f:ajax event="blur" execute="titlePost" render="@form" listener="#{upBean.validateTitle}"/>
                                 </h:inputText>
                                 <h:outputText value="Treść"/>
                                 <h:inputText value="#{upBean.content}" id="contentPost">
-                                    <f:ajax event="blur" execute="contentPost" render="wrongPost" listener="#{upBean.validateContent}"/>
+                                    <f:ajax event="blur" execute="contentPost" render="@form" listener="#{upBean.validateContent}"/>
                                 </h:inputText>
                                 <h:commandButton value="Zapisz i opublikuj">
                                     <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
