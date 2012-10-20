@@ -19,32 +19,32 @@ import org.chessclan.dataTier.models.Post;
  *
  * @author Daniel
  */
-@ManagedBean(name="lpBean")
+@ManagedBean(name="pvBean")
 @ViewScoped
-public class LatestPostsBean implements Serializable{
+public class PostsViewBean implements Serializable {
 
-    private List<Post> latestPosts;
+    private List<Post> posts;
     @ManagedProperty("#{PostBO}")
     PostBO postBO;
 
-    public LatestPostsBean() {
+    public PostsViewBean() {
     }
 
     @PostConstruct
     public void initialize() {
-        this.latestPosts = new ArrayList<Post>();
-        Iterator<Post> posts = postBO.findAllPosts().iterator();
-        while(posts.hasNext()){
-            latestPosts.add(posts.next());
+        this.posts = new ArrayList<Post>();
+        Iterator<Post> postss = postBO.findAllPosts().iterator();
+        while (postss.hasNext()) {
+            this.posts.add(postss.next());
         }
     }
 
-    public List<Post> getLatestPosts() {
-        return latestPosts;
+    public List<Post> getPosts() {
+        return posts;
     }
 
-    public void setLatestPosts(List<Post> latestPosts) {
-        this.latestPosts = latestPosts;
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     public PostBO getPostBO() {
