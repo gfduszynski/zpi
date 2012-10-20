@@ -46,6 +46,9 @@
             <column name="name" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
+            <column name="owner" type="int">
+                <constraints nullable="false" />
+            </column>
             <column name="creation_date" type="date">
                 <constraints nullable="false"/>
             </column>
@@ -53,6 +56,7 @@
         </createTable>
         
         <addForeignKeyConstraint baseTableName="users" baseColumnNames="user_club" constraintName="user_club_ref" referencedTableName="clubs" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="clubs" baseColumnNames="owner" constraintName="club_user_ref" referencedTableName="users" referencedColumnNames="id"/>
         
         <createTable tableName="roles">
             <column name="id" type="int" autoIncrement="true">
@@ -194,6 +198,9 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="round" type="int">
+                <constraints nullable="false" />
+            </column>
             <column name="player" type="int">
                 <constraints nullable="false" />
             </column>
@@ -215,6 +222,7 @@
     <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="tournament"       constraintName="round_tournament_ref"    referencedTableName="tournaments"  referencedColumnNames="id"/>
     <addForeignKeyConstraint baseTableName="results"     baseColumnNames="tournament"       constraintName="results_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
     <addForeignKeyConstraint baseTableName="category"    baseColumnNames="round"            constraintName="category_round_ref"      referencedTableName="rounds"       referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="round"       constraintName="pcard_round_ref"         referencedTableName="rounds"       referencedColumnNames="id"/>
             
     </changeSet>
     

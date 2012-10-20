@@ -185,6 +185,7 @@ public class RegistrationBean implements Serializable {
         boolean val4 = validateStatute();
         if (val1 && val2 && val3 && val4) {
             User u = umBO.registerUser(email, email, true, password, email, email, birthDate, 0);
+            //Club b = clubBO.
             umBO.assignRole(u.getId(), Role.Type.CLUB_OWNER);
             this.regSucceeded = true;
         } else {

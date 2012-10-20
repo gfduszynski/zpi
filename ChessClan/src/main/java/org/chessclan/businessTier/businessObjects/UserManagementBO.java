@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,8 +35,14 @@ public class UserManagementBO implements Serializable{
     @Autowired 
     private ShaPasswordEncoder passwordEncoder;
     
-    public Authentication getLoggedUserAuthentication(){
-        return SecurityContextHolder.getContext().getAuthentication();
+    public UsernamePasswordAuthenticationToken getLoggedUserAuthentication(){
+        return (UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication();
+    }
+    
+    public User getLoggedUser(){
+        UsernamePasswordAuthenticationToken loggedUserAuthentication = getLoggedUserAuthentication();
+        User u = findUserByEmail(((org.springframework.security.core.userdetails.User)loggedUserAuthentication.getPrincipal()).getUsername());
+        return u;
     }
     
     public User registerUser(String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, int sex){

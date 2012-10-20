@@ -4,15 +4,34 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
+<<<<<<< HEAD
     <h:head>
         <title>Administration dashboard</title>
     </h:head>
     <h:body>
         <ui:composition>
+=======
+
+    <h:body>
+        <ui:composition>
+            <h:outputStylesheet library="css" name="adminPages.css" />
+>>>>>>> a296cfb3506731f07532cfc7fde7d7d0f805c060
             <h:outputScript library="js" name="adminScripts.js"/>
             <script type="text/javascript">
                 $(function() {
                     $( "#tabs" ).tabs();
+<<<<<<< HEAD
+=======
+    
+                });
+            </script>
+            <div style="width:100%;">
+                <h1 style="width:50%">Dashboard</h1>
+                <form action="#{request.contextPath}/j_spring_security_logout">
+                    <input type="submit" value="Logout"/>
+                </form>
+            </div>
+>>>>>>> a296cfb3506731f07532cfc7fde7d7d0f805c060
 
                 });
             </script>
@@ -20,7 +39,8 @@
                 <ul>
                     <li><a href="#tabs-1">USERS</a></li>
                     <li><a href="#tabs-2">CLUBS</a></li>
-                    <li><a href="#tabs-3">CHAMPIONSHIPS</a></li>
+                    <li><a href="#tabs-3">TOURNAMENTS</a></li>
+                    <li><a href="#tabs-4">POSTS</a></li>
                 </ul>
                 <div id="tabs-1">
                     <ui:insert name="users" >
@@ -28,10 +48,21 @@
                     </ui:insert>
                 </div>
                 <div id="tabs-2">
+                    <ui:insert name="clubs" >
+                        <ui:include src="clubsTab.xhtml" />
+                    </ui:insert>
                 </div>
                 <div id="tabs-3">
+                    <ui:insert name="tournaments" >
+                        <ui:include src="tournamentsTab.xhtml" />
+                    </ui:insert>
                 </div>
-
+                
+                <div id="tabs-4">
+                    <ui:insert name="posts" >
+                        <ui:include src="postsTab.xhtml" />
+                    </ui:insert>
+                </div>
             </div>
         </ui:composition>
     </h:body>

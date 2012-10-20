@@ -15,7 +15,8 @@
 
             <div style="padding:10px 0px 10px 0px;">
                 <h:commandButton value="remove selected"/>
-                <h:commandButton value="add new user"/>
+                <h:commandButton  type="submit" action="#{udBean.addNewUser()}" value="add new user"/>
+                    
             </div>
 
             <h:dataTable value="#{udBean.users}" var="user"
@@ -39,66 +40,66 @@
                     <!-- column header -->
                     <f:facet name="header">No</f:facet>
                     <!-- row record -->
-                    <h:outputText value="#{user.id}" rendered="#{not user.enabled}"/>
-                    <h:inputText value="#{user.id}" rendered="#{user.enabled}" class="input-edit-row"/>
+                    <h:outputText value="#{user.id}" rendered="#{not udBean.editable[user.id]}"/>
+                    <h:inputText value="#{user.id}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">First name</f:facet>
-                    <h:outputText value="#{user.firstName}" rendered="#{not user.enabled}"/>
-                    <h:inputText value="#{user.firstName}" rendered="#{user.enabled}" class="input-edit-row"/>
+                    <h:outputText value="#{user.firstName}" rendered="#{not udBean.editable[user.id]}"/>
+                    <h:inputText value="#{user.firstName}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Last name</f:facet>
-                    <h:outputText value="#{user.lastName}" rendered="#{not user.enabled}"/>
-                    <h:inputText value="#{user.lastName}" rendered="#{user.enabled}" class="input-edit-row"/>
+                    <h:outputText value="#{user.lastName}" rendered="#{not udBean.editable[user.id]}"/>
+                    <h:inputText value="#{user.lastName}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">E-mail</f:facet>
-                    <h:outputText value="#{user.email}" rendered="#{not user.enabled}"/>
-                    <h:inputText value="#{user.email}" rendered="#{user.enabled}" class="input-edit-row"/>
+                    <h:outputText value="#{user.email}" rendered="#{not udBean.editable[user.id]}"/>
+                    <h:inputText value="#{user.email}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
 
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Birth date</f:facet>
-                    <h:outputText value="#{user.birthDate}" rendered="#{not user.enabled}">
+                    <h:outputText value="#{user.birthDate}" rendered="#{not udBean.editable[user.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{user.birthDate}" rendered="#{user.enabled}" class="userBirthDateForm input-edit-row">
+                    <h:inputText value="#{user.birthDate}" rendered="#{udBean.editable[user.id]}" class="userBirthDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Creation date</f:facet>
-                    <h:outputText value="#{user.creationDate}" rendered="#{not user.enabled}">
+                    <h:outputText value="#{user.creationDate}" rendered="#{not udBean.editable[user.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{user.creationDate}" rendered="#{user.enabled}" class="userCreationDateForm input-edit-row">
+                    <h:inputText value="#{user.creationDate}" rendered="#{udBean.editable[user.id]}" class="userCreationDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Sex</f:facet>
-                    <h:outputText value="#{user.sex}" rendered="#{not user.enabled}"/>
-                    <h:inputText value="#{user.sex}" rendered="#{user.enabled}"/>
+                    <h:outputText value="#{user.sex}" rendered="#{not udBean.editable[user.id]}"/>
+                    <h:inputText value="#{user.sex}" rendered="#{udBean.editable[user.id]}"/>
                 </h:column>
 
 
                 <h:column>
                     <f:facet name="header"></f:facet>
-                    <h:commandLink value="edit" rendered="#{not user.enabled}">
-                        <f:ajax execute="@form" render="@form" listener="#{udBean.editUser(user)}"/>
+                    <h:commandLink value="edit" rendered="#{not udBean.editable[user.id]}">
+                        <f:ajax listener="#{udBean.selectOneEditable(user.id)}" render="@form" execute="@form"/>
                     </h:commandLink>
                     <h:panelGrid columns="1" class="buttons-column">
-                        <h:commandLink value="update" rendered="#{user.enabled}">
+                        <h:commandLink value="update" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.updateUser(user)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{user.enabled}">
+                        <h:commandLink value="remove" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.removeUser(user)}"/>
                         </h:commandLink>
                     </h:panelGrid>
