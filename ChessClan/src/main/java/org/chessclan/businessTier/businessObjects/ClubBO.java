@@ -6,6 +6,7 @@ package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.ClubRepository;
@@ -22,8 +23,9 @@ public class ClubBO implements Serializable{
     @Autowired
     private ClubRepository clubRepo;
     
-    public Club registerClub(String name, User owner){
-        Club c =  new Club(null, name, Calendar.getInstance().getTime(), owner);
+    public Club registerClub(String name, String description, Date creationDate, User owner){
+        Club c =  new Club(null, name, creationDate, owner);
+        c.setDescription(description);
         owner.getClubSet().add(c);
         return clubRepo.saveAndFlush(c);
     }
