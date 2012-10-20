@@ -69,8 +69,6 @@ public class Round implements Serializable {
     @JoinColumn(name = "tournament", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
-    private Set<Category> categorySet;
     @Basic(optional = false)
     @NotNull
     @Column(name = "round_state")
@@ -188,14 +186,6 @@ public class Round implements Serializable {
         return "org.chessclan.dataTier.models.Round[ id=" + id + " ]";
     }
 
-    public Set<Category> getCategorySet() {
-        return categorySet;
-    }
-
-    public void setCategorySet(Set<Category> categorySet) {
-        this.categorySet = categorySet;
-    }
-
     public Set<PairingCard> getPairingCardSet() {
         return pairingCardSet;
     }
@@ -203,5 +193,4 @@ public class Round implements Serializable {
     public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
         this.pairingCardSet = pairingCardSet;
     }
-    
 }

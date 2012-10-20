@@ -29,8 +29,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "category")
-@NamedQueries({
-    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")})
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,9 +46,6 @@ public class Category implements Serializable {
     @Size(min = 1, max = 512)
     @Column(name = "player")
     private String player;
-    @JoinColumn(name = "round", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Round round;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
     private Set<Tournament> tournamentSet;
 
@@ -89,14 +84,6 @@ public class Category implements Serializable {
 
     public void setPlayer(String player) {
         this.player = player;
-    }
-
-    public Round getRound() {
-        return round;
-    }
-
-    public void setRound(Round round) {
-        this.round = round;
     }
 
     public Set<Tournament> getTournamentSet() {

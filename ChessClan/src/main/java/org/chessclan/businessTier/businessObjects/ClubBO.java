@@ -5,7 +5,6 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.User;

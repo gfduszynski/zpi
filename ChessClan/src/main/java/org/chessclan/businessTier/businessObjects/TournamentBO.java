@@ -6,11 +6,14 @@ package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
+import org.chessclan.dataTier.repositories.CategoryRepository;
 import org.chessclan.dataTier.repositories.PairingCardRepository;
 import org.chessclan.dataTier.repositories.RoundRepository;
 import org.chessclan.dataTier.repositories.TournamentRepository;
@@ -34,14 +37,22 @@ public class TournamentBO implements Serializable{
     private PairingCardRepository pcRepo;
     
     @Autowired
+    private CategoryRepository catRepo;
+    
+    @Autowired
     private UserManagementBO umBO;
     
     public Tournament registerTournament(String tName, Date tDate, String tDesc, Club tClub){
         Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
-        t = tRepo.save(t);
         Round initialRound = new Round(null, 0, Round.State.JOINING);
         t.setCurrentRound(initialRound);
+        t.setRoundSet(new HashSet<Round>());
         t.getRoundSet().add(initialRound);
+        Category cat = new Category(null, tName, tName);
+        cat = catRepo.save(cat);
+        t.setCategory(cat);
+        cat.setTournamentSet(new HashSet<Tournament>());
+        cat.getTournamentSet().add(t);
         return tRepo.saveAndFlush(t);
     }
     
