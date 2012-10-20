@@ -26,8 +26,9 @@ body{
 }
 
 .loginStuff{
+    width:475px;
     float:right;
-    margin-top: -50px;
+    /*    margin-top: -50px;*/
 }
 
 .logoutStuff{
@@ -35,6 +36,28 @@ body{
     text-align: center;
 }
 
+.logUser{
+    width: 230px;
+    height: 20px;
+    margin: 0px 5px 0px 0px;
+}
+
+.logPass{
+    width: 230px;
+    height: 20px;
+    margin: 0px 0px 0px 0px;
+}
+
+.logLog{
+    width: 175px;
+    height: 30px;
+    float: right;
+}
+
+.logForget{
+    float: right;
+    font-size: 75%;
+}
 .elements{
     padding:0px;
 }
@@ -108,14 +131,18 @@ body{
 }
 
 .six{
+    float:left;
+    width:175px;
     height:290px;
     background-color:#D19956;
-    margin: 0px 0px 10px 5px;
+    margin: 0px 0px 0px 5px;
 
 }
 
 .seven{
+    float:left;
     height:290px;
+    width:175px;
     background-color:#661F0A;
     margin: 10px 0px 0px 5px;
 

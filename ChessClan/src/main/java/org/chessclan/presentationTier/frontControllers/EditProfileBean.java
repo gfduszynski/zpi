@@ -31,6 +31,9 @@ public class EditProfileBean implements Serializable {
     UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
+    @ManagedProperty(value="#{loginBean.user}")
+    private User user;
+    
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -174,7 +177,6 @@ public class EditProfileBean implements Serializable {
             }
         }
     }
-    
 
     private boolean validate(final String emailAddress) {
         matcher = pattern.matcher(emailAddress);
@@ -190,16 +192,35 @@ public class EditProfileBean implements Serializable {
         System.out.print("updateing...");
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4);
         if (val1 && val2 && val3 && val4) {
-            User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
-            umBO.assignRole(u.getUserId(), Role.Type.USER);
+            if (this.updatePassword) {
+                loginBean.getUser().setEmail(email);
+                loginBean.getUser().setFirstName(firstName);
+                loginBean.getUser().setLastName(lastName);
+                loginBean.getUser().setPassword(password);
+                loginBean.getUser().setBirthDate(birthDate);
+                loginBean.getUser().setLogin(email);
+                loginBean.getUser().setSex(sex);
+                user = umBO.encodePassword(user);
+                umBO.saveUser(user); 
+
+            } else {
+                loginBean.getUser().setEmail(email);
+                loginBean.getUser().setFirstName(firstName);
+                loginBean.getUser().setLastName(lastName);
+                loginBean.getUser().setBirthDate(birthDate);
+                loginBean.getUser().setLogin(email);
+                loginBean.getUser().setSex(sex);
+                umBO.saveUser(loginBean.getUser());
+
+            }
             this.actSucceded = true;
         } else {
             this.regError = true;
         }
 
     }
-    
-    public void updatePassField(){
+
+    public void updatePassField() {
         this.invalidP = false;
     }
 
@@ -378,6 +399,12 @@ public class EditProfileBean implements Serializable {
     public void setUpdatePassword(boolean updatePassword) {
         this.updatePassword = updatePassword;
     }
-    
-    
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User loggedUser) {
+        this.user = loggedUser;
+    }
 }
