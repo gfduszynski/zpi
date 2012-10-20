@@ -11,14 +11,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,9 +31,9 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "rounds")
-@NamedQueries({
-    @NamedQuery(name = "Round.findAll", query = "SELECT r FROM Round r")})
 public class Round implements Serializable {
+    public class NotFinished extends Exception{}
+    public enum State{ JOINING,STARTED,FINISHED;}
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,16 +46,17 @@ public class Round implements Serializable {
     private int number;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "state")
-    private int state;
-    @Column(name = "start")
+    @Column(name = "round_state")
+    @Enumerated(EnumType.ORDINAL)
+    private State roundState;
+    @Column(name = "round_start")
     @Temporal(TemporalType.DATE)
-    private Date start;
-    @Column(name = "end")
+    private Date roundStart;
+    @Column(name = "round_end")
     @Temporal(TemporalType.DATE)
-    private Date end;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
-    private Set<Category> categorySet;
+    private Date roundEnd;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "currentRound", fetch = FetchType.EAGER)
+    private Set<Tournament> tournamentSet;
     @OneToMany(mappedBy = "prevRound", fetch = FetchType.EAGER)
     private Set<Round> roundSet;
     @JoinColumn(name = "prev_round", referencedColumnName = "id")
@@ -64,6 +65,8 @@ public class Round implements Serializable {
     @JoinColumn(name = "tournament", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
+    private Set<Category> categorySet;
 
     public Round() {
     }
@@ -72,10 +75,10 @@ public class Round implements Serializable {
         this.id = id;
     }
 
-    public Round(Integer id, int number, int state) {
+    public Round(Integer id, int number, State roundState) {
         this.id = id;
         this.number = number;
-        this.state = state;
+        this.roundState = roundState;
     }
 
     public Integer getId() {
@@ -94,36 +97,36 @@ public class Round implements Serializable {
         this.number = number;
     }
 
-    public int getState() {
-        return state;
+    public State getRoundState() {
+        return roundState;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setRoundState(State roundState) {
+        this.roundState = roundState;
     }
 
-    public Date getStart() {
-        return start;
+    public Date getRoundStart() {
+        return roundStart;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setRoundStart(Date roundStart) {
+        this.roundStart = roundStart;
     }
 
-    public Date getEnd() {
-        return end;
+    public Date getRoundEnd() {
+        return roundEnd;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setRoundEnd(Date roundEnd) {
+        this.roundEnd = roundEnd;
     }
 
-    public Set<Category> getCategorySet() {
-        return categorySet;
+    public Set<Tournament> getTournamentSet() {
+        return tournamentSet;
     }
 
-    public void setCategorySet(Set<Category> categorySet) {
-        this.categorySet = categorySet;
+    public void setTournamentSet(Set<Tournament> tournamentSet) {
+        this.tournamentSet = tournamentSet;
     }
 
     public Set<Round> getRoundSet() {
@@ -173,6 +176,14 @@ public class Round implements Serializable {
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.Round[ id=" + id + " ]";
+    }
+
+    public Set<Category> getCategorySet() {
+        return categorySet;
+    }
+
+    public void setCategorySet(Set<Category> categorySet) {
+        this.categorySet = categorySet;
     }
     
 }
