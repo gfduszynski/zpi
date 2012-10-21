@@ -88,6 +88,13 @@ public class UserPostsBean implements Serializable {
         postBO.savePost(post);
     }
 
+    public void unPublishPost(Post post) {
+        post.setDatePublished(null);
+        post.setPublished(false);
+        this.allPosts.remove(post);
+        postBO.savePost(post);
+    }
+
     public void removePost(Post post) {
         this.userPosts.remove(post);
         this.allPosts.remove(post);

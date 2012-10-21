@@ -23,8 +23,8 @@ import org.chessclan.dataTier.models.User;
 @ViewScoped
 public class UserClubsBean {
 
-    @ManagedProperty("#{UserManagementBO}")
-    UserManagementBO umBO;
+//    @ManagedProperty("#{UserManagementBO}")
+//    UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
     @ManagedProperty(value = "#{loginBean.user}")
@@ -74,11 +74,11 @@ public class UserClubsBean {
         this.user = user;
     }
 
-    public UserManagementBO getUmBO() {
-        return umBO;
-    }
-
-    public void setUmBO(UserManagementBO umBO) {
-        this.umBO = umBO;
-    }
+//    public UserManagementBO getUmBO() {
+//        return umBO;
+//    }
+//
+//    public void setUmBO(UserManagementBO umBO) {
+//        this.umBO = umBO;
+//    }
 }
