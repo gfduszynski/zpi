@@ -5,6 +5,7 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,8 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -77,7 +76,10 @@ public class Post implements Serializable {
         this.content = content;
         this.published = published;
         this.user = user;
-        this.dateCreated = new Date();
+        this.dateCreated = Calendar.getInstance().getTime();
+        if(published){
+            this.datePublished = Calendar.getInstance().getTime();
+        }
     }
 
     public Post(Integer id, String title, String content, boolean published, Date dateCreated) {

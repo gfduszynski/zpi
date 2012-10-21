@@ -6,6 +6,7 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -43,10 +44,15 @@ public class UserPostsBean implements Serializable {
 
     @PostConstruct
     public void initialize() {
+        this.userPosts = new ArrayList<Post>();
         this.allPosts = new ArrayList<Post>();
         Iterator<Post> posts = postBO.findAllPosts().iterator();
         while (posts.hasNext()) {
             allPosts.add(posts.next());
+        }
+        posts = postBO.findUserPosts(this.loginBean.getUser()).iterator();
+        while (posts.hasNext()) {
+            userPosts.add(posts.next());
         }
     }
 
@@ -55,6 +61,8 @@ public class UserPostsBean implements Serializable {
             Post publishedPost = postBO.savePost(new Post(title, content, true, loginBean.getUser()));
             if (publishedPost != null) {
                 this.postPublished = true;
+                this.userPosts.add(publishedPost);
+                this.allPosts.add(publishedPost);
             }
             this.title = "";
             this.content = "";
@@ -63,13 +71,27 @@ public class UserPostsBean implements Serializable {
 
     public void save() {
         if (validateContent() && validateTitle()) {
-            Post publishedPost = postBO.savePost(new Post(title, content, false, loginBean.getUser()));
-            if (publishedPost != null) {
+            Post savedPost = postBO.savePost(new Post(title, content, false, loginBean.getUser()));
+            if (savedPost != null) {
                 this.postSaved = true;
+                this.userPosts.add(savedPost);
+                this.allPosts.add(savedPost);
             }
             this.title = "";
             this.content = "";
         }
+    }
+
+    public void publishPost(Post post) {
+        post.setDatePublished(Calendar.getInstance().getTime());
+        post.setPublished(true);
+        postBO.savePost(post);
+    }
+
+    public void removePost(Post post) {
+        this.userPosts.remove(post);
+        this.allPosts.remove(post);
+        postBO.deletePost(post);
     }
 
     public boolean validateTitle() {
