@@ -6,16 +6,21 @@ package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
+import org.chessclan.dataTier.repositories.CategoryRepository;
 import org.chessclan.dataTier.repositories.PairingCardRepository;
 import org.chessclan.dataTier.repositories.RoundRepository;
 import org.chessclan.dataTier.repositories.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -34,14 +39,21 @@ public class TournamentBO implements Serializable{
     private PairingCardRepository pcRepo;
     
     @Autowired
+    private CategoryRepository catRepo;
+    
+    @Autowired
     private UserManagementBO umBO;
     
-    public Tournament registerTournament(String tName, Date tDate, String tDesc, Club tClub){
-        Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
-        t = tRepo.save(t);
+    @Transactional(readOnly=false,propagation= Propagation.REQUIRED)
+    public Tournament registerTournament(String tName, Date tDate, String tDesc, Club tClub, Category cat){        
         Round initialRound = new Round(null, 0, Round.State.JOINING);
+        Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
+        t.setCategory(cat);
+        t = tRepo.save(t);
         t.setCurrentRound(initialRound);
+        t.setRoundSet(new HashSet<Round>());
         t.getRoundSet().add(initialRound);
+        initialRound.setTournament(t);
         return tRepo.saveAndFlush(t);
     }
     

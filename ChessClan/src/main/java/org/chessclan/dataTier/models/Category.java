@@ -5,6 +5,7 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -29,8 +30,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "category")
-@NamedQueries({
-    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")})
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,11 +47,8 @@ public class Category implements Serializable {
     @Size(min = 1, max = 512)
     @Column(name = "player")
     private String player;
-    @JoinColumn(name = "round", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Round round;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
-    private Set<Tournament> tournamentSet;
+    private Set<Tournament> tournamentSet = new HashSet<Tournament>();
 
     public Category() {
     }
@@ -91,18 +87,10 @@ public class Category implements Serializable {
         this.player = player;
     }
 
-    public Round getRound() {
-        return round;
-    }
-
-    public void setRound(Round round) {
-        this.round = round;
-    }
-
     public Set<Tournament> getTournamentSet() {
         return tournamentSet;
     }
-
+    
     public void setTournamentSet(Set<Tournament> tournamentSet) {
         this.tournamentSet = tournamentSet;
     }

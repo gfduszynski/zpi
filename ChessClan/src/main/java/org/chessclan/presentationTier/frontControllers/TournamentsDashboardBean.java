@@ -6,16 +6,21 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.Transient;
+import org.chessclan.businessTier.businessObjects.CategoryBO;
+import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.Round.NoPlayers;
+import org.chessclan.dataTier.models.Round.NotFinished;
 import org.chessclan.dataTier.models.Tournament;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 
 /**
  *
@@ -39,6 +44,14 @@ public class TournamentsDashboardBean implements Serializable {
     @Transient
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
+    
+    @Transient
+    @ManagedProperty("#{ClubBO}")
+    private ClubBO clbBO;
+    
+    @Transient
+    @ManagedProperty("#{CategoryBO}")
+    private CategoryBO catBO;
     
     @Transient
     @ManagedProperty("#{UserManagementBO}")
@@ -68,7 +81,13 @@ public class TournamentsDashboardBean implements Serializable {
         UsernamePasswordAuthenticationToken lUAuth = umBO.getLoggedUserAuthentication();
         String lolek = lUAuth.getName();
         umBO.findUserByEmail(lUAuth.getName());
-        tmBO.registerTournament("tname", new Date(), "tDescc", null);
+        try {
+            tmBO.goToNextRound(tmBO.registerTournament("tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1)));
+        } catch (NotFinished ex) {
+            Logger.getLogger(TournamentsDashboardBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoPlayers ex) {
+            Logger.getLogger(TournamentsDashboardBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void removeTournament(Tournament t) {
         
@@ -193,5 +212,20 @@ public class TournamentsDashboardBean implements Serializable {
 
     public void setUmBO(UserManagementBO umBO) {
         this.umBO = umBO;
+    }
+        public CategoryBO getCatBO() {
+        return catBO;
+    }
+
+    public void setCatBO(CategoryBO catBO) {
+        this.catBO = catBO;
+    }
+
+    public ClubBO getClbBO() {
+        return clbBO;
+    }
+
+    public void setClbBO(ClubBO clbBO) {
+        this.clbBO = clbBO;
     }
 }

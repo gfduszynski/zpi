@@ -59,8 +59,6 @@ public class Round implements Serializable {
     @Column(name = "round_end")
     @Temporal(TemporalType.DATE)
     private Date roundEnd;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "currentRound", fetch = FetchType.EAGER)
-    private Set<Tournament> tournamentSet;
     @OneToMany(mappedBy = "prevRound", fetch = FetchType.EAGER)
     private Set<Round> roundSet;
     @JoinColumn(name = "prev_round", referencedColumnName = "id")
@@ -69,8 +67,6 @@ public class Round implements Serializable {
     @JoinColumn(name = "tournament", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
-    private Set<Category> categorySet;
     @Basic(optional = false)
     @NotNull
     @Column(name = "round_state")
@@ -131,14 +127,6 @@ public class Round implements Serializable {
         this.roundEnd = roundEnd;
     }
 
-    public Set<Tournament> getTournamentSet() {
-        return tournamentSet;
-    }
-
-    public void setTournamentSet(Set<Tournament> tournamentSet) {
-        this.tournamentSet = tournamentSet;
-    }
-
     public Set<Round> getRoundSet() {
         return roundSet;
     }
@@ -188,14 +176,6 @@ public class Round implements Serializable {
         return "org.chessclan.dataTier.models.Round[ id=" + id + " ]";
     }
 
-    public Set<Category> getCategorySet() {
-        return categorySet;
-    }
-
-    public void setCategorySet(Set<Category> categorySet) {
-        this.categorySet = categorySet;
-    }
-
     public Set<PairingCard> getPairingCardSet() {
         return pairingCardSet;
     }
@@ -203,5 +183,4 @@ public class Round implements Serializable {
     public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
         this.pairingCardSet = pairingCardSet;
     }
-    
 }
