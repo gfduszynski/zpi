@@ -178,7 +178,33 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
     @Override
     public int compareTo(PairingCard o) {
         float diff = getScore()-o.getScore();
-        return diff==0?0:(diff>0?1:-1);
+        int scoreCMP = diff==0?0:(diff>0?1:-1);
+        if(scoreCMP!=0) {
+            return scoreCMP;
+        }
+        
+        diff = getPlayer().getRating()-o.getPlayer().getRating();
+        int ratingCMP = diff==0?0:(diff>0?1:-1);
+        if(ratingCMP!=0) {
+            return ratingCMP;
+        }
+        
+        int titleCMP = getPlayer().getFideTitle().compareTo(o.getPlayer().getFideTitle());
+        if(titleCMP!=0){
+            return titleCMP;
+        }
+        
+        int lastnameCMP = getPlayer().getLastName().compareTo(o.getPlayer().getLastName());
+        if(lastnameCMP!=0){
+            return lastnameCMP;
+        }
+        
+        int firstNameCMP = getPlayer().getFirstName().compareTo(o.getPlayer().getFirstName());
+        if(firstNameCMP!=0){
+            return firstNameCMP;
+        }
+        
+        return 0;
     }
 
 }
