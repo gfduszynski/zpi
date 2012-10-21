@@ -16,7 +16,7 @@
                         collapsible: true,
                         heightStyle: "content"
                     });
-                    $( "#accordion2" ).accordion({
+                    $( "#accordionClubs" ).accordion({
                         collapsible: true,
                         heightStyle: "content"
                     });
@@ -37,10 +37,19 @@
                     <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
                 </div>
                 <div id="tabs-3">
-                    <div id="accordion">
-                        <h3>Dodaj ogłoszenie</h3>
-                        <div>
-                            <h:form prependId="false">
+                    <h:form prependId="false" >
+                        <script>
+                            $(function() {
+                                $( "#accordion" ).accordion({
+                                    collapsible: true,
+                                    heightStyle: "content",
+                                    active: '#myPostsHeader'
+                                });
+                            });
+                        </script>
+                        <div id="accordion">
+                            <h3 id="addPostHeader">Dodaj ogłoszenie</h3>
+                            <div>
                                 <h:panelGroup id="messages">
                                     <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
                                         <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -69,98 +78,146 @@
                                 <h:commandButton value="Zapisz">
                                     <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
                                 </h:commandButton>
-                            </h:form>
+
+                            </div>
+                            <h3 id="myPostsHeader">Moje ogłoszenia</h3>
+                            <div>
+                                <c:if test="#{upBean.userPosts.size()>0}">
+                                    <h:dataTable value="#{upBean.userPosts}" var="post">
+                                        <h:column>
+                                            <!-- column header -->
+                                            <f:facet name="header">Tytuł</f:facet>
+                                            <!-- row record -->
+                                            #{post.title}
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Treść</f:facet>
+                                            #{post.content}
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Autor</f:facet>
+                                            <h:outputText value="#{post.user.firstName} #{post.user.lastName}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Data opublikowania</f:facet>
+                                            <c:if test="#{post.published}">  
+                                                #{post.datePublished}
+                                            </c:if>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Publikowanie</f:facet>
+                                            <c:if test="#{not post.published}">               
+                                                <h:commandButton value="Opublikuj">
+                                                    <f:ajax render="@form" listener="#{upBean.publishPost(post)}"/>
+                                                </h:commandButton>
+                                            </c:if>
+                                            <c:if test="#{post.published}">               
+                                                <h:commandButton value="Ukryj">
+                                                    <f:ajax render="@form" listener="#{upBean.unPublishPost(post)}"/>
+                                                </h:commandButton>
+                                            </c:if>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Usuń</f:facet>         
+                                            <h:commandButton value="Usuń">
+                                                <f:ajax render="@form" listener="#{upBean.removePost(post)}"/>
+                                            </h:commandButton>
+                                        </h:column>
+                                    </h:dataTable>
+                                </c:if>
+                                <c:if test="#{upBean.userPosts.size() == 0}">
+                                    <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+                                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                            Nie masz żadnego zapisanego ogłoszenia. Aby je stworzyć, przejdź do zakładki "Dodaj ogłoszenie"
+                                        </p>
+                                    </h:panelGroup>
+                                </c:if>
+                            </div>
+                            <h3>Wszystkie ogłoszenia</h3>
+                            <div>
+                                <h:panelGroup layout="block" id="allPostsTable">
+                                    <c:forEach items="#{upBean.allPosts}" var="post">
+                                        <h:panelGroup layout="block" class="postHeader">
+                                            <h:outputText value="#{post.title}" class="postTitle"/>
+                                            <h:outputText value="#{post.datePublished}" class="postTitle"/>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block" class="postContent">
+                                            <h:outputText value="#{post.content}" class="postTitle"/>
+                                        </h:panelGroup>
+                                        <hr/>
+                                    </c:forEach>
+                                </h:panelGroup>
+                            </div>
                         </div>
-                        <h3>Moje ogłoszenia</h3>
-                        <div>
-                            <c:if test="#{upBean.userPosts != null}">
-                                <h:dataTable value="#{upBean.userPosts}" var="post">
+                    </h:form>
+                </div>
+                <div id="tabs-4">
+                    <h:form prependId="false">
+                        <div id="accordionClubs">
+                            <h3>Mój klub</h3>
+                            <div>
+                                <c:if test="#{loginBean.user.userClub == null}">
+                                    <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+                                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                            Nie jesteś zapisana/y do żadnego klubu. Aby to zrobić, przejdź do następnej zakładki.
+                                        </p>
+                                    </h:panelGroup>
+                                </c:if>
+                                <c:if test="#{loginBean.user.userClub != null}">
+                                    <h:panelGroup layout="block">
+                                        <h4>#{loginBean.user.userClub.name}</h4>
+                                        <h:panelGroup>
+                                            <h:outputText value="Data utworzenia: #{loginBean.user.userClub.creationDate}"/>
+                                        </h:panelGroup>
+                                        <h:panelGroup>
+                                            <h:outputText value="#{loginBean.user.userClub.description}"/>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+                                </c:if>
+                            </div>
+
+                            <h3>Wszystkie kluby w systemie</h3>
+                            <div>
+                                <h:dataTable value="#{ucBean.clubs}" var="club">
                                     <h:column>
                                         <!-- column header -->
-                                        <f:facet name="header">Tytuł</f:facet>
+                                        <f:facet name="header">Nazwa klubu</f:facet>
                                         <!-- row record -->
-                                        #{post.title}
+                                        #{club.name}
                                     </h:column>
                                     <h:column>
-                                        <f:facet name="header">Treść</f:facet>
-                                        #{post.content}
+                                        <f:facet name="header">Opis</f:facet>
+                                        #{club.description}
                                     </h:column>
                                     <h:column>
-                                        <f:facet name="header">Autor</f:facet>
-                                        #{post.user}
+                                        <f:facet name="header">Data założenia</f:facet>
+                                        <h:outputText value="#{club.creationDate}"/>
                                     </h:column>
                                     <h:column>
-                                        <f:facet name="header">Data opublikowania</f:facet>
-                                        <c:if test="#{post.datePublished != null}">  
-                                            #{post.datePublished}
-                                        </c:if>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Opublikuj</f:facet>
-                                        <c:if test="#{post.datePublished == null}">               
-                                            <h:commandButton value="Opublikuj">
+                                        <f:facet name="header"></f:facet>
+                                        <c:if test="#{ucBean.user == null}">               
+                                            <h:commandButton value="Zapisz się">
+                                                <f:ajax render="@form" listener="#{ucBean.signToClub(club)}"/>
                                             </h:commandButton>
+                                        </c:if>
+                                        <c:if test="#{ucBean.user != null}">    
+                                            <c:if test="#{ucBean.user.userClub == club}">   
+                                                <h:commandButton value="Ukryj">
+                                                    <f:ajax render="@form" listener="#{ucBean.signOutFromClub}"/>
+                                                </h:commandButton>
+                                            </c:if>
                                         </c:if>
                                     </h:column>
                                     <h:column>
                                         <f:facet name="header">Usuń</f:facet>         
-                                        <h:commandButton value="Opublikuj">
+                                        <h:commandButton value="Usuń">
+                                            <f:ajax render="@form" listener="#{upBean.removePost(post)}"/>
                                         </h:commandButton>
                                     </h:column>
                                 </h:dataTable>
-                            </c:if>
-                            <c:if test="#{upBean.userPosts == null}">
-                                <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-                                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                        Nie masz żadnego zapisanego ogłoszenia. Aby je stworzyć, przejdź do zakładki "Dodaj ogłoszenie"
-                                    </p>
-                                </h:panelGroup>
-                            </c:if>
+                            </div>
                         </div>
-                        <h3>Wszystkie ogłoszenia</h3>
-                        <div>
-                            <h:form prependId="false" >
-                                <c:forEach items="#{upBean.allPosts}" var="post">
-                                    <h:panelGroup layout="block" class="postHeader">
-                                        <h:outputText value="#{post.title}" class="postTitle"/>
-                                        <h:outputText value="#{post.datePublished}" class="postTitle"/>
-                                    </h:panelGroup>
-                                    <h:panelGroup layout="block" class="postContent">
-                                        <h:outputText value="#{post.content}" class="postTitle"/>
-                                    </h:panelGroup>
-                                    <hr/>
-                                </c:forEach>
-                            </h:form>                       
-                        </div>
-                    </div>
-                </div>
-                <div id="tabs-4">
-                    <div id="accordion2">
-                        <h3>Mój klub</h3>
-                        <div>
-                            <c:if test="#{loginBean.user.userClub == null}">
-                                <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-                                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                        Nie jesteś zapisana/y do żadnego klubu. Aby to zrobić, przejdź do następnej zakładki.
-                                    </p>
-                                </h:panelGroup>
-                            </c:if>
-                            <c:if test="#{loginBean.user.userClub != null}">
-                                <h:panelGroup layout="block">
-                                    <h4>#{loginBean.user.userClub.name}</h4>
-                                    <h:panelGroup>
-                                        <h:outputText value="Data utworzenia: #{loginBean.user.userClub.creationDate}"/>
-                                    </h:panelGroup>
-                                    <h:panelGroup>
-                                        <h:outputText value="#{loginBean.user.userClub.description}"/>
-                                    </h:panelGroup>
-                                </h:panelGroup>
-                            </c:if>
-                        </div>
-
-                        <h3>Wszystkie kluby w systemie</h3>
-                        <div></div>
-                    </div>
+                    </h:form>
                 </div>
             </div>
         </ui:composition>

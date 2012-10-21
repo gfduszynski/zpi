@@ -24,6 +24,10 @@
         <error-code>403</error-code>
         <location>/errorPages/403-AccessDenied.xhtml</location>
     </error-page>
+    <error-page>
+        <exception-type>500</exception-type>
+        <location>/errorPages/500-InternalServerError.xhtml</location>
+    </error-page>
     
     <!-- Spring Context Configuration' s Path definition -->
     <context-param>
