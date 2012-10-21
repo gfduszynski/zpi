@@ -50,6 +50,7 @@ public class TournamentBO implements Serializable{
         Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
         t.setCategory(cat);
         t = tRepo.save(t);
+        // daty rozpoczęcia i zakończenia
         t.setCurrentRound(initialRound);
         t.setRoundSet(new HashSet<Round>());
         t.getRoundSet().add(initialRound);
@@ -62,6 +63,7 @@ public class TournamentBO implements Serializable{
         PairingCard pc = new PairingCard(null,0);
         pc.setPlayer(u);
         pc.setTournament(t);
+        pc.setRound(t.getCurrentRound());
         u.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
     }
@@ -86,7 +88,8 @@ public class TournamentBO implements Serializable{
         Round nextRound = new Round(null, currentRound.getNumber()+1, Round.State.STARTED);
         t.setCurrentRound(nextRound);
         t.getRoundSet().add(nextRound);
-        
+        nextRound.setTournament(t);
+        nextRound.setPrevRound(currentRound);
         // Provide new pairing cards for next round
         
         
