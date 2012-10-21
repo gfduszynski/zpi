@@ -133,7 +133,7 @@ public class TournamentBO implements Serializable{
             newPC.setTournament(pc.getTournament());
             bracket.add(newPC);
         }
-        
+        // TODO: Ensure going from highest score bracket to lowest
         // Pairing players
         List<PairingCard> downFloaters = new LinkedList<PairingCard>();
         for(HashSet<PairingCard> scoreBracket : scoreBrackets.values()){
