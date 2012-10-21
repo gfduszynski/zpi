@@ -59,9 +59,9 @@ public class TournamentBO implements Serializable{
     
     public PairingCard joinTorunament(Tournament t){return joinTournament(t, umBO.getLoggedUser());}
     public PairingCard joinTournament(Tournament t, User u){
-        PairingCard pc = new PairingCard(null, u, null, t, 0);
-        t.getPairingCardSet().add(pc);
+        PairingCard pc = new PairingCard(null,0);
         u.getPairingCardSet().add(pc);
+        t.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
     }
     

@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -91,8 +92,8 @@ public class User implements Serializable {
     private Club userClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Post> postSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<Club> clubSet;
+    @OneToOne(mappedBy = "owner", fetch = FetchType.EAGER)
+    private Club ownedClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "opponent", fetch = FetchType.EAGER)
     private Set<PairingCard> opponentPairingCardSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "player", fetch = FetchType.EAGER)
@@ -247,12 +248,12 @@ public class User implements Serializable {
         return "org.chessclan.dataTier.models.User[ id=" + id + " ]";
     }
 
-    public Set<Club> getClubSet() {
-        return clubSet;
+    public Club getOwnedClub() {
+        return ownedClub;
     }
 
-    public void setClubSet(Set<Club> clubSet) {
-        this.clubSet = clubSet;
+    public void setOwnedClub(Club ownedClub) {
+        this.ownedClub = ownedClub;
     }
 
     public Set<PairingCard> getOpponentPairingCardSet() {

@@ -202,7 +202,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="opponent" type="int">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="tournament" type="int">
                 <constraints nullable="false" />
@@ -220,7 +220,7 @@
     <addForeignKeyConstraint baseTableName="results"     baseColumnNames="tournament"       constraintName="results_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
     <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="round"       constraintName="pcard_round_ref"       referencedTableName="rounds"       referencedColumnNames="id"/>
     <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="tournament"  constraintName="pcard_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
-    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="opponent"    constraintName="pcard_opponent_ref"    referencedTableName="users"        referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="opponent"    constraintName="pcard_opponent_ref"    referencedTableName="pairing_cards" referencedColumnNames="id"/>
     <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="player"      constraintName="pcard_player_ref"      referencedTableName="users"        referencedColumnNames="id"/>
             
     </changeSet>
