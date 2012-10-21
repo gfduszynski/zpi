@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,21 +28,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "pairing_cards")
-@NamedQueries({
-    @NamedQuery(name = "PairingCard.findAll", query = "SELECT p FROM PairingCard p")})
 public class PairingCard implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "tournament")
-    private int tournament;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "round")
-    private int round;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "player")
-    private int player;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,10 +39,23 @@ public class PairingCard implements Serializable {
     @NotNull
     @Column(name = "score")
     private float score;
-    @OneToMany(mappedBy = "opponent", fetch = FetchType.EAGER)
-    private Set<PairingCard> pairingCardSet;
+    @Basic(optional = false)
+    @NotNull
+    @JoinColumn(name = "tournament")
+    @ManyToOne
+    private Tournament tournament;
+    @Basic(optional = false)
+    @NotNull
+    @JoinColumn(name = "round")
+    @ManyToOne
+    private Round round;
+    @Basic(optional = false)
+    @NotNull
+    @JoinColumn(name = "player")
+    @ManyToOne
+    private User player;
     @JoinColumn(name = "opponent", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private PairingCard opponent;
 
     public PairingCard() {
@@ -84,14 +84,6 @@ public class PairingCard implements Serializable {
 
     public void setScore(float score) {
         this.score = score;
-    }
-
-    public Set<PairingCard> getPairingCardSet() {
-        return pairingCardSet;
-    }
-
-    public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
-        this.pairingCardSet = pairingCardSet;
     }
 
     public PairingCard getOpponent() {
@@ -127,27 +119,27 @@ public class PairingCard implements Serializable {
         return "org.chessclan.dataTier.models.PairingCard[ id=" + id + " ]";
     }
 
-    public int getTournament() {
+    public Tournament getTournament() {
         return tournament;
     }
 
-    public void setTournament(int tournament) {
+    public void setTournament(Tournament tournament) {
         this.tournament = tournament;
     }
 
-    public int getRound() {
+    public Round getRound() {
         return round;
     }
 
-    public void setRound(int round) {
+    public void setRound(Round round) {
         this.round = round;
     }
 
-    public int getPlayer() {
+    public User getPlayer() {
         return player;
     }
 
-    public void setPlayer(int player) {
+    public void setPlayer(User player) {
         this.player = player;
     }
     
