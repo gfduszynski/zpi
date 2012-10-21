@@ -12,14 +12,6 @@
         <ui:composition>
             <script>
                 $(function() {
-                    $( "#accordion" ).accordion({
-                        collapsible: true,
-                        heightStyle: "content"
-                    });
-                    $( "#accordionClubs" ).accordion({
-                        collapsible: true,
-                        heightStyle: "content"
-                    });
                     $( "#tabs" ).tabs();
                 });
             </script>
@@ -153,6 +145,14 @@
                 </div>
                 <div id="tabs-4">
                     <h:form prependId="false">
+                        <script>
+                            $(function() {
+                                $( "#accordionClubs" ).accordion({
+                                    collapsible: true,
+                                    heightStyle: "content"
+                                });
+                            });
+                        </script>
                         <div id="accordionClubs">
                             <h3>Mój klub</h3>
                             <div>
@@ -195,24 +195,16 @@
                                     </h:column>
                                     <h:column>
                                         <f:facet name="header"></f:facet>
-                                        <c:if test="#{ucBean.user == null}">               
+                                        <c:if test="#{ucBean.user.userClub == null}">               
                                             <h:commandButton value="Zapisz się">
                                                 <f:ajax render="@form" listener="#{ucBean.signToClub(club)}"/>
                                             </h:commandButton>
                                         </c:if>
-                                        <c:if test="#{ucBean.user != null}">    
-                                            <c:if test="#{ucBean.user.userClub == club}">   
-                                                <h:commandButton value="Ukryj">
-                                                    <f:ajax render="@form" listener="#{ucBean.signOutFromClub}"/>
-                                                </h:commandButton>
-                                            </c:if>
+                                        <c:if test="#{ucBean.user.userClub == club}">   
+                                            <h:commandButton value="Wypisz się">
+                                                <f:ajax render="@form" listener="#{ucBean.signOutFromClub}"/>
+                                            </h:commandButton>
                                         </c:if>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Usuń</f:facet>         
-                                        <h:commandButton value="Usuń">
-                                            <f:ajax render="@form" listener="#{upBean.removePost(post)}"/>
-                                        </h:commandButton>
                                     </h:column>
                                 </h:dataTable>
                             </div>
