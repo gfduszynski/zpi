@@ -5,8 +5,17 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
@@ -76,12 +85,15 @@ public class TournamentBO implements Serializable{
             throw new Round.NoPlayers("[TournamentBO->goToNextRound(tId="+t.getId()+")] playerCount<2");
         }
         // Check if all the pairing cards are filled
-        for(PairingCard pc : currentRound.getPairingCardSet()){
-            if(pc.getScore()==-1){
-                throw new Round.NotFinished("[TournamentBO->goToNextRound(tId="+t.getId()+")] player_card(id="+pc.getId()+") has invalid score: "+pc.getScore());
+        if(currentRound.getRoundState()!=Round.State.JOINING) {
+            for(PairingCard pc : currentRound.getPairingCardSet()){
+                // Guzik to sprawdza, trzeba stan karty sprawdzić
+                if(pc.getScore()==0){
+                    throw new Round.NotFinished("[TournamentBO->goToNextRound(tId="+t.getId()+")] player_card(id="+pc.getId()+") has invalid score: "+pc.getScore());
+                }
             }
         }
-        // If tournament not yet started
+        // If tournament not yet started, start it
         if(currentRound.getRoundState()==Round.State.JOINING){
             currentRound.setRoundState(Round.State.FINISHED);
         }
@@ -90,12 +102,79 @@ public class TournamentBO implements Serializable{
         t.getRoundSet().add(nextRound);
         nextRound.setTournament(t);
         nextRound.setPrevRound(currentRound);
-        // Provide new pairing cards for next round
-        
+        // Find pairs for players
+        Set<PairingCard> newPairingCards = pairPlayers(currentRound.getPairingCardSet(),currentRound);
+        nextRound.setPairingCardSet(newPairingCards);
         
         return tRepo.saveAndFlush(t);
     }
     
+    private Set<PairingCard> pairPlayers(Set<PairingCard> oldPairingCards, Round currentRound){
+        HashMap<Float,HashSet<PairingCard>> scoreBrackets = new HashMap<Float, HashSet<PairingCard>>();
+        Set<PairingCard> newPairingCards = new HashSet<PairingCard>();
+        
+        // Assign players to their score brackets with new pairing card
+        for(PairingCard pc : oldPairingCards){
+            // Add missing score bracket
+            if(!scoreBrackets.containsKey(pc.getScore())){
+                scoreBrackets.put(pc.getScore(), new HashSet<PairingCard>());
+            }
+            // Add players new paring card to score bracket
+            Set<PairingCard> bracket = scoreBrackets.get(pc.getScore());
+            PairingCard newPC = new PairingCard();
+            newPC.setByes(pc.getByes());
+            newPC.setColorDiff(pc.getColorDiff());
+            newPC.setFloats(pc.getFloats());
+            newPC.setId(null);
+            newPC.setOpponent(null);
+            newPC.setPlayer(pc.getPlayer());
+            newPC.setRound(currentRound);
+            newPC.setScore(pc.getScore());
+            newPC.setTournament(pc.getTournament());
+            bracket.add(newPC);
+        }
+        
+        // Pairing players
+        List<PairingCard> downFloaters = new LinkedList<PairingCard>();
+        for(HashSet<PairingCard> scoreBracket : scoreBrackets.values()){
+            HashSet<PairingCard> S1 = new HashSet<PairingCard>();
+            HashSet<PairingCard> S2 = new HashSet<PairingCard>();   // player score S2>=S1
+            int P0 = (int) Math.floor(scoreBracket.size()/2.0);     // Number of players in S1 and S2
+            int M0 = scoreBracket.size()-(2*P0);                    // Number of players moved down from higher score grups
+            
+            // Add downfloaters
+            boolean homogeneoeus = downFloaters.size()>=scoreBracket.size();
+            scoreBracket.addAll(downFloaters); 
+            downFloaters.clear();
+            
+            // Sort players by score
+            List<PairingCard> orderedByScore = Arrays.asList((PairingCard[])scoreBracket.toArray());
+            Collections.sort(orderedByScore);
+            Collections.reverse(orderedByScore);
+            
+            // if not homogeneous by downfloater
+            if(!homogeneoeus) {
+                homogeneoeus = orderedByScore.get(0) == orderedByScore.get(orderedByScore.size()-1);
+            }
+            
+            // Assign players to S2
+            for(int i = 0; i < P0; i++){
+                S2.add(orderedByScore.get(i));
+            }
+            // Assign players to S1
+            for(int i = P0; i < (P0+P0); i++){
+                S1.add(orderedByScore.get(i));
+            }
+            // Move downfloaters
+            for(int i = P0+P0; i < scoreBracket.size(); i++){
+                PairingCard downFloater = orderedByScore.get(i);
+                
+                downFloaters.add(downFloater);
+            }
+        }
+        
+        return newPairingCards;
+    }
     
     // DAO Wrappers
     public Tournament saveTournament(Tournament t){

@@ -5,7 +5,6 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -28,7 +24,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "pairing_cards")
-public class PairingCard implements Serializable {
+public class PairingCard implements Serializable, Comparable<PairingCard>{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +53,18 @@ public class PairingCard implements Serializable {
     @JoinColumn(name = "opponent", referencedColumnName = "id")
     @OneToOne(fetch = FetchType.EAGER)
     private PairingCard opponent;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "floats")
+    private int floats = 0;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "byes")
+    private int byes = 0;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "color_diff")
+    private int colorDiff = 0;
 
     public PairingCard() {
     }
@@ -142,5 +150,35 @@ public class PairingCard implements Serializable {
     public void setPlayer(User player) {
         this.player = player;
     }
-    
+
+    public int getFloats() {
+        return floats;
+    }
+
+    public void setFloats(int floats) {
+        this.floats = floats;
+    }
+
+    public int getByes() {
+        return byes;
+    }
+
+    public void setByes(int byes) {
+        this.byes = byes;
+    }
+
+    public int getColorDiff() {
+        return colorDiff;
+    }
+
+    public void setColorDiff(int colorDiff) {
+        this.colorDiff = colorDiff;
+    }    
+
+    @Override
+    public int compareTo(PairingCard o) {
+        float diff = getScore()-o.getScore();
+        return diff==0?0:(diff>0?1:-1);
+    }
+
 }

@@ -57,6 +57,7 @@ public class Round implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "round_state")
+    @Enumerated(EnumType.ORDINAL)
     private State roundState;
     @Column(name = "round_start")
     @Temporal(TemporalType.DATE)

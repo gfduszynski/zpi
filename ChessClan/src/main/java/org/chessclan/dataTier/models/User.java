@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,8 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -35,6 +35,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+    public enum FIDETitle {
+        NO_TITLE,WCM,WFM,CM,WIM,FM,WGM,IM,GM;
+    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,6 +88,15 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "sex")
     private int sex;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "rating")
+    private float rating = 0;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fide_title")
+    @Enumerated(EnumType.ORDINAL)
+    private FIDETitle fideTitle = FIDETitle.NO_TITLE;
     @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER, cascade= CascadeType.REMOVE)
     private Set<Role> roleSet;
     @JoinColumn(name = "user_club", referencedColumnName = "id")
@@ -270,6 +282,22 @@ public class User implements Serializable {
 
     public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
         this.pairingCardSet = pairingCardSet;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public FIDETitle getFideTitle() {
+        return fideTitle;
+    }
+
+    public void setFideTitle(FIDETitle fideTitle) {
+        this.fideTitle = fideTitle;
     }
     
 }

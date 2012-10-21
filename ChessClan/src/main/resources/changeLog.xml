@@ -37,6 +37,12 @@
             <column name="sex" type="int" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
+            <column name="rating" type="float"  defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fide_title" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
                 
         <createTable tableName="clubs">
@@ -207,7 +213,16 @@
             <column name="tournament" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="score" type="float">
+            <column name="score" type="float" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="floats" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="byes" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="color_diff" type="int" defaultValueNumeric="0">
                 <constraints nullable="false" />
             </column>
         </createTable>
