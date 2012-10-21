@@ -151,7 +151,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="current_round" type="int">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
 

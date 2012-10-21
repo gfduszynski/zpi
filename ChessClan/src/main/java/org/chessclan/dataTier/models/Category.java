@@ -5,6 +5,7 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -47,7 +48,7 @@ public class Category implements Serializable {
     @Column(name = "player")
     private String player;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
-    private Set<Tournament> tournamentSet;
+    private Set<Tournament> tournamentSet = new HashSet<Tournament>();
 
     public Category() {
     }
@@ -89,7 +90,7 @@ public class Category implements Serializable {
     public Set<Tournament> getTournamentSet() {
         return tournamentSet;
     }
-
+    
     public void setTournamentSet(Set<Tournament> tournamentSet) {
         this.tournamentSet = tournamentSet;
     }

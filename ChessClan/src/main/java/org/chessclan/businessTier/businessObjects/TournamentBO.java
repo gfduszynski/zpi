@@ -19,6 +19,8 @@ import org.chessclan.dataTier.repositories.RoundRepository;
 import org.chessclan.dataTier.repositories.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -42,17 +44,16 @@ public class TournamentBO implements Serializable{
     @Autowired
     private UserManagementBO umBO;
     
-    public Tournament registerTournament(String tName, Date tDate, String tDesc, Club tClub){
-        Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
+    @Transactional(readOnly=false,propagation= Propagation.REQUIRED)
+    public Tournament registerTournament(String tName, Date tDate, String tDesc, Club tClub, Category cat){        
         Round initialRound = new Round(null, 0, Round.State.JOINING);
+        Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
+        t.setCategory(cat);
+        t = tRepo.save(t);
         t.setCurrentRound(initialRound);
         t.setRoundSet(new HashSet<Round>());
         t.getRoundSet().add(initialRound);
-        Category cat = new Category(null, tName, tName);
-        cat = catRepo.save(cat);
-        t.setCategory(cat);
-        cat.setTournamentSet(new HashSet<Tournament>());
-        cat.getTournamentSet().add(t);
+        initialRound.setTournament(t);
         return tRepo.saveAndFlush(t);
     }
     

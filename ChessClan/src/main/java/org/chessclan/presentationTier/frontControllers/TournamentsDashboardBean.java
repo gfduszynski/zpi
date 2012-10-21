@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.Transient;
+import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
@@ -47,14 +48,10 @@ public class TournamentsDashboardBean implements Serializable {
     @Transient
     @ManagedProperty("#{ClubBO}")
     private ClubBO clbBO;
-
-    public ClubBO getClbBO() {
-        return clbBO;
-    }
-
-    public void setClbBO(ClubBO clbBO) {
-        this.clbBO = clbBO;
-    }
+    
+    @Transient
+    @ManagedProperty("#{CategoryBO}")
+    private CategoryBO catBO;
     
     @Transient
     @ManagedProperty("#{UserManagementBO}")
@@ -85,7 +82,7 @@ public class TournamentsDashboardBean implements Serializable {
         String lolek = lUAuth.getName();
         umBO.findUserByEmail(lUAuth.getName());
         try {
-            tmBO.goToNextRound(tmBO.registerTournament("tname", new Date(), "tDescc", clbBO.findClubById(1)));
+            tmBO.goToNextRound(tmBO.registerTournament("tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1)));
         } catch (NotFinished ex) {
             Logger.getLogger(TournamentsDashboardBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoPlayers ex) {
@@ -215,5 +212,20 @@ public class TournamentsDashboardBean implements Serializable {
 
     public void setUmBO(UserManagementBO umBO) {
         this.umBO = umBO;
+    }
+        public CategoryBO getCatBO() {
+        return catBO;
+    }
+
+    public void setCatBO(CategoryBO catBO) {
+        this.catBO = catBO;
+    }
+
+    public ClubBO getClbBO() {
+        return clbBO;
+    }
+
+    public void setClbBO(ClubBO clbBO) {
+        this.clbBO = clbBO;
     }
 }

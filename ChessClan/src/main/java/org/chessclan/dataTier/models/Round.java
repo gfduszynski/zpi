@@ -59,8 +59,6 @@ public class Round implements Serializable {
     @Column(name = "round_end")
     @Temporal(TemporalType.DATE)
     private Date roundEnd;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "currentRound", fetch = FetchType.EAGER)
-    private Set<Tournament> tournamentSet;
     @OneToMany(mappedBy = "prevRound", fetch = FetchType.EAGER)
     private Set<Round> roundSet;
     @JoinColumn(name = "prev_round", referencedColumnName = "id")
@@ -127,14 +125,6 @@ public class Round implements Serializable {
 
     public void setRoundEnd(Date roundEnd) {
         this.roundEnd = roundEnd;
-    }
-
-    public Set<Tournament> getTournamentSet() {
-        return tournamentSet;
-    }
-
-    public void setTournamentSet(Set<Tournament> tournamentSet) {
-        this.tournamentSet = tournamentSet;
     }
 
     public Set<Round> getRoundSet() {
