@@ -145,6 +145,13 @@
                     <h:commandButton value="Rejestruj" styleClass="regButton">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>
                     </h:commandButton>
+                    <h:panelGroup rendered="#{rgsBean.regSucceeded}">
+                        <script type="text/javascript" charset="UTF-8">
+                            $('#j_username').val('#{rgsBean.email}');
+                            $('#j_password').val('#{rgsBean.password}');
+                            $('#login').click();
+                        </script>
+                    </h:panelGroup>
                 </h:panelGroup>
             </h:form>
         </ui:composition>

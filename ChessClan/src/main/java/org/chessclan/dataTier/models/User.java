@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,8 +34,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
-@NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,6 +92,12 @@ public class User implements Serializable {
     private Club userClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Post> postSet;
+    @OneToOne(mappedBy = "owner", fetch = FetchType.EAGER)
+    private Club ownedClub;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "opponent", fetch = FetchType.EAGER)
+    private Set<PairingCard> opponentPairingCardSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player", fetch = FetchType.EAGER)
+    private Set<PairingCard> pairingCardSet;
 
     public User() {
     }
@@ -241,6 +246,30 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.User[ id=" + id + " ]";
+    }
+
+    public Club getOwnedClub() {
+        return ownedClub;
+    }
+
+    public void setOwnedClub(Club ownedClub) {
+        this.ownedClub = ownedClub;
+    }
+
+    public Set<PairingCard> getOpponentPairingCardSet() {
+        return opponentPairingCardSet;
+    }
+
+    public void setOpponentPairingCardSet(Set<PairingCard> pairingCardSet) {
+        this.opponentPairingCardSet = pairingCardSet;
+    }
+
+    public Set<PairingCard> getPairingCardSet() {
+        return pairingCardSet;
+    }
+
+    public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
+        this.pairingCardSet = pairingCardSet;
     }
     
 }

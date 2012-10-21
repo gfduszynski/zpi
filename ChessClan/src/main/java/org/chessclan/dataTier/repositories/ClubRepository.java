@@ -5,11 +5,11 @@
 package org.chessclan.dataTier.repositories;
 
 import org.chessclan.dataTier.models.Club;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Xcays
  */
-public interface ClubRepository extends CrudRepository<Club, Integer> {
+public interface ClubRepository extends JpaRepository<Club, Integer> {
 }

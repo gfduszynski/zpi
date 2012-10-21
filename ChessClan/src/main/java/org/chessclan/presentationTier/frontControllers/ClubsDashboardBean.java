@@ -70,7 +70,7 @@ public class ClubsDashboardBean implements Serializable {
     }
 
     public void addNewClub() {
-        clBO.saveClub(new Club(clubs.size()+1,"clubName",new Date()));
+        //clBO.saveClub(new Club(clubs.size()+1,"clubName",new Date()));
         initialize();
         }
     

@@ -29,8 +29,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "posts")
-@NamedQueries({
-    @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p")})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -72,6 +70,14 @@ public class Post implements Serializable {
 
     public Post(Integer id) {
         this.id = id;
+    }
+    
+    public Post(String title, String content, boolean published, User user){
+        this.title = title;
+        this.content = content;
+        this.published = published;
+        this.user = user;
+        this.dateCreated = new Date();
     }
 
     public Post(Integer id, String title, String content, boolean published, Date dateCreated) {

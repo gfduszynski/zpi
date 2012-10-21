@@ -6,6 +6,7 @@ package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,9 +18,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,9 +32,8 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "tournaments")
-@NamedQueries({
-    @NamedQuery(name = "Tournament.findAll", query = "SELECT t FROM Tournament t")})
 public class Tournament implements Serializable {
+    public class Exists extends Exception {}
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +56,7 @@ public class Tournament implements Serializable {
     @Column(name = "description")
     private String description;
     @JoinColumn(name = "current_round", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = true, fetch = FetchType.EAGER, cascade={CascadeType.ALL})
     private Round currentRound;
     @JoinColumn(name = "category", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
@@ -67,6 +66,8 @@ public class Tournament implements Serializable {
     private Club club;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
     private Set<Round> roundSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
+    private Set<PairingCard> pairingCardSet = new HashSet<PairingCard>();
 
     public Tournament() {
     }
@@ -170,6 +171,14 @@ public class Tournament implements Serializable {
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.Tournament[ id=" + id + " ]";
+    }
+
+    public Set<PairingCard> getPairingCardSet() {
+        return pairingCardSet;
+    }
+
+    public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
+        this.pairingCardSet = pairingCardSet;
     }
     
 }

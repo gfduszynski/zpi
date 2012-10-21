@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,7 +33,16 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "rounds")
 public class Round implements Serializable {
-    public class NotFinished extends Exception{}
+    public static class NotFinished extends Exception{
+        public NotFinished(String string) {
+            super(string);
+        }
+    }
+    public static class NoPlayers extends Exception{
+        public NoPlayers(String string) {
+            super(string);
+        }
+    }
     public enum State{ JOINING,STARTED,FINISHED;}
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,7 +57,6 @@ public class Round implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "round_state")
-    @Enumerated(EnumType.ORDINAL)
     private State roundState;
     @Column(name = "round_start")
     @Temporal(TemporalType.DATE)
@@ -55,8 +64,6 @@ public class Round implements Serializable {
     @Column(name = "round_end")
     @Temporal(TemporalType.DATE)
     private Date roundEnd;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "currentRound", fetch = FetchType.EAGER)
-    private Set<Tournament> tournamentSet;
     @OneToMany(mappedBy = "prevRound", fetch = FetchType.EAGER)
     private Set<Round> roundSet;
     @JoinColumn(name = "prev_round", referencedColumnName = "id")
@@ -66,7 +73,7 @@ public class Round implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
-    private Set<Category> categorySet;
+    private Set<PairingCard> pairingCardSet;
 
     public Round() {
     }
@@ -121,14 +128,6 @@ public class Round implements Serializable {
         this.roundEnd = roundEnd;
     }
 
-    public Set<Tournament> getTournamentSet() {
-        return tournamentSet;
-    }
-
-    public void setTournamentSet(Set<Tournament> tournamentSet) {
-        this.tournamentSet = tournamentSet;
-    }
-
     public Set<Round> getRoundSet() {
         return roundSet;
     }
@@ -178,12 +177,12 @@ public class Round implements Serializable {
         return "org.chessclan.dataTier.models.Round[ id=" + id + " ]";
     }
 
-    public Set<Category> getCategorySet() {
-        return categorySet;
+    public Set<PairingCard> getPairingCardSet() {
+        return pairingCardSet;
     }
 
-    public void setCategorySet(Set<Category> categorySet) {
-        this.categorySet = categorySet;
+    public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
+        this.pairingCardSet = pairingCardSet;
     }
-    
+
 }

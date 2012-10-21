@@ -15,9 +15,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,8 +31,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "clubs")
-@NamedQueries({
-    @NamedQuery(name = "Club.findAll", query = "SELECT c FROM Club c")})
 public class Club implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,6 +55,9 @@ public class Club implements Serializable {
     private Set<User> userSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "club", fetch = FetchType.EAGER)
     private Set<Tournament> tournamentSet;
+    @JoinColumn(name = "owner", referencedColumnName = "id")
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    private User owner;
 
     public Club() {
     }
@@ -64,10 +66,11 @@ public class Club implements Serializable {
         this.id = id;
     }
 
-    public Club(Integer id, String name, Date creationDate) {
+    public Club(Integer id, String name, Date creationDate, User owner) {
         this.id = id;
         this.name = name;
         this.creationDate = creationDate;
+        this.owner = owner;
     }
 
     public Integer getId() {
@@ -141,6 +144,14 @@ public class Club implements Serializable {
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.Club[ id=" + id + " ]";
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
     
 }

@@ -4,6 +4,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Administration dashboard</title>
+    </h:head>
 
     <h:body>
         <ui:composition>
@@ -11,8 +14,7 @@
             <h:outputScript library="js" name="adminScripts.js"/>
             <script type="text/javascript">
                 $(function() {
-                    $( "#tabs" ).tabs();
-    
+                    $( "#tabs" ).tabs();    
                 });
             </script>
             <div style="width:100%;">
@@ -21,7 +23,6 @@
                     <input type="submit" value="Logout"/>
                 </form>
             </div>
-
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1">USERS</a></li>
