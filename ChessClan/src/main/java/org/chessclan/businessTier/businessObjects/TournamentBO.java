@@ -21,6 +21,7 @@ import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
+import org.chessclan.dataTier.models.Round.State;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.CategoryRepository;
@@ -80,8 +81,11 @@ public class TournamentBO implements Serializable{
         return tRepo.saveAndFlush(t);
     }
     
-    public PairingCard joinTorunament(Tournament t){return joinTournament(t, umBO.getLoggedUser());}
-    public PairingCard joinTournament(Tournament t, User u){
+    public PairingCard joinTorunament(Tournament t) throws NotJoinableRound{return joinTournament(t, umBO.getLoggedUser());}
+    public PairingCard joinTournament(Tournament t, User u) throws NotJoinableRound{
+        if(t.getCurrentRound().getRoundState() != State.JOINING){
+            throw new NotJoinableRound();
+        }
         PairingCard pc = new PairingCard(null,0);
         pc.setPlayer(u);
         pc.setTournament(t);
@@ -246,5 +250,9 @@ public class TournamentBO implements Serializable{
     
     public void deleteTournaments(Iterable<Tournament> ts){
         tRepo.delete(ts);
+    }
+    
+    public static class NotJoinableRound extends Exception{
+        
     }
 }

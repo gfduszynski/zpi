@@ -5,6 +5,7 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.chessclan.dataTier.models.Post;
@@ -88,7 +89,7 @@ public class PostBO implements Serializable{
          postList = postRepo.findByDateExpiresAfterAndPublishedTrue(new Date());
          if(postList.size()<= numberOfPosts) {
             return postList;
-        }else { return postList.subList(0, numberOfPosts-1);}
+        }else { return postList.subList(0, numberOfPosts);}
     }
     public Iterable<Post> findAllPosts(Sort s)
     {
@@ -107,6 +108,9 @@ public class PostBO implements Serializable{
     
     public Post savePost(Post p)
     {
+        if(p.getPublished()){
+            p.setDatePublished(Calendar.getInstance().getTime());
+        }
         return postRepo.save(p);
     }
     
