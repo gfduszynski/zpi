@@ -29,6 +29,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "posts")
 public class Post implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,16 +71,19 @@ public class Post implements Serializable {
     public Post(Integer id) {
         this.id = id;
     }
-    
-    public Post(String title, String content, boolean published, User user){
+
+    public Post(String title, String content, boolean published, User user) {
         this.title = title;
         this.content = content;
         this.published = published;
         this.user = user;
         this.dateCreated = Calendar.getInstance().getTime();
-        if(published){
+        if (published) {
             this.datePublished = Calendar.getInstance().getTime();
         }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 100);
+        this.dateExpires = cal.getTime();
     }
 
     public Post(Integer id, String title, String content, boolean published, Date dateCreated) {
@@ -88,6 +92,9 @@ public class Post implements Serializable {
         this.content = content;
         this.published = published;
         this.dateCreated = dateCreated;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 100);
+        this.dateExpires = cal.getTime();
     }
 
     public Integer getId() {
@@ -178,5 +185,4 @@ public class Post implements Serializable {
     public String toString() {
         return "org.chessclan.dataTier.models.Post[ id=" + id + " ]";
     }
-    
 }
