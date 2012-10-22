@@ -7,6 +7,7 @@ package org.chessclan.businessTier.businessObjects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -54,16 +55,28 @@ public class TournamentBO implements Serializable{
     private UserManagementBO umBO;
     
     @Transactional(readOnly=false,propagation= Propagation.REQUIRED)
-    public Tournament registerTournament(String tName, Date tDate, String tDesc, Club tClub, Category cat){        
-        Round initialRound = new Round(null, 0, Round.State.JOINING);
-        Tournament t = new Tournament(null, tName, tDate, tDesc, tClub);
-        t.setCategory(cat);
+    public Tournament registerTournament(int numberOfRounds, float pointsForBye, String name, Date startDate, String description, Club club, Category category){        
+        Tournament t = new Tournament(null, name, startDate, description, club);
+        t.setPointsForBye(pointsForBye);
+        t.setCategory(category);
+        t.setNumberOfRounds(numberOfRounds);
         t = tRepo.save(t);
-        // daty rozpoczęcia i zakończenia
-        t.setCurrentRound(initialRound);
-        t.setRoundSet(new HashSet<Round>());
-        t.getRoundSet().add(initialRound);
-        initialRound.setTournament(t);
+        Round prevRound = new Round(null, -1, Round.State.JOINING);      
+        t.setCurrentRound(prevRound);
+        prevRound.setTournament(t);
+        prevRound.setRoundEnd(startDate);
+        prevRound.setRoundStart(Calendar.getInstance().getTime());
+        prevRound = rRepo.save(prevRound);
+
+        for(int i =0; i<numberOfRounds; i++){
+            Round r = new Round(null, i, Round.State.NOT_STARTED);
+            r.setTournament(t);
+            r.setPrevRound(prevRound);
+            r = rRepo.save(r);
+            prevRound.setNextRound(r);
+            rRepo.save(prevRound);
+            prevRound = r;
+        }
         return tRepo.saveAndFlush(t);
     }
     
@@ -87,7 +100,7 @@ public class TournamentBO implements Serializable{
         // Check if all the pairing cards are filled
         if(currentRound.getRoundState()!=Round.State.JOINING) {
             for(PairingCard pc : currentRound.getPairingCardSet()){
-                // Guzik to sprawdza, trzeba stan karty sprawdzić
+                // Guzik to sprawdza!, trzeba stan karty sprawdzić
                 if(pc.getScore()==0){
                     throw new Round.NotFinished("[TournamentBO->goToNextRound(tId="+t.getId()+")] player_card(id="+pc.getId()+") has invalid score: "+pc.getScore());
                 }
@@ -133,14 +146,30 @@ public class TournamentBO implements Serializable{
             newPC.setTournament(pc.getTournament());
             bracket.add(newPC);
         }
-        // TODO: Ensure going from highest score bracket to lowest
+        // Sort bracket key's according to score
+        List<Float> sortedBrackets = (List<Float>)Arrays.asList((Float[])scoreBrackets.keySet().toArray());
+        Collections.sort(sortedBrackets);
         // Pairing players
         List<PairingCard> downFloaters = new LinkedList<PairingCard>();
-        for(HashSet<PairingCard> scoreBracket : scoreBrackets.values()){
+        //Pairing params
+        int Z=0;
+        int X=0;
+        int P=0;
+        for(int b = sortedBrackets.size(); b>0; b--){
+            HashSet<PairingCard> scoreBracket = scoreBrackets.get(sortedBrackets.get(b-1)); // Highest score bracket - descending
+            // Calculate param's
+            int P0 = (int) Math.floor(scoreBracket.size()/2.0);     // Number of players in S1 and S2
+            int M0 = downFloaters.size();                           // Number of players moved down from higher score grups
+            int P1=P0;
+            int M1=M0;
+            int Z1=0;
+            int X1=0;
+            if(currentRound.getNumber()%2==0){
+                // If round is even calculate Z1
+            }
+            
             HashSet<PairingCard> S1 = new HashSet<PairingCard>();
             HashSet<PairingCard> S2 = new HashSet<PairingCard>();   // player score S2>=S1
-            int P0 = (int) Math.floor(scoreBracket.size()/2.0);     // Number of players in S1 and S2
-            int M0 = scoreBracket.size()-(2*P0);                    // Number of players moved down from higher score grups
             
             // Add downfloaters
             boolean homogeneoeus = downFloaters.size()>=scoreBracket.size();
@@ -174,6 +203,16 @@ public class TournamentBO implements Serializable{
         }
         
         return newPairingCards;
+    }
+    
+    
+    private void pairPlayers(PairingCard white, PairingCard black) {
+	    white.setOpponent(black);
+	    white.setColorDiff(white.getColorDiff()+1);
+            white.setColor(PairingCard.Color.WHITE);
+            black.setOpponent(white);
+            black.setColorDiff(black.getColorDiff()-1);
+	    black.setColor(PairingCard.Color.BLACK);
     }
     
     // DAO Wrappers

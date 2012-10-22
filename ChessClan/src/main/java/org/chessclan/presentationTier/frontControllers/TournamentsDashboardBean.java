@@ -81,16 +81,16 @@ public class TournamentsDashboardBean implements Serializable {
         UsernamePasswordAuthenticationToken lUAuth = umBO.getLoggedUserAuthentication();
         String lolek = lUAuth.getName();
         umBO.findUserByEmail(lUAuth.getName());
-        try {
-            Tournament t = tmBO.registerTournament("tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1));
-            tmBO.joinTorunament(t);
-            tmBO.joinTournament(t, umBO.findUserById(2));
-            tmBO.goToNextRound(t);
-        } catch (NotFinished ex) {
+        //try {
+            Tournament t = tmBO.registerTournament(10,2,"tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1));
+            //tmBO.joinTorunament(t);
+            //tmBO.joinTournament(t, umBO.findUserById(2));
+            //tmBO.goToNextRound(t);
+        /*} catch (NotFinished ex) {
             Logger.getLogger(TournamentsDashboardBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoPlayers ex) {
             Logger.getLogger(TournamentsDashboardBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
     public void removeTournament(Tournament t) {
         

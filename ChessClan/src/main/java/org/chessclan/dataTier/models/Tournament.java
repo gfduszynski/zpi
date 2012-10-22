@@ -47,6 +47,10 @@ public class Tournament implements Serializable {
     private String name;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "points_for_bye")
+    private float pointsForBye;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -64,6 +68,10 @@ public class Tournament implements Serializable {
     @JoinColumn(name = "club", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Club club;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "number_of_rounds")
+    private int numberOfRounds = 7;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
     private Set<Round> roundSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
@@ -179,6 +187,22 @@ public class Tournament implements Serializable {
 
     public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
         this.pairingCardSet = pairingCardSet;
+    }
+
+    public float getPointsForBye() {
+        return pointsForBye;
+    }
+
+    public void setPointsForBye(float pointsForBye) {
+        this.pointsForBye = pointsForBye;
+    }
+
+    public int getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public void setNumberOfRounds(int numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
     }
     
 }

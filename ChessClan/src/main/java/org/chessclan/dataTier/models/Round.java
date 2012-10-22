@@ -43,7 +43,7 @@ public class Round implements Serializable {
             super(string);
         }
     }
-    public enum State{ JOINING,STARTED,FINISHED;}
+    public enum State{ JOINING,NOT_STARTED,STARTED,FINISHED;}
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,11 +65,12 @@ public class Round implements Serializable {
     @Column(name = "round_end")
     @Temporal(TemporalType.DATE)
     private Date roundEnd;
-    @OneToMany(mappedBy = "prevRound", fetch = FetchType.EAGER)
-    private Set<Round> roundSet;
     @JoinColumn(name = "prev_round", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private Round prevRound;
+    @JoinColumn(name = "next_round", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Round nextRound;
     @JoinColumn(name = "tournament", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
@@ -129,20 +130,20 @@ public class Round implements Serializable {
         this.roundEnd = roundEnd;
     }
 
-    public Set<Round> getRoundSet() {
-        return roundSet;
-    }
-
-    public void setRoundSet(Set<Round> roundSet) {
-        this.roundSet = roundSet;
-    }
-
     public Round getPrevRound() {
         return prevRound;
     }
 
     public void setPrevRound(Round prevRound) {
         this.prevRound = prevRound;
+    }
+    
+    public Round getNextRound() {
+        return nextRound;
+    }
+
+    public void setNextRound(Round nextRound) {
+        this.nextRound = nextRound;
     }
 
     public Tournament getTournament() {

@@ -5,15 +5,19 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -25,6 +29,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "pairing_cards")
 public class PairingCard implements Serializable, Comparable<PairingCard>{
+    public enum Color {NO_COLOR,WHITE,BLACK;}
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +66,11 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
     @NotNull
     @Column(name = "byes")
     private int byes = 0;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "color")
+    @Enumerated(EnumType.ORDINAL)
+    private Color color;
     @Basic(optional = false)
     @NotNull
     @Column(name = "color_diff")
@@ -207,4 +217,11 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
         return 0;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

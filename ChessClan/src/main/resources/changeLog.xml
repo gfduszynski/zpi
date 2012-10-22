@@ -147,10 +147,16 @@
             <column name="date" type="date">
                 <constraints nullable="false" />
             </column>
+            <column name="points_for_bye" type="float" defaultValueNumeric="1.0">
+                <constraints nullable="false"/>
+            </column>
             <column name="description" type="varchar(2048)">
                 <constraints nullable="false" />
             </column>
             <column name="club" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="number_of_rounds" type="int" defaultValueNumeric="7">
                 <constraints nullable="false" />
             </column>
             <column name="category" type="int">
@@ -181,6 +187,9 @@
                 <constraints nullable="false" />
             </column>
             <column name="prev_round" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="next_round" type="int">
                 <constraints nullable="true" />
             </column>
             <column name="tournament" type="int">
@@ -220,6 +229,9 @@
                 <constraints nullable="false" />
             </column>
             <column name="byes" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="color" type="int" defaultValueNumeric="0">
                 <constraints nullable="false" />
             </column>
             <column name="color_diff" type="int" defaultValueNumeric="0">
