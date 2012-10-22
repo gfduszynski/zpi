@@ -6,10 +6,52 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition>
         <h:form id="tab2Form">
+
             <div style="padding:10px 0px 10px 0px;">
-                <h:commandButton value="remove selected"/>
-                <h:commandButton  type="submit" action="#{cdBean.addNewClub()}" value="add new club"/>
-                            </div>
+                <h:commandButton  type="submit" value="add new club">
+                    <f:ajax listener="#{cdBean.addNewClub()}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton  type="submit" value="edit selected">
+                    <f:ajax listener="#{cdBean.setEditableForSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton  type="submit" value="remove selected" rendered="#{cdBean.deletable}">
+                    <f:ajax listener="#{cdBean.removeSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton  type="submit" value="save selected">
+                    <f:ajax listener="#{cdBean.saveSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+            </div>
+
+            <h:dataTable value="#{cdBean.newclub}" var="newclub"
+                         styleClass="order-table"
+                         headerClass="order-table-header"
+                         rowClasses="order-table-odd-row,order-table-even-row"
+                         rendered="#{cdBean.createNewClub}">
+                <h:column>
+                    <f:facet name="header">Add new club</f:facet>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="no" value="No" class="order-table-even-row"/>
+                        <h:outputText id="no" value="#{newclub.id}" />
+                        <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
+                        <h:inputText id="name" value="#{newclub.name}" />
+                        <h:outputLabel for="owner" value="Owner" class="order-table-odd-row"/>
+                        <h:inputText id="owner" value="#{newclub.owner}" />
+                        <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
+                        <h:inputText id="creation-date" value="#{newclub.creationDate}" class="newuserCreationDateForm input-edit-row">
+                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                        </h:inputText>
+                        <h:outputLabel for="description" value="Description" class="order-table-odd-row"/>
+                        <h:outputLabel for="description" value="newclub.description" class="order-table-odd-row"/>
+                        
+                        <h:commandLink value="save club">
+                            <f:ajax execute="@form" render="@form" listener="#{cdBean.saveNewClub()}"/>
+                        </h:commandLink>
+                        <h:commandLink value="cancel">
+                            <f:ajax execute="@form" render="@form" listener="#{cdBean.cancelNewClub()}"/>
+                        </h:commandLink>
+                    </h:panelGrid>
+                </h:column>
+            </h:dataTable>
 
             <h:dataTable value="#{cdBean.clubs}" var="club"
                          styleClass="order-table"
@@ -38,6 +80,12 @@
                     <h:inputText value="#{club.id}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
                 </h:column>
 
+                <h:column>
+                    <f:facet name="header">Owner</f:facet>
+                    <h:outputText value="#{club.owner}" rendered="#{not cdBean.editable[club.id]}"/>
+                    <h:inputText value="#{club.owner}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                </h:column>
+                
                 <h:column>
                     <f:facet name="header">Name</f:facet>
                     <h:outputText value="#{club.name}" rendered="#{not cdBean.editable[club.id]}"/>

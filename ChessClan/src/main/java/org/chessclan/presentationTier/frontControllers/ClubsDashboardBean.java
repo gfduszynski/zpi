@@ -13,6 +13,7 @@ import javax.faces.bean.SessionScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.dataTier.models.Club;
+import org.chessclan.dataTier.models.User;
 
 /**
  *
@@ -25,6 +26,9 @@ public class ClubsDashboardBean implements Serializable {
     private List<Club> clubs;
     private Map<Integer, Boolean> checked;
     private Map<Integer, Boolean> editable;
+    private Club newclub;
+    private Boolean createNewClub;
+    private Boolean deletable;
     //form vars
     private Integer id;
     private String name;
@@ -56,23 +60,15 @@ public class ClubsDashboardBean implements Serializable {
 
     public void removeClub(Club club) {
         clBO.deleteClub(club);
-        initialize();
     }
 
     public void editClub(Club club) {
         clBO.saveClub(club);
-        initialize();
         }
 
     public void updateClub(Club club) {
         clBO.saveClub(club);
-        initialize();
     }
-
-    public void addNewClub() {
-        //clBO.saveClub(new Club(clubs.size()+1,"clubName",new Date()));
-        initialize();
-        }
     
     public void selectAll(){
         for(int i=0;i<clubs.size();i++){
@@ -159,4 +155,91 @@ public class ClubsDashboardBean implements Serializable {
     public void setClBO(ClubBO clBO) {
         this.clBO = clBO;
     }    
+
+     public void addNewClub() {
+        createNewClub = true;
+        newclub = new Club();
+    }
+     
+    public void setEditableForSelected()
+    {        
+        for(int i=0;i<clubs.size();i++){
+            if(checked.get(clubs.get(i).getId())) {
+                editable.put(clubs.get(i).getId(), true);
+                deletable = true;
+            }
+        }
+    }
+    
+    public void removeSelected()
+    {
+        if(deletable){
+            for(int i=0;i<clubs.size();i++){
+                if(checked.get(clubs.get(i).getId())) {
+                    editable.remove(clubs.get(i).getId());
+                    checked.remove(clubs.get(i).getId());
+                    clBO.deleteClub(clubs.get(i));
+                    clubs.remove(i);
+                    --i;
+                }
+            }
+            deletable = false;
+        }
+    }
+    
+    public Boolean getDeletable()
+    {
+        return deletable;
+    }
+    
+    public void setDeletable(Boolean deletable)
+    {
+        this.deletable = deletable;
+    }
+       
+    public void saveSelected()
+    {
+        for(int i=0;i<clubs.size();i++){
+            if(checked.get(clubs.get(i).getId())) {
+                editable.put(clubs.get(i).getId(),false);
+                checked.put(clubs.get(i).getId(), false);
+                clBO.saveClub(clubs.get(i));
+            }
+        }
+        deletable = false;
+    }
+    
+    
+    public Boolean getCreateNewClub()
+    {
+        return createNewClub;
+    }
+    
+    public void setCreateNewClub(Boolean cnu)
+    {
+        this.createNewClub = cnu;
+    }
+        public Club getNewclub()
+    {
+        return newclub;
+    }
+    
+    public void setNewclub(Club c)
+    {
+        this.newclub = c;
+    }
+    
+    public void saveNewClub() {
+        clBO.saveClub(newclub);
+        clubs.add(newclub);
+        //editable.put(newuser.getId(), false);
+        //checked.put(newuser.getId(), false);
+        createNewClub = false;
+        //users.add(newuser);
+    }
+    
+    public void cancelNewClub() {
+        createNewClub = false;
+        newclub = null;
+    }
 }
