@@ -4,8 +4,7 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +19,7 @@ import org.chessclan.dataTier.models.Post;
  */
 @ManagedBean(name="lpBean")
 @ViewScoped
-public class LatestPostsBean {
+public class LatestPostsBean implements Serializable{
 
     private List<Post> latestPosts;
     @ManagedProperty("#{PostBO}")
@@ -31,11 +30,7 @@ public class LatestPostsBean {
 
     @PostConstruct
     public void initialize() {
-        this.latestPosts = new ArrayList<Post>();
-        Iterator<Post> posts = postBO.findAllPosts().iterator();
-        while(posts.hasNext()){
-            latestPosts.add(posts.next());
-        }
+        this.latestPosts = postBO.findLatestPublishedPosts(4);
     }
 
     public List<Post> getLatestPosts() {

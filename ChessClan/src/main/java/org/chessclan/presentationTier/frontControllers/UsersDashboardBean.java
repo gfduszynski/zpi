@@ -6,13 +6,13 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.*;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.User;
-import org.springframework.security.core.Authentication;
 
 /**
  *
@@ -24,6 +24,7 @@ public class UsersDashboardBean implements Serializable {
 
     private List<User> users;
     private Map<Integer, Boolean> checked;
+    private Map<Integer, Boolean> editable;
     //form vars
     private Integer userId;
     private String firstName;
@@ -40,35 +41,47 @@ public class UsersDashboardBean implements Serializable {
     private UserManagementBO umBO;
 
     public UsersDashboardBean() {
-        users = new ArrayList<User>();
-        checked = new HashMap<Integer, Boolean>();
-        users.add(new User(1, "login", "d@d.pl", true, "pass","n","ln", new Date(), new Date(),1));
-        //users.add(new User(2, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
-        //users.add(new User(3, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
-        checked.put(1,false);
-        //checked.put(2,false);
-        //checked.put(3,false);
+
+    }
+    
+    @PostConstruct
+    public void initialize() {
+        this.users = new ArrayList<User>();
+        this.checked = new HashMap<Integer, Boolean>();
+        this.editable = new HashMap<Integer, Boolean>();
+        Iterator<User> usr = umBO.findAll().iterator();
+        int i=1;
+        while(usr.hasNext()){
+            users.add(usr.next());
+            checked.put(i, false);
+            editable.put(i, false);
+            ++i;
+        }
     }
 
+
     public void removeUser(User user) {
-        users.remove(user);
+        
+        umBO.deleteUser(user);
+        initialize();
     }
 
     public void editUser(User user) {
-        //user.setEditable(true);
+        umBO.saveUser(user);
+        initialize();
     }
 
     public void updateUser(User user) {
-        //user.setEditable(false);
+        umBO.saveUser(user);
+        initialize();
     }
 
-    public void addNewUser(User user) {
-        //users.add(new User(100, "Daniello", "Engello", "daniel.engel@poczta.pl", new Date(), new Date(), 1, "passwd", null));
-        //user.setEditable(true);
+    public void addNewUser() {
+        umBO.saveUser(new User(users.size()+1, "Default", "e@mail.here", true, "pass", "firstName", "lastName",new Date(), new Date(), 1));
+        initialize();
     }
     
     public void selectAll(){
-        Authentication b  = umBO.getLoggedUserAuthentication();
         for(int i=0;i<users.size();i++){
             if(!checked.get(users.get(i).getId()) || !checked.containsKey(users.get(i).getId())) {
                 checked.put(users.get(i).getId(), true);
@@ -84,7 +97,22 @@ public class UsersDashboardBean implements Serializable {
         this.checked = checked;
     }
     
+    public void selectOneEditable(int id){
+           editable.put(id, true);
+    }
+    
+    public void deselectOneEditable(int id){
+           editable.put(id, false);
+    }
+    
+    public Map<Integer, Boolean> getEditable() {
+        return editable;
+    }
 
+    public void setEditable(Map<Integer, Boolean> editable) {
+        this.editable = editable;
+    }
+    
     public List<User> getUsers() {
         return users;
     }

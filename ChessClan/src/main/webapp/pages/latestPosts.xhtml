@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <h:body>
         <ui:composition>
-            <h:form prependId="false" >
+            <h:outputScript library="js" name="trunk8.js"/>
+            <h:form prependId="false">
+                <script>
+                    $(document).ready(function(){
+                        $('.ellipsis').trunk8({lines:2});
+                    });
+                    
+                    $('.five').hover(
+                    function () {
+                        $('.seeAllPostsButton').slideToggle();
+                    }
+                );
+                        
+                </script>
                 <h3>Najnowsze ogłoszenia</h3>
-                <c:forEach items="#{lpBean.latestPosts}" var="post">
+                <c:forEach items="#{lpBean.latestPosts}" var="post" varStatus="loop">
                     <h:panelGroup layout="block" class="postHeader">
                         <h:outputText value="#{post.title}" class="postTitle"/>
-                        <h:outputText value="#{post.datePublished}" class="postTitle"/>
+                        <h:outputText value="#{post.datePublished}" class="postTitleDate"/>
                     </h:panelGroup>
-                    <h:panelGroup layout="block" class="postContent">
-                        <h:outputText value="#{post.content}" class="postTitle"/>
-                    </h:panelGroup>
-                    <hr/>
+                    <div class="ellipsis">#{post.content}</div>
+                    <c:if test="${not loop.last}">
+                        <hr/> 
+                    </c:if>
                 </c:forEach>
+                <h:commandButton value="Zobacz wszystkie" class="seeAllPostsButton hiddenButton"/>
             </h:form>
         </ui:composition>
 

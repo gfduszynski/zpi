@@ -1,6 +1,7 @@
 package org.chessclan.presentationTier.frontControllers;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -13,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.User;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
@@ -22,7 +24,7 @@ import org.springframework.security.core.Authentication;
  */
 @SessionScoped
 @ManagedBean(name = "loginBean")
-public class LoginBean {
+public class LoginBean implements Serializable {
 
     private String username = "";
     private String password = "";
@@ -52,20 +54,26 @@ public class LoginBean {
 
         Map sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 
-        if (((BadCredentialsException) sessionMap.get("SPRING_SECURITY_LAST_EXCEPTION")) != null) {
-            this.loginError = true;
-        } else {
-            Authentication auth = umBO.getLoggedUserAuthentication();
-            if (auth != null) {
-                setUser(umBO.findUserByEmail(((org.springframework.security.core.userdetails.User)auth.getPrincipal()).getUsername()));
-                setLoggedUser(true);
-            } else {
+        if (sessionMap.get("SPRING_SECURITY_LAST_EXCEPTION") != null) {
+            if (sessionMap.get("SPRING_SECURITY_LAST_EXCEPTION") instanceof BadCredentialsException) {
                 this.loginError = true;
+            } else {
+                setupLoggedUser();
             }
+        } else {
+            setupLoggedUser();
         }
-
-        // Faces are going to exit, sot it'sok to return null
         return null;
+    }
+
+    private void setupLoggedUser() {
+        Authentication auth = umBO.getLoggedUserAuthentication();
+        if (auth != null) {
+            setUser(umBO.findUserByEmail(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername()));
+            setLoggedUser(true);
+        } else {
+            this.loginError = true;
+        }
     }
 
     /**
