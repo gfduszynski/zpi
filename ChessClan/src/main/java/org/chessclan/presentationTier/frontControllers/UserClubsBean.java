@@ -24,13 +24,13 @@ import org.chessclan.dataTier.models.User;
 @ViewScoped
 public class UserClubsBean {
 
-//    @ManagedProperty("#{UserManagementBO}")
-//    UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
-//    @ManagedProperty(value = "#{loginBean.user}")
-//    private User user;
+    @ManagedProperty(value = "#{loginBean.user}")
+    private User user;
     private List<Club> clubs;
+    
+    private Club userClub;
 
     public UserClubsBean() {
     }
@@ -42,14 +42,17 @@ public class UserClubsBean {
         while (posts.hasNext()) {
             clubs.add(posts.next());
         }
+        this.userClub = user.getUserClub();
     }
 
     public void signOutFromClub() {
         clubBO.leaveClub();
+        this.userClub = null;
     }
 
     public void signToClub(Club club) {
         clubBO.joinClub(club);
+        this.userClub = club;
     }
 
     public ClubBO getClubBO() {
@@ -68,19 +71,21 @@ public class UserClubsBean {
         this.clubs = clubs;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public User getUser() {
+        return user;
+    }
 
-//    public UserManagementBO getUmBO() {
-//        return umBO;
-//    }
-//
-//    public void setUmBO(UserManagementBO umBO) {
-//        this.umBO = umBO;
-//    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Club getUserClub() {
+        return userClub;
+    }
+
+    public void setUserClub(Club userClub) {
+        this.userClub = userClub;
+    }
+
+
 }

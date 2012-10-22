@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
+import org.chessclan.businessTier.businessObjects.TournamentBO.NotJoinableRound;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Round.NoPlayers;
 import org.chessclan.dataTier.models.Round.NotFinished;
@@ -76,13 +77,16 @@ public class TournamentsDashboardBean implements Serializable {
         }
     }
 
-    public void generateTournaments()
+    public void generateTournaments() throws NotJoinableRound
     {
         UsernamePasswordAuthenticationToken lUAuth = umBO.getLoggedUserAuthentication();
         String lolek = lUAuth.getName();
         umBO.findUserByEmail(lUAuth.getName());
         try {
-            tmBO.goToNextRound(tmBO.registerTournament("tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1)));
+            Tournament t = tmBO.registerTournament("tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1));
+            tmBO.joinTorunament(t);
+            tmBO.joinTournament(t, umBO.findUserById(2));
+            tmBO.goToNextRound(t);
         } catch (NotFinished ex) {
             Logger.getLogger(TournamentsDashboardBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoPlayers ex) {

@@ -10,7 +10,7 @@
         <ui:composition>
             <h:form prependId="false" >
                 <h:outputText value="Jako kto chcesz się zalogować?"/><br/>
-                <h:commandButton value="Gracz"  styleClass="regButton">
+                <h:commandButton value="Gracz"  styleClass="regButton #{rgsBean.regOption==0?'selectedButton':''}">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(0)}"/>
                 </h:commandButton>
                 <h:commandButton value="Organizator" styleClass="regButton">

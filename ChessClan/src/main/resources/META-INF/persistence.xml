@@ -11,6 +11,7 @@
     <class>org.chessclan.dataTier.models.Game</class>
     <class>org.chessclan.dataTier.models.Category</class>
     <class>org.chessclan.dataTier.models.Tournament</class>
+    <class>org.chessclan.dataTier.models.PairingCard</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/chessclan?zeroDateTimeBehavior=convertToNull"/>
