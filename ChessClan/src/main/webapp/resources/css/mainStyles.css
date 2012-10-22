@@ -154,9 +154,25 @@ h2{
 }
 
 .error{
-    color:#08BC08;
-} 
+    color: #57B2E0;
+    text-shadow:0px 0px 16px #00006D;
+    } 
+.link{
+        color: #57B2E0;
+        font-weight: bold;
+        text-decoration: none;
+    }
+.checkBox{
+-webkit-border-radius: 0px 0px 0px 99px;
+border-radius: 0px 0px 0px 99px;
+background-image: -moz-linear-gradient(top, #a8cadc, #57b2e0);
+background-image: -ms-linear-gradient(top, #a8cadc, #57b2e0);
+background-image: -webkit-gradient(linear, center top, center bottom, from(#a8cadc), to(#57b2e0));
+background-image: -webkit-linear-gradient(top, #a8cadc, #57b2e0);
+background-image: linear-gradient(top, #a8cadc, #57b2e0);
+/*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
 
+    }
 .hidden{
     visibility: collapse;
     font-size: 50%;
@@ -168,9 +184,15 @@ h2{
 
 .regChoose{
     width: 275px;
+    margin: 0px 0 -15px 0px;
+}
+
+.regWidth{
+    width: 134px;
 }
 .regButton{
     height: 30px;
+    /*width: 134px;*/
     margin: 2px;
     border: 0px;
     /* background-color: #808080; */

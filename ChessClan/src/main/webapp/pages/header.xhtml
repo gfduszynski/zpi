@@ -33,12 +33,12 @@
                             <h:inputText id="j_username" value="#{loginBean.username}" required="true" styleClass="logUser"/>
                             <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true" styleClass="logPass"/>
                             <h:panelGroup layout="block">
-                                <h:selectBooleanCheckbox id="_spring_security_remember_me" /><h:outputText value="Zapamiętaj hasło"/>
+                                <h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="checkBox"/><h:outputText value="Zapamiętaj hasło"/>
                                 <!-- <h:outputText value="&lt;br/&gt;" escape="false" /> -->
                             </h:panelGroup>
                             <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" styleClass="regButton logLog"/>
-                            <h:commandLink value="Nie mogę się zalogować"/>
                             <h:outputText value="" />
+                            <h:commandLink value="Nie mogę się zalogować" styleClass="link" style="float: right; font-size: 96%"/>
                         </h:panelGrid>
                     </h:form>
                 </c:if>
