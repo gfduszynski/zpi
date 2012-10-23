@@ -5,6 +5,7 @@
 package org.chessclan.dataTier.models;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,8 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,9 +28,8 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "posts")
-@NamedQueries({
-    @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p")})
 public class Post implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,13 +71,19 @@ public class Post implements Serializable {
     public Post(Integer id) {
         this.id = id;
     }
-    
-    public Post(String title, String content, boolean published, User user){
+
+    public Post(String title, String content, boolean published, User user) {
         this.title = title;
         this.content = content;
         this.published = published;
         this.user = user;
-        this.dateCreated = new Date();
+        this.dateCreated = Calendar.getInstance().getTime();
+        if (published) {
+            this.datePublished = Calendar.getInstance().getTime();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 100);
+        this.dateExpires = cal.getTime();
     }
 
     public Post(Integer id, String title, String content, boolean published, Date dateCreated) {
@@ -88,6 +92,9 @@ public class Post implements Serializable {
         this.content = content;
         this.published = published;
         this.dateCreated = dateCreated;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 100);
+        this.dateExpires = cal.getTime();
     }
 
     public Integer getId() {
@@ -178,5 +185,4 @@ public class Post implements Serializable {
     public String toString() {
         return "org.chessclan.dataTier.models.Post[ id=" + id + " ]";
     }
-    
 }

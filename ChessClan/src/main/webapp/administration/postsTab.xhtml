@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition>
+        <h:form id="tab4Form">
+            <div style="padding:10px 0px 10px 0px;">
+                <h:commandButton value="remove selected"/>
+                <h:commandButton  type="submit" action="#{cdBean.addNewClub()}" value="add new club"/>
+                            </div>
+
+            <h:dataTable value="#{cdBean.clubs}" var="club"
+                         styleClass="order-table"
+                         headerClass="order-table-header"
+                         rowClasses="order-table-odd-row,order-table-even-row"
+                         >
+
+                <h:column>
+                    <!-- column header -->
+                    <f:facet name="header">
+                        <h:selectBooleanCheckbox> 
+                            <f:ajax listener="#{cdBean.selectAll}" render="@form" execute="@form"/>
+                        </h:selectBooleanCheckbox>
+                    </f:facet>
+                    <!-- row record -->
+                    <h:selectBooleanCheckbox value="#{cdBean.checked[club.id]}">
+                        <f:ajax listener="#{cdBean.changeCheckedOne(club.id)}" render="@form" execute="@form"/>
+                    </h:selectBooleanCheckbox>
+                </h:column>
+
+                <h:column>
+                    <!-- column header -->
+                    <f:facet name="header">No</f:facet>
+                    <!-- row record -->
+                    <h:outputText value="#{club.id}" rendered="#{not cdBean.editable[club.id]}"/>
+                    <h:inputText value="#{club.id}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{club.name}" rendered="#{not cdBean.editable[club.id]}"/>
+                    <h:inputText value="#{club.name}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Creation date</f:facet>
+                    <h:outputText value="#{club.creationDate}" rendered="#{not cdBean.editable[club.id]}">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                    <h:inputText value="#{club.creationDate}" rendered="#{cdBean.editable[club.id]}" class="userCreationDateForm input-edit-row">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:inputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Description</f:facet>
+                    <h:outputText value="#{club.description}" rendered="#{not cdBean.editable[club.id]}"/>
+                    <h:inputText value="#{club.description}" rendered="#{cdBean.editable[club.id]}"/>
+                </h:column>
+
+
+                <h:column>
+                    <f:facet name="header"></f:facet>
+                    <h:commandLink value="edit" rendered="#{not cdBean.editable[club.id]}">
+                        <f:ajax listener="#{cdBean.selectOneEditable(club.id)}" execute="@form" render="@form"/>
+                    </h:commandLink>
+                    <h:panelGrid columns="1" class="buttons-column">
+                        <h:commandLink value="update" rendered="#{cdBean.editable[club.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{cdBean.updateClub(club)}"/>
+                        </h:commandLink>
+                        <h:commandLink value="remove" rendered="#{cdBean.editable[club.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{cdBean.removeClub(club)}"/>
+                        </h:commandLink>
+                    </h:panelGrid>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:composition>
+</html>
+

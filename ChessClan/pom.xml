@@ -13,7 +13,6 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
         
         <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
         <org.springframework.security.version>3.1.2.RELEASE</org.springframework.security.version>
@@ -181,19 +180,8 @@
         <!-- Hibernate Dependecies -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${org.hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>${org.hibernate.version}</version>
-        </dependency>
-        <!-- Hibernate Validator -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>3.1.0.GA</version>
+            <version>4.1.1.Final</version>
         </dependency>
         <!-- MySQL Dependencies -->
         <dependency>
@@ -239,6 +227,12 @@
             <groupId>org.springframework.webflow</groupId>
             <artifactId>spring-faces</artifactId>
             <version>2.3.1.RELEASE</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.ocpsoft</groupId>
+            <artifactId>prettyfaces-jsf2</artifactId>
+            <version>3.3.3</version>
         </dependency>
 
         <!-- Others-->
@@ -300,7 +294,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.1</version>
+            <version>1.7.2</version>
         </dependency>  
         <dependency>
             <groupId>log4j</groupId>

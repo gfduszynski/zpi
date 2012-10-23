@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition>
+        <h:form id="tab3Form">
+            <div style="padding:10px 0px 10px 0px;">
+                <h:commandButton value="remove selected"/>
+                <h:commandButton  type="submit" action="#{tdBean.addNewTournament()}" value="add new tournament"/>
+                <h:commandButton  type="submit" action="#{tdBean.generateTournaments()}" value="generate tournaments"/>
+            </div>
+
+            <h:dataTable value="#{tdBean.tournaments}" var="tournament"
+                         styleClass="order-table"
+                         headerClass="order-table-header"
+                         rowClasses="order-table-odd-row,order-table-even-row"
+                         >
+
+                <h:column>
+                    <!-- column header -->
+                    <f:facet name="header">
+                        <h:selectBooleanCheckbox> 
+                            <f:ajax listener="#{tdBean.selectAll}" render="@form" execute="@form"/>
+                        </h:selectBooleanCheckbox>
+                    </f:facet>
+                    <!-- row record -->
+                    <h:selectBooleanCheckbox value="#{tdBean.checked[tournament.id]}">
+                        <f:ajax listener="#{tdBean.changeCheckedOne(tournament.id)}" render="@form" execute="@form"/>
+                    </h:selectBooleanCheckbox>
+                </h:column>
+
+                <h:column>
+                    <!-- column header -->
+                    <f:facet name="header">No</f:facet>
+                    <!-- row record -->
+                    <h:outputText value="#{tournament.id}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.id}" rendered="#{tdBean.editable[tournament.id]}" class="input-edit-row"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{tournament.name}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.name}" rendered="#{tdBean.editable[tournament.id]}" class="input-edit-row"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{tournament.date}" rendered="#{not tdBean.editable[tournament.id]}">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                    <h:inputText value="#{tournament.date}" rendered="#{tdBean.editable[tournament.id]}" class="userCreationDateForm input-edit-row">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:inputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Description</f:facet>
+                    <h:outputText value="#{tournament.description}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.description}" rendered="#{tdBean.editable[tournament.id]}"/>
+                </h:column>
+
+                
+                <h:column>
+                    <f:facet name="header">Club</f:facet>
+                    <h:outputText value="#{tournament.club}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.club}" rendered="#{tdBean.editable[tournament.id]}"/>
+                </h:column>
+                
+                
+                <h:column>
+                    <f:facet name="header">Category</f:facet>
+                    <h:outputText value="#{tournament.category}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.category}" rendered="#{tdBean.editable[tournament.id]}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header"></f:facet>
+                    <h:commandLink value="edit" rendered="#{not tdBean.editable[tournament.id]}">
+                        <f:ajax listener="#{tdBean.selectOneEditable(tournament.id)}" execute="@form" render="@form"/>
+                    </h:commandLink>
+                    <h:panelGrid columns="1" class="buttons-column">
+                        <h:commandLink value="update" rendered="#{tdBean.editable[tournament.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{tdBean.updateTournament(tournament)}"/>
+                        </h:commandLink>
+                        <h:commandLink value="remove" rendered="#{tdBean.editable[tournament.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{tdBean.removeTournament(tournament)}"/>
+                        </h:commandLink>
+                    </h:panelGrid>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:composition>
+</html>

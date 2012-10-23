@@ -15,6 +15,7 @@ import javax.faces.bean.SessionScoped;
 import javax.servlet.ServletException;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 
@@ -24,7 +25,7 @@ import org.chessclan.dataTier.models.User;
  */
 @ManagedBean(name = "rgsBean")
 @SessionScoped
-public class RegistrationBean implements Serializable{
+public class RegistrationBean implements Serializable {
 
     private String firstName;
     private String lastName;
@@ -184,8 +185,10 @@ public class RegistrationBean implements Serializable{
         boolean val3 = validatePassword();
         boolean val4 = validateStatute();
         if (val1 && val2 && val3 && val4) {
-            User u = umBO.registerUser(email, email, true, password, null, null, birthDate, 0);
+            User u = umBO.registerUser(email, email, true, password, email, email, birthDate, 0);
+            Club b = clubBO.registerClub(this.clubName, this.clubDescription, this.birthDate, u);
             umBO.assignRole(u.getId(), Role.Type.CLUB_OWNER);
+            this.regSucceeded = true;
         } else {
             regError = true;
         }
@@ -409,6 +412,4 @@ public class RegistrationBean implements Serializable{
     public void setRegSucceeded(boolean regSucceeded) {
         this.regSucceeded = regSucceeded;
     }
-    
-    
 }

@@ -5,9 +5,11 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.chessclan.dataTier.models.Post;
+import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -65,6 +67,7 @@ public class PostBO implements Serializable{
          return postRepo.findByDateExpiresAfter(new Date(), pgbl);
     }
     
+    
     public List<Post> findLatestPosts(int numberOfPosts)
     {
          List<Post> postList;
@@ -74,9 +77,28 @@ public class PostBO implements Serializable{
         }else { return postList.subList(0, numberOfPosts-1);}
     }
     
+    public Page<Post> findLatestPublishedPosts(Pageable pgbl)
+    {
+         return postRepo.findByDateExpiresAfterAndPublishedTrue(new Date(), pgbl);
+    }
+    
+    
+    public List<Post> findLatestPublishedPosts(int numberOfPosts)
+    {
+         List<Post> postList;
+         postList = postRepo.findByDateExpiresAfterAndPublishedTrue(new Date());
+         if(postList.size()<= numberOfPosts) {
+            return postList;
+        }else { return postList.subList(0, numberOfPosts);}
+    }
     public Iterable<Post> findAllPosts(Sort s)
     {
         return postRepo.findAll(s);
+    }
+    
+    public List<Post> findUserPosts(User u)
+    {
+        return postRepo.findByUser(u);
     }
     
     public Post findOnePost(Integer id)
@@ -86,6 +108,9 @@ public class PostBO implements Serializable{
     
     public Post savePost(Post p)
     {
+        if(p.getPublished()){
+            p.setDatePublished(Calendar.getInstance().getTime());
+        }
         return postRepo.save(p);
     }
     

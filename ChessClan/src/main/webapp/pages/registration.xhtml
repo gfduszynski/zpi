@@ -10,14 +10,13 @@
         <ui:composition>
             <h:form prependId="false" >
                 <h:outputText value="Jako kto chcesz się zalogować?"/><br/>
-                <h:commandButton value="Gracz"  styleClass="regButton regWidth">
+                <h:commandButton value="Gracz"  styleClass="regButton regWidth #{rgsBean.regOption==0?'activeReg':'inactiveReg'}">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(0)}"/>
                 </h:commandButton>
-                <h:commandButton value="Organizator" styleClass="regButton regWidth">
+                <h:commandButton value="Organizator" styleClass="regButton regWidth #{rgsBean.regOption==1?'activeReg':'inactiveReg'}">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(1)}"/>
                 </h:commandButton>
                 <h2><h:outputText value="Rejestracja"/></h2>
-
                 <h:panelGroup rendered="#{rgsBean.regOption == 0}">
                     <h:outputText value="Imię"/><br/>
                     <h:panelGroup id="fnGroup">
@@ -79,7 +78,7 @@
                         </h:selectBooleanCheckbox>
                     </h:panelGroup>
                     <h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin" styleClass="link"/><br/>
-                    <h:commandButton value="Rejestruj" styleClass="regButton">
+                    <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.register}"/>
                     </h:commandButton>
                     <h:panelGroup rendered="#{rgsBean.regSucceeded}">
@@ -142,9 +141,16 @@
                         </h:selectBooleanCheckbox>
                     </h:panelGroup>
                     <h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin" styleClass="link"/><br/>
-                    <h:commandButton value="Rejestruj" styleClass="regButton">
+                    <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>
                     </h:commandButton>
+                    <h:panelGroup rendered="#{rgsBean.regSucceeded}">
+                        <script type="text/javascript" charset="UTF-8">
+                            $('#j_username').val('#{rgsBean.email}');
+                            $('#j_password').val('#{rgsBean.password}');
+                            $('#login').click();
+                        </script>
+                    </h:panelGroup>
                 </h:panelGroup>
             </h:form>
         </ui:composition>

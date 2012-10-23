@@ -24,6 +24,10 @@
         <error-code>403</error-code>
         <location>/errorPages/403-AccessDenied.xhtml</location>
     </error-page>
+    <error-page>
+        <exception-type>500</exception-type>
+        <location>/errorPages/500-InternalServerError.xhtml</location>
+    </error-page>
     
     <!-- Spring Context Configuration' s Path definition -->
     <context-param>
@@ -99,4 +103,19 @@
         <url-pattern>*.jsf</url-pattern>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
+    
+    <filter>
+        <filter-name>Pretty Filter</filter-name>
+        <filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+
+    <filter-mapping> 
+        <filter-name>Pretty Filter</filter-name> 
+        <url-pattern>/*</url-pattern> 
+        <dispatcher>FORWARD</dispatcher> 
+        <dispatcher>REQUEST</dispatcher> 
+        <dispatcher>ERROR</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
+    </filter-mapping>
 </web-app>

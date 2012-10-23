@@ -1,6 +1,10 @@
+html{
+    overflow-y: scroll;
+}
+
 body{
     text-align: center;
-    background-color:white;
+    background-color:#F0EEEB;
     /*    font-family: 'Tangerine', serif;*/
 }
 
@@ -18,6 +22,13 @@ h2{
 
 .header{
     height:150px;
+}
+
+.footer{
+    background-color: #BBBBBB;
+    width:100%;
+    height:40px;
+    margin:10px 0px 10px 0px;
 }
 
 .logo{
@@ -95,13 +106,13 @@ h2{
 
 .one{
     height:290px;
-    background-color:#57B2E0;
+    background-color:#DFDDDA;
     margin: 0px 5px 10px 0px;
 }
 
 .two{
     height:290px;
-    background-color:#7ED5B8;
+    background-color:#353534;
     margin: 10px 5px 0px 0px;
 }
 
@@ -109,28 +120,28 @@ h2{
     color:white;
     float:left;
     height:590px;
-    background-color:#8558E0;
+    background-color:#00AAE8;
     margin: 0px 5px 0px 5px;
     width:280px;
     padding:0px 5px 0px 5px;
 }
 
 .four{
-    color: #4E1168;
+    color: white;
     float:left;
     width:285px;
     height:290px;
-    background-color:#7ED5B8;
+    background-color:#353534;
     padding:0px 0px 0px 5px;
     margin: 5px 5px 0px 5px;
 }
 
 .five{
-    color:#D3EFE5;
+    color:black;
     float:left;
     width:285px;
     height:290px;
-    background-color:#57B2E0;
+    background-color:#DFDDDA;
     padding:0px 0px 0px 5px;
     margin: 10px 5px 0px 5px;
 }
@@ -139,7 +150,7 @@ h2{
     float:left;
     width:175px;
     height:290px;
-    background-color:#57B2E0;
+    background-color:#DFDDDA;
     margin: 0px 0px 0px 5px;
 
 }
@@ -148,7 +159,7 @@ h2{
     float:left;
     height:290px;
     width:175px;
-    background-color:#7ED5B8;
+    background-color:#353534;
     margin: 10px 0px 0px 5px;
 
 }
@@ -190,6 +201,7 @@ background-image: linear-gradient(top, #a8cadc, #57b2e0);
 .regWidth{
     width: 134px;
 }
+
 .regButton{
     height: 30px;
     /*width: 134px;*/
@@ -198,19 +210,47 @@ background-image: linear-gradient(top, #a8cadc, #57b2e0);
     /* background-color: #808080; */
     -webkit-border-radius: 0px;
     border-radius: 0px;
-    background-color:#57b2e0;
+    background-color:#DFDDDA;
     display:inline-block;
-    color:#fafafa;
-	font-family:arial;
-	font-size:16px;
-	font-weight:normal;
-	padding:6px 27px;
-	text-decoration:none;
-}.regButton:hover {
-	background-color:#57b2e0;
-}.regButton:active {
-	position:relative;
-	top:1px;
+    color:#727170;
+    font-family:arial;
+    font-size:16px;
+    font-weight:normal;
+    padding:6px 27px;
+    text-decoration:none;
+}
+.inactiveReg:hover {
+    background-color:#57b2e0;
 }
 
+.activeReg{
+    background-color: #353534;
+    color:white;
+}
 
+.postHeader{
+
+}
+
+.postContent{
+
+}
+
+.postTitleDate{
+    float: right;
+    padding-right: 10px;
+}
+
+.seeAllPostsButton{
+    width:290px;
+    height:65px;
+    margin: -59px 0px 0px -5px;
+    background-color: black;
+    opacity: 0.8;
+    color:white;
+
+}
+
+.hiddenButton{
+    display:none;
+}

@@ -36,7 +36,7 @@
                                 <h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="checkBox"/><h:outputText value="Zapamiętaj hasło"/>
                                 <!-- <h:outputText value="&lt;br/&gt;" escape="false" /> -->
                             </h:panelGroup>
-                            <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" styleClass="regButton logLog"/>
+                            <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" styleClass="regButton logLog activeReg"/>
                             <h:outputText value="" />
                             <h:commandLink value="Nie mogę się zalogować" styleClass="link" style="float: right; font-size: 96%"/>
                         </h:panelGrid>
@@ -47,7 +47,7 @@
                         <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
                         <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
                         <h:outputText value=" | "/>
-                        <h:outputLink value="#{request.contextPath}/userPages/editProfile.xhtml">Edytuj profil</h:outputLink>
+                        <h:outputLink value="#{request.contextPath}/edit">Edytuj profil</h:outputLink>
                     </h:panelGroup>
                 </c:if>
 

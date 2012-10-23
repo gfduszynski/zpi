@@ -1,0 +1,10 @@
+<pretty-config xmlns="http://ocpsoft.org/prettyfaces/3.3.3" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.org/prettyfaces/3.3.3               http://ocpsoft.org/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.3.xsd">
+
+    <url-mapping id="login">
+        <pattern value="/tournaments" />
+        <view-id value="/pages/tournaments.xhtml" />
+    </url-mapping>
+
+</pretty-config>

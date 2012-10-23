@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>ChessClan</title>
+
+        <h:outputStylesheet library="css" name="jquery-ui-1.9.0.custom.css"/>
+        <h:outputScript library="js" name="jquery-1.8.2.js"/>
+        <h:outputScript library="js" name="jquery-ui-1.9.0.custom.min.js"/>
+
+    </h:head>
+    <h:body>
+        <h:panelGroup layout="block" class="content">
+
+            <ui:include src="header.xhtml"/>
+
+            <c:forEach items="#{atvBean.allTournaments}" var="tmt" rendered="#{atvBean.selectedTournament == null}">
+                <h:panelGroup layout="block" rendered="#{not empty atvBean.allTournaments}">
+                    <h:outputText value="#{tmt.name}"/>
+                    <h:outputText value="Nazwa klubu: #{tmt.club.name}"/>
+                    <h:outputText value="Kiedy: #{tmt.date}"/>
+                    <h:outputText value="Opis: #{tmt.description}"/>
+                </h:panelGroup>
+                <c:if test="#{!loop.last}"><hr/></c:if>
+            </c:forEach>
+            <h:panelGroup layout="block" rendered="#{empty atvBean.allTournaments and atvBean.selectedTournament == null}">
+                <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
+                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                        <strong>Niestety!</strong> Nie ma żadnych turnieji zarejestrowanych w systemie.</p>
+                </h:panelGroup>
+            </h:panelGroup>
+            <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament !=null}">
+                <h2>#{atvBean.selectedTournament.name}</h2>
+                <h2>#{atvBean.selectedTournament.description}</h2>
+            </h:panelGroup>
+
+        </h:panelGroup>
+    </h:body>
+</html>
+
