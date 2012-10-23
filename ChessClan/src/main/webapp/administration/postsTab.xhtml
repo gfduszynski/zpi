@@ -8,10 +8,12 @@
         <h:form id="tab4Form">
             <div style="padding:10px 0px 10px 0px;">
                 <h:commandButton value="remove selected"/>
-                <h:commandButton  type="submit" action="#{cdBean.addNewClub()}" value="add new club"/>
-                            </div>
+                <h:commandButton  type="submit" value="add new post"/>
+                <h:commandButton  type="submit" value="edit selected"/>
+                <!-- Tutaj dodaj buttona do zapisywania zmian we wszystkich wybranych -->
+            </div>
 
-            <h:dataTable value="#{cdBean.clubs}" var="club"
+            <h:dataTable value="#{pdBean.posts}" var="post"
                          styleClass="order-table"
                          headerClass="order-table-header"
                          rowClasses="order-table-odd-row,order-table-even-row"
@@ -21,12 +23,12 @@
                     <!-- column header -->
                     <f:facet name="header">
                         <h:selectBooleanCheckbox> 
-                            <f:ajax listener="#{cdBean.selectAll}" render="@form" execute="@form"/>
+                            <f:ajax listener="#{pdBean.selectAll}" render="@form" execute="@form"/>
                         </h:selectBooleanCheckbox>
                     </f:facet>
                     <!-- row record -->
-                    <h:selectBooleanCheckbox value="#{cdBean.checked[club.id]}">
-                        <f:ajax listener="#{cdBean.changeCheckedOne(club.id)}" render="@form" execute="@form"/>
+                    <h:selectBooleanCheckbox value="#{pdBean.checked[post.id]}">
+                        <f:ajax listener="#{pdBean.changeCheckedOne(post.id)}" render="@form" execute="@form"/>
                     </h:selectBooleanCheckbox>
                 </h:column>
 
@@ -34,44 +36,77 @@
                     <!-- column header -->
                     <f:facet name="header">No</f:facet>
                     <!-- row record -->
-                    <h:outputText value="#{club.id}" rendered="#{not cdBean.editable[club.id]}"/>
-                    <h:inputText value="#{club.id}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                    <h:outputText value="#{post.id}" rendered="#{not pdBean.editable[post.id]}"/>
+                    <h:inputText value="#{post.id}" rendered="#{pdBean.editable[post.id]}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    <h:outputText value="#{club.name}" rendered="#{not cdBean.editable[club.id]}"/>
-                    <h:inputText value="#{club.name}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                    <f:facet name="header">Title</f:facet>
+                    <h:outputText value="#{post.title}" rendered="#{not pdBean.editable[post.id]}"/>
+                    <h:inputText value="#{post.title}" rendered="#{pdBean.editable[post.id]}" class="input-edit-row"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Content</f:facet>
+                    <h:outputText value="#{post.content}" rendered="#{not pdBean.editable[post.id]}"/>
+                    <h:inputText  value="#{post.content}" rendered="#{pdBean.editable[post.id]}"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Creation date</f:facet>
-                    <h:outputText value="#{club.creationDate}" rendered="#{not cdBean.editable[club.id]}">
+                    <h:outputText value="#{post.dateCreated}" rendered="#{not pdBean.editable[post.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{club.creationDate}" rendered="#{cdBean.editable[club.id]}" class="userCreationDateForm input-edit-row">
+                    <h:inputText value="#{post.dateCreated}" rendered="#{pdBean.editable[post.id]}" class="userCreationDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Description</f:facet>
-                    <h:outputText value="#{club.description}" rendered="#{not cdBean.editable[club.id]}"/>
-                    <h:inputText value="#{club.description}" rendered="#{cdBean.editable[club.id]}"/>
+                    <f:facet name="header">Published at</f:facet>
+                    <h:outputText value="#{post.datePublished}" rendered="#{not pdBean.editable[post.id]}">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                    <h:inputText value="#{post.datePublished}" rendered="#{pdBean.editable[post.id]}" class="userCreationDateForm input-edit-row">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:inputText>
                 </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Expires at</f:facet>
+                    <h:outputText value="#{post.dateExpires}" rendered="#{not pdBean.editable[post.id]}">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:outputText>
+                    <h:inputText value="#{post.dateExpires}" rendered="#{pdBean.editable[post.id]}" class="userCreationDateForm input-edit-row">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                    </h:inputText>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Is published</f:facet>
+                    <h:outputText value="#{post.published}" rendered="#{not pdBean.editable[post.id]}"/>
+                    <h:inputText value="#{post.published}" rendered="#{pdBean.editable[post.id]}"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Created by</f:facet>
+                    <h:outputText value="#{post.user}" rendered="#{not pdBean.editable[post.id]}"/>
+                    <h:inputText value="#{post.user}" rendered="#{pdBean.editable[post.id]}"/>
+                </h:column>
+
 
 
                 <h:column>
                     <f:facet name="header"></f:facet>
-                    <h:commandLink value="edit" rendered="#{not cdBean.editable[club.id]}">
-                        <f:ajax listener="#{cdBean.selectOneEditable(club.id)}" execute="@form" render="@form"/>
+                    <h:commandLink value="edit" rendered="#{not pdBean.editable[post.id]}">
+                        <f:ajax listener="#{pdBean.selectOneEditable(post.id)}" execute="@form" render="@form"/>
                     </h:commandLink>
                     <h:panelGrid columns="1" class="buttons-column">
-                        <h:commandLink value="update" rendered="#{cdBean.editable[club.id]}">
-                            <f:ajax execute="@form" render="@form" listener="#{cdBean.updateClub(club)}"/>
+                        <h:commandLink value="update" rendered="#{pdBean.editable[post.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{cdBean.updatePost(post)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{cdBean.editable[club.id]}">
-                            <f:ajax execute="@form" render="@form" listener="#{cdBean.removeClub(club)}"/>
+                        <h:commandLink value="remove" rendered="#{pdBean.editable[post.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{cdBean.removePost(post)}"/>
                         </h:commandLink>
                     </h:panelGrid>
                 </h:column>

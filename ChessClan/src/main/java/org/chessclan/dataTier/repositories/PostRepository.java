@@ -25,5 +25,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
     List<Post> findByDateExpiresAfterAndPublishedTrue(Date date_expires);
     
     List<Post> findByUser(User u);
+    List<Post> findByPublishedTrue();
+
 
 }

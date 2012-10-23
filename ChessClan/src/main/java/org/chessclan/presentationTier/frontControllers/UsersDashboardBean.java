@@ -9,7 +9,7 @@ import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.User;
@@ -19,12 +19,15 @@ import org.chessclan.dataTier.models.User;
  * @author Daniel
  */
 @ManagedBean(name = "udBean")
-@SessionScoped
+@ViewScoped
 public class UsersDashboardBean implements Serializable {
 
     private List<User> users;
     private Map<Integer, Boolean> checked;
     private Map<Integer, Boolean> editable;
+    private User newuser;
+    private Boolean deletable; 
+    private Boolean createNewUser;
     //form vars
     private Integer userId;
     private String firstName;
@@ -50,35 +53,47 @@ public class UsersDashboardBean implements Serializable {
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
         Iterator<User> usr = umBO.findAll().iterator();
-        int i=1;
         while(usr.hasNext()){
-            users.add(usr.next());
-            checked.put(i, false);
-            editable.put(i, false);
-            ++i;
+            User tmp = usr.next();
+            users.add(tmp);
+            checked.put(tmp.getId(), false);
+            editable.put(tmp.getId(), false);
         }
+        this.deletable = false;
     }
 
 
     public void removeUser(User user) {
-        
         umBO.deleteUser(user);
-        initialize();
-    }
-
-    public void editUser(User user) {
-        umBO.saveUser(user);
-        initialize();
+        editable.remove(user.getId());
+        checked.remove(user.getId());
+        users.remove(user);
     }
 
     public void updateUser(User user) {
         umBO.saveUser(user);
-        initialize();
+        editable.put(user.getId(), false);
+        checked.put(user.getId(), false);
+        users.set(users.indexOf(user), user);
+    }
+    
+    public void saveNewUser() {
+        umBO.saveUser(newuser);
+        users.add(newuser);
+        editable.put(newuser.getId(), false);
+        checked.put(newuser.getId(), false);
+        createNewUser = false;
+        users.add(newuser);
     }
 
     public void addNewUser() {
-        umBO.saveUser(new User(users.size()+1, "Default", "e@mail.here", true, "pass", "firstName", "lastName",new Date(), new Date(), 1));
-        initialize();
+        createNewUser = true;
+        newuser = new User("New User", users.size()+"@chessclan.pl", "pass", "Name", "Last Name", new Date(), new Date());
+    }
+    
+    public void cancelNewUser() {
+        createNewUser = false;
+        newuser = null;
     }
     
     public void selectAll(){
@@ -87,6 +102,7 @@ public class UsersDashboardBean implements Serializable {
                 checked.put(users.get(i).getId(), true);
             }
         }
+        deletable = true;
     }
 
     public Map<Integer, Boolean> getChecked() {
@@ -191,6 +207,73 @@ public class UsersDashboardBean implements Serializable {
 
     public void setUserClubId(Integer userClubId) {
         this.userClubId = userClubId;
+    }
+        
+    public void setEditableForSelected()
+    {        
+        for(int i=0;i<users.size();i++){
+            if(checked.get(users.get(i).getId())) {
+                editable.put(users.get(i).getId(), true);
+                deletable = true;
+            }
+        }
+    }
+    
+    public void removeSelected()
+    {
+        if(deletable){
+            for(int i=0;i<users.size();i++){
+                if(checked.get(users.get(i).getId())) {
+                    editable.remove(users.get(i).getId());
+                    checked.remove(users.get(i).getId());
+                    umBO.deleteUser(users.get(i));
+                    users.remove(i);
+                    --i;
+                }
+            }
+            deletable = false;
+        }
+    }
+        
+    public void saveSelected()
+    {
+        for(int i=0;i<users.size();i++){
+            if(checked.get(users.get(i).getId())) {
+                editable.put(users.get(i).getId(),false);
+                checked.put(users.get(i).getId(), false);
+                umBO.saveUser(users.get(i));
+            }
+        }
+        deletable = false;
+    }
+    
+    public Boolean getDeletable()
+    {
+        return deletable;
+    }
+    
+    public void setDeletable(Boolean deletable)
+    {
+        this.deletable = deletable;
+    }
+    
+    public Boolean getCreateNewUser()
+    {
+        return createNewUser;
+    }
+    
+    public void setCreateNewUser(Boolean cnu)
+    {
+        this.createNewUser = cnu;
+    }
+        public User getNewuser()
+    {
+        return newuser;
+    }
+    
+    public void setNewuser(User u)
+    {
+        this.newuser = u;
     }
 
     public UserManagementBO getUmBO() {
