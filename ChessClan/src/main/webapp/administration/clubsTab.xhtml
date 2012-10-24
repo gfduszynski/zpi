@@ -8,28 +8,22 @@
         <h:form id="tab2Form">
 
             <div style="padding:10px 0px 10px 0px;">
-                <h:commandButton  type="submit" value="add new club">
+                <h:commandButton value="add new club">
                     <f:ajax listener="#{cdBean.addNewClub()}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton  type="submit" value="edit selected">
+                <h:commandButton value="edit selected">
                     <f:ajax listener="#{cdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton  type="submit" value="remove selected" rendered="#{cdBean.deletable}">
+                <h:commandButton value="remove selected" rendered="#{cdBean.deletable}">
                     <f:ajax listener="#{cdBean.removeSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton  type="submit" value="save selected">
+                <h:commandButton value="save selected">
                     <f:ajax listener="#{cdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
 
-            <h:dataTable value="#{cdBean.newclub}" var="newclub"
-                         styleClass="order-table"
-                         headerClass="order-table-header"
-                         rowClasses="order-table-odd-row,order-table-even-row"
-                         rendered="#{cdBean.createNewClub}">
-                <h:column>
-                    <f:facet name="header">Add new club</f:facet>
-                    <h:panelGrid columns="2">
+                         
+                    <h:panelGrid columns="2" rendered="#{cdBean.createNewClub}">
                         <h:outputLabel for="no" value="No" class="order-table-even-row"/>
                         <h:outputText id="no" value="#{newclub.id}" />
                         <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
@@ -50,8 +44,7 @@
                             <f:ajax execute="@form" render="@form" listener="#{cdBean.cancelNewClub()}"/>
                         </h:commandLink>
                     </h:panelGrid>
-                </h:column>
-            </h:dataTable>
+
 
             <h:dataTable value="#{cdBean.clubs}" var="club"
                          styleClass="order-table"

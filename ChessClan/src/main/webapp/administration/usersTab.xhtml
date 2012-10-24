@@ -14,24 +14,8 @@
                     $( ".newuserCreationDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
                 });
             </script>
-
-            <div style="padding:10px 0px 10px 0px;">
-                <h:commandButton value="add new user">
-                    <f:ajax listener="#{udBean.addNewUser()}" render="@form" execute="@form"/>
-                </h:commandButton>
-                <h:commandButton value="edit selected">
-                    <f:ajax listener="#{udBean.setEditableForSelected}" render="@form" execute="@form"/>
-                </h:commandButton>
-                <h:commandButton value="remove selected" rendered="#{udBean.deletable}">
-                    <f:ajax listener="#{udBean.removeSelected}" render="@form" execute="@form"/>
-                </h:commandButton>
-                <h:commandButton value="save selected">
-                    <f:ajax listener="#{udBean.saveSelected}" render="@form" execute="@form"/>
-                </h:commandButton>
-            </div>
-
             
-                    <h:panelGrid columns="4" rendered="#{udBean.createNewUser}">
+            <h:panelGrid columns="4" rendered="#{udBean.createNewUser}">
                         <h:outputLabel for="no" value="No" class="order-table-even-row"/>
                         <h:outputText id="no" value="#{udBean.newuser.id}" />
                         <h:outputLabel for="first-name" value="First name" class="order-table-odd-row"/>
@@ -40,12 +24,12 @@
                         <h:inputText id="last-name" value="#{udBean.newuser.lastName}" />
                         <h:outputLabel for="e-mail" value="E-mail" class="order-table-odd-row"/>
                         <h:inputText id="e-mail" value="#{udBean.newuser.email}" />
-                        <h:outputLabel for="user-club" value="User club" class="order-table-odd-row"/>
-                        <h:inputText id="user-club" value="#{udBean.newuser.userClub}" />
+                        <!--<h:outputLabel for="user-club" value="User club" class="order-table-odd-row"/>
+                        <h:inputText id="user-club" value="#{udBean.newuser.userClub}" />-->
                         <h:outputLabel for="login" value="Login" class="order-table-odd-row"/>
                         <h:inputText id="login" value="#{udBean.newuser.login}" />
                         <h:outputLabel for="password" value="Password" class="order-table-odd-row"/>
-                        <h:inputText id="password" value="" />
+                        <h:inputText id="password" value="Password" />
                         <h:outputLabel for="enabled" value="Enabled" class="order-table-odd-row"/>
                         <h:selectBooleanCheckbox id="enabled" value="#{udBean.newuser.enabled}"/>
                         <h:outputLabel for="birth-date" value="Birth date" class="order-table-odd-row"/>
@@ -61,20 +45,36 @@
                             <f:selectItem itemValue="0" itemLabel="♂"/>
                             <f:selectItem itemValue="1" itemLabel="♀"/>
                         </h:selectOneRadio>
-
-                        <h:commandLink value="save user">
-                            <f:ajax execute="@form" render="@form" listener="#{udBean.saveNewUser}"/>
-                        </h:commandLink>
-                        <h:commandLink value="cancel">
-                            <f:ajax execute="@form" render="@form" listener="#{udBean.cancelNewUser}"/>
-                        </h:commandLink>
+                        <h:commandButton value="save user" rendered="#{udBean.createNewUser}">
+                            <f:ajax listener="#{udBean.saveNewUser}" render="@form" execute="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="cancel" rendered="#{udBean.createNewUser}">
+                            <f:ajax listener="#{udBean.cancelNewUser}" render="@form" execute="@form"/>
+                        </h:commandButton>
                     </h:panelGrid>
+            
+            
+            <div style="padding:10px 0px 10px 0px;" >
+                <h:commandButton value="add new user" rendered="#{not udBean.createNewUser}">
+                    <f:ajax listener="#{udBean.addNewUser()}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="edit selected" rendered="#{not udBean.createNewUser}">
+                    <f:ajax listener="#{udBean.setEditableForSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="remove selected" rendered="#{udBean.deletable and not udBean.createNewUser}">
+                    <f:ajax listener="#{udBean.removeSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="save selected" rendered="#{not udBean.createNewUser}">
+                    <f:ajax listener="#{udBean.saveSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+            </div>
+
             
             <h:dataTable value="#{udBean.users}" var="user"
                          styleClass="order-table"
                          headerClass="order-table-header"
                          rowClasses="order-table-odd-row,order-table-even-row"
-                         >
+                         rendered="#{not udBean.createNewUser}">
 
                 <h:column>
                     <!-- column header -->

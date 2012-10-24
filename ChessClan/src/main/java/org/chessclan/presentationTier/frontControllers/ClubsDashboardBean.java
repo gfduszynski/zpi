@@ -9,18 +9,17 @@ import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.dataTier.models.Club;
-import org.chessclan.dataTier.models.User;
 
 /**
  *
  * @author Xcays
  */
 @ManagedBean(name = "cdBean")
-@SessionScoped
+@ViewScoped
 public class ClubsDashboardBean implements Serializable {
 
     private List<Club> clubs;
@@ -29,6 +28,7 @@ public class ClubsDashboardBean implements Serializable {
     private Club newclub;
     private Boolean createNewClub;
     private Boolean deletable;
+    
     //form vars
     private Integer id;
     private String name;
@@ -232,10 +232,10 @@ public class ClubsDashboardBean implements Serializable {
     public void saveNewClub() {
         clBO.saveClub(newclub);
         clubs.add(newclub);
-        //editable.put(newuser.getId(), false);
-        //checked.put(newuser.getId(), false);
+        editable.put(newclub.getId(), false);
+        checked.put(newclub.getId(), false);
         createNewClub = false;
-        //users.add(newuser);
+        clubs.add(newclub);
     }
     
     public void cancelNewClub() {
