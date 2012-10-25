@@ -49,7 +49,7 @@ public class ClubBO implements Serializable {
     public Club leaveClub(Club c, User u) {
         c.getUserSet().remove(u);
         u.setUserClub(null);
-        umBO.saveUser(u);       
+        umBO.saveUser(u);
         return clubRepo.save(c);
     }
 
