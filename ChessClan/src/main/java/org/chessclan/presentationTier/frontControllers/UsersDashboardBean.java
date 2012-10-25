@@ -89,7 +89,7 @@ public class UsersDashboardBean implements Serializable {
     }
 
     public void addNewUser() {
-        newuser = new User("New User", users.size()+"@chessclan.pl", "pass", "Name", "Last Name", new Date(), new Date());
+        newuser = new User("Login", "E-mail", "Password", "Name", "Last Name", new Date(), new Date());
         createNewUser = true;
        }
     

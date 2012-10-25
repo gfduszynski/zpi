@@ -12,7 +12,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.ClubBO;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Club;
+import org.chessclan.dataTier.models.User;
 
 /**
  *
@@ -28,12 +30,15 @@ public class ClubsDashboardBean implements Serializable {
     private Club newclub;
     private Boolean createNewClub;
     private Boolean deletable;
-    
+    private String ownerEmail;
+    @ManagedProperty("#{UserManagementBO}")
+    private UserManagementBO usBO;
     //form vars
     private Integer id;
     private String name;
     private Date creationDate;
     private String description;
+    private User owner;
     //end
     @Transient
     @ManagedProperty("#{ClubBO}")
@@ -55,6 +60,7 @@ public class ClubsDashboardBean implements Serializable {
             editable.put(i, false);
             ++i;
         }
+        createNewClub = false; 
     }
 
 
@@ -116,11 +122,11 @@ public class ClubsDashboardBean implements Serializable {
         this.clubs = clubss;
     }
 
-    public Integer getClubId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setClubId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -154,12 +160,15 @@ public class ClubsDashboardBean implements Serializable {
 
     public void setClBO(ClubBO clBO) {
         this.clBO = clBO;
-    }    
-
-     public void addNewClub() {
-        createNewClub = true;
-        newclub = new Club();
+    } 
+    
+    public UserManagementBO getUsBO() {
+        return usBO;
     }
+
+    public void setUsBO(UserManagementBO usBO) {
+        this.usBO = usBO;
+    }    
      
     public void setEditableForSelected()
     {        
@@ -196,7 +205,17 @@ public class ClubsDashboardBean implements Serializable {
     {
         this.deletable = deletable;
     }
-       
+   
+    public User getOwner()
+    {
+        return owner;
+    }
+    
+    public void setOwner(User owner)
+    {
+        this.owner = owner;
+    }
+    
     public void saveSelected()
     {
         for(int i=0;i<clubs.size();i++){
@@ -229,17 +248,32 @@ public class ClubsDashboardBean implements Serializable {
         this.newclub = c;
     }
     
+    public String getOwnerEmail()
+    {
+        return ownerEmail;
+    }
+    
+    public void setOwnerEmail(String ownerEmail)
+    {
+        this.ownerEmail = ownerEmail;
+    }
+    
     public void saveNewClub() {
+        newclub.setOwner(usBO.findUserByEmail(ownerEmail));
         clBO.saveClub(newclub);
         clubs.add(newclub);
         editable.put(newclub.getId(), false);
         checked.put(newclub.getId(), false);
         createNewClub = false;
-        clubs.add(newclub);
     }
     
     public void cancelNewClub() {
         createNewClub = false;
         newclub = null;
+    }
+    
+    public void addNewClub() {
+        newclub = new Club("Club name", new Date(), usBO.getLoggedUser(), " Club description");
+        createNewClub = true;
     }
 }
