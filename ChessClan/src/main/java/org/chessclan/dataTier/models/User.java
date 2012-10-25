@@ -18,8 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -104,6 +102,16 @@ public class User implements Serializable {
 
     public User(Integer id) {
         this.id = id;
+    }
+    
+    public User(String login, String email, String password, String firstName, String lastName, Date birthDate, Date creationDate) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.creationDate = creationDate;
     }
 
     public User(Integer id, String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, Date creationDate, int sex) {
