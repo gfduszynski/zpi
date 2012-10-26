@@ -30,6 +30,7 @@ public class ClubsDashboardBean implements Serializable {
     private Club newclub;
     private Boolean createNewClub;
     private Boolean deletable;
+    private Boolean checkAll;
     private String ownerEmail;
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO usBO;
@@ -53,35 +54,42 @@ public class ClubsDashboardBean implements Serializable {
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
         Iterator<Club> clb = clBO.findAll().iterator();
-        int i=1;
         while(clb.hasNext()){
-            clubs.add(clb.next());
-            checked.put(i, false);
-            editable.put(i, false);
-            ++i;
+            Club tmp = clb.next();
+            clubs.add(tmp);
+            checked.put(tmp.getId(), false);
+            editable.put(tmp.getId(), false);
         }
-        createNewClub = false; 
+        this.checkAll = false;
+        this.deletable = false; 
     }
 
+     public void updateClub(Club club) {
+        clBO.saveClub(club);
+        editable.put(club.getId(), false);
+        checked.put(club.getId(), false);
+        clubs.set(clubs.indexOf(club), club);
+    }
 
+     
     public void removeClub(Club club) {
         clBO.deleteClub(club);
+        editable.remove(club.getId());
+        checked.remove(club.getId());
+        clubs.remove(club);
     }
 
-    public void editClub(Club club) {
-        clBO.saveClub(club);
-        }
-
-    public void updateClub(Club club) {
-        clBO.saveClub(club);
-    }
-    
     public void selectAll(){
+        checkAll = !checkAll;
         for(int i=0;i<clubs.size();i++){
-            if(!checked.get(clubs.get(i).getId()) || !checked.containsKey(clubs.get(i).getId())) {
-                checked.put(clubs.get(i).getId(), true);
+                checked.put(clubs.get(i).getId(), checkAll);
+        }
+        if(!checkAll){
+            for(int i=0;i<clubs.size();i++){
+                editable.put(clubs.get(i).getId(), false);
             }
         }
+        deletable = checkAll;
     }
 
     public void changeCheckedOne(int id){

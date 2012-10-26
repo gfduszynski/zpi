@@ -92,9 +92,6 @@
             <column name="content" type="varchar(2048)">
                 <constraints nullable="false"/>
             </column>
-            <column name="published" type="boolean" defaultValueBoolean="false">
-                <constraints nullable="false"/>
-            </column>
             <column name="date_created" type="date">
                 <constraints nullable="false"/>
             </column>            

@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 
 /**
@@ -29,6 +30,8 @@ public class UsersDashboardBean implements Serializable {
     private Boolean deletable; 
     private Boolean createNewUser;
     private Boolean enabled;
+    private Boolean checkAll;
+    private Boolean hasChecked;
     //form vars
     private Integer userId;
     private String firstName;
@@ -60,7 +63,9 @@ public class UsersDashboardBean implements Serializable {
             checked.put(tmp.getId(), false);
             editable.put(tmp.getId(), false);
         }
+        this.checkAll = false;
         this.deletable = false;
+        this.hasChecked = false;
     }
 
 
@@ -82,6 +87,7 @@ public class UsersDashboardBean implements Serializable {
     public void saveNewUser() {
         umBO.saveUser(newuser);
         umBO.encodePassword(newuser);
+        umBO.assignRole(newuser.getId(), Role.Type.ADMIN);
         editable.put(newuser.getId(), false);
         checked.put(newuser.getId(), false);
         createNewUser = false;
@@ -99,14 +105,56 @@ public class UsersDashboardBean implements Serializable {
     }
     
     public void selectAll(){
+        checkAll = !checkAll;
         for(int i=0;i<users.size();i++){
-            if(!checked.get(users.get(i).getId()) || !checked.containsKey(users.get(i).getId())) {
-                checked.put(users.get(i).getId(), true);
+                checked.put(users.get(i).getId(), checkAll);
+        }
+        if(!checkAll){
+            for(int i=0;i<users.size();i++){
+                editable.put(users.get(i).getId(), false);
             }
         }
-        deletable = true;
+        deletable = checkAll;
+    }
+    
+    public void disableSelected(){
+        for(int i=0;i<users.size();i++){
+                if(checked.get(users.get(i).getId())&& users.get(i).getEnabled()){
+                    users.get(i).setEnabled(false);
+                    umBO.saveUser(users.get(i));
+                    users.set(users.indexOf(users.get(i)), users.get(i));
+                }
+        }
     }
 
+        
+    public void enableSelected(){
+        for(int i=0;i<users.size();i++){
+                if(checked.get(users.get(i).getId())&& !users.get(i).getEnabled()){
+                    users.get(i).setEnabled(true);
+                    umBO.saveUser(users.get(i));
+                    users.set(users.indexOf(users.get(i)), users.get(i));
+                }
+        }
+    }
+    
+    public void disableOne(Integer id){
+        if(users.get(id).getEnabled()){
+                    users.get(id).setEnabled(false);
+                    umBO.saveUser(users.get(id));
+                    users.set(users.indexOf(users.get(id)), users.get(id));
+        }
+    }
+
+        
+    public void enableOne(Integer id){
+         if(!users.get(id).getEnabled()){
+                    users.get(id).setEnabled(true);
+                    umBO.saveUser(users.get(id));
+                    users.set(users.indexOf(users.get(id)), users.get(id));
+        }
+    }
+    
     public Map<Integer, Boolean> getChecked() {
         return checked;
     }
@@ -293,5 +341,36 @@ public class UsersDashboardBean implements Serializable {
     {
         return this.enabled;
     }
+    
+    public void changeCheckedOne(int id){
+           if(!checked.get(id)){checked.put(id, false);
+           }else{checked.put(id, true);}
+    }
+    
+    public void setCheckAll(Boolean checkAll)
+    {
+        this.checkAll = checkAll;
+    }
+    
+    public Boolean getCheckAll()
+    {
+        return this.checkAll;
+    }
+    
+    public void setHasChecked(Boolean checkAll)
+    {
+        this.checkAll = checkAll;
+    }
+    
+    public Boolean getHasChecked()
+    {
+        for(int i=0;i<users.size();i++){
+            if(checked.get(users.get(i).getId())) { return this.hasChecked = true;
+                }
+        }
+        return this.checkAll=false;
+    }
+    
+    
     
 }

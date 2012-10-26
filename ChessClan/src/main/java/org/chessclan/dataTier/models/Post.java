@@ -48,10 +48,6 @@ public class Post implements Serializable {
     private String content;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "published")
-    private boolean published;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "date_created")
     @Temporal(TemporalType.DATE)
     private Date dateCreated;
@@ -72,25 +68,22 @@ public class Post implements Serializable {
         this.id = id;
     }
 
-    public Post(String title, String content, boolean published, User user) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
-        this.published = published;
         this.user = user;
         this.dateCreated = Calendar.getInstance().getTime();
-        if (published) {
-            this.datePublished = Calendar.getInstance().getTime();
-        }
+        this.datePublished = null;
+        //this.datePublished = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, 100);
         this.dateExpires = cal.getTime();
     }
 
-    public Post(Integer id, String title, String content, boolean published, Date dateCreated) {
+    public Post(Integer id, String title, String content, Date dateCreated) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.published = published;
         this.dateCreated = dateCreated;
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, 100);
@@ -119,14 +112,6 @@ public class Post implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public boolean getPublished() {
-        return published;
-    }
-
-    public void setPublished(boolean published) {
-        this.published = published;
     }
 
     public Date getDateCreated() {

@@ -62,12 +62,6 @@ public class PostBO implements Serializable{
         return postRepo.findAll(pgbl);
     }
     
-    public List<Post> findAllPublishedPosts()
-    {
-        return postRepo.findByPublishedTrue();
-    }
-    
-    
     public Page<Post> findLatestPosts(Pageable pgbl)
     {
          return postRepo.findByDateExpiresAfter(new Date(), pgbl);
@@ -85,14 +79,14 @@ public class PostBO implements Serializable{
     
     public Page<Post> findLatestPublishedPosts(Pageable pgbl)
     {
-         return postRepo.findByDateExpiresAfterAndPublishedTrue(new Date(), pgbl);
+         return postRepo.findByDateExpiresAfterAndDatePublishedBefore(new Date(),new Date(), pgbl);
     }
     
     
     public List<Post> findLatestPublishedPosts(int numberOfPosts)
     {
          List<Post> postList;
-         postList = postRepo.findByDateExpiresAfterAndPublishedTrue(new Date());
+         postList = postRepo.findByDateExpiresAfterAndDatePublishedBefore(new Date(), new Date());
          if(postList.size()<= numberOfPosts) {
             return postList;
         }else { return postList.subList(0, numberOfPosts);}
@@ -114,9 +108,7 @@ public class PostBO implements Serializable{
     
     public Post savePost(Post p)
     {
-        if(p.getPublished()){
             p.setDatePublished(Calendar.getInstance().getTime());
-        }
         return postRepo.save(p);
     }
     

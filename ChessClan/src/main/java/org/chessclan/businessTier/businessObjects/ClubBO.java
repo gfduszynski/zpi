@@ -34,6 +34,10 @@ public class ClubBO implements Serializable {
     public Club joinClub(Club c) {
         return joinClub(c, umBO.getLoggedUser());
     }
+    
+    public Club findClubByName(String name) {
+        return clubRepo.findByName(name);
+    }
 
     public Club joinClub(Club c, User u) {
         c.getUserSet().add(u);

@@ -9,7 +9,7 @@ import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.PostBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
@@ -20,7 +20,7 @@ import org.chessclan.dataTier.models.Post;
  * @author Xcays
  */
 @ManagedBean(name = "pdBean")
-@SessionScoped
+@ViewScoped
 public class PostsDashboardBean implements Serializable {
 
     private List<Post> posts;
@@ -30,11 +30,12 @@ public class PostsDashboardBean implements Serializable {
     private Boolean deletable;
     private Post newpost;
     private String authorEmail;
+    private Boolean checkAll;
+    private Integer newExpiresAfter;
     //form vars
     private Integer id;
     private String title;
     private String content;
-    private Boolean published;
     private Date dateCreated, datePublished, dateExpires;
     private Integer user;
     //end
@@ -60,8 +61,9 @@ public class PostsDashboardBean implements Serializable {
             checked.put(tmp.getId(), false);
             editable.put(tmp.getId(), false);
         }
-        this.createNewPost = false;
         this.deletable = false;
+        this.checkAll = false;
+        this.newExpiresAfter = 7;
     }
 
 
@@ -90,7 +92,7 @@ public class PostsDashboardBean implements Serializable {
     }
 
     public void addNewPost() {
-        newpost = new Post(posts.size()+1, "Post name", "Post content", false, new Date());
+        newpost = new Post(posts.size()+1, "Post name", "Post content", new Date());
         newpost.setUser(umBO.getLoggedUser());
         createNewPost = true;
     }
@@ -101,12 +103,16 @@ public class PostsDashboardBean implements Serializable {
     }
     
     public void selectAll(){
+        checkAll = !checkAll;
         for(int i=0;i<posts.size();i++){
-            if(!checked.get(posts.get(i).getId()) || !checked.containsKey(posts.get(i).getId())) {
-                checked.put(posts.get(i).getId(), true);
+                checked.put(posts.get(i).getId(), checkAll);
+        }
+        if(!checkAll){
+            for(int i=0;i<posts.size();i++){
+                editable.put(posts.get(i).getId(), false);
             }
         }
-        deletable = true;
+        deletable = checkAll;
     }
 
     public void changeCheckedOne(int id){
@@ -193,15 +199,6 @@ public class PostsDashboardBean implements Serializable {
     public void setExpiresDate(Date dateExpires) {
         this.dateExpires = dateExpires;
     }
-    
-    public Boolean getPublished() {
-        return published;
-    }
-
-    public void setPublished(Boolean published) {
-        this.published = published;
-    }
-    
     
     public Integer getUser() {
         return user;
@@ -301,6 +298,16 @@ public class PostsDashboardBean implements Serializable {
     public void setDeletable(Boolean deletable)
     {
         this.deletable = deletable;
+    }
+    
+    public Integer getNewExpiresAfter()
+    {
+        return newExpiresAfter;
+    }
+    
+    public void setNewExpiresAfter(Integer newExpiresAfter)
+    {
+        this.newExpiresAfter = newExpiresAfter;
     }
 
 }

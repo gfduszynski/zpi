@@ -11,13 +11,16 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO.NotJoinableRound;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.Category;
+import org.chessclan.dataTier.models.Club;
+import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Round.NoPlayers;
 import org.chessclan.dataTier.models.Round.NotFinished;
 import org.chessclan.dataTier.models.Tournament;
@@ -28,19 +31,24 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
  * @author Xcays
  */
 @ManagedBean(name = "tdBean")
-@SessionScoped
+@ViewScoped
 public class TournamentsDashboardBean implements Serializable {
 
     private List<Tournament> tournaments;
     private Map<Integer, Boolean> checked;
     private Map<Integer, Boolean> editable;
+    private Boolean createNewTournament;
+    private Boolean deletable;
+    private Boolean checkAll;
+    private Tournament newtournament;
     //form vars
     private Integer id;
     private String name;
     private Date date;
     private String description;
-    private Integer club;
-    private Integer category;
+    private Club club;
+    private Category category;
+    private Round currentRound;
     //end
     @Transient
     @ManagedProperty("#{TournamentBO}")
@@ -68,13 +76,14 @@ public class TournamentsDashboardBean implements Serializable {
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
         Iterator<Tournament> tnm = tmBO.findAll().iterator();
-        int i=1;
         while(tnm.hasNext()){
-            tournaments.add(tnm.next());
-            checked.put(i, false);
-            editable.put(i, false);
-            ++i;
+            Tournament tmp = tnm.next();
+            tournaments.add(tmp);
+            checked.put(tmp.getId(), false);
+            editable.put(tmp.getId(), false);
         }
+        this.checkAll = false;
+        this.deletable = false;
     }
 
     public void generateTournaments() throws NotJoinableRound
@@ -93,35 +102,60 @@ public class TournamentsDashboardBean implements Serializable {
             Logger.getLogger(TournamentsDashboardBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void removeTournament(Tournament t) {
-        
-        tmBO.deleteTournament(t);
-        initialize();
+    
+    public void removeTournament(Tournament tnm) {
+        tmBO.deleteTournament(tnm);
+        editable.remove(tnm.getId());
+        checked.remove(tnm.getId());
+        tournaments.remove(tnm);
     }
 
-    public void editTournament(Tournament t) {
-        tmBO.saveTournament(t);
-        initialize();
+    public void updateTournament(Tournament tnm) {
+        System.out.println("TNM update start");
+        tmBO.saveTournament(tnm);
+        System.out.println("TNM saved");
+        editable.put(tnm.getId(), false);
+        System.out.println("TNM editable false");
+        checked.put(tnm.getId(), false);
+        System.out.println("TNM checked false");
+        tournaments.set(tournaments.indexOf(tnm), tnm);
+        System.out.println("TNMs update success");
     }
 
-    public void updateUser(Tournament t) {
-        tmBO.saveTournament(t);
-        initialize();
-    }
-
-    public void addNewTournament() {
-        tmBO.saveTournament(new Tournament(null, "name", new Date(), "description", null));
-        initialize();
+    public void saveNewTournament() {
+        newtournament.setClub(clbBO.findClubByName(newtournament.getClub().getName()));
+        newtournament.setCategory(catBO.findCategoryById(newtournament.getCategory().getId()));
+        tmBO.saveTournament(newtournament);
+        editable.put(newtournament.getId(), false);
+        checked.put(newtournament.getId(), false);
+        createNewTournament = false;
+        tournaments.add(newtournament);
     }
     
+    public void addNewTournament() {
+        newtournament = new Tournament(null, "name", new Date(), "description", null);
+        createNewTournament = true;
+    }
+    
+    public void cancelNewTournament() {
+        createNewTournament = false;
+        newtournament = null;
+    }
+    
+
     public void selectAll(){
+        checkAll = !checkAll;
         for(int i=0;i<tournaments.size();i++){
-            if(!checked.get(tournaments.get(i).getId()) || !checked.containsKey(tournaments.get(i).getId())) {
-                checked.put(tournaments.get(i).getId(), true);
+                checked.put(tournaments.get(i).getId(), checkAll);
+        }
+        if(!checkAll){
+            for(int i=0;i<tournaments.size();i++){
+                editable.put(tournaments.get(i).getId(), false);
             }
         }
+        deletable = checkAll;
     }
-
+    
     public Map<Integer, Boolean> getChecked() {
         return checked;
     }
@@ -186,19 +220,19 @@ public class TournamentsDashboardBean implements Serializable {
         this.description = description;
     }
 
-    public Integer getClub() {
+    public Club getClub() {
         return club;
     }
 
-    public void setClub(Integer club) {
+    public void setClub(Club club) {
         this.club = club;
     }
 
-    public Integer getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -232,4 +266,96 @@ public class TournamentsDashboardBean implements Serializable {
     public void setClbBO(ClubBO clbBO) {
         this.clbBO = clbBO;
     }
+    
+    public void setEditableForSelected()
+    {        
+        for(int i=0;i<tournaments.size();i++){
+            if(checked.get(tournaments.get(i).getId())) {
+                editable.put(tournaments.get(i).getId(), true);
+                deletable = true;
+            }
+        }
+    }
+    
+    public void removeSelected()
+    {
+        if(deletable){
+            for(int i=0;i<tournaments.size();i++){
+                if(checked.get(tournaments.get(i).getId())) {
+                   removeTournament(tournaments.get(i));
+                    --i;
+                }
+            }
+            deletable = false;
+        }
+    }
+        
+    public void saveSelected()
+    {
+        for(int i=0;i<tournaments.size();i++){
+            if(checked.get(tournaments.get(i).getId())) {
+                editable.put(tournaments.get(i).getId(),false);
+                checked.put(tournaments.get(i).getId(), false);
+                tmBO.saveTournament(tournaments.get(i));
+            }
+        }
+        deletable = false;
+    }
+    
+    public Boolean getDeletable()
+    {
+        return deletable;
+    }
+    
+    public void setDeletable(Boolean deletable)
+    {
+        this.deletable = deletable;
+    }
+    
+    public Boolean getCreateNewTournament()
+    {
+        return createNewTournament;
+    }
+    
+    public void setCreateNewTournament(Boolean cnt)
+    {
+        this.createNewTournament = cnt;
+    }
+    
+    public Tournament getNewtournament()
+    {
+        return newtournament;
+    }
+    
+    public void setNewtournament(Tournament t)
+    {
+        this.newtournament = t;
+    }
+    
+    public Integer getId()
+    {
+        return id;
+    }
+    
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+    
+    public Round getCurrentRound()
+    {
+        return currentRound;
+    }
+    
+    public void setCurrentRound(Round currentRound)
+    {
+        this.currentRound = currentRound;
+    }
+    
+    public void changeCheckedOne(int id){
+           if(!checked.get(id)){checked.put(id, false);
+           }else{checked.put(id, true);}
+    }
+    
+    
 }
