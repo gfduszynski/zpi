@@ -5,17 +5,14 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
@@ -90,6 +87,7 @@ public class TournamentBO implements Serializable{
         pc.setPlayer(u);
         pc.setTournament(t);
         pc.setRound(t.getCurrentRound());
+        pc.setColor(PairingCard.Color.NO_COLOR);
         u.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
     }
@@ -127,17 +125,17 @@ public class TournamentBO implements Serializable{
     }
     
     private Set<PairingCard> pairPlayers(Set<PairingCard> oldPairingCards, Round currentRound){
-        HashMap<Float,HashSet<PairingCard>> scoreBrackets = new HashMap<Float, HashSet<PairingCard>>();
+        HashMap<Float,LinkedList<PairingCard>> scoreBrackets = new HashMap<Float, LinkedList<PairingCard>>();
         Set<PairingCard> newPairingCards = new HashSet<PairingCard>();
         
         // Assign players to their score brackets with new pairing card
         for(PairingCard pc : oldPairingCards){
             // Add missing score bracket
             if(!scoreBrackets.containsKey(pc.getScore())){
-                scoreBrackets.put(pc.getScore(), new HashSet<PairingCard>());
+                scoreBrackets.put(pc.getScore(), new LinkedList<PairingCard>());
             }
             // Add players new paring card to score bracket
-            Set<PairingCard> bracket = scoreBrackets.get(pc.getScore());
+            LinkedList<PairingCard> bracket = scoreBrackets.get(pc.getScore());
             PairingCard newPC = new PairingCard();
             newPC.setByes(pc.getByes());
             newPC.setColorDiff(pc.getColorDiff());
@@ -151,7 +149,10 @@ public class TournamentBO implements Serializable{
             bracket.add(newPC);
         }
         // Sort bracket key's according to score
-        List<Float> sortedBrackets = (List<Float>)Arrays.asList((Float[])scoreBrackets.keySet().toArray());
+        Float[] keys = new Float[1];
+        keys = scoreBrackets.keySet().toArray(keys);
+        
+        List<Float> sortedBrackets = (List<Float>)Arrays.asList((Float[])keys);
         Collections.sort(sortedBrackets);
         // Pairing players
         List<PairingCard> downFloaters = new LinkedList<PairingCard>();
@@ -160,7 +161,7 @@ public class TournamentBO implements Serializable{
         int X=0;
         int P=0;
         for(int b = sortedBrackets.size(); b>0; b--){
-            HashSet<PairingCard> scoreBracket = scoreBrackets.get(sortedBrackets.get(b-1)); // Highest score bracket - descending
+            LinkedList<PairingCard> scoreBracket = scoreBrackets.get(sortedBrackets.get(b-1)); // Highest score bracket - descending
             // Calculate param's
             int P0 = (int) Math.floor(scoreBracket.size()/2.0);     // Number of players in S1 and S2
             int M0 = downFloaters.size();                           // Number of players moved down from higher score grups
