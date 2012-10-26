@@ -10,12 +10,14 @@
     </h:head>
     <h:body>
         <ui:composition>
-            <script>
-                var actItem = 'myClubHeader';
-                $(function() {
-                    $( "#tabs" ).tabs();
-                });
-            </script>
+           <script>
+    $(document).ready(function() {
+        $("#tabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+        $("#tabs li").removeClass('ui-corner-top').addClass('ui-corner-left noMargin noPadding');
+        $("#tabs ul").addClass('noMargin noPadding');
+
+    });
+</script>
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1">Moje turnieje</a></li>
