@@ -16,4 +16,10 @@
         <priority value ="debug" /> 
         <appender-ref ref="console" /> 
     </root>
+    
+    <logger name="org.hibernate">
+        <level value="INFO" />
+    <appender-ref ref="console"/>
+</logger>
+
 </log4j:configuration>

@@ -16,7 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -73,6 +72,13 @@ public class Club implements Serializable {
         this.owner = owner;
     }
 
+    public Club(String name, Date creationDate, User owner, String description) {
+        this.name = name;
+        this.creationDate = creationDate;
+        this.owner = owner;
+        this.description = description;
+    }
+    
     public Integer getId() {
         return id;
     }

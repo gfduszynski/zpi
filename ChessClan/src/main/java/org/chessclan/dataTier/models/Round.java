@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -53,6 +54,10 @@ public class Round implements Serializable {
     @NotNull
     @Column(name = "number")
     private int number;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "round_state")
+    private State roundState;
     @Column(name = "round_start")
     @Temporal(TemporalType.DATE)
     private Date roundStart;
@@ -67,10 +72,6 @@ public class Round implements Serializable {
     @JoinColumn(name = "tournament", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "round_state")
-    private State roundState;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
     private Set<PairingCard> pairingCardSet;
 
@@ -183,4 +184,5 @@ public class Round implements Serializable {
     public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
         this.pairingCardSet = pairingCardSet;
     }
+
 }

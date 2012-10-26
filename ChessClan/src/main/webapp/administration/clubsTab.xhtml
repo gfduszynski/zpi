@@ -6,38 +6,80 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition>
         <h:form id="tab2Form">
-            <div style="padding:10px 0px 10px 0px;">
-                <h:commandButton value="remove selected"/>
-                <h:commandButton  type="submit" action="#{cdBean.addNewClub()}" value="add new club"/>
-                            </div>
+            <script type="text/javascript">
+                $(function() {
+                    $( ".newclubCreationDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                    $( ".clubCreationDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                    });
+            </script>
+            <h:panelGrid columns="4" rendered="#{cdBean.createNewClub}">
+                        <h:outputLabel for="no" value="No" class="order-table-even-row"/>
+                        <h:outputText id="no" value="#{cdBean.newclub.id}" />
+                        <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
+                        <h:inputText id="name" value="#{cdBean.newclub.name}" />
+                        <h:outputLabel for="owner" value="Owner" class="order-table-odd-row"/>
+                        <h:inputText id="owner" value="#{cdBean.ownerEmail}" />
+                        <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
+                        <h:inputText id="creation-date" value="#{cdBean.newclub.creationDate}" class="newclubCreationDateForm input-edit-row">
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:inputText>
+                        <h:outputLabel for="description" value="Description" class="order-table-odd-row"/>
+                        <h:inputText id="description" value="#{cdBean.newclub.description}" class="order-table-odd-row"/>
+                        <h:commandButton value="save club" rendered="#{cdBean.createNewClub}">
+                            <f:ajax listener="#{cdBean.saveNewClub}" render="@form" execute="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="cancel" rendered="#{cdBean.createNewClub}">
+                            <f:ajax listener="#{cdBean.cancelNewClub}" render="@form" execute="@form"/>
+                        </h:commandButton>                              
+            </h:panelGrid>
+
+            
+            <div style="padding:10px 0px 10px 0px;" >
+                <h:commandButton value="add new club" rendered="#{not cdBean.createNewClub}">
+                    <f:ajax listener="#{cdBean.addNewClub()}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="edit selected" rendered="#{not cdBean.createNewClub}">
+                    <f:ajax listener="#{cdBean.setEditableForSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="remove selected" rendered="#{cdBean.deletable and not cdBean.createNewClub}">
+                    <f:ajax listener="#{cdBean.removeSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="save selected" rendered="#{not cdBean.createNewClub}">
+                    <f:ajax listener="#{cdBean.saveSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+            </div>
+
+        
 
             <h:dataTable value="#{cdBean.clubs}" var="club"
                          styleClass="order-table"
                          headerClass="order-table-header"
                          rowClasses="order-table-odd-row,order-table-even-row"
-                         >
+                         rendered="#{not cdBean.createNewClub}">
 
                 <h:column>
-                    <!-- column header -->
                     <f:facet name="header">
                         <h:selectBooleanCheckbox> 
                             <f:ajax listener="#{cdBean.selectAll}" render="@form" execute="@form"/>
                         </h:selectBooleanCheckbox>
                     </f:facet>
-                    <!-- row record -->
                     <h:selectBooleanCheckbox value="#{cdBean.checked[club.id]}">
                         <f:ajax listener="#{cdBean.changeCheckedOne(club.id)}" render="@form" execute="@form"/>
                     </h:selectBooleanCheckbox>
                 </h:column>
 
                 <h:column>
-                    <!-- column header -->
                     <f:facet name="header">No</f:facet>
-                    <!-- row record -->
                     <h:outputText value="#{club.id}" rendered="#{not cdBean.editable[club.id]}"/>
                     <h:inputText value="#{club.id}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
                 </h:column>
 
+                <h:column>
+                    <f:facet name="header">Owner</f:facet>
+                    <h:outputText value="#{club.owner.email}" rendered="#{not cdBean.editable[club.id]}"/>
+                    <h:inputText value="#{cdBean.owner.email}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                </h:column>
+                
                 <h:column>
                     <f:facet name="header">Name</f:facet>
                     <h:outputText value="#{club.name}" rendered="#{not cdBean.editable[club.id]}"/>
@@ -49,7 +91,7 @@
                     <h:outputText value="#{club.creationDate}" rendered="#{not cdBean.editable[club.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{club.creationDate}" rendered="#{cdBean.editable[club.id]}" class="userCreationDateForm input-edit-row">
+                    <h:inputText value="#{club.creationDate}" rendered="#{cdBean.editable[club.id]}" class="clubCreationDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>

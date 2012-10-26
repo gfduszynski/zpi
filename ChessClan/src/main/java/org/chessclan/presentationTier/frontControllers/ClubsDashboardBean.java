@@ -9,27 +9,36 @@ import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.ClubBO;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Club;
+import org.chessclan.dataTier.models.User;
 
 /**
  *
  * @author Xcays
  */
 @ManagedBean(name = "cdBean")
-@SessionScoped
+@ViewScoped
 public class ClubsDashboardBean implements Serializable {
 
     private List<Club> clubs;
     private Map<Integer, Boolean> checked;
     private Map<Integer, Boolean> editable;
+    private Club newclub;
+    private Boolean createNewClub;
+    private Boolean deletable;
+    private String ownerEmail;
+    @ManagedProperty("#{UserManagementBO}")
+    private UserManagementBO usBO;
     //form vars
     private Integer id;
     private String name;
     private Date creationDate;
     private String description;
+    private User owner;
     //end
     @Transient
     @ManagedProperty("#{ClubBO}")
@@ -51,28 +60,21 @@ public class ClubsDashboardBean implements Serializable {
             editable.put(i, false);
             ++i;
         }
+        createNewClub = false; 
     }
 
 
     public void removeClub(Club club) {
         clBO.deleteClub(club);
-        initialize();
     }
 
     public void editClub(Club club) {
         clBO.saveClub(club);
-        initialize();
         }
 
     public void updateClub(Club club) {
         clBO.saveClub(club);
-        initialize();
     }
-
-    public void addNewClub() {
-        //clBO.saveClub(new Club(clubs.size()+1,"clubName",new Date()));
-        initialize();
-        }
     
     public void selectAll(){
         for(int i=0;i<clubs.size();i++){
@@ -120,11 +122,11 @@ public class ClubsDashboardBean implements Serializable {
         this.clubs = clubss;
     }
 
-    public Integer getClubId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setClubId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -158,5 +160,120 @@ public class ClubsDashboardBean implements Serializable {
 
     public void setClBO(ClubBO clBO) {
         this.clBO = clBO;
+    } 
+    
+    public UserManagementBO getUsBO() {
+        return usBO;
+    }
+
+    public void setUsBO(UserManagementBO usBO) {
+        this.usBO = usBO;
     }    
+     
+    public void setEditableForSelected()
+    {        
+        for(int i=0;i<clubs.size();i++){
+            if(checked.get(clubs.get(i).getId())) {
+                editable.put(clubs.get(i).getId(), true);
+                deletable = true;
+            }
+        }
+    }
+    
+    public void removeSelected()
+    {
+        if(deletable){
+            for(int i=0;i<clubs.size();i++){
+                if(checked.get(clubs.get(i).getId())) {
+                    editable.remove(clubs.get(i).getId());
+                    checked.remove(clubs.get(i).getId());
+                    clBO.deleteClub(clubs.get(i));
+                    clubs.remove(i);
+                    --i;
+                }
+            }
+            deletable = false;
+        }
+    }
+    
+    public Boolean getDeletable()
+    {
+        return deletable;
+    }
+    
+    public void setDeletable(Boolean deletable)
+    {
+        this.deletable = deletable;
+    }
+   
+    public User getOwner()
+    {
+        return owner;
+    }
+    
+    public void setOwner(User owner)
+    {
+        this.owner = owner;
+    }
+    
+    public void saveSelected()
+    {
+        for(int i=0;i<clubs.size();i++){
+            if(checked.get(clubs.get(i).getId())) {
+                editable.put(clubs.get(i).getId(),false);
+                checked.put(clubs.get(i).getId(), false);
+                clBO.saveClub(clubs.get(i));
+            }
+        }
+        deletable = false;
+    }
+    
+    
+    public Boolean getCreateNewClub()
+    {
+        return createNewClub;
+    }
+    
+    public void setCreateNewClub(Boolean cnu)
+    {
+        this.createNewClub = cnu;
+    }
+        public Club getNewclub()
+    {
+        return newclub;
+    }
+    
+    public void setNewclub(Club c)
+    {
+        this.newclub = c;
+    }
+    
+    public String getOwnerEmail()
+    {
+        return ownerEmail;
+    }
+    
+    public void setOwnerEmail(String ownerEmail)
+    {
+        this.ownerEmail = ownerEmail;
+    }
+    
+    public void saveNewClub() {
+        newclub.setOwner(usBO.findUserByEmail(ownerEmail));
+        clBO.saveClub(newclub);
+        clubs.add(newclub);
+        editable.put(newclub.getId(), false);
+        checked.put(newclub.getId(), false);
+        createNewClub = false;
+    }
+    
+    public void cancelNewClub() {
+        createNewClub = false;
+        newclub = null;
+    }
+    
+    public void addNewClub() {
+        newclub = new Club("Club name", new Date(), usBO.getLoggedUser(), " Club description");
+        createNewClub = true;
+    }
 }
