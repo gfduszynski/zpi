@@ -5,6 +5,14 @@ html{
 body{
     text-align: center;
     /*background-color:#F0EEEB;*/
+
+
+    /*background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+   /* background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    */
+    background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
+    -webkit-background-size: 200px 210px;
+    background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background-size:100px 100px;
     /*    font-family: 'Tangerine', serif;*/
@@ -169,23 +177,23 @@ h2{
 .error{
     color: #57B2E0;
     text-shadow:0px 0px 16px #00006D;
-    } 
+} 
 .link{
-        color: #2C41B1;
-        font-weight: bold;
-        text-decoration: none;
-    }
+    color: #2C41B1;
+    font-weight: bold;
+    text-decoration: none;
+}
 .checkBox{
--webkit-border-radius: 0px 0px 0px 99px;
-border-radius: 0px 0px 0px 99px;
-background-image: -moz-linear-gradient(top, #a8cadc, #57b2e0);
-background-image: -ms-linear-gradient(top, #a8cadc, #57b2e0);
-background-image: -webkit-gradient(linear, center top, center bottom, from(#a8cadc), to(#57b2e0));
-background-image: -webkit-linear-gradient(top, #a8cadc, #57b2e0);
-background-image: linear-gradient(top, #a8cadc, #57b2e0);
-/*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
+    -webkit-border-radius: 0px 0px 0px 99px;
+    border-radius: 0px 0px 0px 99px;
+    background-image: -moz-linear-gradient(top, #a8cadc, #57b2e0);
+    background-image: -ms-linear-gradient(top, #a8cadc, #57b2e0);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#a8cadc), to(#57b2e0));
+    background-image: -webkit-linear-gradient(top, #a8cadc, #57b2e0);
+    background-image: linear-gradient(top, #a8cadc, #57b2e0);
+    /*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
 
-    }
+}
 .hidden{
     visibility: collapse;
     font-size: 50%;
@@ -224,7 +232,7 @@ background-image: linear-gradient(top, #a8cadc, #57b2e0);
 .inactiveReg:hover {
     background-color: #E09041;
     color: white; 
-    
+
 }
 
 .activeReg{
@@ -247,8 +255,8 @@ background-image: linear-gradient(top, #a8cadc, #57b2e0);
 
 .seeAllPostsButton{
     width:290px;
-    height:65px;
-    margin: -59px 0px 0px -5px;
+    height:63px;
+    margin: -41px 0px 0px -5px;
     color: white;
     font-weight: bold;
     opacity: 0.7;
@@ -263,7 +271,7 @@ background-image: linear-gradient(top, #a8cadc, #57b2e0);
 #tabs{
     width: 100%;
 }
-#tabs-1,tabs-2,tabs-3,tabs-4{
+#tabs-1,#tabs-2,#tabs-3,#tabs-4{
     width: 100%;
 }
 
@@ -275,6 +283,6 @@ background-image: linear-gradient(top, #a8cadc, #57b2e0);
     padding: 0px;
 }
 
-#bdInput{
+#bdInput,#pInput{
     margin-bottom: 5px;
 }
