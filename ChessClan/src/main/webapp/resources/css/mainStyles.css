@@ -295,3 +295,26 @@ h2{
 #bdInput,#pInput{
     margin-bottom: 5px;
 }
+
+.postHeader{
+
+}
+
+.postContent{
+
+}
+
+.postTitleDate{
+    float: right;
+    padding-right: 10px;
+}
+
+.hiddenButton{
+    display:none;
+}
+
+#editContainer{
+    display:none;
+    background-color: white;
+    padding:10px;
+}
