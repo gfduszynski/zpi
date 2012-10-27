@@ -12,9 +12,14 @@
         <view-id value="/pages/tournaments.xhtml" />
     </url-mapping>
     
-    <url-mapping id="editProfile">
-        <pattern value="/edit" />
-        <view-id value="/userPages/editProfile.xhtml" />
+    <url-mapping id="posts">
+        <pattern value="/posts" />
+        <view-id value="/pages/posts.xhtml" />
     </url-mapping>
-
+    
+    <url-mapping id="postDetails">
+        <pattern value="/posts/#{id}" />
+        <view-id value="/pages/posts.xhtml" />
+    </url-mapping>
+  
 </pretty-config>

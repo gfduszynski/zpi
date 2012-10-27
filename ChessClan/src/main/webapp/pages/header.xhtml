@@ -16,6 +16,9 @@
                 $('#headerLogo').live('click',function(){
                     window.location = "#{request.contextPath}";
                 });     
+                function showEditProfile(){
+                    $('#editContainer').load('userPages/editProfile.xhtml');
+                }
             </script>
             <h:panelGroup layout="block" class="header">
                 <h:panelGroup layout="block" class="logo">
@@ -47,7 +50,7 @@
                         <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
                         <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
                         <h:outputText value=" | "/>
-                        <h:outputLink value="#{request.contextPath}/edit">Edytuj profil</h:outputLink>
+                        <a onclick="showEditProfile();" href="#">Edytuj profil</a>
                     </h:panelGroup>
                 </c:if>
 

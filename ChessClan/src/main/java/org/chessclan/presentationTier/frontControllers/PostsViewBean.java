@@ -8,10 +8,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.chessclan.businessTier.businessObjects.PostBO;
 import org.chessclan.dataTier.models.Post;
 
@@ -19,19 +21,38 @@ import org.chessclan.dataTier.models.Post;
  *
  * @author Daniel
  */
-@ManagedBean(name="pvBean")
-@ViewScoped
+@ManagedBean(name = "pvBean")
+@RequestScoped
 public class PostsViewBean implements Serializable {
 
     private List<Post> posts;
     @ManagedProperty("#{PostBO}")
     PostBO postBO;
+    private Post selectedPost;
 
     public PostsViewBean() {
     }
 
     @PostConstruct
     public void initialize() {
+
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String postId = params.get("id");
+
+        try {
+            int pId = Integer.valueOf(postId);
+            this.selectedPost = postBO.findOnePost(pId);
+            if (this.selectedPost == null) {
+                loadPosts();
+            }
+
+        } catch (NumberFormatException e) {
+            loadPosts();
+        }
+
+    }
+
+    private void loadPosts() {
         this.posts = new ArrayList<Post>();
         Iterator<Post> postss = postBO.findAllPosts().iterator();
         while (postss.hasNext()) {
@@ -53,5 +74,13 @@ public class PostsViewBean implements Serializable {
 
     public void setPostBO(PostBO postBO) {
         this.postBO = postBO;
+    }
+
+    public Post getSelectedPost() {
+        return selectedPost;
+    }
+
+    public void setSelectedPost(Post selectedPost) {
+        this.selectedPost = selectedPost;
     }
 }

@@ -20,12 +20,11 @@
                         $('.seeAllPostsButton').slideToggle();
                     }
                 );
-                        
                 </script>
                 <h3>Najnowsze ogłoszenia</h3>
                 <c:forEach items="#{lpBean.latestPosts}" var="post" varStatus="loop">
                     <h:panelGroup layout="block" class="postHeader">
-                        <h:outputText value="#{post.title}" class="postTitle"/>
+                        <a class="postTitle" href="#{request.contextPath}/posts/#{post.id}">#{post.title}</a>
                         <h:outputText value="#{post.datePublished}" class="postTitleDate"/>
                     </h:panelGroup>
                     <div class="ellipsis">#{post.content}</div>
@@ -33,7 +32,7 @@
                         <hr/> 
                     </c:if>
                 </c:forEach>
-                <h:commandButton value="Zobacz wszystkie" class="seeAllPostsButton hiddenButton"/>
+                <h:commandButton value="Zobacz wszystkie" class="seeAllPostsButton hiddenButton" onclick="$(location).attr('href','#{request.contextPath}/posts');" type="button"/>
             </h:form>
         </ui:composition>
 
