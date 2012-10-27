@@ -28,6 +28,7 @@ public class UsersDashboardBean implements Serializable {
     private User newuser;
     private Boolean deletable; 
     private Boolean createNewUser;
+    private Boolean enabled;
     //form vars
     private Integer userId;
     private String firstName;
@@ -72,6 +73,7 @@ public class UsersDashboardBean implements Serializable {
 
     public void updateUser(User user) {
         umBO.saveUser(user);
+        umBO.encodePassword(user);
         editable.put(user.getId(), false);
         checked.put(user.getId(), false);
         users.set(users.indexOf(user), user);
@@ -79,7 +81,7 @@ public class UsersDashboardBean implements Serializable {
     
     public void saveNewUser() {
         umBO.saveUser(newuser);
-        users.add(newuser);
+        umBO.encodePassword(newuser);
         editable.put(newuser.getId(), false);
         checked.put(newuser.getId(), false);
         createNewUser = false;
@@ -87,9 +89,9 @@ public class UsersDashboardBean implements Serializable {
     }
 
     public void addNewUser() {
+        newuser = new User("Login", "E-mail", "Password", "Name", "Last Name", new Date(), new Date());
         createNewUser = true;
-        newuser = new User("New User", users.size()+"@chessclan.pl", "pass", "Name", "Last Name", new Date(), new Date());
-    }
+       }
     
     public void cancelNewUser() {
         createNewUser = false;
@@ -224,10 +226,7 @@ public class UsersDashboardBean implements Serializable {
         if(deletable){
             for(int i=0;i<users.size();i++){
                 if(checked.get(users.get(i).getId())) {
-                    editable.remove(users.get(i).getId());
-                    checked.remove(users.get(i).getId());
-                    umBO.deleteUser(users.get(i));
-                    users.remove(i);
+                   removeUser(users.get(i));
                     --i;
                 }
             }
@@ -242,6 +241,7 @@ public class UsersDashboardBean implements Serializable {
                 editable.put(users.get(i).getId(),false);
                 checked.put(users.get(i).getId(), false);
                 umBO.saveUser(users.get(i));
+                umBO.encodePassword(users.get(i));
             }
         }
         deletable = false;
@@ -283,4 +283,15 @@ public class UsersDashboardBean implements Serializable {
     public void setUmBO(UserManagementBO umBO) {
         this.umBO = umBO;
     }    
+    
+    public void setEnabled(Boolean enabled)
+    {
+        this.enabled = enabled;
+    }
+    
+    public Boolean getEnabled()
+    {
+        return this.enabled;
+    }
+    
 }

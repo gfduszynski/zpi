@@ -5,37 +5,84 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition>
-        <h:form id="tab4Form">
-            <div style="padding:10px 0px 10px 0px;">
-                <h:commandButton value="remove selected"/>
-                <h:commandButton  type="submit" value="add new post"/>
-                <h:commandButton  type="submit" value="edit selected"/>
-                <!-- Tutaj dodaj buttona do zapisywania zmian we wszystkich wybranych -->
+         <h:form id="tab4Form">
+            <script type="text/javascript">
+                $(function() {
+                    $( ".postCreationDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                    $( ".postExpiresDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                    $( ".postPublishedDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                });
+            </script>
+            <h:panelGrid columns="4" rendered="#{pdBean.createNewPost}">
+                        <h:outputLabel for="no" value="No" class="order-table-even-row"/>
+                        <h:outputText id="no" value="#{pdBean.newpost.id}" />
+                        <h:outputLabel for="title" value="Title" class="order-table-odd-row"/>
+                        <h:inputText id="title" value="#{pdBean.newpost.title}" />
+                        <h:outputLabel for="content" value="Content" class="order-table-odd-row"/>
+                        <h:inputText id="content" value="#{pdBean.newpost.content}" />
+                        <h:outputLabel for="author" value="Author" class="order-table-odd-row"/>
+                        <h:inputText id="author" value="#{pdBean.authorEmail}" />
+                        <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
+                        <h:inputText id="creation-date" value="#{pdBean.newpost.dateCreated}" class="postCreationDateForm input-edit-row">
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:inputText>
+                        <h:outputLabel for="published-date" value="Published at" class="order-table-odd-row"/>
+                        <h:inputText id="published-date" value="#{pdBean.newpost.datePublished}" class="postPublishedDateForm input-edit-row">
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:inputText>
+                        <h:outputLabel for="expires-date" value="Expires at" class="order-table-odd-row"/>
+                        <h:inputText id="expires-date" value="#{pdBean.newpost.dateExpires}" class="postExpiresDateForm input-edit-row">
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:inputText>
+                        <h:outputLabel for="published" value="Published" class="order-table-odd-row"/>
+                        <h:selectOneRadio id="published" value="#{pdBean.newpost.published}">
+                            <f:selectItem itemValue="true" itemLabel="true"/>
+                            <f:selectItem itemValue="false" itemLabel="false"/>
+                        </h:selectOneRadio>
+                        <h:commandButton value="save post" rendered="#{pdBean.createNewPost}">
+                            <f:ajax listener="#{pdBean.saveNewPost}" render="@form" execute="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="cancel" rendered="#{pdBean.createNewPost}">
+                            <f:ajax listener="#{pdBean.cancelNewPost}" render="@form" execute="@form"/>
+                        </h:commandButton>                              
+            </h:panelGrid>
+
+            
+            <div style="padding:10px 0px 10px 0px;" >
+                <h:commandButton value="add new post" rendered="#{not pdBean.createNewPost}">
+                    <f:ajax listener="#{pdBean.addNewPost}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="edit selected" rendered="#{not pdBean.createNewPost}">
+                    <f:ajax listener="#{pdBean.setEditableForSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="remove selected" rendered="#{pdBean.deletable and not pdBean.createNewPost}">
+                    <f:ajax listener="#{pdBean.removeSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="save selected" rendered="#{not pdBean.createNewPost}">
+                    <f:ajax listener="#{pdBean.saveSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
             </div>
+
 
             <h:dataTable value="#{pdBean.posts}" var="post"
                          styleClass="order-table"
                          headerClass="order-table-header"
                          rowClasses="order-table-odd-row,order-table-even-row"
-                         >
+                         rendered="#{not pdBean.createNewPost}">
 
                 <h:column>
-                    <!-- column header -->
                     <f:facet name="header">
                         <h:selectBooleanCheckbox> 
                             <f:ajax listener="#{pdBean.selectAll}" render="@form" execute="@form"/>
                         </h:selectBooleanCheckbox>
                     </f:facet>
-                    <!-- row record -->
                     <h:selectBooleanCheckbox value="#{pdBean.checked[post.id]}">
                         <f:ajax listener="#{pdBean.changeCheckedOne(post.id)}" render="@form" execute="@form"/>
                     </h:selectBooleanCheckbox>
                 </h:column>
 
                 <h:column>
-                    <!-- column header -->
                     <f:facet name="header">No</f:facet>
-                    <!-- row record -->
                     <h:outputText value="#{post.id}" rendered="#{not pdBean.editable[post.id]}"/>
                     <h:inputText value="#{post.id}" rendered="#{pdBean.editable[post.id]}" class="input-edit-row"/>
                 </h:column>
@@ -57,7 +104,7 @@
                     <h:outputText value="#{post.dateCreated}" rendered="#{not pdBean.editable[post.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{post.dateCreated}" rendered="#{pdBean.editable[post.id]}" class="userCreationDateForm input-edit-row">
+                    <h:inputText value="#{post.dateCreated}" rendered="#{pdBean.editable[post.id]}" class="postCreationDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
@@ -67,7 +114,7 @@
                     <h:outputText value="#{post.datePublished}" rendered="#{not pdBean.editable[post.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{post.datePublished}" rendered="#{pdBean.editable[post.id]}" class="userCreationDateForm input-edit-row">
+                    <h:inputText value="#{post.datePublished}" rendered="#{pdBean.editable[post.id]}" class="postPublishedDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
@@ -77,7 +124,7 @@
                     <h:outputText value="#{post.dateExpires}" rendered="#{not pdBean.editable[post.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{post.dateExpires}" rendered="#{pdBean.editable[post.id]}" class="userCreationDateForm input-edit-row">
+                    <h:inputText value="#{post.dateExpires}" rendered="#{pdBean.editable[post.id]}" class="postExpiresDateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
@@ -85,13 +132,15 @@
                 <h:column>
                     <f:facet name="header">Is published</f:facet>
                     <h:outputText value="#{post.published}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText value="#{post.published}" rendered="#{pdBean.editable[post.id]}"/>
+                    <h:selectOneRadio value="#{post.published}" rendered="#{pdBean.editable[post.id]}">
+                        <f:selectItem itemValue="true" itemLabel="true"/>
+                        <f:selectItem itemValue="false" itemLabel="false"/>
+                    </h:selectOneRadio>
                 </h:column>
                 
                 <h:column>
                     <f:facet name="header">Created by</f:facet>
-                    <h:outputText value="#{post.user}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText value="#{post.user}" rendered="#{pdBean.editable[post.id]}"/>
+                    <h:outputText value="#{post.user.email}"/>
                 </h:column>
 
 
@@ -103,15 +152,16 @@
                     </h:commandLink>
                     <h:panelGrid columns="1" class="buttons-column">
                         <h:commandLink value="update" rendered="#{pdBean.editable[post.id]}">
-                            <f:ajax execute="@form" render="@form" listener="#{cdBean.updatePost(post)}"/>
+                            <f:ajax execute="@form" render="@form" listener="#{pdBean.updatePost(post)}"/>
                         </h:commandLink>
                         <h:commandLink value="remove" rendered="#{pdBean.editable[post.id]}">
-                            <f:ajax execute="@form" render="@form" listener="#{cdBean.removePost(post)}"/>
+                            <f:ajax execute="@form" render="@form" listener="#{pdBean.removePost(post)}"/>
                         </h:commandLink>
                     </h:panelGrid>
                 </h:column>
             </h:dataTable>
         </h:form>
+        
     </ui:composition>
 </html>
 

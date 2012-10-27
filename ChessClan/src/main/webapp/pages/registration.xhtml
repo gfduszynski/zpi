@@ -10,14 +10,13 @@
         <ui:composition>
             <h:form prependId="false" >
                 <h:outputText value="Jako kto chcesz się zalogować?"/><br/>
-                <h:commandButton value="Gracz"  styleClass="regButton #{rgsBean.regOption==0?'activeReg':'inactiveReg'}" style="width:134px;">
+                <h:commandButton value="Gracz"  styleClass="regButton regWidth #{rgsBean.regOption==0?'activeReg':'inactiveReg'}">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(0)}"/>
                 </h:commandButton>
-                <h:commandButton value="Organizator" styleClass="regButton #{rgsBean.regOption==1?'activeReg':'inactiveReg'}" style="width:134px;">
+                <h:commandButton value="Organizator" styleClass="regButton regWidth #{rgsBean.regOption==1?'activeReg':'inactiveReg'}">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(1)}"/>
                 </h:commandButton>
                 <h2><h:outputText value="Rejestracja"/></h2>
-
                 <h:panelGroup rendered="#{rgsBean.regOption == 0}">
                     <h:outputText value="Imię"/><br/>
                     <h:panelGroup id="fnGroup">
@@ -36,7 +35,7 @@
                     <h:outputText value="Data urodzenia"/><br/>
                     <h:panelGroup id="bdGroup">
                         <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidBD}" escape="false"/>
-                        <h:inputText value="#{rgsBean.birthDate}" id="bdInput"  styleClass="regInput" >
+                        <h:inputText value="#{rgsBean.birthDate}" id="bdInput"  styleClass="regInput">
                             <f:convertDateTime pattern="d-M-yyyy" />
                             <f:ajax event="change" execute="bdInput" render="bdGroup" listener="#{rgsBean.validateBD}"/>  
                         </h:inputText><br/>
@@ -65,7 +64,7 @@
                             <f:ajax event="blur" execute="eInput" render="eGroup" listener="#{rgsBean.validateEmail}"/>
                         </h:inputText><br/>
                     </h:panelGroup>
-                    <h:outputText value="Hasło"/><br/>
+                    <h:outputText value="Hasło" style="margin-top: 0px"/><br/>
                     <h:panelGroup id="pGroup">
                         <h:outputText value="Pole wymagane, musi mieć więcej niż 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.invalidP}" escape="false"/>
                         <h:inputSecret value="#{rgsBean.password}" id="pInput" redisplay="true" styleClass="regInput" >
@@ -78,7 +77,7 @@
                             <f:ajax event="change" execute="sInput" render="sGroup" listener="#{rgsBean.validateStatute}"/>
                         </h:selectBooleanCheckbox>
                     </h:panelGroup>
-                    <h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin"/><br/>
+                    <h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin" styleClass="link"/><br/>
                     <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.register}"/>
                     </h:commandButton>
@@ -141,7 +140,7 @@
                             <f:ajax event="change" execute="stInput" render="stGroup" listener="#{rgsBean.validateStatute}"/>
                         </h:selectBooleanCheckbox>
                     </h:panelGroup>
-                    <h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin"/><br/>
+                    <h:outputText value="Akceptuję "/><h:link value="regulamin." outcome="pages/regulamin" styleClass="link"/><br/>
                     <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>
                     </h:commandButton>
