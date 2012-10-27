@@ -124,6 +124,7 @@ h2{
     height:290px;
     background-color:#353534;
     margin: 10px 5px 0px 0px;
+
 }
 
 .three{
@@ -134,6 +135,10 @@ h2{
     margin: 0px 5px 0px 5px;
     width:280px;
     padding:0px 5px 0px 5px;
+    -moz-box-shadow: inset 0px -8px 40px -19px #000000;
+    -webkit-box-shadow: inset 0px -8px 40px -19px #000000;
+    box-shadow: inset 0px -8px 40px -19px #000000;
+
 }
 
 .four{
@@ -144,6 +149,7 @@ h2{
     background-color:#353534;
     padding:0px 0px 0px 5px;
     margin: 5px 5px 0px 5px;
+
 }
 
 .five{
@@ -154,6 +160,7 @@ h2{
     background-color:#DFDDDA;
     padding:0px 0px 0px 5px;
     margin: 10px 5px 0px 5px;
+
 }
 
 .six{
@@ -163,6 +170,7 @@ h2{
     background-color:#DFDDDA;
     margin: 0px 0px 0px 5px;
 
+
 }
 
 .seven{
@@ -171,6 +179,7 @@ h2{
     width:175px;
     background-color:#353534;
     margin: 10px 0px 0px 5px;
+
 
 }
 
@@ -208,7 +217,7 @@ h2{
     margin: 0px 0 -15px 0px;
 }
 
-.regWidth{
+.regWidth,#j_idt173{
     width: 134px;
 }
 
@@ -259,8 +268,8 @@ h2{
     margin: -41px 0px 0px -5px;
     color: white;
     font-weight: bold;
-    opacity: 0.7;
-    background-color: #E07000;
+    opacity: 0.8;
+    background-color: #C9650B;
     /*background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.02) 42px, rgba(255, 255, 255, 0.12) 71px)*/
 }
 
@@ -269,10 +278,10 @@ h2{
 }
 
 #tabs{
-    width: 100%;
+    width: 99%;
 }
 #tabs-1,#tabs-2,#tabs-3,#tabs-4{
-    width: 100%;
+    width: 75%;
 }
 
 .noMargin{
