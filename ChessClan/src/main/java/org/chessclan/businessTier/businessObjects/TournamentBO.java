@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -143,54 +144,62 @@ public class TournamentBO implements Serializable{
         List<PairingCard> downFloaters = new LinkedList<PairingCard>();
         
         //Pairing params
-        int Z=0;
-        int X=0;
-        int P=0;
+        int maxNumOfPairs = 0;
+        int minNumOfPairs = 0;
+        int numOfDownfloaters = 0;
+        float maxScore = currentRound.getNumber(); // Number of wins * points for win
         for(int b = sortedBrackets.size(); b>0; b--){
             LinkedList<PairingCard> scoreBracket = scoreBrackets.get(sortedBrackets.get(b-1)); // Highest score bracket - descending
-            // Calculate param's
-            int P0 = (int) Math.floor(scoreBracket.size()/2.0);     // Number of players in S1 and S2
-            int M0 = downFloaters.size();                           // Number of players moved down from higher score grups
-            int P1=P0;
-            int M1=M0;
-            int Z1=0;
-            int X1=0;
-            if(currentRound.getNumber()%2==0){
-                // If round is even calculate Z1
-            }
             
-            HashSet<PairingCard> S1 = new HashSet<PairingCard>();
-            HashSet<PairingCard> S2 = new HashSet<PairingCard>();   // player score S2>=S1
-            
-            // Add downfloaters
+            // Add downfloaters & determine type of bracket
             boolean homogeneoeus = downFloaters.size()>=scoreBracket.size();
-            scoreBracket.addAll(downFloaters); 
+            scoreBracket.addAll(downFloaters);
+            // TODO determine remaining score bracket, top scorers
+            
+            // C.1 - Filter incompatible players -------------------------------
+            Set<PairingCard> incompatible = filterIncompatiblePlayers(scoreBracket,downFloaters);
             downFloaters.clear();
             
-            // Sort players by score
+            // C.2 - Calculate param's -----------------------------------------
+            maxNumOfPairs = (int) Math.floor(scoreBracket.size()/2.0);  // Number of players in S1 and S2
+            numOfDownfloaters = downFloaters.size();                    // Number of players moved down from higher score grups
+            minNumOfPairs = calcMinNumOfPairs(currentRound.getNumber()%2==0,scoreBracket);
+            
+            // C.3 - Set requirements ------------------------------------------
+            int requiredNumOfPairs = homogeneoeus?maxNumOfPairs:minNumOfPairs;
+            boolean respectB2 = maxScore/2.0 < sortedBrackets.get(b-1); // Respect rule B2
+            boolean respectA7d = currentRound.getNumber()%2==0;         // Respect rule A7.d
+            int requiredMiNumOfPairs = minNumOfPairs;                   // C.3.d
+            boolean respectB5ByDownfloater = true;                      // Respect rule B5
+            boolean respectB6ByDownfloater = true;                      // Respect rule B6
+            boolean respectB5ByUpfloater   = true;                      // Respect rule B5
+            boolean respectB6ByUpfloater   = true;                      // Respect rule B6
+            
+            // C.4 - Establish sub-groups (player score S2>=S1) ----------------
+            List<PairingCard> S1 = new LinkedList<PairingCard> ();
+            List<PairingCard> S2 = new LinkedList<PairingCard> ();
+            // Sort All players by score
             List<PairingCard> orderedByScore = Arrays.asList((PairingCard[])scoreBracket.toArray());
             Collections.sort(orderedByScore);
             Collections.reverse(orderedByScore);
-            
-            // if not homogeneous by downfloater
+            // Check if homogeneous by downfloater 
+            // TODO: Something is wrong here
             if(!homogeneoeus) {
                 homogeneoeus = orderedByScore.get(0) == orderedByScore.get(orderedByScore.size()-1);
             }
-            
-            // Assign players to S2
-            for(int i = 0; i < P0; i++){
-                S2.add(orderedByScore.get(i));
-            }
             // Assign players to S1
-            for(int i = P0; i < (P0+P0); i++){
+            for(int i = 0; i < requiredNumOfPairs; i++){
                 S1.add(orderedByScore.get(i));
             }
-            // Move downfloaters
-            for(int i = P0+P0; i < scoreBracket.size(); i++){
-                PairingCard downFloater = orderedByScore.get(i);
-                
-                downFloaters.add(downFloater);
+            // Assign players to S1
+            for(int i = requiredNumOfPairs; i < orderedByScore.size(); i++){
+                S2.add(orderedByScore.get(i));
             }
+            // C.5 - Sort S1 and S2 --------------------------------------------
+            Collections.sort(S1);
+            Collections.sort(S2);
+            // C.6 - Try to find the pairing -----------------------------------
+            
         }
         
         return newPairingCards;
@@ -208,6 +217,20 @@ public class TournamentBO implements Serializable{
             scoreBrackets.get(pc.getScore()).add(new PairingCard(pc, currentRound));
         }
         return scoreBrackets;
+    }
+    private Set<PairingCard> filterIncompatiblePlayers(LinkedList<PairingCard> scoreBracket, List<PairingCard> downFloaters){
+        Set<PairingCard> result = new HashSet<PairingCard>();
+        throw new NotImplementedException();
+        //return result;
+    }
+    private int calcMinNumOfPairs(boolean evenRound, LinkedList<PairingCard> scoreBracket){
+        throw new NotImplementedException();
+    }
+    private List<PairingCard> performTransposition(List<PairingCard> s2, int transpositionNumber){
+        throw new NotImplementedException();
+    }
+    private int performExchange(List<PairingCard> s1, List<PairingCard> s2){
+        throw new NotImplementedException();
     }
     private void pairPlayers(PairingCard white, PairingCard black) {
 	    white.setOpponent(black);
