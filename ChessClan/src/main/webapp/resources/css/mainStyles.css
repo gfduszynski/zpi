@@ -297,7 +297,7 @@ h2{
 }
 
 .postHeader{
-
+    font-weight: bold;
 }
 
 .postContent{
@@ -316,7 +316,7 @@ h2{
     background-color: black;
     opacity: 0.8;
     color:white;
-
+    border:0px;
 }
 
 .hiddenButton{
@@ -327,4 +327,8 @@ h2{
     display:none;
     background-color: white;
     padding:10px;
+}
+
+#latestPostsForm{
+    height:100%;
 }

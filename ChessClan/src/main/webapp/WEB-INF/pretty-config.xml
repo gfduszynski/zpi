@@ -21,5 +21,10 @@
         <pattern value="/posts/#{id}" />
         <view-id value="/pages/posts.xhtml" />
     </url-mapping>
+    
+    <url-mapping id="passwordReminder">
+        <pattern value="/passwordReminder" />
+        <view-id value="/pages/passwordReminder.xhtml" />
+    </url-mapping>
   
 </pretty-config>
