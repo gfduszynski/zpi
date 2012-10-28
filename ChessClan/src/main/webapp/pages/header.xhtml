@@ -20,12 +20,9 @@
             <h:outputScript library="js" name="jquery-ui-1.9.0.custom.min.js"/>
             <h:outputScript library="js" name="jquery.ui.datepicker-pl.js"/>
             <script type="text/javascript">
-                $('#headerLogo').live('click',function(){
+                $('#headerLogo').live('click', function() {
                     window.location = "#{request.contextPath}";
-                });     
-                function showEditProfile(){
-                    $('#editContainer').load('userPages/editProfile.xhtml');
-                }
+                });
             </script>
 
             <h:panelGroup layout="block" class="header">
@@ -54,12 +51,32 @@
                     </h:form>
                 </c:if>
                 <c:if test="#{loginBean.loggedUser}">
-                    <h:panelGroup layout="block" class="logoutStuff">
-                        <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
-                        <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
-                        <h:outputText value=" | "/>
-                        <a onclick="showEditProfile();" href="#">Edytuj profil</a>
-                    </h:panelGroup>
+                    <sec:authorize access="hasRole('USER')">
+                        <script>
+                            function showEditProfile() {
+                                $('#editContainer').load('userPages/editProfile.xhtml');
+                            }
+                        </script>
+                        <h:panelGroup layout="block" class="logoutStuff">
+                            <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
+                            <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
+                            <h:outputText value=" | "/>
+                            <a onclick="showEditProfile();" href="#">Edytuj profil</a>
+                        </h:panelGroup>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('CLUB_OWNER')">
+                        <script>
+                            function showEditProfile() {
+                                $('#editContainer').load('clubPages/editProfile.xhtml');
+                            }
+                        </script>
+                        <h:panelGroup layout="block" class="logoutStuff">
+                            <h:outputText value="Witaj, #{loginBean.user.ownedClub.name}."/><br/>
+                            <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
+                            <h:outputText value=" | "/>
+                            <a onclick="showEditProfile();" href="#">Edytuj profil</a>
+                        </h:panelGroup>
+                    </sec:authorize>
                 </c:if>
 
             </h:panelGroup>
