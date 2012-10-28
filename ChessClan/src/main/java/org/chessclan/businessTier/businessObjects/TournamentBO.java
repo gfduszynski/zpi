@@ -125,37 +125,23 @@ public class TournamentBO implements Serializable{
     }
     
     private Set<PairingCard> pairPlayers(Set<PairingCard> oldPairingCards, Round currentRound){
-        HashMap<Float,LinkedList<PairingCard>> scoreBrackets = new HashMap<Float, LinkedList<PairingCard>>();
+        // Generate score brackets
+        HashMap<Float,LinkedList<PairingCard>> scoreBrackets = 
+                generateScoreBrackets(oldPairingCards, currentRound);
+        // Pairing results
         Set<PairingCard> newPairingCards = new HashSet<PairingCard>();
         
-        // Assign players to their score brackets with new pairing card
-        for(PairingCard pc : oldPairingCards){
-            // Add missing score bracket
-            if(!scoreBrackets.containsKey(pc.getScore())){
-                scoreBrackets.put(pc.getScore(), new LinkedList<PairingCard>());
-            }
-            // Add players new paring card to score bracket
-            LinkedList<PairingCard> bracket = scoreBrackets.get(pc.getScore());
-            PairingCard newPC = new PairingCard();
-            newPC.setByes(pc.getByes());
-            newPC.setColorDiff(pc.getColorDiff());
-            newPC.setFloats(pc.getFloats());
-            newPC.setId(null);
-            newPC.setOpponent(null);
-            newPC.setPlayer(pc.getPlayer());
-            newPC.setRound(currentRound);
-            newPC.setScore(pc.getScore());
-            newPC.setTournament(pc.getTournament());
-            bracket.add(newPC);
-        }
         // Sort bracket key's according to score
         Float[] keys = new Float[1];
         keys = scoreBrackets.keySet().toArray(keys);
-        
-        List<Float> sortedBrackets = (List<Float>)Arrays.asList((Float[])keys);
+        List<Float> sortedBrackets = (List<Float>)Arrays.asList(keys);
         Collections.sort(sortedBrackets);
-        // Pairing players
+        
+        // Pairing players -----------------------------------------------------
+        
+        // List of players with downfloat
         List<PairingCard> downFloaters = new LinkedList<PairingCard>();
+        
         //Pairing params
         int Z=0;
         int X=0;
@@ -210,7 +196,19 @@ public class TournamentBO implements Serializable{
         return newPairingCards;
     }
     
-    
+    private HashMap<Float,LinkedList<PairingCard>> generateScoreBrackets(Set<PairingCard> oldPairingCards, Round currentRound){
+        HashMap<Float,LinkedList<PairingCard>> scoreBrackets = new HashMap<Float, LinkedList<PairingCard>>();
+        // Assign players to their score brackets with new pairing card
+        for(PairingCard pc : oldPairingCards){
+            // Add missing score bracket
+            if(!scoreBrackets.containsKey(pc.getScore())){
+                scoreBrackets.put(pc.getScore(), new LinkedList<PairingCard>());
+            }
+            // Add players new paring card to score bracket
+            scoreBrackets.get(pc.getScore()).add(new PairingCard(pc, currentRound));
+        }
+        return scoreBrackets;
+    }
     private void pairPlayers(PairingCard white, PairingCard black) {
 	    white.setOpponent(black);
 	    white.setColorDiff(white.getColorDiff()+1);

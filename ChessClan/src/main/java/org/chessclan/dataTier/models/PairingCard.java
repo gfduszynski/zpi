@@ -88,6 +88,15 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
         this.score = score;
     }
 
+    public PairingCard(PairingCard pc, Round currentRound) {
+        this.score = pc.score;
+        this.tournament = pc.tournament;
+        this.round = currentRound;
+        this.player = pc.player;
+        this.opponent = null;
+        this.color = pc.color;
+    }
+
     public Integer getId() {
         return id;
     }
