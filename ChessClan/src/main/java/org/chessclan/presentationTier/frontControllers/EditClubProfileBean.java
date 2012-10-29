@@ -51,17 +51,18 @@ public class EditClubProfileBean implements Serializable {
     private boolean regError;
 
     public EditClubProfileBean() {
+        pattern = Pattern.compile(EMAIL_PATTERN);
     }
-    
+
     @PostConstruct
-    public void initialize(){
+    public void initialize() {
         this.email = user.getEmail();
         this.clubName = user.getOwnedClub().getName();
         this.clubDesc = user.getOwnedClub().getDescription();
         this.creationDate = user.getOwnedClub().getCreationDate();
     }
 
-    public boolean validateClubName() {
+    public boolean checkClubName() {
         if (clubName != null) {
             if (clubName.length() > 0) {
                 this.invalidCN = false;
@@ -137,7 +138,7 @@ public class EditClubProfileBean implements Serializable {
 
     public void update() {
 
-        boolean val1 = validateClubName();
+        boolean val1 = checkClubName();
         boolean val2 = validateBD();
         boolean val3 = validateEmail();
         if (val1 && val2 && val3) {

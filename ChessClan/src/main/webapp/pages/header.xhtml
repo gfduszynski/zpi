@@ -4,18 +4,15 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:sec="http://www.springframework.org/security/tags"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
         <title>ChessClan Header</title>
     </h:head>
     <h:body>
         <ui:composition>
             <h:outputScript library="js" name="jquery-1.8.2.js"/>
-            <h:outputScript library="js" name="popbox.js"/>
             <h:outputStylesheet library="css" name="normalize.css"/>
             <h:outputStylesheet library="css" name="mainStyles.css"/>
-            <h:outputStylesheet library="css" name="popbox.css"/>
             <h:outputStylesheet library="css" name="jquery-ui-1.9.0.custom.css"/>
             <h:outputScript library="js" name="jquery-ui-1.9.0.custom.min.js"/>
             <h:outputScript library="js" name="jquery.ui.datepicker-pl.js"/>
@@ -67,7 +64,7 @@
                     <sec:authorize access="hasRole('CLUB_OWNER')">
                         <script>
                             function showEditProfile() {
-                                $('#editContainer').load('clubPages/editProfile.xhtml');
+                                $('#editContainer').load('clubPages/editClubProfile.xhtml');
                             }
                         </script>
                         <h:panelGroup layout="block" class="logoutStuff">
