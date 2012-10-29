@@ -3,33 +3,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
         <title>ChessClan Header</title>
     </h:head>
     <h:body>
         <ui:composition>
             <h:outputScript library="js" name="jquery-1.8.2.js"/>
-            <h:outputScript library="js" name="popbox.js"/>
             <h:outputStylesheet library="css" name="normalize.css"/>
             <h:outputStylesheet library="css" name="mainStyles.css"/>
-            <h:outputStylesheet library="css" name="popbox.css"/>
             <h:outputStylesheet library="css" name="jquery-ui-1.9.0.custom.css"/>
             <h:outputScript library="js" name="jquery-ui-1.9.0.custom.min.js"/>
             <h:outputScript library="js" name="jquery.ui.datepicker-pl.js"/>
             <script type="text/javascript">
-                $('#headerLogo').live('click',function(){
+                $('#headerLogo').live('click', function() {
                     window.location = "#{request.contextPath}";
-                });     
-                
-                $(document).ready(function(){
-                    $('.popbox').popbox();
                 });
-                
             </script>
 
             <h:panelGroup layout="block" class="header">
-                <h:panelGroup layout="block" class="logo">
+                <h:panelGroup layout="block" class="logo" id="headerLogo">
                 </h:panelGroup>
 
                 <c:if test="#{not loginBean.loggedUser}">
@@ -38,41 +32,54 @@
                         <h:message for="j_username" style="color:red"/><!--<br/> -->
                         <h:message for="j_password" style="color:red"/><!--<br/> -->
                         <h:panelGrid columns="2">
-                            <h:outputText value="Username:" />
-                            <h:outputText value="Password:" />
+                            <h:outputText value="Login:" />
+                            <h:outputText value="Hasło:" />
                             <!-- <h:outputText value="" /> -->
                             <h:inputText id="j_username" value="#{loginBean.username}" required="true" styleClass="logUser"/>
                             <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true" styleClass="logPass"/>
                             <h:panelGroup layout="block">
-                                <h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="checkBox"/><h:outputText value="Zapamiętaj hasło"/>
+                                <h:selectBooleanCheckbox id="_spring_security_remember_me" styleClass="checkBox"/><h:outputText value=" Zapamiętaj hasło"/>
                                 <!-- <h:outputText value="&lt;br/&gt;" escape="false" /> -->
                             </h:panelGroup>
                             <h:commandButton  type="submit" id="login" action="#{loginBean.doLogin}" value="Login" styleClass="regButton logLog activeReg"/>
                             <h:outputText value="" />
-                            <h:commandLink value="Nie mogę się zalogować" styleClass="link" style="float: right; font-size: 96%"/>
+                            <a href="#{request.contextPath}/passwordReminder" class="link" style="float: right; font-size: 96%">Nie mogę się zalogować</a>
                         </h:panelGrid>
                     </h:form>
                 </c:if>
                 <c:if test="#{loginBean.loggedUser}">
-                    <h:panelGroup layout="block" class="logoutStuff">
-                        <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
-                        <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
-                        <h:outputText value=" | "/>
-                        <div class='popbox'>
-                            <h:outputLink class="open" value="#">Edytuj profil</h:outputLink>
-                            <div class='collapse'>
-                                <div class='box'>
-                                    <div class='arrow'></div>
-                                    <div class='arrow-border'></div>
-
-                                   <!-- <ui:insert name="popContent">
-                                        <ui:include src="../userPages/editProfile.xhtml"/>
-                                    </ui:insert> -->
-                                    <h:outputLink value="#" class="close">close</h:outputLink>
-                                </div>
-                            </div>
-                        </div>
-                    </h:panelGroup>
+                    <sec:authorize access="hasRole('USER')">
+                        <script>
+                            function showEditProfile() {
+                                $('#editContainer').load('userPages/editProfile.xhtml');
+                            }
+                        </script>
+                        <h:panelGroup layout="block" class="logoutStuff">
+                            <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
+                            <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
+                            <h:outputText value=" | "/>
+                            <a onclick="showEditProfile();" href="#">Edytuj profil</a>
+                        </h:panelGroup>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('CLUB_OWNER')">
+                        <script>
+                            function showEditProfile() {
+                                $('#editContainer').load('clubPages/editClubProfile.xhtml');
+                            }
+                        </script>
+                        <h:panelGroup layout="block" class="logoutStuff">
+                            <h:outputText value="Witaj, #{loginBean.user.ownedClub.name}."/><br/>
+                            <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
+                            <h:outputText value=" | "/>
+                            <a onclick="showEditProfile();" href="#">Edytuj profil</a>
+                        </h:panelGroup>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ADMIN')">
+                        <h:panelGroup layout="block" class="logoutStuff">
+                            <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
+                            <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
+                        </h:panelGroup>
+                    </sec:authorize>
                 </c:if>
 
             </h:panelGroup>

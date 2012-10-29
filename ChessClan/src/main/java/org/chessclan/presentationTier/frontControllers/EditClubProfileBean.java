@@ -136,7 +136,7 @@ public class EditClubProfileBean implements Serializable {
         }
     }
 
-    public void update() {
+    public void updateClub() {
 
         boolean val1 = checkClubName();
         boolean val2 = validateBD();

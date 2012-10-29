@@ -284,6 +284,9 @@ public class TournamentBO implements Serializable{
             black.setColorDiff(black.getColorDiff()-1);
 	    black.setColor(PairingCard.Color.BLACK);
     }
+    public List<Tournament> findTournamentsByClub(Club club){
+        return tRepo.findByClub(club);
+    }
     
     // DAO Wrappers
     public Tournament saveTournament(Tournament t){
