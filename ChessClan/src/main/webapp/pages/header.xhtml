@@ -10,13 +10,24 @@
     <h:body>
         <ui:composition>
             <h:outputScript library="js" name="jquery-1.8.2.js"/>
+            <h:outputScript library="js" name="popbox.js"/>
             <h:outputStylesheet library="css" name="normalize.css"/>
             <h:outputStylesheet library="css" name="mainStyles.css"/>
+            <h:outputStylesheet library="css" name="popbox.css"/>
+            <h:outputStylesheet library="css" name="jquery-ui-1.9.0.custom.css"/>
+            <h:outputScript library="js" name="jquery-ui-1.9.0.custom.min.js"/>
+            <h:outputScript library="js" name="jquery.ui.datepicker-pl.js"/>
             <script type="text/javascript">
                 $('#headerLogo').live('click',function(){
                     window.location = "#{request.contextPath}";
                 });     
+                
+                $(document).ready(function(){
+                    $('.popbox').popbox();
+                });
+                
             </script>
+
             <h:panelGroup layout="block" class="header">
                 <h:panelGroup layout="block" class="logo">
                 </h:panelGroup>
@@ -47,7 +58,20 @@
                         <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
                         <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
                         <h:outputText value=" | "/>
-                        <h:outputLink value="#{request.contextPath}/edit">Edytuj profil</h:outputLink>
+                        <div class='popbox'>
+                            <h:outputLink class="open" value="#">Edytuj profil</h:outputLink>
+                            <div class='collapse'>
+                                <div class='box'>
+                                    <div class='arrow'></div>
+                                    <div class='arrow-border'></div>
+
+                                   <!-- <ui:insert name="popContent">
+                                        <ui:include src="../userPages/editProfile.xhtml"/>
+                                    </ui:insert> -->
+                                    <h:outputLink value="#" class="close">close</h:outputLink>
+                                </div>
+                            </div>
+                        </div>
                     </h:panelGroup>
                 </c:if>
 
