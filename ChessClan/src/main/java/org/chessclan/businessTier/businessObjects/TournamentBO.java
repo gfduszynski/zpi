@@ -153,6 +153,7 @@ public class TournamentBO implements Serializable{
             
             // Add downfloaters & determine type of bracket
             boolean homogeneoeus = downFloaters.size()>=scoreBracket.size();
+            boolean reminder = false;
             scoreBracket.addAll(downFloaters);
             // TODO determine remaining score bracket, top scorers
             
@@ -199,7 +200,21 @@ public class TournamentBO implements Serializable{
             Collections.sort(S1);
             Collections.sort(S2);
             // C.6 - Try to find the pairing -----------------------------------
-            
+            List<PairingCard> notPaired = new LinkedList<PairingCard>();
+            List<PairingCard> candidatePairings = findPairings(S1,S2,notPaired);
+            if(candidatePairings.size()>requiredMiNumOfPairs*2){ // Each pair consists of 2 pairing card's
+                // Now pairing in score bracket is considered complete
+                if(homogeneoeus||reminder){
+                    downFloaters.addAll(notPaired);
+                    // Go to next score bracket
+                }else{
+                    /*
+                        Mark the current transposition and the value of P (it may be useful later).
+                        Redefine P = P1 – M1
+                        Continue at C4 with the remainder group.
+                     */
+                }
+            }
         }
         
         return newPairingCards;
@@ -225,6 +240,9 @@ public class TournamentBO implements Serializable{
     }
     private int calcMinNumOfPairs(boolean evenRound, LinkedList<PairingCard> scoreBracket){
         throw new NotImplementedException();
+    }
+    private List<PairingCard> findPairings(List<PairingCard> S1, List<PairingCard> S2, List<PairingCard> notPaired) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     private List<PairingCard> performTransposition(List<PairingCard> s2, int transpositionNumber){
         throw new NotImplementedException();
