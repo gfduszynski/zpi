@@ -37,7 +37,7 @@ public class PostBO implements Serializable{
         postRepo.delete(p);
     }
     
-    public void deletePosts(Iterable <Post> posts)
+    public void deletePosts(Iterable<Post> posts)
     {
         postRepo.delete(posts);
     }
@@ -74,7 +74,7 @@ public class PostBO implements Serializable{
          postList = postRepo.findByDateExpiresAfter(new Date());
          if(postList.size()<= numberOfPosts) {
             return postList;
-        }else { return postList.subList(0, numberOfPosts-1);}
+        }else { return postList.subList(postList.size()-numberOfPosts, postList.size()-1);}
     }
     
     public Page<Post> findLatestPublishedPosts(Pageable pgbl)
@@ -86,10 +86,10 @@ public class PostBO implements Serializable{
     public List<Post> findLatestPublishedPosts(int numberOfPosts)
     {
          List<Post> postList;
-         postList = postRepo.findByDateExpiresAfterAndDatePublishedBefore(new Date(), new Date());
+         postList = postRepo.findByDateExpiresAfterAndDatePublishedBefore(Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
          if(postList.size()<= numberOfPosts) {
             return postList;
-        }else { return postList.subList(0, numberOfPosts);}
+        }else { return postList.subList(postList.size()-numberOfPosts, postList.size()-1);}
     }
     public Iterable<Post> findAllPosts(Sort s)
     {
@@ -108,7 +108,6 @@ public class PostBO implements Serializable{
     
     public Post savePost(Post p)
     {
-            p.setDatePublished(Calendar.getInstance().getTime());
         return postRepo.save(p);
     }
     

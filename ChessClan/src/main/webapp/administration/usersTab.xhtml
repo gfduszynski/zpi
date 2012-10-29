@@ -30,9 +30,9 @@
                             <f:convertDateTime pattern="dd-MM-yyyy"/>
                         </h:inputText>
                         <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
-                        <h:inputText id="creation-date" value="#{udBean.newuser.creationDate}" class="dateForm input-edit-row">
+                        <h:outputText id="creation-date" value="#{udBean.newuser.creationDate}" class="input-edit-row">
                             <f:convertDateTime pattern="dd-MM-yyyy" />
-                        </h:inputText>
+                        </h:outputText>
                         <h:outputLabel for="sex" value="Sex" class="order-table-odd-row"/>
                         <h:selectOneRadio id="sex" value="#{udBean.newuser.sex}">
                             <f:selectItem itemValue="0" itemLabel="♂"/>
@@ -54,9 +54,9 @@
                 <h:commandButton value="edit selected" rendered="#{(not udBean.createNewUser) and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" rendered="#{udBean.deletable and not udBean.createNewUser}">
+                <!--<h:commandButton value="remove selected" rendered="#{(not udBean.createNewUser) and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.removeSelected}" render="@form" execute="@form"/>
-                </h:commandButton>
+                </h:commandButton>-->
                 <h:commandButton value="save selected" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
@@ -128,12 +128,9 @@
 
                 <h:column>
                     <f:facet name="header">Creation date</f:facet>
-                    <h:outputText value="#{user.creationDate}" rendered="#{not udBean.editable[user.id]}">
+                    <h:outputText value="#{user.creationDate}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{user.creationDate}" rendered="#{udBean.editable[user.id]}" class="dateForm input-edit-row">
-                        <f:convertDateTime pattern="dd-MM-yyyy" />
-                    </h:inputText>
                 </h:column>
 
                 <h:column>
@@ -154,19 +151,19 @@
                             <f:ajax listener="#{udBean.selectOneEditable(user.id)}" render="@form" execute="@form"/>
                         </h:commandLink>
                         <h:commandLink value="disable" rendered="#{user.enabled and not udBean.editable[user.id]}">
-                            <f:ajax execute="@form" render="@form" listener="#{udBean.disableOne(user.id)}"/>
+                            <f:ajax execute="@form" render="@form" listener="#{udBean.disableOne(user)}"/>
                         </h:commandLink>
-                        <h:commandLink value="enable" rendered="#{not user.enabled and not udBean.editable[user.id]}">
-                            <f:ajax execute="@form" render="@form" listener="#{udBean.enableOne(user.id)}"/>
+                        <h:commandLink value="enable" rendered="#{(not user.enabled) and (not udBean.editable[user.id])}">
+                            <f:ajax execute="@form" render="@form" listener="#{udBean.enableOne(user)}"/>
                         </h:commandLink>
                     </h:panelGrid>
                     <h:panelGrid columns="1" class="buttons-column">
                         <h:commandLink value="update" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.updateUser(user)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{udBean.editable[user.id]}">
+                        <!--<h:commandLink value="remove" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.removeUser(user)}"/>
-                        </h:commandLink>
+                        </h:commandLink>-->
                         <h:commandLink value="cancel" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.deselectOneEditable(user.id)}"/>
                         </h:commandLink>

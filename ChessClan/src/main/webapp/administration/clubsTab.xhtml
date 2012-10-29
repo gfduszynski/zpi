@@ -35,13 +35,13 @@
                 <h:commandButton value="add new club" rendered="#{not cdBean.createNewClub}">
                     <f:ajax listener="#{cdBean.addNewClub()}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" rendered="#{not cdBean.createNewClub}">
+                <h:commandButton value="edit selected" rendered="#{(not cdBean.createNewClub) and cdBean.hasChecked}">
                     <f:ajax listener="#{cdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
                 <h:commandButton value="remove selected" rendered="#{cdBean.deletable and not cdBean.createNewClub}">
                     <f:ajax listener="#{cdBean.removeSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" rendered="#{not cdBean.createNewClub}">
+                <h:commandButton value="save selected" rendered="#{not cdBean.createNewClub and cdBean.hasChecked}">
                     <f:ajax listener="#{cdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
@@ -73,7 +73,7 @@
                 <h:column>
                     <f:facet name="header">Owner</f:facet>
                     <h:outputText value="#{club.owner.email}" rendered="#{not cdBean.editable[club.id]}"/>
-                    <h:inputText value="#{cdBean.owner.email}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                    <h:inputText value="#{club.owner.email}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
                 </h:column>
                 
                 <h:column>

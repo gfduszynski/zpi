@@ -63,7 +63,11 @@ public class UserManagementBO implements Serializable{
         roleRepo.saveAndFlush(r);
         return u;
     }
-        
+
+    public void removeUserRoles(User us){
+        us.setRoleSet(null);
+    }
+    
     public User saveUser(User u){
         return userRepo.save(u);
     }

@@ -70,6 +70,7 @@ public class UsersDashboardBean implements Serializable {
 
 
     public void removeUser(User user) {
+        umBO.removeUserRoles(user);
         umBO.deleteUser(user);
         editable.remove(user.getId());
         checked.remove(user.getId());
@@ -95,7 +96,7 @@ public class UsersDashboardBean implements Serializable {
     }
 
     public void addNewUser() {
-        newuser = new User("Login", "E-mail", "Password", "Name", "Last Name", new Date(), new Date());
+        newuser = new User("Login", "E-mail", "Password", "Name", "Last Name", null, new Date());
         createNewUser = true;
        }
     
@@ -138,20 +139,26 @@ public class UsersDashboardBean implements Serializable {
         }
     }
     
-    public void disableOne(Integer id){
-        if(users.get(id).getEnabled()){
-                    users.get(id).setEnabled(false);
-                    umBO.saveUser(users.get(id));
-                    users.set(users.indexOf(users.get(id)), users.get(id));
+    public void disableOne(User user){
+        for(int i=0;i<users.size();i++){
+                if(users.get(i).getId()==user.getId()){
+                    users.get(i).setEnabled(false);
+                    user.setEnabled(false);
+                    umBO.saveUser(user);
+                    break;
+                }
         }
     }
 
         
-    public void enableOne(Integer id){
-         if(!users.get(id).getEnabled()){
-                    users.get(id).setEnabled(true);
-                    umBO.saveUser(users.get(id));
-                    users.set(users.indexOf(users.get(id)), users.get(id));
+    public void enableOne(User user){
+        for(int i=0;i<users.size();i++){
+                if(users.get(i).getId()==user.getId()){
+                    users.get(i).setEnabled(true);
+                    user.setEnabled(true);
+                    umBO.saveUser(user);
+                    break;
+                }
         }
     }
     
@@ -357,9 +364,9 @@ public class UsersDashboardBean implements Serializable {
         return this.checkAll;
     }
     
-    public void setHasChecked(Boolean checkAll)
+    public void setHasChecked(Boolean hasChecked)
     {
-        this.checkAll = checkAll;
+        this.hasChecked = hasChecked;
     }
     
     public Boolean getHasChecked()
@@ -368,7 +375,7 @@ public class UsersDashboardBean implements Serializable {
             if(checked.get(users.get(i).getId())) { return this.hasChecked = true;
                 }
         }
-        return this.checkAll=false;
+        return this.hasChecked=false;
     }
     
     
