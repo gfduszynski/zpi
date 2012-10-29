@@ -7,6 +7,7 @@ package org.chessclan.businessTier.businessObjects;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
@@ -100,6 +101,9 @@ public class TournamentBO implements Serializable{
         return tRepo.saveAndFlush(t);
     }
     
+    public List<Tournament> findTournamentsByClub(Club club){
+        return tRepo.findByClub(club);
+    }
     
     // DAO Wrappers
     public Tournament saveTournament(Tournament t){

@@ -6,6 +6,7 @@
       xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
+        <title>ChessClan</title>
     </h:head>
     <h:body>
         <ui:composition>
@@ -20,10 +21,10 @@
                 <h:form prependId="false">
                     <h:panelGrid columns="4">
                         <h:outputText value="Nazwa klubu"/>
-                        <h:panelGroup id="cnGroup">
+                        <h:panelGroup id="cnEditGroup">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak.&lt;br/&gt;" styleClass="error" rendered="#{ecpBean.invalidCN}" escape="false"/>
-                            <h:inputText value="#{ecpBean.clubName}" id="cnInput" styleClass="regInput">
-                                <f:ajax event="blur" execute="cnInput" render="cnGroup" listener="#{ecpBean.checkClubName}"/>
+                            <h:inputText value="#{ecpBean.clubName}" id="cnEditInput" styleClass="regInput">
+                                <f:ajax event="blur" execute="cnEditInput" render="cnEditGroup" listener="#{ecpBean.checkClubName}"/>
                             </h:inputText>
                         </h:panelGroup>
                         <h:outputText value="Opis klubu (opcjonalne)"/>
@@ -68,7 +69,7 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <h:commandButton value="Zapisz zmiany">
-                        <f:ajax render="@form" execute="@form" listener="#{ecpBean.update}"/>
+                        <f:ajax render="@form" execute="@form" listener="#{ecpBean.updateClub}"/>
                     </h:commandButton>
                     <h:panelGroup rendered="#{ecpBean.actSucceded}">
                         <h:outputText value="Dane pomyślnie zaktualizowane!"/>
