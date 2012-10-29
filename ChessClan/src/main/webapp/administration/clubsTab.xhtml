@@ -11,17 +11,21 @@
                     $( ".dateForm" ).datepicker({ dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true });
                     });
             </script>
-            <h:panelGrid columns="4" rendered="#{cdBean.createNewClub}">
+            <h:panelGrid columns="4" rendered="#{cdBean.createNewClub}" id="newClubGrid">
                         <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
-                        <h:inputText id="name" value="#{cdBean.newclub.name}" />
+                        <h:inputText id="name" value="#{cdBean.newclub.name}">
+                            <f:ajax event="blur" execute="name" render="newClubGrid" listener="#{cdBean.saveNewClub}"/>
+                        </h:inputText>
                         <h:outputLabel for="owner" value="Owner" class="order-table-odd-row"/>
-                        <h:inputText id="owner" value="#{cdBean.ownerEmail}" />
+                        <h:selectOneMenu id="owner" value="#{cdBean.ownerEmail}">
+                            <f:selectItems value="#{cdBean.ownerList}"/>
+                        </h:selectOneMenu>
                         <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
                         <h:inputText id="creation-date" value="#{cdBean.newclub.creationDate}" class="dateForm input-edit-row">
                             <f:convertDateTime pattern="dd-MM-yyyy" />
                         </h:inputText>
                         <h:outputLabel for="description" value="Description" class="order-table-odd-row"/>
-                        <h:inputText id="description" value="#{cdBean.newclub.description}" class="order-table-odd-row"/>
+                        <h:inputTextarea id="description" value="#{cdBean.newclub.description}" class="order-table-odd-row"/>
                         <h:commandButton value="save club" rendered="#{cdBean.createNewClub}">
                             <f:ajax listener="#{cdBean.saveNewClub}" render="@form" execute="@form"/>
                         </h:commandButton>

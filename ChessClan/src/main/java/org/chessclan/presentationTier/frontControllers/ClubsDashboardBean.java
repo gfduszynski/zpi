@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
@@ -33,6 +34,7 @@ public class ClubsDashboardBean implements Serializable {
     private Boolean checkAll;
     private Boolean hasChecked;
     private String ownerEmail;
+    private ArrayList<SelectItem> ownerList;
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO usBO;
     //form vars
@@ -64,7 +66,21 @@ public class ClubsDashboardBean implements Serializable {
         this.checkAll = false;
         this.deletable = false; 
         this.hasChecked = false;
+        getOwnerList();
     }
+    
+    
+      public ArrayList<SelectItem> getOwnerList(){
+         ownerList = new ArrayList<SelectItem>();
+         Iterable<User> user =  usBO.findAll();
+         Iterator<User> iterator = user.iterator();
+         ownerList.add(new SelectItem(null,"Select One…"));
+           while(iterator.hasNext()) {
+            User u = iterator.next();
+            ownerList.add(new SelectItem(u.getEmail(), u.getEmail()));
+            }
+         return ownerList;
+     }
     
     public void removeClub(Club club) {
         clBO.deleteClub(club);
