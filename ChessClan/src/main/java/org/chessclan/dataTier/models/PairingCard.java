@@ -123,10 +123,19 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 29 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 29 * hash + Float.floatToIntBits(this.score);
+        hash = 29 * hash + (this.player != null ? this.player.hashCode() : 0);
+        hash = 29 * hash + this.floats;
+        hash = 29 * hash + this.byes;
+        hash = 29 * hash + (this.color != null ? this.color.hashCode() : 0);
+        hash = 29 * hash + this.colorDiff;
         return hash;
     }
+
+
+    
 
     @Override
     public boolean equals(Object object) {

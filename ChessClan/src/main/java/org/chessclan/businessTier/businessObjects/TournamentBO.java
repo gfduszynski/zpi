@@ -5,6 +5,7 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -93,6 +94,7 @@ public class TournamentBO implements Serializable{
         return pcRepo.saveAndFlush(pc);
     }
     
+    @Transactional
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers{
         t = tRepo.findOne(t.getId());
         Round currentRound = t.getCurrentRound();
@@ -105,7 +107,7 @@ public class TournamentBO implements Serializable{
             for(PairingCard pc : currentRound.getPairingCardSet()){
                 // Guzik to sprawdza!, trzeba stan karty sprawdzić
                 if(pc.getScore()==0){
-                    throw new Round.NotFinished("[TournamentBO->goToNextRound(tId="+t.getId()+")] player_card(id="+pc.getId()+") has invalid score: "+pc.getScore());
+                    //throw new Round.NotFinished("[TournamentBO->goToNextRound(tId="+t.getId()+")] player_card(id="+pc.getId()+") has invalid score: "+pc.getScore());
                 }
             }
         }
@@ -113,18 +115,42 @@ public class TournamentBO implements Serializable{
         if(currentRound.getRoundState()==Round.State.JOINING){
             currentRound.setRoundState(Round.State.FINISHED);
         }
-        Round nextRound = new Round(null, currentRound.getNumber()+1, Round.State.STARTED);
-        t.setCurrentRound(nextRound);
-        t.getRoundSet().add(nextRound);
-        nextRound.setTournament(t);
-        nextRound.setPrevRound(currentRound);
+        t.setCurrentRound(currentRound.getNextRound());
+        currentRound.getNextRound().setRoundState(State.STARTED);
         // Find pairs for players
-        Set<PairingCard> newPairingCards = pairPlayers(currentRound.getPairingCardSet(),currentRound);
-        nextRound.setPairingCardSet(newPairingCards);
+        Set<PairingCard> newPairingCards = mockupPairPlayers(currentRound.getPairingCardSet(),currentRound.getNextRound());
+        currentRound.getNextRound().setPairingCardSet(newPairingCards);
         
         return tRepo.saveAndFlush(t);
     }
-    
+    private Set<PairingCard> mockupPairPlayers(Set<PairingCard> oldPairingCards, Round currentRound){
+        Set<PairingCard> newPairingCards = new HashSet<PairingCard>();
+        PairingCard[] players = new PairingCard[1];
+        players = oldPairingCards.toArray(players);
+        List<PairingCard> sortedPlayers = new ArrayList<PairingCard>(Arrays.asList(players));
+        Collections.sort(sortedPlayers);
+        
+        while(sortedPlayers.size()>1){
+            PairingCard a = new PairingCard(sortedPlayers.get(0),currentRound);
+            PairingCard b = new PairingCard(sortedPlayers.get(1),currentRound);
+            boolean aWhite = a.getColorDiff()>b.getColorDiff();
+            pairPlayers(aWhite?a:b, aWhite?b:a);
+            sortedPlayers.remove(0);
+            sortedPlayers.remove(0);
+            newPairingCards.add(a);
+            newPairingCards.add(b);
+        }
+        if(sortedPlayers.size()>0){
+            PairingCard p = new PairingCard(sortedPlayers.get(0),currentRound);
+            p.setByes(p.getByes()+1);
+            p.setColor(PairingCard.Color.NO_COLOR);
+            p.setScore(p.getScore()+1);
+            p.setOpponent(null);
+            newPairingCards.add(p);
+        }
+        
+        return newPairingCards;
+    }
     private Set<PairingCard> pairPlayers(Set<PairingCard> oldPairingCards, Round currentRound){
         // Generate score brackets
         HashMap<Float,LinkedList<PairingCard>> scoreBrackets = 

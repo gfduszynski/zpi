@@ -18,7 +18,7 @@
     </root>
     
     <logger name="org.hibernate">
-        <level value="INFO" />
+        <level value="NONE" />
     <appender-ref ref="console"/>
 </logger>
 
