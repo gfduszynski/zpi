@@ -295,3 +295,40 @@ h2{
 #bdInput,#pInput{
     margin-bottom: 5px;
 }
+
+.postHeader{
+    font-weight: bold;
+}
+
+.postContent{
+
+}
+
+.postTitleDate{
+    float: right;
+    padding-right: 10px;
+}
+
+.seeAllPostsButton{
+    width:290px;
+    height:65px;
+    margin: -59px 0px 0px -5px;
+    background-color: black;
+    opacity: 0.8;
+    color:white;
+    border:0px;
+}
+
+.hiddenButton{
+    display:none;
+}
+
+#editContainer{
+    display:none;
+    background-color: white;
+    padding:10px;
+}
+
+#latestPostsForm{
+    height:100%;
+}
