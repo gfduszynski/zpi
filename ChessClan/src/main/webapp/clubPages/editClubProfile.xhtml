@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <sec:authorize access="hasRole('CLUB_OWNER')">
+                <script>
+                    $(document).ready(function() {
+                        $('#editContainer').slideDown('slow', function() {
+                            // Animation complete.
+                        });
+                    });
+                </script>
+                <h:form prependId="false">
+                    <h:panelGrid columns="4">
+                        <h:outputText value="Nazwa klubu"/>
+                        <h:panelGroup id="cnGroup">
+                            <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak.&lt;br/&gt;" styleClass="error" rendered="#{ecpBean.invalidCN}" escape="false"/>
+                            <h:inputText value="#{ecpBean.clubName}" id="cnInput" styleClass="regInput">
+                                <f:ajax event="blur" execute="cnInput" render="cnGroup" listener="#{ecpBean.checkClubName}"/>
+                            </h:inputText>
+                        </h:panelGroup>
+                        <h:outputText value="Opis klubu (opcjonalne)"/>
+                        <h:inputText value="#{ecpBean.clubDesc}" styleClass="regInput"/>
+                        <h:outputText value="Data założenia klubu"/>
+                        <h:panelGroup id="cfGroup">
+                            <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{ecpBean.invalidBD}" escape="false"/>
+                            <h:inputText value="#{ecpBean.creationDate}" id="cfInput"  styleClass="regInput" >
+                                <f:convertDateTime pattern="d-M-yyyy" />
+                                <f:ajax event="change" execute="cfInput" render="cfGroup" listener="#{ecpBean.validateBD}"/>  
+                            </h:inputText>
+                            <script type="text/javascript" charset="UTF-8">
+                                $(function() {
+                                    $("#cfInput").datepicker({
+                                        changeMonth: true,
+                                        changeYear: true,
+                                        dateFormat: "d-m-yy"
+                                    });
+                                });
+                            </script>
+                        </h:panelGroup>
+                        <h:outputText value="Email"/>
+                        <h:panelGroup id="eGroup">
+                            <h:outputText value="Login dostępny.&lt;br/&gt;" styleClass="loginAvail" rendered="#{ecpBean.validEmail}" escape="false"/>
+                            <h:outputText value="Login niepoprawny.&lt;br/&gt;" styleClass="error" rendered="#{ecpBean.invalidEmail}" escape="false"/>
+                            <h:outputText value="Login zajęty.&lt;br/&gt;" styleClass="error" rendered="#{ecpBean.occupiedEmail}" escape="false"/>
+                            <h:inputText value="#{ecpBean.email}" styleClass="regInput" id="eInput">
+                                <f:ajax event="blur" execute="eInput" render="eGroup" listener="#{ecpBean.validateEmail}"/>
+                            </h:inputText>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block">
+                            <h:selectBooleanCheckbox value="#{ecpBean.updatePassword}">
+                                <f:ajax execute="@this" render="@form" listener="#{ecpBean.updatePassField}"/>
+                            </h:selectBooleanCheckbox>
+                            <h:outputText value="Aktualizuj hasło"/>
+                        </h:panelGroup>
+                        <h:panelGroup id="pGroup" rendered="#{ecpBean.updatePassword}">
+                            <h:outputText value="Pole wymagane, musi mieć więcej niż 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{ecpBean.invalidP}" escape="false"/>
+                            <h:inputSecret value="#{ecpBean.password}" id="pInput" redisplay="true" styleClass="regInput" >
+                                <f:ajax event="blur" execute="pInput" render="pGroup" listener="#{ecpBean.validatePassword}"/>
+                            </h:inputSecret>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <h:commandButton value="Zapisz zmiany">
+                        <f:ajax render="@form" execute="@form" listener="#{ecpBean.update}"/>
+                    </h:commandButton>
+                    <h:panelGroup rendered="#{ecpBean.actSucceded}">
+                        <h:outputText value="Dane pomyślnie zaktualizowane!"/>
+                        <script>
+                            setTimeout(function() {
+                                $('#editContainer').slideUp('slow', function() {
+                                })
+                            }, 1500);
+                        </script>
+                    </h:panelGroup>
+                </h:form>
+            </sec:authorize>
+        </ui:composition>
+    </h:body>
+</html>
+

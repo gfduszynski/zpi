@@ -4,12 +4,25 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+        <title>ChessClan</title>
     </h:head>
     <h:body>
         <ui:composition>
-            club dashboard
-            
+            <script>
+                $(function() {
+                    $("#tabs").tabs();
+                });
+            </script>
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">Turnieje</a></li>
+                    <li><a href="#tabs-2">Ogłoszenia</a></li>
+                </ul>
+                <div id="tabs-1">
+                </div>
+                <div id="tabs-2">
+                </div>
+            </div>
         </ui:composition>
     </h:body>
 </html>

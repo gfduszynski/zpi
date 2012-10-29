@@ -7,6 +7,7 @@ package org.chessclan.businessTier.businessObjects;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import org.apache.commons.lang.RandomStringUtils;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.RoleRepository;
@@ -62,6 +63,13 @@ public class UserManagementBO implements Serializable{
         r.getUserSet().add(u);
         roleRepo.saveAndFlush(r);
         return u;
+    }
+    
+    public User resetPassword(User user, String password){
+        user.setPassword(password);
+        encodePassword(user);
+        saveUser(user);
+        return user;
     }
         
     public User saveUser(User u){

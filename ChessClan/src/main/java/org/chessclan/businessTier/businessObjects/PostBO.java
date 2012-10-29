@@ -62,6 +62,12 @@ public class PostBO implements Serializable{
         return postRepo.findAll(pgbl);
     }
     
+    public List<Post> findAllPublishedPosts()
+    {
+        return postRepo.findByPublishedTrue();
+    }
+    
+    
     public Page<Post> findLatestPosts(Pageable pgbl)
     {
          return postRepo.findByDateExpiresAfter(new Date(), pgbl);

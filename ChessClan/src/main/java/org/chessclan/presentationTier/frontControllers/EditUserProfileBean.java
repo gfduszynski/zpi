@@ -23,7 +23,7 @@ import org.chessclan.dataTier.models.User;
  */
 @ManagedBean(name = "epBean")
 @ViewScoped
-public class EditProfileBean implements Serializable {
+public class EditUserProfileBean implements Serializable {
 
     @ManagedProperty("#{loginBean}")
     private LoginBean loginBean;
@@ -57,7 +57,7 @@ public class EditProfileBean implements Serializable {
     private boolean actSucceded;
     private boolean updatePassword;
 
-    public EditProfileBean() {
+    public EditUserProfileBean() {
         validEmail = false;
         invalidEmail = false;
         this.invalidBD = false;

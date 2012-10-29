@@ -4,7 +4,17 @@ html{
 
 body{
     text-align: center;
-    background-color:#F0EEEB;
+    /*background-color:#F0EEEB;*/
+
+
+    /*background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+   /* background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    */
+    background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
+    -webkit-background-size: 200px 210px;
+    background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
+    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background-size:100px 100px;
     /*    font-family: 'Tangerine', serif;*/
 }
 
@@ -36,7 +46,7 @@ h2{
     background-image: url("logo.png.xhtml?ln=images");
     background-repeat:no-repeat;
     background-position:left top;
-    width:190px;
+    width:195px;
     height:130px;
 }
 
@@ -114,6 +124,7 @@ h2{
     height:290px;
     background-color:#353534;
     margin: 10px 5px 0px 0px;
+
 }
 
 .three{
@@ -124,6 +135,10 @@ h2{
     margin: 0px 5px 0px 5px;
     width:280px;
     padding:0px 5px 0px 5px;
+    -moz-box-shadow: inset 0px -8px 40px -19px #000000;
+    -webkit-box-shadow: inset 0px -8px 40px -19px #000000;
+    box-shadow: inset 0px -8px 40px -19px #000000;
+
 }
 
 .four{
@@ -134,6 +149,7 @@ h2{
     background-color:#353534;
     padding:0px 0px 0px 5px;
     margin: 5px 5px 0px 5px;
+
 }
 
 .five{
@@ -144,6 +160,7 @@ h2{
     background-color:#DFDDDA;
     padding:0px 0px 0px 5px;
     margin: 10px 5px 0px 5px;
+
 }
 
 .six{
@@ -152,6 +169,7 @@ h2{
     height:290px;
     background-color:#DFDDDA;
     margin: 0px 0px 0px 5px;
+
 
 }
 
@@ -162,12 +180,29 @@ h2{
     background-color:#353534;
     margin: 10px 0px 0px 5px;
 
+
 }
 
 .error{
-    color:#08BC08;
+    color: #57B2E0;
+    text-shadow:0px 0px 16px #00006D;
 } 
+.link{
+    color: #2C41B1;
+    font-weight: bold;
+    text-decoration: none;
+}
+.checkBox{
+    -webkit-border-radius: 0px 0px 0px 99px;
+    border-radius: 0px 0px 0px 99px;
+    background-image: -moz-linear-gradient(top, #a8cadc, #57b2e0);
+    background-image: -ms-linear-gradient(top, #a8cadc, #57b2e0);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#a8cadc), to(#57b2e0));
+    background-image: -webkit-linear-gradient(top, #a8cadc, #57b2e0);
+    background-image: linear-gradient(top, #a8cadc, #57b2e0);
+    /*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
 
+}
 .hidden{
     visibility: collapse;
     font-size: 50%;
@@ -179,10 +214,16 @@ h2{
 
 .regChoose{
     width: 275px;
+    margin: 0px 0 -15px 0px;
+}
+
+.regWidth,#j_idt173{
+    width: 134px;
 }
 
 .regButton{
     height: 30px;
+    /*width: 134px;*/
     margin: 2px;
     border: 0px;
     /* background-color: #808080; */
@@ -198,7 +239,9 @@ h2{
     text-decoration:none;
 }
 .inactiveReg:hover {
-    background-color:#57b2e0;
+    background-color: #E09041;
+    color: white; 
+
 }
 
 .activeReg{
@@ -221,14 +264,71 @@ h2{
 
 .seeAllPostsButton{
     width:290px;
+    height:63px;
+    margin: -41px 0px 0px -5px;
+    color: white;
+    font-weight: bold;
+    opacity: 0.8;
+    background-color: #C9650B;
+    /*background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.02) 42px, rgba(255, 255, 255, 0.12) 71px)*/
+}
+
+.hiddenButton{
+    display:none;
+}
+
+#tabs{
+    width: 99%;
+}
+#tabs-1,#tabs-2,#tabs-3,#tabs-4{
+    width: 75%;
+}
+
+.noMargin{
+    margin: 0px;
+}
+
+.noPadding{
+    padding: 0px;
+}
+
+#bdInput,#pInput{
+    margin-bottom: 5px;
+}
+
+.postHeader{
+    font-weight: bold;
+}
+
+.postContent{
+
+}
+
+.postTitleDate{
+    float: right;
+    padding-right: 10px;
+}
+
+.seeAllPostsButton{
+    width:290px;
     height:65px;
     margin: -59px 0px 0px -5px;
     background-color: black;
     opacity: 0.8;
     color:white;
-
+    border:0px;
 }
 
 .hiddenButton{
     display:none;
+}
+
+#editContainer{
+    display:none;
+    background-color: white;
+    padding:10px;
+}
+
+#latestPostsForm{
+    height:100%;
 }
