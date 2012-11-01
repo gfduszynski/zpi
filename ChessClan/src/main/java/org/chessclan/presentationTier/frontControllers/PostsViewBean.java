@@ -54,7 +54,7 @@ public class PostsViewBean implements Serializable {
 
     private void loadPosts() {
         this.posts = new ArrayList<Post>();
-        Iterator<Post> postss = postBO.findAllPosts().iterator();
+        Iterator<Post> postss = postBO.findAllPostsWithUsers().iterator();
         while (postss.hasNext()) {
             this.posts.add(postss.next());
         }

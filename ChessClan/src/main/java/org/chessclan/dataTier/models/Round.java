@@ -43,6 +43,7 @@ public class Round implements Serializable {
             super(string);
         }
     }
+    public static class NotJoinableRound extends Exception{}
     public enum State{ JOINING,NOT_STARTED,STARTED,FINISHED;}
     private static final long serialVersionUID = 1L;
     @Id
@@ -74,7 +75,7 @@ public class Round implements Serializable {
     @JoinColumn(name = "tournament", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.LAZY)
     private Set<PairingCard> pairingCardSet;
 
     public Round() {

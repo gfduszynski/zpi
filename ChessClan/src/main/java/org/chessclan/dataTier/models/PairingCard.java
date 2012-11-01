@@ -56,7 +56,7 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
     @ManyToOne
     private User player;
     @JoinColumn(name = "opponent", referencedColumnName = "id")
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     private PairingCard opponent;
     @Basic(optional = false)
     @NotNull
