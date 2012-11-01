@@ -27,12 +27,5 @@
         </resource-bundle>
 
     </application>
-    
-<!--    <factory>
-        <exception-handler-factory>
-            org.chessclan.utils.DefaultExceptionHandlerFactory
-        </exception-handler-factory>
-    </factory>-->
-
 
 </faces-config>

@@ -47,6 +47,10 @@ public class Tournament implements Serializable {
     private String name;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "points_for_bye")
+    private float pointsForBye;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -56,17 +60,21 @@ public class Tournament implements Serializable {
     @Column(name = "description")
     private String description;
     @JoinColumn(name = "current_round", referencedColumnName = "id")
-    @OneToOne(optional = true, fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+    @OneToOne(optional = true, fetch = FetchType.LAZY, cascade={CascadeType.ALL})
     private Round currentRound;
     @JoinColumn(name = "category", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Category category;
     @JoinColumn(name = "club", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Club club;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "number_of_rounds")
+    private int numberOfRounds = 7;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.LAZY)
     private Set<Round> roundSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tournament", fetch = FetchType.LAZY)
     private Set<PairingCard> pairingCardSet = new HashSet<PairingCard>();
 
     public Tournament() {
@@ -179,6 +187,22 @@ public class Tournament implements Serializable {
 
     public void setPairingCardSet(Set<PairingCard> pairingCardSet) {
         this.pairingCardSet = pairingCardSet;
+    }
+
+    public float getPointsForBye() {
+        return pointsForBye;
+    }
+
+    public void setPointsForBye(float pointsForBye) {
+        this.pointsForBye = pointsForBye;
+    }
+
+    public int getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public void setNumberOfRounds(int numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
     }
     
 }

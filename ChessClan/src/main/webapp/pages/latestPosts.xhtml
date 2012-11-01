@@ -9,31 +9,36 @@
     <h:body>
         <ui:composition>
             <h:outputScript library="js" name="trunk8.js"/>
-            <h:form prependId="false">
+            <h:form prependId="false" id="latestPostsForm">
                 <script>
-                    $(document).ready(function(){
-                        $('.ellipsis').trunk8({lines:2});
+                    $(document).ready(function() {
+                        $('.ellipsisTmp').trunk8({lines: 2});
                     });
-                    
+
                     $('.five').hover(
-                    function () {
-                        $('.seeAllPostsButton').slideToggle();
-                    }
-                );
-                        
+                            function() {
+                                $('.seeAllPostsButton').slideToggle();
+                            }
+                    );
                 </script>
                 <h3>Najnowsze ogłoszenia</h3>
                 <c:forEach items="#{lpBean.latestPosts}" var="post" varStatus="loop">
-                    <h:panelGroup layout="block" class="postHeader">
-                        <h:outputText value="#{post.title}" class="postTitle"/>
+                    <h:panelGroup layout="block">
+                        <h:outputText value="#{post.title}" styleClass="postHeader"/>
                         <h:outputText value="#{post.datePublished}" class="postTitleDate"/>
                     </h:panelGroup>
-                    <div class="ellipsis">#{post.content}</div>
+                    <div id="ellipsis#{post.id}">#{post.content}</div>
                     <c:if test="${not loop.last}">
                         <hr/> 
                     </c:if>
+
+                    <script>
+                        $(document).ready(function() {
+                            $('#ellipsis#{post.id}').trunk8({lines: 2,fill:'&hellip; <a href="#{request.contextPath}/posts/#{post.id}" class="link">przeczytaj całość</a>'});
+                        });
+                    </script>
                 </c:forEach>
-                <h:commandButton value="Zobacz wszystkie" class="seeAllPostsButton hiddenButton"/>
+                <h:commandButton value="Zobacz wszystkie" class="seeAllPostsButton hiddenButton" onclick="$(location).attr('href', '#{request.contextPath}/posts');" type="button"/>
             </h:form>
         </ui:composition>
 

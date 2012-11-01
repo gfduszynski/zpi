@@ -13,16 +13,27 @@
 
             <h:panelGroup layout="block" class="elements">
                 <h1> Tablica ogłoszeń</h1>
-                <c:forEach items="#{pv.posts}" var="post">
-                    <h:panelGroup layout="block" class="postHeader">
-                        <h:outputText value="#{post.title}" class="postTitle"/>
-                        <h:outputText value="#{post.datePublished}" class="postTitle"/>
+                <c:forEach items="#{pvBean.posts}" var="post" rendered="#{pvBean.selectedPost == null}">
+                    <h:panelGroup layout="block" rendered="#{not empty pvBean.posts}">
+                        <h:outputText value="#{post.title}"/>
+                        <h:outputText value="Autor: #{post.user}"/>
+                        <h:outputText value="Zawartość: #{post.content}"/>
+                        <h:outputText value="Kiedy opublikowano #{post.datePublished}"/>
                     </h:panelGroup>
-                    <h:panelGroup layout="block" class="postContent">
-                        <h:outputText value="#{post.content}" class="postTitle"/>
-                    </h:panelGroup>
-                    <hr/>
+                    <c:if test="#{!loop.last}"><hr/></c:if>
                 </c:forEach>
+                <h:panelGroup layout="block" rendered="#{empty pvBean.posts and pvBean.selectedPost == null}">
+                    <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
+                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                            <strong>Niestety!</strong> Nie ma żadnych ogłoszeń zarejestrowanych w systemie.</p>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup layout="block" rendered="#{pvBean.selectedPost !=null}">
+                        <h:outputText value="#{pvBean.selectedPost.title}"/>
+                        <h:outputText value="Autor: #{pvBean.selectedPost.user}"/>
+                        <h:outputText value="Zawartość: #{pvBean.selectedPost.content}"/>
+                        <h:outputText value="Kiedy opublikowano #{pvBean.selectedPost.datePublished}"/>
+                </h:panelGroup>
             </h:panelGroup>
         </h:panelGroup>
     </h:body>

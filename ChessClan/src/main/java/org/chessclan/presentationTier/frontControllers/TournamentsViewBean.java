@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
-import org.chessclan.businessTier.businessObjects.TournamentBO.NotJoinableRound;
+import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Round.State;
 import org.chessclan.dataTier.models.Tournament;
 
@@ -69,7 +69,7 @@ public class TournamentsViewBean {
         return false;
     }
     
-    public void joinTournament(Tournament tmt) throws NotJoinableRound{
+    public void joinTournament(Tournament tmt) throws Round.NotJoinableRound{
         tmBO.joinTorunament(tmt);
     }
 

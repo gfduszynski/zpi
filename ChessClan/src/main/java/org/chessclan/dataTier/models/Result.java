@@ -50,7 +50,7 @@ public class Result implements Serializable {
     @Column(name = "place")
     private int place;
     @JoinColumn(name = "tournament", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Tournament tournament;
 
     public Result() {
