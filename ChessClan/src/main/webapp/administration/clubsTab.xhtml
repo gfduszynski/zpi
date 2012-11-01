@@ -13,9 +13,12 @@
             </script>
             <h:panelGrid columns="4" rendered="#{cdBean.createNewClub}" id="newClubGrid">
                         <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
-                        <h:inputText id="name" value="#{cdBean.newclub.name}">
-                            <f:ajax event="blur" execute="name" render="newClubGrid" listener="#{cdBean.saveNewClub}"/>
-                        </h:inputText>
+                        <h:panelGrid columns="1" id="name"> 
+                            <h:outputText value="Pole wymagane." rendered=""/>
+                            <h:inputText id="inputname" value="#{cdBean.newclub.name}">
+                                <f:ajax event="blur" execute="name" render="newClubGrid" listener="#{cdBean.saveNewClub}"/>
+                            </h:inputText>
+                        </h:panelGrid>
                         <h:outputLabel for="owner" value="Owner" class="order-table-odd-row"/>
                         <h:selectOneMenu id="owner" value="#{cdBean.ownerEmail}">
                             <f:selectItems value="#{cdBean.ownerList}"/>
