@@ -14,41 +14,13 @@ import org.springframework.stereotype.Service;
  *
  * @author Xcays
  */
-@Service("PairingCardBO")
-public class PairingCardBO implements Serializable{    
-    
-    @Autowired
-    private PairingCardRepository pcRepo;
-    
-    public PairingCard savePairingCard(PairingCard g){
-        return pcRepo.save(g);
-    }
-    
-    public Iterable<PairingCard> savePairingCards(Iterable<PairingCard> g){
-        return pcRepo.save(g);
-    }
-    
-    public PairingCard findPairingCardById(int id){
-        return pcRepo.findOne(id);
-    }
-    
-    public Iterable<PairingCard> findPairingCardById(Iterable<Integer> ids){
-        return pcRepo.findAll(ids);
-    }
-    
-    public Iterable<PairingCard> findAll(){
-        return pcRepo.findAll();
-    }
-    
-    public void deleteGame(int id){
-        pcRepo.delete(id);
-    }
-    
-    public void deleteGame(PairingCard g){
-        pcRepo.delete(g);
-    }
-    
-    public void deletePairingCards(Iterable<PairingCard> gs){
-        pcRepo.delete(gs);
-    }
+public interface PairingCardBO{
+    public PairingCard savePairingCard(PairingCard g);
+    public Iterable<PairingCard> savePairingCards(Iterable<PairingCard> g);
+    public PairingCard findPairingCardById(int id);
+    public Iterable<PairingCard> findPairingCardById(Iterable<Integer> ids);
+    public Iterable<PairingCard> findAll();
+    public void deleteGame(int id);
+    public void deleteGame(PairingCard g);
+    public void deletePairingCards(Iterable<PairingCard> gs);
 }

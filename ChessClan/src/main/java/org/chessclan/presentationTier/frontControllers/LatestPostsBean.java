@@ -34,8 +34,8 @@ public class LatestPostsBean implements Serializable {
     public void initialize() {
         carousel = new ArrayList<List<Post>>();
         this.latestPosts = postBO.findLatestPublishedPosts(12);
-        if (this.latestPosts.size() == 12) {
-            for (int i = 0; i < 3; i++) {
+        if (this.latestPosts.size() >= 12) {
+            for (int i = 0; i < 4; i++) {
                 ArrayList<Post> tmp = new ArrayList<Post>();
                 tmp.add(latestPosts.get(i * 3));
                 tmp.add(latestPosts.get(i * 3 + 1));
@@ -51,7 +51,7 @@ public class LatestPostsBean implements Serializable {
                 carousel.add(tmp);
             }
         } else if (this.latestPosts.size() >= 6) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
                 ArrayList<Post> tmp = new ArrayList<Post>();
                 tmp.add(latestPosts.get(i * 3));
                 tmp.add(latestPosts.get(i * 3 + 1));
@@ -60,9 +60,9 @@ public class LatestPostsBean implements Serializable {
             }
         } else {
             ArrayList<Post> tmp = new ArrayList<Post>();
-            tmp.add(latestPosts.get(0));
-            tmp.add(latestPosts.get(1));
-            tmp.add(latestPosts.get(2));
+            for (int i = 0; i < (this.latestPosts.size()>3?3:this.latestPosts.size()); i++) {
+                tmp.add(latestPosts.get(i));
+            }
             carousel.add(tmp);
         }
     }

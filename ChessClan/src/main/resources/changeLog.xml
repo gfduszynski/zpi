@@ -37,6 +37,12 @@
             <column name="sex" type="int" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
+            <column name="rating" type="float"  defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fide_title" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
                 
         <createTable tableName="clubs">
@@ -141,10 +147,16 @@
             <column name="date" type="date">
                 <constraints nullable="false" />
             </column>
+            <column name="points_for_bye" type="float" defaultValueNumeric="1.0">
+                <constraints nullable="false"/>
+            </column>
             <column name="description" type="varchar(2048)">
                 <constraints nullable="false" />
             </column>
             <column name="club" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="number_of_rounds" type="int" defaultValueNumeric="7">
                 <constraints nullable="false" />
             </column>
             <column name="category" type="int">
@@ -177,6 +189,9 @@
             <column name="prev_round" type="int">
                 <constraints nullable="true" />
             </column>
+            <column name="next_round" type="int">
+                <constraints nullable="true" />
+            </column>
             <column name="tournament" type="int">
                 <constraints nullable="false" />
             </column>
@@ -207,7 +222,19 @@
             <column name="tournament" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="score" type="float">
+            <column name="score" type="float" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="floats" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="byes" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="color" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="color_diff" type="int" defaultValueNumeric="0">
                 <constraints nullable="false" />
             </column>
         </createTable>
