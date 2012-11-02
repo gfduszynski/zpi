@@ -2,24 +2,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>ChessClan</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     </h:head>
     <h:body>
         <ui:composition>
+            <h:outputScript name="jsf.js" library="javax.faces" target="head" />
             <script>
                 $(function() {
-                    $("#tabs").tabs();
+                    $("#tabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+                    $("#tabs li").removeClass('ui-corner-top').addClass('ui-corner-left noMargin noPadding');
+                    $("#tabs ul").addClass('noMargin noPadding');
                 });
             </script>
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1">Turnieje</a></li>
                     <li><a href="#tabs-2">Ogłoszenia</a></li>
-                    <li><a href="#tabs-3">Zarządzaj użytkownikami</a></li>
+                    <li><a href="#tabs-3">Członkowie</a></li>
+                    <li><a href="#tabs-4">Nowy turniej</a></li>
                 </ul>
                 <div id="tabs-1">
                     <c:if test="#{not empty ctBean.clubTournaments}">
@@ -34,6 +38,15 @@
                 <div id="tabs-2">
                 </div>
                 <div id="tabs-3">
+                </div>
+                <div id="tabs-4">
+                    <h2>Nowy turniej</h2>
+                    <h:form>
+                        <h:outputText value="Nazwa turnieju: "/>
+                        <h:inputText value="#{crTmtBean.tmtName}"/>
+                        <h:outputText value="Opis "/>
+                        <h:inputText value="#{crTmtBean.tmtDescription}"/>
+                    </h:form>
                 </div>
             </div>
         </ui:composition>
