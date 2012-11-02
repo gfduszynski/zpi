@@ -297,7 +297,7 @@ h2{
 }
 
 .postHeader{
-
+    font-weight: bold;
 }
 
 .postContent{
@@ -309,7 +309,6 @@ h2{
     padding-right: 10px;
 }
 
-
 .hiddenButton{
     display:none;
 }
@@ -318,4 +317,8 @@ h2{
     display:none;
     background-color: white;
     padding:10px;
+}
+
+#latestPostsForm{
+    height:100%;
 }
