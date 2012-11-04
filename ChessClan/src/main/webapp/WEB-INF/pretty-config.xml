@@ -26,5 +26,10 @@
         <pattern value="/passwordReminder" />
         <view-id value="/pages/passwordReminder.xhtml" />
     </url-mapping>
+    
+    <url-mapping id="terms">
+        <pattern value="/tos" />
+        <view-id value="/pages/terms.xhtml" />
+    </url-mapping>
   
 </pretty-config>

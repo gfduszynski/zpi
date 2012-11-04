@@ -50,12 +50,12 @@ public class Club implements Serializable {
     @Size(max = 1000)
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "userClub", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userClub", fetch = FetchType.LAZY)
     private Set<User> userSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club", fetch = FetchType.LAZY)
     private Set<Tournament> tournamentSet;
     @JoinColumn(name = "owner", referencedColumnName = "id")
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private User owner;
 
     public Club() {

@@ -62,7 +62,7 @@ public class Post implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateExpires;
     @JoinColumn(name = "user", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User user;
 
     public Post() {

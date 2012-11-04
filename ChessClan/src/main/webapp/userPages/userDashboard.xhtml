@@ -6,18 +6,18 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>ChessClan</title>
     </h:head>
     <h:body>
         <ui:composition>
-           <script>
-    $(document).ready(function() {
-        $("#tabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-        $("#tabs li").removeClass('ui-corner-top').addClass('ui-corner-left noMargin noPadding');
-        $("#tabs ul").addClass('noMargin noPadding');
+            <script>
+                $(document).ready(function() {
+                    $("#tabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+                    $("#tabs li").removeClass('ui-corner-top').addClass('ui-corner-left noMargin noPadding');
+                    $("#tabs ul").addClass('noMargin noPadding');
 
-    });
-</script>
+                });
+            </script>
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1">Moje turnieje</a></li>
@@ -62,7 +62,7 @@
                     <h:form prependId="false" >
                         <script>
                             $(function() {
-                                $( "#accordion" ).accordion({
+                                $("#accordion").accordion({
                                     collapsible: true,
                                     heightStyle: "content",
                                     active: '#myPostsHeader'
@@ -75,7 +75,7 @@
                                 <h:panelGroup id="messages">
                                     <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all">
                                         <script>
-                                            $( "#accordion" ).accordion({
+                                            $("#accordion").accordion({
                                                 collapsible: true,
                                                 heightStyle: "content",
                                                 active: '#myPostsHeader'
@@ -86,7 +86,7 @@
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{upBean.postSaved}" layout="block" class="ui-state-highlight ui-corner-all">
                                         <script>
-                                            $( "#accordion" ).accordion({
+                                            $("#accordion").accordion({
                                                 collapsible: true,
                                                 heightStyle: "content",
                                                 active: '#myPostsHeader'
@@ -97,7 +97,7 @@
                                     </h:panelGroup>
                                     <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all">
                                         <script>
-                                            $( "#accordion" ).accordion({
+                                            $("#accordion").accordion({
                                                 collapsible: true,
                                                 heightStyle: "content",
                                                 active: '#addPostHeader'
@@ -139,7 +139,7 @@
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Autor</f:facet>
-                                            <h:outputText value="#{post.user.firstName} #{post.user.lastName}"/>
+                                            <h:outputText value="#{loginBean.user.firstName} #{loginBean.user.lastName}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Data opublikowania</f:facet>
@@ -195,10 +195,10 @@
                         <script>
                             var actItem = 'myClubHeader';
                             $(function() {
-                                $( "#accordionClubs" ).accordion({
+                                $("#accordionClubs").accordion({
                                     collapsible: true,
                                     heightStyle: "content",
-                                    active: '#'+actItem
+                                    active: '#' + actItem
                                 });
                             });
                         </script>
@@ -218,7 +218,7 @@
                                     <h:panelGroup>
                                         <h:outputText value="#{ucBean.userClub.description}"/>
                                     </h:panelGroup>
-                                    <h:commandButton value="Wypisz się" onclick="actItem='allClubsHeader';">
+                                    <h:commandButton value="Wypisz się" onclick="actItem = 'allClubsHeader';">
                                         <f:ajax render="@form" listener="#{ucBean.signOutFromClub}" />
                                     </h:commandButton>
                                 </h:panelGroup>
@@ -244,11 +244,11 @@
                                     </h:column>
                                     <h:column>
                                         <f:facet name="header"></f:facet>
-                                        <h:commandButton value="Zapisz się" rendered="#{ucBean.userClub == null}" onclick="actItem='myClubHeader';">
+                                        <h:commandButton value="Zapisz się" rendered="#{ucBean.userClub == null}" onclick="actItem = 'myClubHeader';">
                                             <f:ajax render="@form" listener="#{ucBean.signToClub(club)}"/>
                                         </h:commandButton>                                            
 
-                                        <h:commandButton value="Wypisz się" rendered="#{ucBean.userClub == club}" onclick="actItem='allClubsHeader';">
+                                        <h:commandButton value="Wypisz się" rendered="#{ucBean.userClub == club}" onclick="actItem = 'allClubsHeader';">
                                             <f:ajax render="@form" listener="#{ucBean.signOutFromClub}"/>
                                         </h:commandButton>
                                     </h:column>

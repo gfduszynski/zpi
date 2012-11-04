@@ -34,7 +34,7 @@
 
                     <script>
                         $(document).ready(function() {
-                            $('#ellipsis#{post.id}').trunk8({lines: 2,fill:'&hellip; <a href="#{request.contextPath}/posts/#{post.id}">przeczytaj całość</a>'});
+                            $('#ellipsis#{post.id}').trunk8({lines: 2,fill:'&hellip; <a href="#{request.contextPath}/posts/#{post.id}" class="link">przeczytaj całość</a>'});
                         });
                     </script>
                 </c:forEach>
