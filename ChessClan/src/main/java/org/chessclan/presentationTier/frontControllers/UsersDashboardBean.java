@@ -64,36 +64,31 @@ public class UsersDashboardBean implements Serializable {
         this.users = new ArrayList<User>();
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
+        this.validation = new HashMap<Integer, List<Boolean>>();
         Iterator<User> usr = umBO.findAll().iterator();
         while(usr.hasNext()){
             User tmp = usr.next();
             users.add(tmp);
             checked.put(tmp.getId(), false);
             editable.put(tmp.getId(), false);
+            validation.put(tmp.getId(), Arrays.asList(true, true, true, true, true, true, true, true, false));
         }
         this.checkAll = false;
         this.deletable = false;
         this.hasChecked = false;
     }
 
-/*
-    public void removeUser(User user) {
-        umBO.removeUserRoles(user);
-        umBO.deleteUser(user);
-        editable.remove(user.getId());
-        checked.remove(user.getId());
-        users.remove(user);
-    }
-*/
-    public void updateUser(User user) {
+    public void updateUser(User user,List<Boolean> l) {
+        if(validateHasNotErrors(l)){
         umBO.saveUser(user);
         umBO.encodePassword(user);
         editable.put(user.getId(), false);
         checked.put(user.getId(), false);
-        users.set(users.indexOf(user), user);
+        users.set(users.indexOf(user), user);}
     }
     
-    public void saveNewUser() {
+    public void saveNewUser(List<Boolean> l) {
+        //if(validateHasNotErrors(l)){
         umBO.saveUser(newuser);
         umBO.encodePassword(newuser);
         umBO.assignRole(newuser.getId(), Role.Type.ADMIN);
@@ -101,13 +96,14 @@ public class UsersDashboardBean implements Serializable {
         checked.put(newuser.getId(), false);
         createNewUser = false;
         users.add(newuser);
+        //}
     }
 
     public void addNewUser() {
         newuser = new User("Login", "E-mail", "Password", "Name", "Last Name", null, new Date());
         createNewUser = true;
         //first name, last name, valid e-mail, not invalid email, not occupied email, login, Password, birth date, creation date, has NOT errors
-        nuvalidation = Arrays.asList(true, true, true, true, true, true, true, true, false);
+        nuvalidation = Arrays.asList(true, true, true, true, true, true, true, true, true);
        }
     
     public boolean validateFirstName(User u, List<Boolean> l)
@@ -394,20 +390,7 @@ public class UsersDashboardBean implements Serializable {
             }
         }
     }
-/*    
-    public void removeSelected()
-    {
-        if(deletable){
-            for(int i=0;i<users.size();i++){
-                if(checked.get(users.get(i).getId())) {
-                   removeUser(users.get(i));
-                    --i;
-                }
-            }
-            deletable = false;
-        }
-    }
-  */      
+    
     public void saveSelected()
     {
         for(int i=0;i<users.size();i++){
@@ -505,5 +488,14 @@ public class UsersDashboardBean implements Serializable {
     public void setNuvalidation(List<Boolean> nuvalidation)
     {
         this.nuvalidation = nuvalidation;
+    }
+    public Map<Integer,List<Boolean>> getValidation()
+    {
+        return this.validation;
+    }
+    
+    public void setValidation(Map<Integer, List<Boolean>> validation)
+    {
+        this.validation = validation;
     }
 }

@@ -62,8 +62,8 @@
                         
                         <h:outputLabel for="birth-date" value="Birth date" class="order-table-odd-row"/>
                         <h:panelGroup id="birth-date">
-                            <h:outputText value="Pole wymagane, data niepoprawna." styleClass="error" class="dateForm" rendered="#{not udBean.nuvalidation.get(7)}" escape="false"/>
-                        <h:inputText value="#{newuser.birthDate}" id="bdInput"  styleClass="regInput">
+                            <h:outputText value="Pole wymagane, data niepoprawna." styleClass="error" rendered="#{not udBean.nuvalidation.get(7)}" escape="false"/>
+                        <h:inputText value="#{newuser.birthDate}" id="bdInput"  styleClass="regInput" class="dateForm">
                             <f:convertDateTime pattern="d-M-yyyy" />
                             <f:ajax event="change" execute="bdInput" render="birth-date" listener="#{udBean.validateBirtDate(newuser, nuvalidation)}"/>  
                         </h:inputText><br/>
@@ -146,14 +146,7 @@
                     <f:facet name="header">E-mail</f:facet>
                     <h:outputText value="#{user.email}" rendered="#{not udBean.editable[user.id]}"/>
                     <h:inputText value="#{user.email}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
-
-                </h:column>
-
-                <!--<h:column>
-                    <f:facet name="header">Password</f:facet>
-                    <h:outputText value="Encrypted" rendered="#{not udBean.editable[user.id]}"/>
-                    <h:inputText value="#{user.password}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
-                </h:column>-->                
+                </h:column> 
                 
                 <h:column>
                     <f:facet name="header">Birth date</f:facet>
@@ -200,9 +193,6 @@
                         <h:commandLink value="update" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.updateUser(user)}"/>
                         </h:commandLink>
-                        <!--<h:commandLink value="remove" rendered="#{udBean.editable[user.id]}">
-                            <f:ajax execute="@form" render="@form" listener="#{udBean.removeUser(user)}"/>
-                        </h:commandLink>-->
                         <h:commandLink value="cancel" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.deselectOneEditable(user.id)}"/>
                         </h:commandLink>

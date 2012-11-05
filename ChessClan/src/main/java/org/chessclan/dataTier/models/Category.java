@@ -42,11 +42,6 @@ public class Category implements Serializable {
     @Size(min = 1, max = 256)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 512)
-    @Column(name = "player")
-    private String player;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Tournament> tournamentSet = new HashSet<Tournament>();
 
@@ -57,10 +52,9 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public Category(Integer id, String name, String player) {
+    public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.player = player;
     }
 
     public Integer getId() {
@@ -77,14 +71,6 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
     }
 
     public Set<Tournament> getTournamentSet() {
