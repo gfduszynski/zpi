@@ -140,6 +140,9 @@
         <createTable tableName="tournaments">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
             </column>         
             <column name="name" type="varchar(256)">
                 <constraints nullable="false"/>
