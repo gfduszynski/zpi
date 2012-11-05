@@ -141,9 +141,23 @@
         
         <insert tableName="category">
             <column name="id" valueNumeric="1"/>
-            <column name="name" value="Szarak"/>
+            <column name="name" value="Junior młodszy Mężczyźni"/>
         </insert>
 
+        <insert tableName="category">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Junior młodszy Kobiety"/>
+        </insert>
+        
+        <insert tableName="category">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Junior starszy Mężczyźni"/>
+        </insert>
+        
+        <insert tableName="category">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="Junior starszy Kobiety"/>
+        </insert>
     </changeSet>
         
 

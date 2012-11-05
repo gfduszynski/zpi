@@ -118,4 +118,9 @@
         <dispatcher>ERROR</dispatcher>
         <dispatcher>ASYNC</dispatcher>
     </filter-mapping>
+    
+    <context-param>
+        <param-name>com.ocpsoft.pretty.DEVELOPMENT</param-name>
+        <param-value>false</param-value>
+    </context-param>
 </web-app>

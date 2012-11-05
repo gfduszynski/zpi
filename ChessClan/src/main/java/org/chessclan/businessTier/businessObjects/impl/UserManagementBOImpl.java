@@ -26,36 +26,42 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Grzegorz Duszyski <gfduszynski@gmail.com>
  */
 @Service("UserManagementBO")
-public class UserManagementBOImpl implements UserManagementBO{    
-    
+public class UserManagementBOImpl implements UserManagementBO {
+
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private RoleRepository roleRepo;
-    @Autowired 
+    @Autowired
     private ShaPasswordEncoder passwordEncoder;
-    
-    public UsernamePasswordAuthenticationToken getLoggedUserAuthentication(){
-        return (UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication();
+
+    @Override
+    public UsernamePasswordAuthenticationToken getLoggedUserAuthentication() {
+        return (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
     }
-    
-    public User getLoggedUser(){
+
+    @Override
+    public User getLoggedUser() {
         UsernamePasswordAuthenticationToken loggedUserAuthentication = getLoggedUserAuthentication();
-        User u = findUserByEmail(((org.springframework.security.core.userdetails.User)loggedUserAuthentication.getPrincipal()).getUsername());
+        User u = findUserByEmail(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
         return u;
     }
-    
-    public User registerUser(String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, int sex){
+
+    @Override
+    public User registerUser(String login, String email, boolean enabled, String password, String firstName, String lastName, Date birthDate, int sex) {
         User u = new User(null, login, email, enabled, password, firstName, lastName, birthDate, Calendar.getInstance().getTime(), sex);
         return userRepo.save(encodePassword(u));
     }
-    
-    public User encodePassword(User u){
-        u.setPassword(passwordEncoder.encodePassword(u.getPassword(),null));
+
+    @Override
+    public User encodePassword(User u) {
+        u.setPassword(passwordEncoder.encodePassword(u.getPassword(), null));
         return u;
     }
+
+    @Override
     @Transactional
-    public User assignRole(int userId, Role.Type role){
+    public User assignRole(int userId, Role.Type role) {
         User u = userRepo.findOne(userId);
         Role r = roleRepo.findByRoleName(role.name());
         u.getRoleSet().add(r);
@@ -63,59 +69,72 @@ public class UserManagementBOImpl implements UserManagementBO{
         roleRepo.saveAndFlush(r);
         return u;
     }
-    
-    public User resetPassword(User user, String password){
+
+    @Override
+    public User resetPassword(User user, String password) {
         user.setPassword(password);
         encodePassword(user);
         saveUser(user);
         return user;
     }
-        
-    public User saveUser(User u){
+
+    @Override
+    public User saveUser(User u) {
         return userRepo.save(u);
     }
-    
-    public Iterable<User> saveUsers(Iterable<User> u){
+
+    @Override
+    public Iterable<User> saveUsers(Iterable<User> u) {
         return userRepo.save(u);
     }
-    
-    public User findUserByEmail(String email){
+
+    @Override
+    public User findUserByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 
-    public User findUserById(int id){
+    @Override
+    public User findUserById(int id) {
         return userRepo.findOne(id);
     }
-    
-    public Iterable<User> findUsersById(Iterable<Integer> ids){
+
+    @Override
+    public Iterable<User> findUsersById(Iterable<Integer> ids) {
         return userRepo.findAll(ids);
     }
-    
-    public boolean isEmailRegistered(String email){
-        return findUserByEmail(email)!=null;
+
+    @Override
+    public boolean isEmailRegistered(String email) {
+        return findUserByEmail(email) != null;
     }
-    
-    public Iterable<User> findAll(){
+
+    @Override
+    public Iterable<User> findAll() {
         return userRepo.findAll();
     }
-    
-    public Page<User> findAll(Pageable p){
+
+    @Override
+    public Page<User> findAll(Pageable p) {
         return userRepo.findAll(p);
     }
-    
-    public Iterable<User> findAll(Sort s){
+
+    @Override
+    public Iterable<User> findAll(Sort s) {
         return userRepo.findAll(s);
     }
-    
-    public void deleteUser(int id){
+
+    @Override
+    public void deleteUser(int id) {
         userRepo.delete(id);
     }
-    
-    public void deleteUser(User u){
+
+    @Override
+    public void deleteUser(User u) {
         userRepo.delete(u);
     }
-    
-    public void deleteUsers(Iterable<User> users){
+
+    @Override
+    public void deleteUsers(Iterable<User> users) {
         userRepo.delete(users);
     }
 
