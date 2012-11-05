@@ -4,12 +4,14 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.dataTier.models.Category;
 
@@ -23,18 +25,22 @@ public class CreateTournamentBean {
 
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
-    
+    @ManagedProperty("#{CategoryBO}")
+    private CategoryBO ctBO;
     private String tmtName;
     private String tmtDescription;
     private Date tmtDate;
     private List<Category> categories;
+    private List<Category> tmtCategories;
+    private Category selectedCat;
 
     public CreateTournamentBean() {
+        this.tmtCategories = new ArrayList<Category>();
     }
-    
+
     @PostConstruct
-    public void initialize(){
-        
+    public void initialize() {
+        this.categories = ctBO.findAll();
     }
 
     public TournamentBO getTmBO() {
@@ -76,4 +82,31 @@ public class CreateTournamentBean {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+    public List<Category> getTmtCategories() {
+        return tmtCategories;
+    }
+
+    public void setTmtCategories(List<Category> tmtCategories) {
+        this.tmtCategories = tmtCategories;
+    }
+
+    public CategoryBO getCtBO() {
+        return ctBO;
+    }
+
+    public void setCtBO(CategoryBO ctBO) {
+        this.ctBO = ctBO;
+    }
+
+    public Category getSelectedCat() {
+        return selectedCat;
+    }
+
+    public void setSelectedCat(Category selectedCat) {
+        this.selectedCat = selectedCat;
+        System.out.println("sel cat: "+selectedCat);
+    }
+    
+    
 }

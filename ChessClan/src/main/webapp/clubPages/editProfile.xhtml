@@ -72,6 +72,9 @@
                         <h:commandButton value="Zapisz zmiany">
                             <f:ajax render="@form" execute="@form" listener="#{ecpBean.updateClub}"/>
                         </h:commandButton>
+                        <h:commandButton value="Anuluj">
+                            <f:ajax render="@form" execute="@form" listener="#{ecpBean.cancelUpdate}"/>
+                        </h:commandButton>
                         <h:panelGroup rendered="#{ecpBean.actSucceded}" id="successBox">
                             <h:outputText value="Dane pomyślnie zaktualizowane!"/>
                             <script>
@@ -79,6 +82,11 @@
                                     $('#editContainer').slideUp('slow', function() {
                                     })
                                 }, 1500);
+                            </script>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ecpBean.actCanceled}">
+                            <script>
+                                $('#editContainer').slideUp('slow', function() {});
                             </script>
                         </h:panelGroup>
                     </h:form>

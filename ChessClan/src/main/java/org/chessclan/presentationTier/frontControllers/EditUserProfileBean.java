@@ -31,9 +31,8 @@ public class EditUserProfileBean implements Serializable {
     UserManagementBO umBO;
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
-    @ManagedProperty(value="#{loginBean.user}")
+    @ManagedProperty(value = "#{loginBean.user}")
     private User user;
-    
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -56,8 +55,10 @@ public class EditUserProfileBean implements Serializable {
     private boolean invalidCN;
     private boolean actSucceded;
     private boolean updatePassword;
+    private boolean actCanceled;
 
     public EditUserProfileBean() {
+        this.actCanceled = false;
         validEmail = false;
         invalidEmail = false;
         this.invalidBD = false;
@@ -201,7 +202,7 @@ public class EditUserProfileBean implements Serializable {
                 loginBean.getUser().setLogin(email);
                 loginBean.getUser().setSex(sex);
                 user = umBO.encodePassword(user);
-                umBO.saveUser(user); 
+                umBO.saveUser(user);
 
             } else {
                 loginBean.getUser().setEmail(email);
@@ -218,6 +219,10 @@ public class EditUserProfileBean implements Serializable {
             this.regError = true;
         }
 
+    }
+
+    public void cancelUpdate() {
+        this.actCanceled = true;
     }
 
     public void updatePassField() {
@@ -407,4 +412,14 @@ public class EditUserProfileBean implements Serializable {
     public void setUser(User loggedUser) {
         this.user = loggedUser;
     }
+
+    public boolean isActCanceled() {
+        return actCanceled;
+    }
+
+    public void setActCanceled(boolean actCanceled) {
+        this.actCanceled = actCanceled;
+    }
+    
+    
 }

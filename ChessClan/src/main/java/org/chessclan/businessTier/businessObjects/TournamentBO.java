@@ -4,33 +4,14 @@
  */
 package org.chessclan.businessTier.businessObjects;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
-import org.chessclan.dataTier.models.Round.State;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
-import org.chessclan.dataTier.repositories.CategoryRepository;
-import org.chessclan.dataTier.repositories.PairingCardRepository;
-import org.chessclan.dataTier.repositories.RoundRepository;
-import org.chessclan.dataTier.repositories.TournamentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *

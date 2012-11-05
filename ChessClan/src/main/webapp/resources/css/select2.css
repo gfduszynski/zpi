@@ -87,7 +87,7 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
   width: 12px;
   height: 12px;
   font-size: 1px;
-  background: url('select2.png') right top no-repeat;
+  background: url('select2/select2.png.xhtml?ln=images') right top no-repeat;
   cursor: pointer;
   text-decoration: none;
   border:0;

@@ -47,9 +47,11 @@ public class EditClubProfileBean implements Serializable {
     private String password;
     private boolean actSucceded;
     private boolean regError;
+    private boolean actCanceled;
 
     public EditClubProfileBean() {
         pattern = Pattern.compile(EMAIL_PATTERN);
+        this.actCanceled = false;
     }
 
     @PostConstruct
@@ -172,6 +174,10 @@ public class EditClubProfileBean implements Serializable {
     private boolean validate(final String emailAddress) {
         matcher = pattern.matcher(emailAddress);
         return matcher.matches();
+    }
+    
+    public void cancelUpdate(){
+        this.actCanceled = true;
     }
 
     public UserManagementBO getUmBO() {
@@ -308,6 +314,14 @@ public class EditClubProfileBean implements Serializable {
 
     public void setClubBO(ClubBO clubBO) {
         this.clubBO = clubBO;
+    }
+
+    public boolean isActCanceled() {
+        return actCanceled;
+    }
+
+    public void setActCanceled(boolean actCanceled) {
+        this.actCanceled = actCanceled;
     }
     
     

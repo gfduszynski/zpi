@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>ChessClan</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -11,11 +12,14 @@
     <h:body>
         <ui:composition>
             <h:outputScript name="jsf.js" library="javax.faces" target="head" />
+            <h:outputScript name="select2.js" library="js" target="head" />
+            <h:outputStylesheet name="select2.css" library="css"/>
             <script>
                 $(function() {
                     $("#tabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
                     $("#tabs li").removeClass('ui-corner-top').addClass('ui-corner-left noMargin noPadding');
                     $("#tabs ul").addClass('noMargin noPadding');
+                    $("#cats").select2();
                 });
             </script>
             <div id="tabs">
@@ -41,11 +45,26 @@
                 </div>
                 <div id="tabs-4">
                     <h2>Nowy turniej</h2>
-                    <h:form>
+                    <h:form prependId="false">
                         <h:outputText value="Nazwa turnieju: "/>
-                        <h:inputText value="#{crTmtBean.tmtName}"/>
-                        <h:outputText value="Opis "/>
-                        <h:inputText value="#{crTmtBean.tmtDescription}"/>
+                        <h:inputText value="#{crTmtBean.tmtName}"/><br/>
+                        <h:outputText value="Opis: "/>
+                        <h:inputText value="#{crTmtBean.tmtDescription}"/><br/>
+                        <h:outputText value="Data odbycia turnieju: "/>
+                        <h:inputText value="#{crTmtBean.tmtDate}"/><br/>
+                        <c:if test="#{not empty crTmtBean.tmtCategories}">
+                            <c:forEach items="#{crTmtBean.tmtCategories}" var="cat">
+                                <h:outputText value="#{cat.name}"/><br/>
+                            </c:forEach> 
+                        </c:if>
+                        <h:selectOneListbox id="cats">
+                            <c:forEach items="#{crTmtBean.categories}" var="cat">
+                                <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat.id}"/>
+                            </c:forEach>
+                        </h:selectOneListbox>
+                        <h:commandButton value="Dodaj">
+                            <!--<f:ajax event="onclick" listener="#{crTmtBean.addCat()}"/>-->
+                        </h:commandButton>
                     </h:form>
                 </div>
             </div>
