@@ -9,7 +9,6 @@ body{
 
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
-
     background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
     -webkit-background-size: 200px 210px;
     background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
@@ -328,4 +327,42 @@ div#editContainer{
 
 #latestPostsForm{
     height:100%;
+}
+
+TABLE.panelGridClass {
+    width: 100%;
+    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
+    -webkit-background-size: 200px 210px;
+    background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
+    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background-size:100px 100px;
+}
+TABLE.panelGridClass TR TD {
+    height: 25px;
+    margin: none;
+}
+TABLE.panelGridClass TR TD INPUT {
+    height: 25px;
+    margin: none;
+}
+TABLE.panelGridClass TR TD select{
+    height: 25px;
+    margin: 5px;
+}
+.editInput1{
+    width: 231px;
+    height: 30px;
+      
+}
+.editInput2{
+    width: 345px;
+    height: 30px;
+}
+.editRow{
+    height: 30px;
+}
+.editBlue{
+    background-color: #00AAE8;
 }
