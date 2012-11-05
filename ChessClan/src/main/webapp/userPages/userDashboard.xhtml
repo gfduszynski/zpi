@@ -114,11 +114,12 @@
                                 <h:inputText value="#{upBean.content}">
                                     <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateContent}"/>
                                 </h:inputText>
-                                <h:selectOneListbox value="#{upBean.postlt}">
+                                <h:outputText value="Na jak długo?"/>
+                                <h:selectOneMenu value="#{upBean.postlt}">
                                     <f:selectItem itemValue="1" itemLabel="Tydzień"/>
                                     <f:selectItem itemValue="2" itemLabel="Dwa tygodnie"/>
                                     <f:selectItem itemValue="3" itemLabel="Trzy tygodnie"/>
-                                </h:selectOneListbox>
+                                </h:selectOneMenu>
                                 <h:commandButton value="Zapisz i opublikuj">
                                     <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
                                 </h:commandButton>

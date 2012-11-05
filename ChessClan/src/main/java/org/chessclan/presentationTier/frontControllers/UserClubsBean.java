@@ -4,15 +4,12 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.ClubBO;
-import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.User;
 
@@ -29,9 +26,12 @@ public class UserClubsBean {
 
     private List<Club> clubs;
     
-    @ManagedProperty(value = "#{loginBean.userClub}")
+    @ManagedProperty(value = "#{loginBean.user.userClub}")
     private Club userClub;
 
+    @ManagedProperty(value = "#{loginBean.user}")
+    private User user;
+    
     public UserClubsBean() {
     }
 
@@ -72,6 +72,14 @@ public class UserClubsBean {
 
     public void setUserClub(Club userClub) {
         this.userClub = userClub;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 

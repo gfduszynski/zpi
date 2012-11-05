@@ -4,16 +4,10 @@
  */
 package org.chessclan.businessTier.businessObjects;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.User;
-import org.chessclan.dataTier.repositories.ClubRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *

@@ -68,7 +68,7 @@ public class LoginBean implements Serializable {
     private void setupLoggedUser() {
         Authentication auth = umBO.getLoggedUserAuthentication();
         if (auth != null) {
-            setUser(umBO.findUserByEmail(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername()));
+            setUser(umBO.findUserByEmailWithClub(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername()));
             setLoggedUser(true);
         } else {
             this.loginError = true;

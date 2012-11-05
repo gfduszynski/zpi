@@ -38,4 +38,5 @@ public interface UserManagementBO{
     public void deleteUser(int id);
     public void deleteUser(User u);
     public void deleteUsers(Iterable<User> users);
+    public User findUserByEmailWithClub(String email);
 }
