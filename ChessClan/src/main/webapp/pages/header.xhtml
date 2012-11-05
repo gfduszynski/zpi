@@ -74,6 +74,13 @@
                             <a onclick="showEditProfile();" href="#">Edytuj profil</a>
                         </h:panelGroup>
                     </sec:authorize>
+
+                    <sec:authorize access="hasRole('ADMIN')">
+                        <h:panelGroup layout="block" class="logoutStuff">
+                            <h:outputText value="Witaj, #{loginBean.user.firstName} #{loginBean.user.lastName}"/><br/>
+                            <h:outputLink value="#{request.contextPath}/j_spring_security_logout">Wyloguj</h:outputLink>
+                        </h:panelGroup>
+                    </sec:authorize>
                 </c:if>
 
             </h:panelGroup>

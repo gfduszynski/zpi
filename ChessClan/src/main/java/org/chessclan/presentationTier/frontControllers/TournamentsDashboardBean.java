@@ -16,7 +16,6 @@ import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
-import org.chessclan.businessTier.businessObjects.TournamentBO.NotJoinableRound;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
@@ -25,6 +24,8 @@ import org.chessclan.dataTier.models.Round.NoPlayers;
 import org.chessclan.dataTier.models.Round.NotFinished;
 import org.chessclan.dataTier.models.Tournament;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -71,6 +72,7 @@ public class TournamentsDashboardBean implements Serializable {
     }
     
     @PostConstruct
+    @Transactional(propagation= Propagation.MANDATORY)
     public void initialize() {
         this.tournaments = new ArrayList<Tournament>();
         this.checked = new HashMap<Integer, Boolean>();
@@ -86,13 +88,13 @@ public class TournamentsDashboardBean implements Serializable {
         this.deletable = false;
     }
 
-    public void generateTournaments() throws NotJoinableRound
+    public void generateTournaments() throws Round.NotJoinableRound
     {
         UsernamePasswordAuthenticationToken lUAuth = umBO.getLoggedUserAuthentication();
         String lolek = lUAuth.getName();
         umBO.findUserByEmail(lUAuth.getName());
         try {
-            Tournament t = tmBO.registerTournament("tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1));
+            Tournament t = tmBO.registerTournament(10,2,"tname", new Date(), "tDescc", clbBO.findClubById(1), catBO.findCategoryById(1));
             tmBO.joinTorunament(t);
             tmBO.joinTournament(t, umBO.findUserById(2));
             tmBO.goToNextRound(t);

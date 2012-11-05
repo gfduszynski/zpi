@@ -12,6 +12,8 @@
             <column name="creation_date" valueDate="now()"/> 
             <column name="login" value="admin"/>
             <column name="password" value="0d6be69b264717f2dd33652e212b173104b4a647b7c11ae72e9885f11cd312fb"/>
+            <column name="rating" valueNumeric="0"/>
+            <column name="fide_title" valueNumeric="0"/>
         </insert>
         <insert tableName="roles">
             <column name="id" valueNumeric="1"/>
@@ -104,6 +106,8 @@
             <column name="creation_date" valueDate="now()"/> 
             <column name="login" value="JNowak"/>
             <column name="password" value="0d6be69b264717f2dd33652e212b173104b4a647b7c11ae72e9885f11cd312fb"/>
+            <column name="rating" valueNumeric="0"/>
+            <column name="fide_title" valueNumeric="0"/>
         </insert>
         <insert tableName="user_roles">
             <column name="role" valueNumeric="2"/>
@@ -119,6 +123,8 @@
             <column name="creation_date" valueDate="now()"/> 
             <column name="login" value="JKowalski"/>
             <column name="password" value="0d6be69b264717f2dd33652e212b173104b4a647b7c11ae72e9885f11cd312fb"/>
+            <column name="rating" valueNumeric="0"/>
+            <column name="fide_title" valueNumeric="0"/>
         </insert>
         <insert tableName="user_roles">
             <column name="role" valueNumeric="3"/>

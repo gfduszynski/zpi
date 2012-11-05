@@ -47,7 +47,7 @@ public class Category implements Serializable {
     @Size(min = 1, max = 512)
     @Column(name = "player")
     private String player;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Tournament> tournamentSet = new HashSet<Tournament>();
 
     public Category() {

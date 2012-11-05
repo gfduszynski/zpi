@@ -51,7 +51,7 @@ public class PostsDashboardBean implements Serializable {
         this.posts = new ArrayList<Post>();
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
-        Iterator<Post> pst = poBO.findAllPosts().iterator();
+        Iterator<Post> pst = poBO.findAllPostsWithUsers().iterator();
         while(pst.hasNext()){            
             Post tmp = pst.next();
             posts.add(tmp);

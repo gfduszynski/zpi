@@ -56,7 +56,7 @@ public class ClubsDashboardBean implements Serializable {
         this.clubs = new ArrayList<Club>();
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
-        Iterator<Club> clb = clBO.findAll().iterator();
+        Iterator<Club> clb = clBO.findAllWithOwners().iterator();
         while(clb.hasNext()){
             Club tmp = clb.next();
             clubs.add(tmp);

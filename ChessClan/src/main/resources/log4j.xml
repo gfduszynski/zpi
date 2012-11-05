@@ -7,19 +7,20 @@
         </layout>
     </appender>
     
-    <logger name="org.hibernate.engine.loading.LoadContexts" additivity="false">
+    <!--logger name="org.hibernate.engine.loading.LoadContexts" additivity="false">
         <level value="debug"/>
         <appender-ref ref="ROLL" />
-    </logger>
+    </logger-->
     
     <root> 
         <priority value ="debug" /> 
         <appender-ref ref="console" /> 
+        <level value="OFF"/>
     </root>
     
-    <logger name="org.hibernate">
-        <level value="INFO" />
-    <appender-ref ref="console"/>
-</logger>
+    <!--logger name="org.hibernate">
+        <level value="OFF" />
+        <appender-ref ref="console"/>
+</logger-->
 
 </log4j:configuration>
