@@ -99,4 +99,8 @@ public class ClubBOImpl implements ClubBO {
     public void deleteClubs(Iterable<Club> clubs) {
         clubRepo.delete(clubs);
     }
+
+    public Club findClubByName(String name) {
+        return clubRepo.findByName(name);    
+    }
 }

@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
@@ -30,7 +31,10 @@ public class ClubsDashboardBean implements Serializable {
     private Club newclub;
     private Boolean createNewClub;
     private Boolean deletable;
+    private Boolean checkAll;
+    private Boolean hasChecked;
     private String ownerEmail;
+    private ArrayList<SelectItem> ownerList;
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO usBO;
     //form vars
@@ -53,35 +57,62 @@ public class ClubsDashboardBean implements Serializable {
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
         Iterator<Club> clb = clBO.findAllWithOwners().iterator();
-        int i=1;
         while(clb.hasNext()){
-            clubs.add(clb.next());
-            checked.put(i, false);
-            editable.put(i, false);
-            ++i;
+            Club tmp = clb.next();
+            clubs.add(tmp);
+            checked.put(tmp.getId(), false);
+            editable.put(tmp.getId(), false);
         }
-        createNewClub = false; 
-    }
-
-
-    public void removeClub(Club club) {
-        clBO.deleteClub(club);
-    }
-
-    public void editClub(Club club) {
-        clBO.saveClub(club);
-        }
-
-    public void updateClub(Club club) {
-        clBO.saveClub(club);
+        this.checkAll = false;
+        this.deletable = false; 
+        this.hasChecked = false;
+        getOwnerList();
     }
     
+    
+      public ArrayList<SelectItem> getOwnerList(){
+         ownerList = new ArrayList<SelectItem>();
+         Iterable<User> user =  usBO.findAll();
+         Iterator<User> iterator = user.iterator();
+         ownerList.add(new SelectItem(null,"Select One…"));
+           while(iterator.hasNext()) {
+            User u = iterator.next();
+            ownerList.add(new SelectItem(u.getEmail(), u.getEmail()));
+            }
+         return ownerList;
+     }
+    
+    public void removeClub(Club club) {
+        clBO.deleteClub(club);
+        editable.remove(club.getId());
+        checked.remove(club.getId());
+        clubs.remove(club);
+    }
+    
+    public void removeSelected()
+    {
+        if(deletable){
+            for(int i=0;i<clubs.size();i++){
+                if(checked.get(clubs.get(i).getId())) {
+                   removeClub(clubs.get(i));
+                    --i;
+                }
+            }
+            deletable = false;
+        }
+    }
+
     public void selectAll(){
+        checkAll = !checkAll;
         for(int i=0;i<clubs.size();i++){
-            if(!checked.get(clubs.get(i).getId()) || !checked.containsKey(clubs.get(i).getId())) {
-                checked.put(clubs.get(i).getId(), true);
+                checked.put(clubs.get(i).getId(), checkAll);
+        }
+        if(!checkAll){
+            for(int i=0;i<clubs.size();i++){
+                editable.put(clubs.get(i).getId(), false);
             }
         }
+        deletable = checkAll;
     }
 
     public void changeCheckedOne(int id){
@@ -180,22 +211,6 @@ public class ClubsDashboardBean implements Serializable {
         }
     }
     
-    public void removeSelected()
-    {
-        if(deletable){
-            for(int i=0;i<clubs.size();i++){
-                if(checked.get(clubs.get(i).getId())) {
-                    editable.remove(clubs.get(i).getId());
-                    checked.remove(clubs.get(i).getId());
-                    clBO.deleteClub(clubs.get(i));
-                    clubs.remove(i);
-                    --i;
-                }
-            }
-            deletable = false;
-        }
-    }
-    
     public Boolean getDeletable()
     {
         return deletable;
@@ -238,7 +253,8 @@ public class ClubsDashboardBean implements Serializable {
     {
         this.createNewClub = cnu;
     }
-        public Club getNewclub()
+    
+    public Club getNewclub()
     {
         return newclub;
     }
@@ -267,6 +283,13 @@ public class ClubsDashboardBean implements Serializable {
         createNewClub = false;
     }
     
+    public void updateClub(Club club) {
+        clBO.saveClub(club);
+        //clubs.add(newclub);
+        editable.put(club.getId(), false);
+        checked.put(club.getId(), false);
+    }
+    
     public void cancelNewClub() {
         createNewClub = false;
         newclub = null;
@@ -275,5 +298,19 @@ public class ClubsDashboardBean implements Serializable {
     public void addNewClub() {
         newclub = new Club("Club name", new Date(), usBO.getLoggedUser(), " Club description");
         createNewClub = true;
+    }
+    
+    public Boolean getHasChecked()
+    {
+        for(int i=0;i<clubs.size();i++){
+            if(checked.get(clubs.get(i).getId())) { return this.hasChecked = true;
+                }
+        }
+        return this.hasChecked=false;
+    }
+    
+    public void setHasChecked(Boolean hasChecked)
+    {
+        this.hasChecked = hasChecked;
     }
 }

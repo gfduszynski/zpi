@@ -39,7 +39,6 @@
             <column name="id" valueNumeric="1"/>
             <column name="title" value=" Post testowy"/>
             <column name="content" value="Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. "/>
-            <column name="published" valueNumeric="true"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
             <column name="date_expires" valueDate="now()"/>
@@ -50,7 +49,6 @@
             <column name="id" valueNumeric="5"/>
             <column name="title" value=" Post testowy 5"/>
             <column name="content" value="Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. "/>
-            <column name="published" valueNumeric="true"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
             <column name="date_expires" valueDate="now()"/>
@@ -61,7 +59,6 @@
             <column name="id" valueNumeric="2"/>
             <column name="title" value=" Post testowy 2"/>
             <column name="content" value="Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. "/>
-            <column name="published" valueNumeric="true"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
             <column name="date_expires" valueDate="now()"/>
@@ -72,7 +69,6 @@
             <column name="id" valueNumeric="3"/>
             <column name="title" value=" Post testowy 3"/>
             <column name="content" value="Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. "/>
-            <column name="published" valueNumeric="true"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
             <column name="date_expires" valueDate="now()"/>
@@ -83,7 +79,6 @@
             <column name="id" valueNumeric="6"/>
             <column name="title" value=" Post testowy 6"/>
             <column name="content" value="Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. "/>
-            <column name="published" valueNumeric="true"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
             <column name="date_expires" valueDate="now()"/>
@@ -94,7 +89,6 @@
             <column name="id" valueNumeric="4"/>
             <column name="title" value=" Post testowy 4"/>
             <column name="content" value="Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. Ciekawy tekst. "/>
-            <column name="published" valueNumeric="true"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
             <column name="date_expires" valueDate="now()"/>

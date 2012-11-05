@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
@@ -9,7 +5,7 @@ import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.PostBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
@@ -20,7 +16,7 @@ import org.chessclan.dataTier.models.Post;
  * @author Xcays
  */
 @ManagedBean(name = "pdBean")
-@SessionScoped
+@ViewScoped
 public class PostsDashboardBean implements Serializable {
 
     private List<Post> posts;
@@ -28,17 +24,19 @@ public class PostsDashboardBean implements Serializable {
     private Map<Integer, Boolean> editable;
     private Boolean createNewPost;
     private Boolean deletable;
+    private Boolean checkAll;
     private Post newpost;
     private String authorEmail;
+    private Integer newExpiresAfter;
+    private Integer expiresAfter;
     //form vars
     private Integer id;
     private String title;
     private String content;
-    private Boolean published;
     private Date dateCreated, datePublished, dateExpires;
     private Integer user;
     //end
-    @Transient
+    //@Transient
     @ManagedProperty("#{PostBO}")
     private PostBO poBO;
     @Transient
@@ -60,18 +58,12 @@ public class PostsDashboardBean implements Serializable {
             checked.put(tmp.getId(), false);
             editable.put(tmp.getId(), false);
         }
-        this.createNewPost = false;
         this.deletable = false;
+        this.checkAll = false;
+        this.newExpiresAfter = 7;
+        this.expiresAfter = 7;
     }
-
-
-    public void removePost(Post post) {
-        poBO.deletePost(post);
-        editable.remove(post.getId());
-        checked.remove(post.getId());
-        posts.remove(post);
-    }
-
+    
     public void updatePost(Post post) 
     {
         poBO.savePost(post);
@@ -79,20 +71,15 @@ public class PostsDashboardBean implements Serializable {
         checked.put(post.getId(), false);
         posts.set(posts.indexOf(post), post);
     }
-    
-    public void saveNewPost() {
-        newpost.setUser(umBO.findUserByEmail(authorEmail));
-        poBO.savePost(newpost);
-        editable.put(newpost.getId(), false);
-        checked.put(newpost.getId(), false);
-        createNewPost = false;
-        posts.add(newpost);
-    }
-
-    public void addNewPost() {
-        newpost = new Post(posts.size()+1, "Post name", "Post content", false, new Date());
-        newpost.setUser(umBO.getLoggedUser());
-        createNewPost = true;
+        
+    public void publishPost(Post post) {
+        Calendar cal = Calendar.getInstance();
+        post.setDatePublished(cal.getTime());
+        cal.add(Calendar.DATE, expiresAfter);
+        post.setDateExpires(cal.getTime());
+        poBO.savePost(post);
+        editable.put(post.getId(), false);
+        checked.put(post.getId(), false);
     }
     
     public void cancelNewPost() {
@@ -101,12 +88,16 @@ public class PostsDashboardBean implements Serializable {
     }
     
     public void selectAll(){
+        checkAll = !checkAll;
         for(int i=0;i<posts.size();i++){
-            if(!checked.get(posts.get(i).getId()) || !checked.containsKey(posts.get(i).getId())) {
-                checked.put(posts.get(i).getId(), true);
+                checked.put(posts.get(i).getId(), checkAll);
+        }
+        if(!checkAll){
+            for(int i=0;i<posts.size();i++){
+                editable.put(posts.get(i).getId(), false);
             }
         }
-        deletable = true;
+        deletable = checkAll;
     }
 
     public void changeCheckedOne(int id){
@@ -146,11 +137,11 @@ public class PostsDashboardBean implements Serializable {
         this.posts = posts;
     }
 
-    public Integer getPostId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setPostId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -194,57 +185,12 @@ public class PostsDashboardBean implements Serializable {
         this.dateExpires = dateExpires;
     }
     
-    public Boolean getPublished() {
-        return published;
-    }
-
-    public void setPublished(Boolean published) {
-        this.published = published;
-    }
-    
-    
     public Integer getUser() {
         return user;
     }
 
     public void setUser(Integer user) {
         this.user = user;
-    }
-    
-    public PostBO getPoBO() {
-        return poBO;
-    }
-
-    public void setPoBO(PostBO poBO) {
-        this.poBO = poBO;
-    }
-    
-    public UserManagementBO getUmBO() {
-        return umBO;
-    }
-
-    public void setUmBO(UserManagementBO umBO) {
-        this.umBO = umBO;
-    }
-    
-    public Boolean getCreateNewPost()
-    {
-        return createNewPost;
-    }
-    
-    public void setCreateNewPost(Boolean cnp)
-    {
-        this.createNewPost = cnp;
-    }
-    
-    public Post getNewpost()
-    {
-        return newpost;
-    }
-    
-    public void setNewpost(Post newpost)
-    {
-        this.newpost = newpost;
     }
     
     public String getAuthorEmail()
@@ -256,7 +202,15 @@ public class PostsDashboardBean implements Serializable {
     {
         this.authorEmail = authorEmail;
     }
-
+    
+    public void deletePost(Post post) {
+        poBO.deletePost(post);
+        editable.remove(post.getId());
+        checked.remove(post.getId());
+        posts.remove(post);
+        
+        System.out.println("CURRENT POST REMOVED");
+    }
     
     public void setEditableForSelected()
     {        
@@ -268,12 +222,13 @@ public class PostsDashboardBean implements Serializable {
         }
     }
     
-    public void removeSelected()
+    public void deleteSelected()
     {
+        System.out.println("STARTING REMOVE SELECTED METHOD");
         if(deletable){
             for(int i=0;i<posts.size();i++){
                 if(checked.get(posts.get(i).getId())) {
-                   removePost(posts.get(i));
+                   deletePost(posts.get(i));
                     --i;
                 }
             }
@@ -302,5 +257,89 @@ public class PostsDashboardBean implements Serializable {
     {
         this.deletable = deletable;
     }
+    
+    public void saveNewPost() {
+        poBO.savePost(newpost);
+        editable.put(newpost.getId(), false);
+        checked.put(newpost.getId(), false);
+        createNewPost = false;
+        posts.add(newpost);
+    }
+    
+    public void publishNewPost() {
+        Calendar cal = Calendar.getInstance();
+        newpost.setDatePublished(cal.getTime());
+        cal.add(Calendar.DATE, newExpiresAfter);
+        newpost.setDateExpires(cal.getTime());
+        poBO.savePost(newpost);
+        editable.put(newpost.getId(), false);
+        checked.put(newpost.getId(), false);
+        createNewPost = false;
+        posts.add(newpost);
+    }
 
+    public void addNewPost() {
+        newpost = new Post();
+        newpost.setTitle("TITLE");
+        newpost.setContent("CONTENT");
+        newpost.setDateCreated(Calendar.getInstance().getTime());
+        newpost.setDatePublished(null);
+        newpost.setDateExpires(null);
+        newpost.setUser(umBO.getLoggedUser());
+        createNewPost = true;
+    }
+
+    public Boolean getCreateNewPost()
+    {
+        return createNewPost;
+    }
+    
+    public void setCreateNewPost(Boolean cnp)
+    {
+        this.createNewPost = cnp;
+    }
+    
+    public Post getNewpost()
+    {
+        return newpost;
+    }
+    
+    public void setNewpost(Post newpost)
+    {
+        this.newpost = newpost;
+    }
+
+    public Integer getNewExpiresAfter()
+    {
+        return newExpiresAfter;
+    }
+    
+    public void setNewExpiresAfter(Integer newExpiresAfter)
+    {
+        this.newExpiresAfter = newExpiresAfter;
+    }
+
+    public Integer getExpiresAfter() {
+        return expiresAfter;
+    }
+
+    public void setExpiresAfter(Integer expiresAfter) {
+        this.expiresAfter = expiresAfter;
+    }
+    
+    public UserManagementBO getUmBO() {
+        return umBO;
+    }
+
+    public void setUmBO(UserManagementBO umBO) {
+        this.umBO = umBO;
+    }
+    
+    public PostBO getPoBO() {
+        return poBO;
+    }
+
+    public void setPoBO(PostBO poBO) {
+        this.poBO = poBO;
+    }
 }
