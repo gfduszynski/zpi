@@ -33,4 +33,9 @@ public interface PostBO {
     public Post findOnePost(Integer id);
     public Post savePost(Post p);
     public Iterable<Post> savePosts(Iterable<Post> itrbl);
+       /* public Iterable<Post> findAllPostsSelected(Iterable<Integer> iter)
+    {
+        return postRepo.findAll(iter);
+    }*/
+
 }

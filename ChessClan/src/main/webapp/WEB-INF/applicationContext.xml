@@ -40,8 +40,8 @@
         <property name="jdbcUrl" value="${db.connectionURL.user}" />
         <property name="username" value="${db.username.user}"/>
         <property name="password" value="${db.password.user}"/>
-        <property name="idleConnectionTestPeriod" value="60"/>
-        <property name="idleMaxAge" value="240"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="1"/>
+        <property name="idleMaxAgeInMinutes" value="4"/>
         <property name="maxConnectionsPerPartition" value="30"/>
         <property name="minConnectionsPerPartition" value="10"/>
         <property name="partitionCount" value="3"/>

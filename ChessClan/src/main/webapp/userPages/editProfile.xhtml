@@ -9,6 +9,7 @@
     </h:head>
     <h:body>
         <ui:composition>
+            
             <sec:authorize access="hasRole('USER')">
                 <script>
                     $(document).ready(function() {
@@ -18,25 +19,97 @@
                     });
                 </script>
                 <h:form prependId="false">
-                    <h:panelGrid columns="4">
-                        <h:outputText value="Imię"/>
+                    <table width="100%" border="0" class="editTable">
+                        <tbody>
+                            <tr>
+                                <td><h:outputText value="Imię" styleClass="editInput1 editBlue"/></td>
+                                <td> <h:panelGroup id="fnGroup">
+                                        <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidFN}" escape="false"/>
+                                        <h:inputText value="#{epBean.firstName}" styleClass="editInput2" id="fnInput">
+                                            <f:ajax event="blur" execute="fnInput" render="fnGroup" listener="#{epBean.validateFirstName}"/>
+                                        </h:inputText>
+                                    </h:panelGroup></td>
+                                <td><h:outputText value="Nazwisko" styleClass="editInput1 editBlue"/></td>
+                                <td><h:panelGroup id="lnGroup">
+                                        <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidLN}" escape="false"/>
+                                        <h:inputText value="#{epBean.lastName}" styleClass="editInput2" id="lnInput">
+                                            <f:ajax event="blur" execute="lnInput" render="lnGroup" listener="#{epBean.validateLastName}"/>
+                                        </h:inputText>
+                                    </h:panelGroup></td>
+                            </tr>
+                            <tr>
+                                <td><h:outputText value="Data urodzenia"/></td>
+                                <td><h:panelGroup id="bdGroup">
+                                        <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidBD}" escape="false"/>
+                                        <h:inputText value="#{epBean.birthDate}" id="bdInput"  styleClass="editInput2" >
+                                            <f:convertDateTime pattern="d-M-yyyy" />
+                                            <f:ajax event="change" execute="bdInput" render="bdGroup" listener="#{epBean.validateBD}"/>  
+                                        </h:inputText><br/>
+                                        <script type="text/javascript" charset="UTF-8">
+                                            $(function() {
+                                                $("#bdInput").datepicker({
+                                                    changeMonth: true,
+                                                    changeYear: true,
+                                                    dateFormat: "d-m-yy",
+                                                    defaultDate: "-15y"
+                                                });
+                                            });
+                                        </script>
+                                    </h:panelGroup></td>
+                                <td> <h:outputText value="Płeć"/></td>
+                                <td><h:selectOneRadio value="#{epBean.sex}" styleClass="regChoose">
+                                        <f:selectItem itemValue="0" itemLabel="mężczyzna"/>
+                                        <f:selectItem itemValue="1" itemLabel="kobieta"/>
+                                    </h:selectOneRadio></td>
+                            </tr>    
+                            <tr>
+                                <td> <h:outputText value="Email" styleClass="editInput1 editBlue"/></td>
+                                <td><h:panelGroup id="eGroup">
+                                        <h:outputText value="Login dostępny.&lt;br/&gt;" styleClass="loginAvail" rendered="#{epBean.validEmail}" escape="false"/>
+                                        <h:outputText value="Login niepoprawny.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidEmail}" escape="false"/>
+                                        <h:outputText value="Login zajęty.&lt;br/&gt;" styleClass="error" rendered="#{epBean.occupiedEmail}" escape="false"/>
+                                        <h:inputText value="#{epBean.email}" styleClass="editInput2" id="eInput">
+                                            <f:ajax event="blur" execute="eInput" render="eGroup" listener="#{epBean.validateEmail}"/>
+                                        </h:inputText>
+                                    </h:panelGroup></td>
+                                <td><h:panelGroup layout="block" styleClass="editInput1 editBlue">
+                                        <h:selectBooleanCheckbox value="#{epBean.updatePassword}">
+                                            <f:ajax execute="@this" render="@form" listener="#{epBean.updatePassField}"/>
+                                        </h:selectBooleanCheckbox>
+                                        <h:outputText value="Aktualizuj hasło"/>
+                                    </h:panelGroup></td>
+                                <td><h:panelGroup id="pGroup" rendered="#{epBean.updatePassword}">
+                                        <h:outputText value="Pole wymagane, musi mieć więcej niż 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidP}" escape="false"/>
+                                        <h:inputSecret value="#{epBean.password}" id="pInput" redisplay="true" styleClass="regInput" >
+                                            <f:ajax event="blur" execute="pInput" render="pGroup" listener="#{epBean.validatePassword}"/>
+                                        </h:inputSecret>
+                                    </h:panelGroup></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+  <!--                  <h:panelGrid columns="4" cellspacing="5px" rowClasses="editRow" width="100%" styleClass="panelGridClass">
+                        <h:outputText value="Imię" styleClass="editInput1 editBlue"/>
                         <h:panelGroup id="fnGroup">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidFN}" escape="false"/>
-                            <h:inputText value="#{epBean.firstName}" styleClass="regInput" id="fnInput">
+                            <h:inputText value="#{epBean.firstName}" styleClass="editInput2" id="fnInput">
                                 <f:ajax event="blur" execute="fnInput" render="fnGroup" listener="#{epBean.validateFirstName}"/>
                             </h:inputText>
                         </h:panelGroup>
-                        <h:outputText value="Nazwisko"/>
+                        <h:outputText value="Nazwisko" styleClass="editInput1 editBlue"/>
                         <h:panelGroup id="lnGroup">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidLN}" escape="false"/>
-                            <h:inputText value="#{epBean.lastName}" styleClass="regInput" id="lnInput">
+                            <h:inputText value="#{epBean.lastName}" styleClass="editInput2" id="lnInput">
                                 <f:ajax event="blur" execute="lnInput" render="lnGroup" listener="#{epBean.validateLastName}"/>
                             </h:inputText>
                         </h:panelGroup>
                         <h:outputText value="Data urodzenia"/>
                         <h:panelGroup id="bdGroup">
                             <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidBD}" escape="false"/>
-                            <h:inputText value="#{epBean.birthDate}" id="bdInput"  styleClass="regInput" >
+                            <h:inputText value="#{epBean.birthDate}" id="bdInput"  styleClass="editInput2" >
                                 <f:convertDateTime pattern="d-M-yyyy" />
                                 <f:ajax event="change" execute="bdInput" render="bdGroup" listener="#{epBean.validateBD}"/>  
                             </h:inputText><br/>
@@ -56,16 +129,16 @@
                             <f:selectItem itemValue="0" itemLabel="mężczyzna"/>
                             <f:selectItem itemValue="1" itemLabel="kobieta"/>
                         </h:selectOneRadio>
-                        <h:outputText value="Email"/>
+                        <h:outputText value="Email" styleClass="editInput1 editBlue"/>
                         <h:panelGroup id="eGroup">
                             <h:outputText value="Login dostępny.&lt;br/&gt;" styleClass="loginAvail" rendered="#{epBean.validEmail}" escape="false"/>
                             <h:outputText value="Login niepoprawny.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidEmail}" escape="false"/>
                             <h:outputText value="Login zajęty.&lt;br/&gt;" styleClass="error" rendered="#{epBean.occupiedEmail}" escape="false"/>
-                            <h:inputText value="#{epBean.email}" styleClass="regInput" id="eInput">
+                            <h:inputText value="#{epBean.email}" styleClass="editInput2" id="eInput">
                                 <f:ajax event="blur" execute="eInput" render="eGroup" listener="#{epBean.validateEmail}"/>
                             </h:inputText>
                         </h:panelGroup>
-                        <h:panelGroup layout="block">
+                        <h:panelGroup layout="block" styleClass="editInput1 editBlue">
                             <h:selectBooleanCheckbox value="#{epBean.updatePassword}">
                                 <f:ajax execute="@this" render="@form" listener="#{epBean.updatePassField}"/>
                             </h:selectBooleanCheckbox>
@@ -77,7 +150,7 @@
                                 <f:ajax event="blur" execute="pInput" render="pGroup" listener="#{epBean.validatePassword}"/>
                             </h:inputSecret>
                         </h:panelGroup>
-                    </h:panelGrid>
+                    </h:panelGrid> -->
                     <h:commandButton value="Zapisz zmiany">
                         <f:ajax render="@form" execute="@form" listener="#{epBean.update}"/>
                     </h:commandButton>

@@ -8,36 +8,73 @@
         <h:form id="tab1Form">
             <script type="text/javascript">
                 $(function() {
-                    $( ".userBirthDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
-                    $( ".userCreationDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
-                    $( ".newuserBirthDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
-                    $( ".newuserCreationDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
-                });
+                    $( ".dateForm" ).datepicker({ dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true});
+                 });
             </script>
             
             <h:panelGrid columns="4" rendered="#{udBean.createNewUser}">
-                        <h:outputLabel for="no" value="No" class="order-table-even-row"/>
-                        <h:outputText id="no" value="#{udBean.newuser.id}" />
-                        <h:outputLabel for="first-name" value="First name" class="order-table-odd-row"/>
-                        <h:inputText id="first-name" value="#{udBean.newuser.firstName}" />
+                        <h:outputLabel for="first-name" value="First name"/>
+                        <h:panelGroup id="first-name">
+                            <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki." styleClass="error" rendered="#{not udBean.nuvalidation.get(0)}" escape="false"/>
+                            <h:inputText value="#{udBean.newuser.firstName}" id="fnInput">
+                            <f:ajax event="blur" execute="fnInput" render="first-name" listener="#{udBean.validateFirstName(udBean.newuser,udBean.nuvalidation)}"/>
+                            </h:inputText>
+                        </h:panelGroup>
                         <h:outputLabel for="last-name" value="Last name" class="order-table-odd-row"/>
-                        <h:inputText id="last-name" value="#{udBean.newuser.lastName}" />
+                        <h:panelGroup id="last-name">
+                            <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki." styleClass="error" rendered="#{not udBean.nuvalidation.get(1)}" escape="false"/>
+                            <br/>
+                            <h:inputText value="#{udBean.newuser.lastName}" styleClass="regInput" id="lnInput">
+                            <f:ajax event="blur" execute="lnInput" render="last-name" listener="#{udBean.validateLastName(udBean.newuser,udBean.nuvalidation)}"/>
+                            </h:inputText>
+                        </h:panelGroup>
+                        
                         <h:outputLabel for="e-mail" value="E-mail" class="order-table-odd-row"/>
-                        <h:inputText id="e-mail" value="#{udBean.newuser.email}" />
+                            <h:panelGroup id="e-mail">
+                            <h:outputText value="E-mail niepoprawny." styleClass="error" rendered="#{not udBean.nuvalidation.get(2)}" escape="false"/>
+                            <h:outputText value="Wpisz adres e-mail." styleClass="error" rendered="#{not udBean.nuvalidation.get(3)}" escape="false"/>
+                            <h:outputText value="E-mail zajęty." styleClass="error" rendered="#{not udBean.nuvalidation.get(4)}" escape="false"/>
+                            <h:inputText value="#{udBean.newuser.email}" styleClass="regInput" id="emailInput">
+                            <f:ajax event="blur" execute="emailInput" render="e-mail" listener="#{udBean.validateEmail(udBean.newuser,udBean.nuvalidation)}"/>
+                            </h:inputText>
+                        </h:panelGroup>
+                        
                         <h:outputLabel for="login" value="Login" class="order-table-odd-row"/>
-                        <h:inputText id="login" value="#{udBean.newuser.login}" />
+                        <h:panelGroup id="login">
+                            <h:outputText value="Pole wymagane. Login zajęty lub zbyt krótki (min. 4 znaki)." styleClass="error" rendered="#{not udBean.nuvalidation.get(5)}" escape="false"/>
+                            <br/>
+                            <h:inputText value="#{udBean.newuser.login}" styleClass="regInput" id="loginInput">
+                            <f:ajax event="blur" execute="loginInput" render="login" listener="#{udBean.validateLogin(udBean.newuser,udBean.nuvalidation)}"/>
+                            </h:inputText>
+                        </h:panelGroup>
+                        
                         <h:outputLabel for="password" value="Password" class="order-table-odd-row"/>
-                        <h:inputText id="password" value="Password" />
+                        <h:panelGroup id="password">
+                            <h:outputText value="Pole wymagane, musi zawierać co najmniej 5 znaków." styleClass="error" rendered="#{not udBean.nuvalidation.get(6)}" escape="false"/>
+                            <br/>
+                            <h:inputText value="#{udBean.newuser.password}" styleClass="regInput" id="passwordInput">
+                            <f:ajax event="blur" execute="passwordInput" render="password" listener="#{udBean.validatePassword(udBean.newuser,udBean.nuvalidation)}"/>
+                            </h:inputText>
+                        </h:panelGroup>
+                        
                         <h:outputLabel for="enabled" value="Enabled" class="order-table-odd-row"/>
                         <h:selectBooleanCheckbox id="enabled" value="#{udBean.newuser.enabled}"/>
+                        
                         <h:outputLabel for="birth-date" value="Birth date" class="order-table-odd-row"/>
-                        <h:inputText id="birth-date" value="#{udBean.newuser.birthDate}" class="newuserBirthDateForm input-edit-row">
-                            <f:convertDateTime pattern="dd-MM-yyyy"/>
-                        </h:inputText>
+                        <h:panelGroup id="birth-date">
+                            <h:outputText value="Pole wymagane, data niepoprawna." styleClass="error" class="dateForm" rendered="#{not udBean.nuvalidation.get(7)}" escape="false"/>
+                        <h:inputText value="#{newuser.birthDate}" id="bdInput"  styleClass="regInput">
+                            <f:convertDateTime pattern="d-M-yyyy" />
+                            <f:ajax event="change" execute="bdInput" render="birth-date" listener="#{udBean.validateBirtDate(newuser, nuvalidation)}"/>  
+                        </h:inputText><br/>
+                       
+                        </h:panelGroup>
+
+                        
                         <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
-                        <h:inputText id="creation-date" value="#{udBean.newuser.creationDate}" class="newuserCreationDateForm input-edit-row">
+                        <h:outputText id="creation-date" value="#{udBean.newuser.creationDate}" class="input-edit-row">
                             <f:convertDateTime pattern="dd-MM-yyyy" />
-                        </h:inputText>
+                        </h:outputText>
                         <h:outputLabel for="sex" value="Sex" class="order-table-odd-row"/>
                         <h:selectOneRadio id="sex" value="#{udBean.newuser.sex}">
                             <f:selectItem itemValue="0" itemLabel="♂"/>
@@ -53,17 +90,20 @@
             
             
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new user" rendered="#{not udBean.createNewUser}">
+                <h:commandButton value="add new admin" rendered="#{not udBean.createNewUser}">
                     <f:ajax listener="#{udBean.addNewUser()}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" rendered="#{not udBean.createNewUser}">
+                <h:commandButton value="edit selected" rendered="#{(not udBean.createNewUser) and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" rendered="#{udBean.deletable and not udBean.createNewUser}">
-                    <f:ajax listener="#{udBean.removeSelected}" render="@form" execute="@form"/>
-                </h:commandButton>
-                <h:commandButton value="save selected" rendered="#{not udBean.createNewUser}">
+                <h:commandButton value="save selected" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.saveSelected}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="disable selected" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
+                    <f:ajax listener="#{udBean.disableSelected()}" render="@form" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="enable selected" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
+                    <f:ajax listener="#{udBean.enableSelected()}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
 
@@ -80,13 +120,14 @@
                             <f:ajax listener="#{udBean.selectAll}" render="@form" execute="@form"/>
                         </h:selectBooleanCheckbox>
                     </f:facet>
-                    <h:selectBooleanCheckbox value="#{udBean.checked[user.id]}"/>
+                    <h:selectBooleanCheckbox value="#{udBean.checked[user.id]}">
+                        <f:ajax listener="#{udBean.changeCheckedOne(user.id)}" render="@form" execute="@form"/>
+                    </h:selectBooleanCheckbox>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">No</f:facet>
-                    <h:outputText value="#{user.id}" rendered="#{not udBean.editable[user.id]}"/>
-                    <h:inputText value="#{user.id}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
+                    <h:outputText value="#{user.id}"/>
                 </h:column>
 
                 <h:column>
@@ -108,38 +149,33 @@
 
                 </h:column>
 
-                <h:column>
+                <!--<h:column>
                     <f:facet name="header">Password</f:facet>
                     <h:outputText value="Encrypted" rendered="#{not udBean.editable[user.id]}"/>
                     <h:inputText value="#{user.password}" rendered="#{udBean.editable[user.id]}" class="input-edit-row"/>
-                </h:column>                
+                </h:column>-->                
                 
                 <h:column>
                     <f:facet name="header">Birth date</f:facet>
                     <h:outputText value="#{user.birthDate}" rendered="#{not udBean.editable[user.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{user.birthDate}" rendered="#{udBean.editable[user.id]}" class="userBirthDateForm input-edit-row">
+                    <h:inputText value="#{user.birthDate}" rendered="#{udBean.editable[user.id]}" class="dateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Creation date</f:facet>
-                    <h:outputText value="#{user.creationDate}" rendered="#{not udBean.editable[user.id]}">
+                    <h:outputText value="#{user.creationDate}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{user.creationDate}" rendered="#{udBean.editable[user.id]}" class="userCreationDateForm input-edit-row">
-                        <f:convertDateTime pattern="dd-MM-yyyy" />
-                    </h:inputText>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Sex</f:facet>
-                        <h:selectOneRadio value="#{user.sex}" disabled="true" rendered="#{not udBean.editable[user.id]}">
-                            <f:selectItem itemValue="0" itemLabel="♂"/>
-                            <f:selectItem itemValue="1" itemLabel="♀"/>
-                        </h:selectOneRadio>
+                        <h:outputText value="♂" rendered="#{not udBean.editable[user.id] and user.sex==0 }"/>
+                        <h:outputText value="♀" rendered="#{not udBean.editable[user.id] and user.sex==1 }"/>
                         <h:selectOneRadio value="#{user.sex}" disabled="false" rendered="#{udBean.editable[user.id]}">
                             <f:selectItem itemValue="0" itemLabel="♂"/>
                             <f:selectItem itemValue="1" itemLabel="♀"/>
@@ -149,15 +185,26 @@
 
                 <h:column>
                     <f:facet name="header"></f:facet>
-                    <h:commandLink value="edit" rendered="#{not udBean.editable[user.id]}">
-                        <f:ajax listener="#{udBean.selectOneEditable(user.id)}" render="@form" execute="@form"/>
-                    </h:commandLink>
+                    <h:panelGrid columns="1" class="buttons-column">
+                        <h:commandLink value="edit" rendered="#{not udBean.editable[user.id]}">
+                            <f:ajax listener="#{udBean.selectOneEditable(user.id)}" render="@form" execute="@form"/>
+                        </h:commandLink>
+                        <h:commandLink value="disable" rendered="#{user.enabled and not udBean.editable[user.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{udBean.disableOne(user)}"/>
+                        </h:commandLink>
+                        <h:commandLink value="enable" rendered="#{(not user.enabled) and (not udBean.editable[user.id])}">
+                            <f:ajax execute="@form" render="@form" listener="#{udBean.enableOne(user)}"/>
+                        </h:commandLink>
+                    </h:panelGrid>
                     <h:panelGrid columns="1" class="buttons-column">
                         <h:commandLink value="update" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.updateUser(user)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{udBean.editable[user.id]}">
+                        <!--<h:commandLink value="remove" rendered="#{udBean.editable[user.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{udBean.removeUser(user)}"/>
+                        </h:commandLink>-->
+                        <h:commandLink value="cancel" rendered="#{udBean.editable[user.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{udBean.deselectOneEditable(user.id)}"/>
                         </h:commandLink>
                     </h:panelGrid>
                 </h:column>
@@ -165,4 +212,3 @@
         </h:form>
     </ui:composition>
 </html>
-

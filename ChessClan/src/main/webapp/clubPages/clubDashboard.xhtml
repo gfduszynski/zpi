@@ -59,7 +59,7 @@
                         </c:if>
                         <h:selectOneListbox id="cats">
                             <c:forEach items="#{crTmtBean.categories}" var="cat">
-                                <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat.id}"/>
+                                <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat.id}" />
                             </c:forEach>
                         </h:selectOneListbox>
                         <h:commandButton value="Dodaj">

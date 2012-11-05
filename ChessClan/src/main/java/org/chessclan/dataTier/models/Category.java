@@ -15,10 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -42,11 +38,6 @@ public class Category implements Serializable {
     @Size(min = 1, max = 256)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 512)
-    @Column(name = "player")
-    private String player;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Tournament> tournamentSet = new HashSet<Tournament>();
 
@@ -57,10 +48,9 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public Category(Integer id, String name, String player) {
+    public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.player = player;
     }
 
     public Integer getId() {
@@ -77,14 +67,6 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
     }
 
     public Set<Tournament> getTournamentSet() {

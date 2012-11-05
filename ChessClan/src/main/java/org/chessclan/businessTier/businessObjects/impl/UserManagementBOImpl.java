@@ -137,4 +137,8 @@ public class UserManagementBOImpl implements UserManagementBO {
     public void deleteUsers(Iterable<User> users) {
         userRepo.delete(users);
     }
+
+    public User findUserByLogin(String login) {
+        return userRepo.findByLogin(login);
+    }
 }

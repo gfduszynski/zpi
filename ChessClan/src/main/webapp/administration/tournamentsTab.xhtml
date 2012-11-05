@@ -4,42 +4,36 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
-    <ui:composition>
-        <!--
-         <h:form id="tab3Form">
+ <ui:composition>
+        <h:form id="tab3Form">
             <script type="text/javascript">
                 $(function() {
-                    $( ".postCreationDateForm" ).datepicker({ dateFormat: 'dd-mm-yy' });
-                });
+                    $( ".dateForm" ).datepicker({ dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true });
+                    });
             </script>
-            <h:panelGrid columns="4" rendered="#{tdBean.createNewPost}">
+            
+            <h:panelGrid columns="4" rendered="#{tdBean.createNewTournament}">
                         <h:outputLabel for="no" value="No" class="order-table-even-row"/>
-                        <h:outputText id="no" value="#{pdBean.newpost.id}" />
-                        <h:outputLabel for="title" value="Title" class="order-table-odd-row"/>
-                        <h:inputText id="title" value="#{pdBean.newpost.title}" />
-                        <h:outputLabel for="content" value="Content" class="order-table-odd-row"/>
-                        <h:inputText id="content" value="#{pdBean.newpost.content}" />
-                        <h:outputLabel for="author" value="Author" class="order-table-odd-row"/>
-                        <h:inputText id="author" value="#{pdBean.ownerEmail}" />
-                        <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
-                        <h:inputText id="creation-date" value="#{pdBean.newpost.dateCreated}" class="postCreationDateForm input-edit-row">
+                        <h:outputText id="no" value="#{tdBean.newtournament.id}" />
+                        <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
+                        <h:inputText id="name" value="#{tdBean.newtournament.name}" />
+                        <h:outputLabel for="date" value="Date" class="order-table-odd-row"/>
+                        <h:inputText id="date" value="#{tdBean.newtournament.date}" class="dateForm input-edit-row">
                             <f:convertDateTime pattern="dd-MM-yyyy" />
                         </h:inputText>
-                        <h:outputLabel for="published-date" value="Published at" class="order-table-odd-row"/>
-                        <h:inputText id="published-date" value="#{pdBean.newpost.datePublished}" class="postPublishedDateForm input-edit-row">
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
-                        </h:inputText>
-                        <h:outputLabel for="expires-date" value="Expires at" class="order-table-odd-row"/>
-                        <h:inputText id="expires-date" value="#{pdBean.newpost.dateExpires}" class="postExpiresDateForm input-edit-row">
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
-                        </h:inputText>
-                        <h:outputLabel for="published" value="Published" class="order-table-odd-row"/>
-                        <h:inputText id="published" value="#{pdBean.newpost.published}" class="order-table-odd-row"/>
-                        <h:commandButton value="save post" rendered="#{pdBean.createNewPost}">
-                            <f:ajax listener="#{pdBean.saveNewPost}" render="@form" execute="@form"/>
+                        <h:outputLabel for="description" value="Description" class="order-table-odd-row"/>
+                        <h:inputText id="description" value="#{tdBean.newtournament.description}" class="order-table-odd-row"/>
+                        <!--<h:outputLabel for="club" value=" Club" class="order-table-odd-row"/>
+                        <h:inputText id="club" value="#{tdBean.newtournament.club}" class="order-table-odd-row"/>
+                        <h:outputLabel for="category" value="Category" class="order-table-odd-row"/>
+                        <h:inputText id="category" value="#{tdBean.newtournament.category}" class="order-table-odd-row"/>
+                        <h:outputLabel for="curround" value="Current round" class="order-table-odd-row"/>
+                        <h:inputText id="curround" value="#{tdBean.newtournament.currentRound}" class="order-table-odd-row"/>-->
+                        <h:commandButton value="save tournament" rendered="#{tdBean.createNewTournament}">
+                            <f:ajax listener="#{tdBean.saveNewTournament}" render="@form" execute="@form"/>
                         </h:commandButton>
-                        <h:commandButton value="cancel" rendered="#{pdBean.createNewPost}">
-                            <f:ajax listener="#{pdBean.cancelNewPost}" render="@form" execute="@form"/>
+                        <h:commandButton value="cancel" rendered="#{tdBean.createNewTournament}">
+                            <f:ajax listener="#{tdBean.cancelNewTournament}" render="@form" execute="@form"/>
                         </h:commandButton>                              
             </h:panelGrid>
 
@@ -57,8 +51,14 @@
                 <h:commandButton value="save selected" rendered="#{not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
+                
+                
+                <h:commandButton value="generate torunaments">
+                    <f:ajax listener="#{tdBean.generateTournaments}" render="@form" execute="@form"/>
+                </h:commandButton>
             </div>
 
+        
 
             <h:dataTable value="#{tdBean.tournaments}" var="tournament"
                          styleClass="order-table"
@@ -67,82 +67,61 @@
                          rendered="#{not tdBean.createNewTournament}">
 
                 <h:column>
-           
                     <f:facet name="header">
                         <h:selectBooleanCheckbox> 
-                            <f:ajax listener="#{pdBean.selectAll}" render="@form" execute="@form"/>
+                            <f:ajax listener="#{tdBean.selectAll}" render="@form" execute="@form"/>
                         </h:selectBooleanCheckbox>
                     </f:facet>
-           
-                    <h:selectBooleanCheckbox value="#{pdBean.checked[post.id]}">
-                        <f:ajax listener="#{pdBean.changeCheckedOne(post.id)}" render="@form" execute="@form"/>
+                    <h:selectBooleanCheckbox value="#{tdBean.checked[tournament.id]}">
+                        <f:ajax listener="#{tdBean.changeCheckedOne(tournament.id)}" render="@form" execute="@form"/>
                     </h:selectBooleanCheckbox>
                 </h:column>
-
                 <h:column>
-           
                     <f:facet name="header">No</f:facet>
-           
-                    <h:outputText value="#{post.id}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText value="#{post.id}" rendered="#{pdBean.editable[post.id]}" class="input-edit-row"/>
+                    <h:outputText value="#{tournament.id}"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Title</f:facet>
-                    <h:outputText value="#{post.title}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText value="#{post.title}" rendered="#{pdBean.editable[post.id]}" class="input-edit-row"/>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{tournament.name}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.name}" rendered="#{tdBean.editable[tournament.id]}" class="input-edit-row"/>
                 </h:column>
                 
                 <h:column>
-                    <f:facet name="header">Content</f:facet>
-                    <h:outputText value="#{post.content}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText  value="#{post.content}" rendered="#{pdBean.editable[post.id]}"/>
+                    <f:facet name="header">Description</f:facet>
+                    <h:outputText value="#{tournament.description}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.description}" rendered="#{tdBean.editable[tournament.id]}" class="input-edit-row"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Creation date</f:facet>
-                    <h:outputText value="#{post.dateCreated}" rendered="#{not pdBean.editable[post.id]}">
+                    <f:facet name="header">Date</f:facet>
+                    <h:outputText value="#{tournament.date}" rendered="#{not tdBean.editable[tournament.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{post.dateCreated}" rendered="#{pdBean.editable[post.id]}" class="postCreationDateForm input-edit-row">
+                    <h:inputText value="#{tournament.date}" rendered="#{tdBean.editable[tournament.id]}" class="dateForm input-edit-row">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:inputText>
                 </h:column>
-
+                <!--
                 <h:column>
-                    <f:facet name="header">Published at</f:facet>
-                    <h:outputText value="#{post.datePublished}" rendered="#{not pdBean.editable[post.id]}">
-                        <f:convertDateTime pattern="dd-MM-yyyy" />
-                    </h:outputText>
-                    <h:inputText value="#{post.datePublished}" rendered="#{pdBean.editable[post.id]}" class="postPublishedDateForm input-edit-row">
-                        <f:convertDateTime pattern="dd-MM-yyyy" />
-                    </h:inputText>
-                </h:column>
-                
-                <h:column>
-                    <f:facet name="header">Expires at</f:facet>
-                    <h:outputText value="#{post.dateExpires}" rendered="#{not pdBean.editable[post.id]}">
-                        <f:convertDateTime pattern="dd-MM-yyyy" />
-                    </h:outputText>
-                    <h:inputText value="#{post.dateExpires}" rendered="#{pdBean.editable[post.id]}" class="postExpiresDateForm input-edit-row">
-                        <f:convertDateTime pattern="dd-MM-yyyy" />
-                    </h:inputText>
-                </h:column>
-                
-                <h:column>
-                    <f:facet name="header">Is published</f:facet>
-                    <h:outputText value="#{post.published}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText value="#{post.published}" rendered="#{pdBean.editable[post.id]}"/>
-                </h:column>
-                
-                <h:column>
-                    <f:facet name="header">Created by</f:facet>
-                    <h:outputText value="#{post.user.email}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText value="#{post.user.email}" rendered="#{pdBean.editable[post.id]}"/>
+                    <f:facet name="header">Club</f:facet>
+                    <h:outputText value="#{tournament.club.name}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.club.name}" rendered="#{tdBean.editable[tournament.id]}"/>
                 </h:column>
 
+                <h:column>
+                    <f:facet name="header">Category</f:facet>
+                    <h:outputText value="#{tournament.category.name}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.category.name}" rendered="#{tdBean.editable[tournament.id]}"/>
+                </h:column>
 
+                <h:column>
+                    <f:facet name="header">Current round</f:facet>
+                    <h:outputText value="#{tournament.currentRound.number}" rendered="#{not tdBean.editable[tournament.id]}"/>
+                    <h:inputText value="#{tournament.currentRound.number}" rendered="#{tdBean.editable[tournament.id]}"/>
+                </h:column>
 
+-->
                 <h:column>
                     <f:facet name="header"></f:facet>
                     <h:commandLink value="edit" rendered="#{not tdBean.editable[tournament.id]}">
@@ -155,10 +134,12 @@
                         <h:commandLink value="remove" rendered="#{tdBean.editable[tournament.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{tdBean.removeTournament(tournament)}"/>
                         </h:commandLink>
+                        <h:commandLink value="cancel" rendered="#{udBean.editable[tournament.id]}">
+                            <f:ajax execute="@form" render="@form" listener="#{tdBean.deselectOneEditable(tournament.id)}"/>
+                        </h:commandLink>
                     </h:panelGrid>
                 </h:column>
             </h:dataTable>
         </h:form>
-        -->
     </ui:composition>
 </html>

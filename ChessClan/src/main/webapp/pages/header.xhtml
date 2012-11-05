@@ -19,7 +19,10 @@
             <script type="text/javascript">
                 $('#headerLogo').live('click', function() {
                     window.location = "#{request.contextPath}";
-                });
+                });     
+                function showEditProfile(){
+                    $('#editContainer').load('userPages/editProfile.xhtml');
+                }
             </script>
 
             <h:panelGroup layout="block" class="header">
@@ -81,7 +84,6 @@
                         </h:panelGroup>
                     </sec:authorize>
                 </c:if>
-
             </h:panelGroup>
         </ui:composition>
     </h:body>

@@ -58,7 +58,7 @@ public class UserPostsBean implements Serializable {
 
     public void saveAndPublish() {
         if (validateContent() && validateTitle()) {
-            Post publishedPost = postBO.savePost(new Post(title, content, true, loginBean.getUser()));
+            Post publishedPost = postBO.savePost(new Post(title, content, loginBean.getUser()));
             if (publishedPost != null) {
                 this.postPublished = true;
                 this.userPosts.add(publishedPost);
@@ -71,7 +71,7 @@ public class UserPostsBean implements Serializable {
 
     public void save() {
         if (validateContent() && validateTitle()) {
-            Post savedPost = postBO.savePost(new Post(title, content, false, loginBean.getUser()));
+            Post savedPost = postBO.savePost(new Post(title, content, loginBean.getUser()));
             if (savedPost != null) {
                 this.postSaved = true;
                 this.userPosts.add(savedPost);
@@ -84,13 +84,11 @@ public class UserPostsBean implements Serializable {
 
     public void publishPost(Post post) {
         post.setDatePublished(Calendar.getInstance().getTime());
-        post.setPublished(true);
         postBO.savePost(post);
     }
 
     public void unPublishPost(Post post) {
         post.setDatePublished(null);
-        post.setPublished(false);
         this.allPosts.remove(post);
         postBO.savePost(post);
     }
