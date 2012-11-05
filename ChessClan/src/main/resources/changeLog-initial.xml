@@ -142,7 +142,6 @@
         <insert tableName="category">
             <column name="id" valueNumeric="1"/>
             <column name="name" value="Szarak"/>
-            <column name="player" value="wtf?"/>
         </insert>
 
     </changeSet>
