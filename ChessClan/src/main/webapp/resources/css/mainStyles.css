@@ -42,7 +42,7 @@ h2{
 
 .logo{
     display: inline-block;
-    background-image: url("logo.png.xhtml?ln=images");
+    background-image: url("logo.gif.xhtml?ln=images");
     background-repeat:no-repeat;
     background-position:left top;
     width:195px;
@@ -298,7 +298,7 @@ div#editContainer{
     padding: 0px;
 }
 
-#bdInput,#pInput{
+.regFix{
     margin-bottom: 5px;
 }
 
@@ -354,11 +354,14 @@ TABLE.panelGridClass TR TD select{
 .editInput1{
     width: 231px;
     height: 30px;
+    margin: none;
       
 }
 .editInput2{
     width: 345px;
     height: 30px;
+    margin: none;
+    border: none;
 }
 .editRow{
     height: 30px;
@@ -366,8 +369,22 @@ TABLE.panelGridClass TR TD select{
 .editBlue{
     background-color: #00AAE8;
 }
+.editGray{
+    background-color: #DFDDDA;
+}
+.editButton{
+    width:189px;
+    height: 30px;
+    color: white;
+    float: left;
+    border: none;
+    background: #353534;
+}
 TABLE.editTable{
+    color: white;
+    margin: none;
     width: 100%;
+    border: none;
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
@@ -375,4 +392,26 @@ TABLE.editTable{
     background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background-size:100px 100px;
+}
+TABLE.editTable tr{
+    height: 30px;
+    margin: none;
+}
+TABLE.editTable tr:nth-child(odd) td:nth-child(even){
+    background: #353534;
+    width: 286px;
+}
+/*niebieski*/
+TABLE.editTable tr:nth-child(odd) td:nth-child(odd){
+    background: #00AAE8; 
+    width: 186px;
+}
+/*szary*/
+TABLE.editTable tr:nth-child(even) td:nth-child(even){
+    background: #DFDDDA;
+    width: 286px;
+}
+TABLE.editTable tr:nth-child(even) td:nth-child(odd){
+    background: #353534;
+    
 }
