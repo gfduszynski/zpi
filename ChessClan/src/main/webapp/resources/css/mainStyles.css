@@ -9,7 +9,6 @@ body{
 
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
-
     background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
     -webkit-background-size: 200px 210px;
     background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
@@ -190,8 +189,9 @@ div#editContainer{
 }
 
 .error{
-    color: #57B2E0;
-    text-shadow:0px 0px 16px #00006D;
+    color: #FFA340;
+    font-weight: bold;
+    /* text-shadow:0px 0px 16px #E21E1E; */
 } 
 .link{
     color: #2C41B1;
@@ -315,16 +315,6 @@ div#editContainer{
     padding-right: 10px;
 }
 
-.seeAllPostsButton{
-    width:290px;
-    height:65px;
-    margin: -59px 0px 0px -5px;
-    background-color: black;
-    opacity: 0.8;
-    color:white;
-    border:0px;
-}
-
 .hiddenButton{
     display:none;
 }
@@ -337,4 +327,52 @@ div#editContainer{
 
 #latestPostsForm{
     height:100%;
+}
+
+TABLE.panelGridClass {
+    width: 100%;
+    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
+    -webkit-background-size: 200px 210px;
+    background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
+    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background-size:100px 100px;
+}
+TABLE.panelGridClass TR TD {
+    height: 25px;
+    margin: none;
+}
+TABLE.panelGridClass TR TD INPUT {
+    height: 25px;
+    margin: none;
+}
+TABLE.panelGridClass TR TD select{
+    height: 25px;
+    margin: 5px;
+}
+.editInput1{
+    width: 231px;
+    height: 30px;
+      
+}
+.editInput2{
+    width: 345px;
+    height: 30px;
+}
+.editRow{
+    height: 30px;
+}
+.editBlue{
+    background-color: #00AAE8;
+}
+TABLE.editTable{
+    width: 100%;
+    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
+    -webkit-background-size: 200px 210px;
+    background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
+    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    background-size:100px 100px;
 }
