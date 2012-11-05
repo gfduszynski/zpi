@@ -26,10 +26,10 @@ public class UserClubsBean {
 
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
-    @ManagedProperty(value = "#{loginBean.user}")
-    private User user;
+
     private List<Club> clubs;
     
+    @ManagedProperty(value = "#{loginBean.userClub}")
     private Club userClub;
 
     public UserClubsBean() {
@@ -37,12 +37,7 @@ public class UserClubsBean {
 
     @PostConstruct
     public void initialize() {
-        this.clubs = new ArrayList<Club>();
-        Iterator<Club> posts = clubBO.findAll().iterator();
-        while (posts.hasNext()) {
-            clubs.add(posts.next());
-        }
-        this.userClub = user.getUserClub();
+        this.clubs = clubBO.findAllWithMembers();
     }
 
     public void signOutFromClub() {
@@ -69,14 +64,6 @@ public class UserClubsBean {
 
     public void setClubs(List<Club> clubs) {
         this.clubs = clubs;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Club getUserClub() {

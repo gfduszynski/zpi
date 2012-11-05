@@ -5,9 +5,8 @@
 package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -15,6 +14,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.PostBO;
 import org.chessclan.dataTier.models.Post;
+import org.chessclan.dataTier.models.Post.PostLifeTime;
+import org.chessclan.dataTier.models.User;
 
 /**
  *
@@ -31,34 +32,43 @@ public class UserPostsBean implements Serializable {
     private boolean postPublished;
     private boolean postSaved;
     private boolean postWrong;
+    private int postlt;
     @ManagedProperty("#{PostBO}")
     PostBO postBO;
-    @ManagedProperty("#{loginBean}")
-    LoginBean loginBean;
+    @ManagedProperty("#{loginBean.user}")
+    User user;
 
     public UserPostsBean() {
         this.postPublished = false;
         this.postSaved = false;
         this.postWrong = false;
+        this.postlt = 1;
     }
 
     @PostConstruct
     public void initialize() {
-        this.userPosts = new ArrayList<Post>();
-        this.allPosts = new ArrayList<Post>();
-        Iterator<Post> posts = postBO.findAllPosts().iterator();
-        while (posts.hasNext()) {
-            allPosts.add(posts.next());
-        }
-        posts = postBO.findUserPosts(this.loginBean.getUser()).iterator();
-        while (posts.hasNext()) {
-            userPosts.add(posts.next());
-        }
+        this.allPosts = postBO.findAllPosts();
+        this.userPosts = postBO.findUserPosts(this.getUser());
     }
 
     public void saveAndPublish() {
         if (validateContent() && validateTitle()) {
-            Post publishedPost = postBO.savePost(new Post(title, content, loginBean.getUser()));
+            PostLifeTime plt = null;
+            switch (postlt) {
+                case 1:
+                    plt = PostLifeTime.WEEK;
+                    break;
+                case 2:
+                    plt = PostLifeTime.TWOWEEKS;
+                    break;
+                case 3:
+                    plt = PostLifeTime.THREEWEEKS;
+                    break;
+                default:
+                    plt = PostLifeTime.WEEK;
+                    break;
+            }
+            Post publishedPost = postBO.savePost(new Post(title, content, getUser(), new Date(), plt));
             if (publishedPost != null) {
                 this.postPublished = true;
                 this.userPosts.add(publishedPost);
@@ -71,7 +81,22 @@ public class UserPostsBean implements Serializable {
 
     public void save() {
         if (validateContent() && validateTitle()) {
-            Post savedPost = postBO.savePost(new Post(title, content, loginBean.getUser()));
+            PostLifeTime plt = null;
+            switch (postlt) {
+                case 1:
+                    plt = PostLifeTime.WEEK;
+                    break;
+                case 2:
+                    plt = PostLifeTime.TWOWEEKS;
+                    break;
+                case 3:
+                    plt = PostLifeTime.THREEWEEKS;
+                    break;
+                default:
+                    plt = PostLifeTime.WEEK;
+                    break;
+            }
+            Post savedPost = postBO.savePost(new Post(title, content, getUser(), null, plt));
             if (savedPost != null) {
                 this.postSaved = true;
                 this.userPosts.add(savedPost);
@@ -193,11 +218,19 @@ public class UserPostsBean implements Serializable {
         this.postWrong = postWrong;
     }
 
-    public LoginBean getLoginBean() {
-        return loginBean;
+    public int getPostlt() {
+        return postlt;
     }
 
-    public void setLoginBean(LoginBean loginBean) {
-        this.loginBean = loginBean;
+    public void setPostlt(int postlt) {
+        this.postlt = postlt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

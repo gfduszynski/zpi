@@ -7,6 +7,7 @@ package org.chessclan.businessTier.businessObjects.impl;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Club;
@@ -34,10 +35,12 @@ public class ClubBOImpl implements ClubBO {
         owner.setOwnedClub(c);
         return clubRepo.saveAndFlush(c);
     }
+
     @Transactional
     public Club joinClub(Club c) {
         return joinClub(c, umBO.getLoggedUser());
     }
+
     @Transactional
     public Club joinClub(Club c, User u) {
         u = umBO.findUserById(u.getId());
@@ -73,18 +76,28 @@ public class ClubBOImpl implements ClubBO {
     public Iterable<Club> findClubsById(Iterable<Integer> ids) {
         return clubRepo.findAll(ids);
     }
-    
+
     @Transactional
-    public Iterable<Club> findAll() {
+    public List<Club> findAll() {
         return clubRepo.findAll();
     }
-    
+
+    @Transactional
+    public List<Club> findAllWithMembers() {
+        List<Club> clubs = clubRepo.findAll();
+        for(Club c : clubs){
+            c.getUserSet();
+        }
+        return clubs;
+    }
+
     @Transactional
     public Iterable<Club> findAllWithOwners() {
         Iterable<Club> result = findAll();
         Iterator<Club> it = result.iterator();
-        while(it.hasNext())
+        while (it.hasNext()) {
             it.next().getOwner().getEmail();
+        }
         return result;
     }
 
@@ -101,6 +114,6 @@ public class ClubBOImpl implements ClubBO {
     }
 
     public Club findClubByName(String name) {
-        return clubRepo.findByName(name);    
+        return clubRepo.findByName(name);
     }
 }

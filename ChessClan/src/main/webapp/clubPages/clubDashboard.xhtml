@@ -58,8 +58,13 @@
                             </c:forEach> 
                         </c:if>
                         <h:selectOneListbox id="cats">
-                            <c:forEach items="#{crTmtBean.categories}" var="cat">
-                                <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat.id}" />
+                            <c:forEach items="#{crTmtBean.categories}" var="cat" varStatus="loop">
+                                <c:if test="#{loop.first}">
+                                    <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat.id}" />
+                                </c:if>
+                                <c:if test="#{not loop.first}">
+                                    <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat.id}" />
+                                </c:if>
                             </c:forEach>
                         </h:selectOneListbox>
                         <h:commandButton value="Dodaj">

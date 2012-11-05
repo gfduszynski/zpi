@@ -19,8 +19,8 @@ public interface PostBO {
     public void deletePost(Post p);
     public void deletePosts(Iterable <Post> posts);
     public void deleteAllPosts();
-    public Iterable<Post> findAllPosts();
-    public Iterable<Post> findAllPostsWithUsers();
+    public List<Post> findAllPosts();
+    public List<Post> findAllPostsWithUsers();
     public Iterable<Post> findAllPostsSelected(Iterable<Integer> iter);
     public Page<Post> findAllPosts(Pageable pgbl);
     public List<Post> findAllPublishedPosts();
@@ -33,9 +33,5 @@ public interface PostBO {
     public Post findOnePost(Integer id);
     public Post savePost(Post p);
     public Iterable<Post> savePosts(Iterable<Post> itrbl);
-       /* public Iterable<Post> findAllPostsSelected(Iterable<Integer> iter)
-    {
-        return postRepo.findAll(iter);
-    }*/
 
 }
