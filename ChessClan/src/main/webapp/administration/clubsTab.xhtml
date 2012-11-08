@@ -13,30 +13,39 @@
             </script>
             <h:panelGrid columns="4" rendered="#{cdBean.createNewClub}" id="newClubGrid">
                         <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
-                        <h:panelGrid columns="1" id="name"> 
-                            <h:outputText value="Pole wymagane." rendered=""/>
-                            <h:inputText id="inputname" value="#{cdBean.newclub.name}">
-                                <f:ajax event="blur" execute="name" render="newClubGrid" listener="#{cdBean.saveNewClub}"/>
+                        <h:panelGroup id="name">
+                            <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak.&lt;br/&gt;" styleClass="error" rendered="#{not cdBean.ncvalidation.get(0)}" escape="false"/>
+                            <h:inputText value="#{cdBean.newclub.name}" id="nInput">
+                            <f:ajax event="blur" execute="nInput" render="name" listener="#{cdBean.validateName(cdBean.newclub,cdBean.ncvalidation)}"/>
                             </h:inputText>
-                        </h:panelGrid>
-                        <h:outputLabel for="owner" value="Owner" class="order-table-odd-row"/>
-                        <h:selectOneMenu id="owner" value="#{cdBean.ownerEmail}">
-                            <f:selectItems value="#{cdBean.ownerList}"/>
+                        </h:panelGroup>
+                        
+                        
+                        <h:outputLabel for="owner" value="Owner"/>
+                        <h:selectOneMenu id="oInput" value="#{cdBean.ownerEmail}">
+                            <f:selectItems value="#{cdBean.ownerList}" var="olist" itemValue="#{olist}" itemLabel="#{olist.label}"/>
                         </h:selectOneMenu>
-                        <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
-                        <h:inputText id="creation-date" value="#{cdBean.newclub.creationDate}" class="dateForm input-edit-row">
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
-                        </h:inputText>
-                        <h:outputLabel for="description" value="Description" class="order-table-odd-row"/>
-                        <h:inputTextarea id="description" value="#{cdBean.newclub.description}" class="order-table-odd-row"/>
-                        <h:commandButton value="save club" rendered="#{cdBean.createNewClub}">
-                            <f:ajax listener="#{cdBean.saveNewClub}" render="@form" execute="@form"/>
+             
+                        <h:outputLabel for="creation-date" value="Creation date"/>
+                        <h:panelGroup id="creation-date">
+                            <h:outputText value="Pole wymagane.&lt;br/&gt;" styleClass="error" rendered="#{not cdBean.ncvalidation.get(1)}" escape="false"/>
+                            <h:inputText value="#{cdBean.newclub.creationDate}" id="cdInput" class="dateForm">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                                <f:ajax event="change" execute="cdInput" render="creation-date" listener="#{cdBean.validateCreationDate(cdBean.newclub,cdBean.ncvalidation)}"/>
+                            </h:inputText>
+                        </h:panelGroup>
+
+                        <h:outputLabel for="description" value="Description"/>
+                        <h:inputTextarea id="description" value="#{cdBean.newclub.description}"/>
+                        
+                        <h:commandButton value="save club" rendered="#{cdBean.createNewClub and cdBean.ncvalidation.get(0) and cdBean.ncvalidation.get(1)}">
+                            <f:ajax listener="#{cdBean.saveNewClub()}" render="@form" execute="@form"/>
                         </h:commandButton>
+                        
                         <h:commandButton value="cancel" rendered="#{cdBean.createNewClub}">
                             <f:ajax listener="#{cdBean.cancelNewClub}" render="@form" execute="@form"/>
                         </h:commandButton>                              
             </h:panelGrid>
-
             
             <div style="padding:10px 0px 10px 0px;" >
                 <h:commandButton value="add new club" rendered="#{not cdBean.createNewClub}">
@@ -80,13 +89,20 @@
                 <h:column>
                     <f:facet name="header">Owner</f:facet>
                     <h:outputText value="#{club.owner.email}" rendered="#{not cdBean.editable[club.id]}"/>
-                    <h:inputText value="#{club.owner.email}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                    <h:selectOneMenu id="oInput" rendered="#{cdBean.editable[club.id]}" value="#{club.owner.email}">
+                            <f:selectItems value="#{cdBean.ownerList}" var="olist" itemValue="#{olist}" itemLabel="#{olist.label}"/>
+                    </h:selectOneMenu>
                 </h:column>
                 
                 <h:column>
                     <f:facet name="header">Name</f:facet>
                     <h:outputText value="#{club.name}" rendered="#{not cdBean.editable[club.id]}"/>
-                    <h:inputText value="#{club.name}" rendered="#{cdBean.editable[club.id]}" class="input-edit-row"/>
+                    <h:panelGroup id="cname" rendered="#{cdBean.editable[club.id]}">
+                        <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak." styleClass="error" rendered="#{not cdBean.getClubValidation(club.id).get(0)}" escape="false"/>
+                        <h:inputText value="#{club.name}" id="cnInput">
+                            <f:ajax event="blur" execute="cnInput" render="cname" listener="#{cdBean.validateName(club,cdBean.validation[club.id])}"/>
+                        </h:inputText>
+                    </h:panelGroup>
                 </h:column>
 
                 <h:column>
@@ -94,15 +110,19 @@
                     <h:outputText value="#{club.creationDate}" rendered="#{not cdBean.editable[club.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
-                    <h:inputText value="#{club.creationDate}" rendered="#{cdBean.editable[club.id]}" class="dateForm input-edit-row">
-                        <f:convertDateTime pattern="dd-MM-yyyy" />
-                    </h:inputText>
+                    <h:panelGroup id="ccd" rendered="#{cdBean.editable[club.id]}">
+                            <h:outputText value="Pole wymagane.&lt;br/&gt;" styleClass="error" rendered="#{not cdBean.getClubValidation(club.id).get(1)}" escape="false"/>
+                            <h:inputText value="#{club.creationDate}" id="ccdInput" class="dateForm">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                                <f:ajax event="change" execute="ccdInput" render="ccd" listener="#{cdBean.validateCreationDate(club,cdBean.validation[club.id])}"/>
+                            </h:inputText>
+                    </h:panelGroup>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Description</f:facet>
                     <h:outputText value="#{club.description}" rendered="#{not cdBean.editable[club.id]}"/>
-                    <h:inputText value="#{club.description}" rendered="#{cdBean.editable[club.id]}"/>
+                    <h:inputTextarea value="#{club.description}" rendered="#{cdBean.editable[club.id]}"/>
                 </h:column>
 
 
