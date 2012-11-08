@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.Transient;
+import org.apache.commons.lang.RandomStringUtils;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
@@ -79,7 +80,7 @@ public class UsersDashboardBean implements Serializable {
     }
 
     public void updateUser(User user,List<Boolean> l) {
-        if(validateHasNotErrors(l)){
+        if(validateHasNotErrors(user, l, true)){
         umBO.saveUser(user);
         umBO.encodePassword(user);
         editable.put(user.getId(), false);
@@ -88,21 +89,20 @@ public class UsersDashboardBean implements Serializable {
     }
     
     public void saveNewUser(List<Boolean> l) {
-        //if(validateHasNotErrors(l)){
+        if(validateHasNotErrors(newuser,l, false)){
+        newuser.setPassword(umBO.encodePassword(newuser).getEmail());
         umBO.saveUser(newuser);
-        umBO.encodePassword(newuser);
         umBO.assignRole(newuser.getId(), Role.Type.ADMIN);
         editable.put(newuser.getId(), false);
         checked.put(newuser.getId(), false);
         createNewUser = false;
         users.add(newuser);
-        //}
+        }
     }
 
     public void addNewUser() {
-        newuser = new User("Login", "E-mail", "Password", "Name", "Last Name", null, new Date());
+        newuser = new User("", "", "", "", "", new Date(), new Date());
         createNewUser = true;
-        //first name, last name, valid e-mail, not invalid email, not occupied email, login, Password, birth date, creation date, has NOT errors
         nuvalidation = Arrays.asList(true, true, true, true, true, true, true, true, true);
        }
     
@@ -139,10 +139,21 @@ public class UsersDashboardBean implements Serializable {
     }
     
     
-    public boolean validateEmail    (User u, List<Boolean> l)
+    public boolean validateEmail    (User u, List<Boolean> l, Boolean registered)
     {   
         matcher = pattern.matcher(u.getEmail());
+        if(registered)
+        {
+            if(u.getEmail().equals(umBO.findUserById(u.getId()).getEmail()))
+            {
+                l.set(2, true);
+                l.set(3, true);
+                l.set(4, true);
+                return true;
+            }
+        }
         if (umBO.isEmailRegistered(u.getEmail())) {
+            
             l.set(2, false);
             l.set(3, true);
             l.set(4, false);
@@ -162,9 +173,17 @@ public class UsersDashboardBean implements Serializable {
         }
     }
     
-    public boolean validateLogin(User u, List<Boolean> l) {
+    public boolean validateLogin(User u, List<Boolean> l, Boolean registered) {
+        if(registered)
+        {
+            if(u.getLogin().equals(umBO.findUserById(u.getId()).getLogin()))
+            {
+                l.set(5, true);
+                return true;
+            }
+        }
         if (u.getLogin() != null) {
-            if (u.getLogin().length() > 4 && umBO.findUserByLogin(u.getLogin())!=null) {
+            if (u.getLogin().length() > 4 && umBO.findUserByLogin(u.getLogin())==null) {
                 l.set(5,true);
                 return true;
             } else {
@@ -203,15 +222,14 @@ public class UsersDashboardBean implements Serializable {
         }
     }
     
-    public boolean validateHasNotErrors(List<Boolean> l)
-    {
-        List<Boolean> temp = l.subList(0, 8);
-        if(temp.contains(false))
+    public boolean validateHasNotErrors(User u, List<Boolean> l, Boolean r)
+    {   
+        if(validateFirstName(u,l)&&validateLastName(u,l)&&validateEmail(u,l,r)&&validateLogin(u,l,r)&&validatePassword(u,l)&&validateBirthDate(u,l))
         {
-            l.set(8, false);
-            return false;
+            l.set(8, true);
+            return true;
         }
-        l.set(8, true);
+        l.set(8, false);
         return false;
     }
     
@@ -290,6 +308,7 @@ public class UsersDashboardBean implements Serializable {
     }
     
     public void deselectOneEditable(int id){
+           users.set(id-1, umBO.findUserById(id));
            editable.put(id, false);
     }
     
@@ -394,11 +413,13 @@ public class UsersDashboardBean implements Serializable {
     public void saveSelected()
     {
         for(int i=0;i<users.size();i++){
+            if(validateHasNotErrors(users.get(i),validation.get(users.get(i).getId()),true)){
             if(checked.get(users.get(i).getId())) {
                 editable.put(users.get(i).getId(),false);
                 checked.put(users.get(i).getId(), false);
                 umBO.saveUser(users.get(i));
                 umBO.encodePassword(users.get(i));
+                }
             }
         }
         deletable = false;
@@ -497,5 +518,16 @@ public class UsersDashboardBean implements Serializable {
     public void setValidation(Map<Integer, List<Boolean>> validation)
     {
         this.validation = validation;
+    }
+    
+    
+    public List<Boolean> getUserValidation(Integer id)
+    {
+        return this.validation.get(id);
+    }
+    
+    public void setUserValidation(Integer id, List<Boolean> l)
+    {
+        this.validation.put(id,l);
     }
 }

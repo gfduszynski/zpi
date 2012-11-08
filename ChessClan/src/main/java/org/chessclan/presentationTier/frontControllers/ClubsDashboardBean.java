@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
@@ -34,6 +30,8 @@ public class ClubsDashboardBean implements Serializable {
     private Boolean checkAll;
     private Boolean hasChecked;
     private String ownerEmail;
+    private List<Boolean> ncvalidation;
+    private Map<Integer, List<Boolean>> validation;
     private ArrayList<SelectItem> ownerList;
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO usBO;
@@ -53,6 +51,7 @@ public class ClubsDashboardBean implements Serializable {
     
     @PostConstruct
     public void initialize() {
+        this.validation = new HashMap<Integer, List<Boolean>>();
         this.clubs = new ArrayList<Club>();
         this.checked = new HashMap<Integer, Boolean>();
         this.editable = new HashMap<Integer, Boolean>();
@@ -62,6 +61,7 @@ public class ClubsDashboardBean implements Serializable {
             clubs.add(tmp);
             checked.put(tmp.getId(), false);
             editable.put(tmp.getId(), false);
+            validation.put(tmp.getId(), Arrays.asList(true, true, true, false));
         }
         this.checkAll = false;
         this.deletable = false; 
@@ -69,12 +69,50 @@ public class ClubsDashboardBean implements Serializable {
         getOwnerList();
     }
     
+    public Boolean validateName(Club cl, List<Boolean> l)
+    {    
+        if (cl.getName() != null) {
+            if (cl.getName().length() > 0) {
+                l.set(0, true);
+                return true;
+            } else {
+                l.set(0, false);
+                return false;
+            }
+        } else {
+            l.set(0, false);
+            return false;
+        }
+    }
     
-      public ArrayList<SelectItem> getOwnerList(){
+    
+    public Boolean validateCreationDate(Club cl, List<Boolean> l)
+    {    
+        if (cl.getCreationDate() != null) {
+            l.set(1, true);
+            return true;
+        } else {
+            l.set(1, false);
+            return false;
+        }
+    }
+    
+    public boolean validateHasNotErrors(Club c, List<Boolean> l)
+    {
+        if(validateName(c,l)&&validateCreationDate(c,l))
+        {
+            l.set(2, true);
+            return true;
+        }
+        l.set(2, false);
+        return false;
+    }
+    
+     public ArrayList<SelectItem> getOwnerList()
+      {
          ownerList = new ArrayList<SelectItem>();
          Iterable<User> user =  usBO.findAll();
          Iterator<User> iterator = user.iterator();
-         ownerList.add(new SelectItem(null,"Select One…"));
            while(iterator.hasNext()) {
             User u = iterator.next();
             ownerList.add(new SelectItem(u.getEmail(), u.getEmail()));
@@ -132,12 +170,27 @@ public class ClubsDashboardBean implements Serializable {
            editable.put(id, true);
     }
     
+    public void refreshList(){
+        clubs.clear();
+        Iterator<Club> clb = clBO.findAllWithOwners().iterator();
+        while(clb.hasNext()){
+            clubs.add(clb.next());}
+    }
+    
     public void deselectOneEditable(int id){
-           editable.put(id, false);
+        refreshList();
+        editable.put(id, false);
     }
     
     public Map<Integer, Boolean> getEditable() {
         return editable;
+    }
+    public void setOwnerEmail(String ownerEmail){
+        this.ownerEmail=ownerEmail;
+    }
+    
+    public String getOwnerEmail() {
+        return this.ownerEmail;
     }
 
     public void setEditable(Map<Integer, Boolean> editable) {
@@ -234,10 +287,12 @@ public class ClubsDashboardBean implements Serializable {
     public void saveSelected()
     {
         for(int i=0;i<clubs.size();i++){
+            if(validateHasNotErrors(clubs.get(i), validation.get(clubs.get(i).getId()))){
             if(checked.get(clubs.get(i).getId())) {
                 editable.put(clubs.get(i).getId(),false);
                 checked.put(clubs.get(i).getId(), false);
                 clBO.saveClub(clubs.get(i));
+            }
             }
         }
         deletable = false;
@@ -264,23 +319,14 @@ public class ClubsDashboardBean implements Serializable {
         this.newclub = c;
     }
     
-    public String getOwnerEmail()
-    {
-        return ownerEmail;
-    }
-    
-    public void setOwnerEmail(String ownerEmail)
-    {
-        this.ownerEmail = ownerEmail;
-    }
-    
     public void saveNewClub() {
+           if(validateHasNotErrors(newclub,ncvalidation)){
         newclub.setOwner(usBO.findUserByEmail(ownerEmail));
         clBO.saveClub(newclub);
         clubs.add(newclub);
         editable.put(newclub.getId(), false);
         checked.put(newclub.getId(), false);
-        createNewClub = false;
+        createNewClub = false;}
     }
     
     public void updateClub(Club club) {
@@ -297,6 +343,8 @@ public class ClubsDashboardBean implements Serializable {
     
     public void addNewClub() {
         newclub = new Club("Club name", new Date(), usBO.getLoggedUser(), " Club description");
+        ncvalidation = new ArrayList<Boolean>();
+        ncvalidation = Arrays.asList(true, true, true, false);
         createNewClub = true;
     }
     
@@ -312,5 +360,35 @@ public class ClubsDashboardBean implements Serializable {
     public void setHasChecked(Boolean hasChecked)
     {
         this.hasChecked = hasChecked;
+    }
+    
+    public List<Boolean> getNcvalidation()
+    {
+        return this.ncvalidation;
+    }
+    
+    public void setNcvalidation(List<Boolean> ncvalidation)
+    {
+        this.ncvalidation = ncvalidation;
+    }
+    
+    public Map<Integer, List<Boolean>> getValidation()
+    {
+        return this.validation;
+    }
+    
+    public void setValidation(Map<Integer, List<Boolean>> validation)
+    {
+        this.validation = validation;
+    }
+
+    public List<Boolean> getClubValidation(Integer id)
+    {
+        return this.validation.get(id);
+    }
+    
+    public void setClubValidation(Integer id, List<Boolean> l)
+    {
+        this.validation.put(id,l);
     }
 }
