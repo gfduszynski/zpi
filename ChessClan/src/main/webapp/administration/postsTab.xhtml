@@ -12,21 +12,39 @@
                 });
             </script>
             <h:panelGrid columns="4" rendered="#{pdBean.createNewPost}">
-                <h:outputLabel for="title" value="Title" class="order-table-odd-row"/>
-                <h:inputText id="title" value="#{pdBean.newpost.title}" />
-                <h:outputLabel for="content" value="Content" class="order-table-odd-row"/>
-                <h:inputTextarea id="content" value="#{pdBean.newpost.content}" />
-                <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
-                <h:inputText id="creation-date" value="#{pdBean.newpost.dateCreated}" class=" dateForm  input-edit-row">
+                <h:outputLabel for="title" value="Title"/>
+                <h:panelGroup id="title">
+                    <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{not pdBean.npvalidation.get(0)}" escape="false"/>
+                    <h:inputText value="#{pdBean.newpost.title}" id="titleInput">
+                        <f:ajax event="blur" execute="titleInput" render="title" listener="#{pdBean.validateTitle(pdBean.newpost,pdBean.npvalidation)}"/>
+                    </h:inputText>
+                </h:panelGroup>
+
+                <h:outputLabel for="content" value="Content"/> 
+                <h:panelGroup id="content">
+                    <h:outputText value="Pole wymagane, musi zawierać przynajmniej 30 znaków.&lt;br/&gt;" styleClass="error" rendered="#{not pdBean.npvalidation.get(1)}" escape="false"/>
+                    <h:inputTextarea value="#{pdBean.newpost.content}" id="contentInput">
+                        <f:ajax event="blur" execute="contentInput" render="content" listener="#{pdBean.validateContent(pdBean.newpost,pdBean.npvalidation)}"/>
+                    </h:inputTextarea>
+                </h:panelGroup>
+
+
+
+                <h:outputLabel for="creation-date" value="Creation date"/>
+                <h:outputText id="creation-date" value="#{pdBean.newpost.dateCreated}">
                     <f:convertDateTime pattern="dd-MM-yyyy" />
-                </h:inputText>
-                <h:outputLabel for="expires-after" value="Expires after" class="order-table-odd-row"/>
+                </h:outputText>
+
+
+                <h:outputLabel for="expires-after" value="Expires after"/>
                 <h:selectOneMenu id="expires-after" value="#{pdBean.newExpiresAfter}">
                     <f:selectItem itemValue="7" itemLabel="7 days" />
                     <f:selectItem itemValue="14" itemLabel="14 days" />
                     <f:selectItem itemValue="28" itemLabel="28 days" />
                 </h:selectOneMenu>
-                <h:commandButton value="save post" rendered="#{pdBean.createNewPost}">
+
+
+                <h:commandButton value="save post" rendered="#{pdBean.createNewPost and pdBean.npvalidation.get(0) and pdBean.npvalidation.get(1)}">
                     <f:ajax listener="#{pdBean.saveNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
                 <h:commandButton value="publish" rendered="#{pdBean.createNewPost}">
@@ -79,13 +97,23 @@
                 <h:column>
                     <f:facet name="header">Title</f:facet>
                     <h:outputText value="#{post.title}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputText value="#{post.title}" rendered="#{pdBean.editable[post.id]}" class="input-edit-row"/>
+                    <h:panelGroup id="posttitle" rendered="#{pdBean.editable[post.id]}">
+                            <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki." styleClass="error" rendered="#{not pdBean.getPostValidation(post.id).get(0)}" escape="false"/>
+                            <h:inputText value="#{post.title}" id="ptInput">
+                            <f:ajax event="blur" execute="ptInput" render="posttitle" listener="#{pdBean.validateTitle(post,pdBean.validation[post.id])}"/>
+                            </h:inputText>
+                    </h:panelGroup>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Content</f:facet>
                     <h:outputText value="#{post.content}" rendered="#{not pdBean.editable[post.id]}"/>
-                    <h:inputTextarea  value="#{post.content}" rendered="#{pdBean.editable[post.id]}"/>
+                    <h:panelGroup id="postcontent" rendered="#{pdBean.editable[post.id]}">
+                            <h:outputText value="Pole wymagane, musi zawierać przynajmniej 30 znaków." styleClass="error" rendered="#{not pdBean.getPostValidation(post.id).get(1)}" escape="false"/>
+                            <h:inputTextarea value="#{post.content}" id="pcInput">
+                            <f:ajax event="blur" execute="pcInput" render="postcontent" listener="#{pdBean.validateContent(post,pdBean.validation[post.id])}"/>
+                            </h:inputTextarea>
+                    </h:panelGroup>
                 </h:column>
 
                 <h:column>
@@ -116,12 +144,12 @@
                         <f:selectItem itemValue="28" itemLabel="28 days" />
                     </h:selectOneMenu>
                 </h:column>
-                
+
                 <h:column>
                     <f:facet name="header">Created by</f:facet>
                     <h:outputText value="#{post.user.email}"/>
                 </h:column>
-                
+
                 <h:column>
                     <f:facet name="header"></f:facet>
                     <h:panelGrid columns="1" class="buttons-column">
