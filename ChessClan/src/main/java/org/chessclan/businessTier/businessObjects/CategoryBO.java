@@ -4,6 +4,7 @@
  */
 package org.chessclan.businessTier.businessObjects;
 
+import java.util.List;
 import org.chessclan.dataTier.models.Category;
 
 /**
@@ -15,7 +16,7 @@ public interface CategoryBO{
     public Iterable<Category> saveCategories(Iterable<Category> c);
     public Category findCategoryById(int id);
     public Iterable<Category> findCategoriesById(Iterable<Integer> ids);
-    public Iterable<Category> findAll();
+    public List<Category> findAll();
     public void deleteCategory(int id);
     public void deleteCategory(Category c);
     public void deleteCategories(Iterable<Category> cs);

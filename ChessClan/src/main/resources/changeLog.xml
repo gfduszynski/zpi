@@ -98,9 +98,6 @@
             <column name="content" type="varchar(2048)">
                 <constraints nullable="false"/>
             </column>
-            <column name="published" type="boolean" defaultValueBoolean="false">
-                <constraints nullable="false"/>
-            </column>
             <column name="date_created" type="date">
                 <constraints nullable="false"/>
             </column>            
@@ -140,6 +137,9 @@
         <createTable tableName="tournaments">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
             </column>         
             <column name="name" type="varchar(256)">
                 <constraints nullable="false"/>
@@ -173,9 +173,6 @@
             </column>
             <column name="name" type="varchar(256)">
                 <constraints nullable="false" /> 
-            </column>
-            <column name="player" type="varchar(512)">
-                <constraints nullable="false" />
             </column>
         </createTable>
         

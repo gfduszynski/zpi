@@ -27,6 +27,7 @@ public interface ClubBO{
     public Club saveClub(Club c);
     public Iterable<Club> saveClubs(Iterable<Club> c);
     public Club findClubById(int id);
+    public Club findClubByName(String name);
     public Iterable<Club> findClubsById(Iterable<Integer> ids);
     public Iterable<Club> findAll();
     public Iterable<Club> findAllWithOwners();

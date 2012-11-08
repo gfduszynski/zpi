@@ -8,38 +8,46 @@
 
     <h:body>
         <ui:composition>
-            <h:outputScript library="js" name="trunk8.js"/>
+            <h:outputScript library="js" name="jquery.dotdotdot.js"/>
+            <h:outputScript library="js" name="bootstrap.js"/>
+            <h:outputStylesheet library="css" name="bootstrap.css"/>
             <h:form prependId="false" id="latestPostsForm">
                 <script>
-                    $(document).ready(function() {
-                        $('.ellipsisTmp').trunk8({lines: 2});
-                    });
-
                     $('.five').hover(
                             function() {
                                 $('.seeAllPostsButton').slideToggle();
                             }
                     );
+                    $(document).ready(function() {
+                        $('.ellipsis').dotdotdot({ ellipsis: '... '});
+                    });
                 </script>
-                <h3>Najnowsze ogłoszenia</h3>
-                <c:forEach items="#{lpBean.latestPosts}" var="post" varStatus="loop">
-                    <h:panelGroup layout="block">
-                        <h:outputText value="#{post.title}" styleClass="postHeader"/>
-                        <h:outputText value="#{post.datePublished}" class="postTitleDate"/>
-                    </h:panelGroup>
-                    <div id="ellipsis#{post.id}">#{post.content}</div>
-                    <c:if test="${not loop.last}">
-                        <hr/> 
-                    </c:if>
-
-                    <script>
-                        $(document).ready(function() {
-                            $('#ellipsis#{post.id}').trunk8({lines: 2,fill:'&hellip; <a href="#{request.contextPath}/posts/#{post.id}" class="link">przeczytaj całość</a>'});
-                        });
-                    </script>
-                </c:forEach>
+                <div class="postsHeader">
+                    <h:outputText value="Najnowsze ogłoszenia"/>
+                </div>
+                <div id="myCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        <c:forEach items="#{lpBean.carousel}" var="postPage" varStatus="outerLoop">
+                            <h:panelGroup layout="block" class="#{outerLoop.first?'active':''} item">
+                                <c:forEach items="#{postPage}" var="post" varStatus="loop">
+                                    <h:panelGroup layout="block" class="postContainer">
+                                        <h:outputText value="#{post.title}" styleClass="postHeader"/>
+                                        <h:outputText value="#{post.datePublished}" class="postTitleDate"/>
+                                        <h:panelGroup class="ellipsis">#{post.content}</h:panelGroup>
+                                    </h:panelGroup>
+<!--                                    <c:if test="${not loop.last}">
+                                        <hr/> 
+                                    </c:if>-->
+                                </c:forEach>
+                            </h:panelGroup>
+                        </c:forEach>
+                    </div>
+                    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                </div>
                 <h:commandButton value="Zobacz wszystkie" class="seeAllPostsButton hiddenButton" onclick="$(location).attr('href', '#{request.contextPath}/posts');" type="button"/>
             </h:form>
+
         </ui:composition>
 
     </h:body>

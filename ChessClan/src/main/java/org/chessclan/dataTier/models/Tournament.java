@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +35,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "tournaments")
 public class Tournament implements Serializable {
+    public enum State {
+        NOT_STARTED, STARTED, FINISHED;
+    }
     public class Exists extends Exception {}
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,6 +45,11 @@ public class Tournament implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "state")
+    @Enumerated(EnumType.ORDINAL)
+    private State state;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 256)
@@ -98,6 +108,14 @@ public class Tournament implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public String getName() {

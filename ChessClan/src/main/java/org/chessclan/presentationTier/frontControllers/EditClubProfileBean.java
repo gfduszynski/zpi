@@ -24,14 +24,12 @@ import org.chessclan.dataTier.models.User;
 @ViewScoped
 public class EditClubProfileBean implements Serializable {
 
-    @ManagedProperty("#{loginBean}")
-    private LoginBean loginBean;
     @ManagedProperty("#{UserManagementBO}")
     UserManagementBO umBO;
-    @ManagedProperty("#{ClubBO}")
-    ClubBO clubBO;
     @ManagedProperty(value = "#{loginBean.user}")
     private User user;
+    @ManagedProperty("#{ClubBO}")
+    ClubBO clubBO;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private Pattern pattern;
     private Matcher matcher;
@@ -49,9 +47,11 @@ public class EditClubProfileBean implements Serializable {
     private String password;
     private boolean actSucceded;
     private boolean regError;
+    private boolean actCanceled;
 
     public EditClubProfileBean() {
         pattern = Pattern.compile(EMAIL_PATTERN);
+        this.actCanceled = false;
     }
 
     @PostConstruct
@@ -102,7 +102,7 @@ public class EditClubProfileBean implements Serializable {
                 return false;
             }
         } else {
-            if (!this.email.equals(loginBean.getUser().getEmail())) {
+            if (!this.email.equals(getUser().getEmail())) {
                 this.validEmail = false;
                 this.invalidEmail = false;
                 this.occupiedEmail = true;
@@ -117,8 +117,9 @@ public class EditClubProfileBean implements Serializable {
         }
     }
 
-    public void updatePassField() {
+    public String updatePassField() {
         this.invalidP = false;
+        return "changed";
     }
 
     public boolean validatePassword() {
@@ -136,49 +137,47 @@ public class EditClubProfileBean implements Serializable {
         }
     }
 
-    public void updateClub() {
+    public String updateClub() {
 
         boolean val1 = checkClubName();
         boolean val2 = validateBD();
         boolean val3 = validateEmail();
         if (val1 && val2 && val3) {
             if (this.updatePassword) {
-                loginBean.getUser().setEmail(email);
-                loginBean.getUser().setPassword(password);
-                loginBean.getUser().getOwnedClub().setCreationDate(creationDate);
-                loginBean.getUser().setLogin(email);
-                loginBean.getUser().getOwnedClub().setName(clubName);
-                loginBean.getUser().getOwnedClub().setDescription(clubDesc);
+                getUser().setEmail(email);
+                getUser().setPassword(password);
+                getUser().getOwnedClub().setCreationDate(creationDate);
+                getUser().setLogin(email);
+                getUser().getOwnedClub().setName(clubName);
+                getUser().getOwnedClub().setDescription(clubDesc);
                 user = umBO.encodePassword(user);
+                clubBO.saveClub(getUser().getOwnedClub());
                 umBO.saveUser(user);
 
             } else {
-                loginBean.getUser().setEmail(email);
-                loginBean.getUser().getOwnedClub().setCreationDate(creationDate);
-                loginBean.getUser().setLogin(email);
-                loginBean.getUser().getOwnedClub().setName(clubName);
-                loginBean.getUser().getOwnedClub().setDescription(clubDesc);
-                umBO.saveUser(loginBean.getUser());
+                getUser().setEmail(email);
+                getUser().getOwnedClub().setCreationDate(creationDate);
+                getUser().setLogin(email);
+                getUser().getOwnedClub().setName(clubName);
+                getUser().getOwnedClub().setDescription(clubDesc);
+                clubBO.saveClub(getUser().getOwnedClub());
+                umBO.saveUser(getUser());
 
             }
             this.actSucceded = true;
         } else {
             this.regError = true;
         }
-
+        return "update";
     }
 
     private boolean validate(final String emailAddress) {
         matcher = pattern.matcher(emailAddress);
         return matcher.matches();
     }
-
-    public LoginBean getLoginBean() {
-        return loginBean;
-    }
-
-    public void setLoginBean(LoginBean loginBean) {
-        this.loginBean = loginBean;
+    
+    public void cancelUpdate(){
+        this.actCanceled = true;
     }
 
     public UserManagementBO getUmBO() {
@@ -187,14 +186,6 @@ public class EditClubProfileBean implements Serializable {
 
     public void setUmBO(UserManagementBO umBO) {
         this.umBO = umBO;
-    }
-
-    public ClubBO getClubBO() {
-        return clubBO;
-    }
-
-    public void setClubBO(ClubBO clubBO) {
-        this.clubBO = clubBO;
     }
 
     public User getUser() {
@@ -316,4 +307,22 @@ public class EditClubProfileBean implements Serializable {
     public void setRegError(boolean regError) {
         this.regError = regError;
     }
+
+    public ClubBO getClubBO() {
+        return clubBO;
+    }
+
+    public void setClubBO(ClubBO clubBO) {
+        this.clubBO = clubBO;
+    }
+
+    public boolean isActCanceled() {
+        return actCanceled;
+    }
+
+    public void setActCanceled(boolean actCanceled) {
+        this.actCanceled = actCanceled;
+    }
+    
+    
 }

@@ -77,7 +77,8 @@ public class PostBOImpl implements PostBO{
     
     public List<Post> findAllPublishedPosts()
     {
-        return postRepo.findByPublishedTrue();
+        Calendar cal = Calendar.getInstance();
+        return postRepo.findByDateExpiresAfterAndDatePublishedBefore(cal.getTime(), cal.getTime());
     }
     
     
@@ -98,15 +99,17 @@ public class PostBOImpl implements PostBO{
     
     public Page<Post> findLatestPublishedPosts(Pageable pgbl)
     {
-         return postRepo.findByDateExpiresAfterAndPublishedTrue(new Date(), pgbl);
+         Calendar cal = Calendar.getInstance();
+         return postRepo.findByDateExpiresAfterAndDatePublishedBefore(cal.getTime(), cal.getTime(), pgbl);
     }
     
     
     @Transactional
     public List<Post> findLatestPublishedPosts(int numberOfPosts)
     {
+         Calendar cal = Calendar.getInstance();
          List<Post> postList;
-         postList = postRepo.findByDateExpiresAfterAndPublishedTrue(new Date());
+         postList = postRepo.findByDateExpiresAfterAndDatePublishedBefore(cal.getTime(), cal.getTime());
          if(postList.size()> numberOfPosts) {
             postList = postList.subList(0, numberOfPosts);
         }
@@ -135,9 +138,6 @@ public class PostBOImpl implements PostBO{
     
     public Post savePost(Post p)
     {
-        if(p.getPublished()){
-            p.setDatePublished(Calendar.getInstance().getTime());
-        }
         return postRepo.save(p);
     }
     

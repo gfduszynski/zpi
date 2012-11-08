@@ -4,6 +4,7 @@
  */
 package org.chessclan.businessTier.businessObjects.impl;
 
+import java.util.List;
 import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.repositories.CategoryRepository;
@@ -36,7 +37,7 @@ public class CategoryBOImpl implements CategoryBO{
         return categoryRepo.findAll(ids);
     }
     
-    public Iterable<Category> findAll(){
+    public List<Category> findAll(){
         return categoryRepo.findAll();
     }
     
