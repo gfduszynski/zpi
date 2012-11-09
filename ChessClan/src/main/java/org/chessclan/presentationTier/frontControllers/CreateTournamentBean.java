@@ -4,8 +4,9 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -21,7 +22,7 @@ import org.chessclan.dataTier.models.Category;
  */
 @ManagedBean(name = "crTmtBean")
 @ViewScoped
-public class CreateTournamentBean {
+public class CreateTournamentBean implements Serializable{
 
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
@@ -31,16 +32,39 @@ public class CreateTournamentBean {
     private String tmtDescription;
     private Date tmtDate;
     private List<Category> categories;
-    private List<Category> tmtCategories;
+    private LinkedList<Category> tmtCategories;
     private Category selectedCat;
+    private boolean tmtValid;
 
     public CreateTournamentBean() {
-        this.tmtCategories = new ArrayList<Category>();
+        this.tmtCategories = new LinkedList<Category>();
+        this.tmtValid = true;
     }
 
     @PostConstruct
     public void initialize() {
         this.categories = ctBO.findAll();
+        this.selectedCat = categories.get(0);
+    }
+    
+    public void addCategory(){
+        System.out.println("Category trying to add: "+selectedCat.getName());
+        if(!tmtCategories.contains(this.selectedCat)) {
+            this.tmtCategories.add(selectedCat);
+        }
+    }
+    
+    public void saveTournament(){
+        
+    }
+    
+    public boolean validateTournamentName(){
+        if(this.tmtName.length() > 1){
+            this.tmtValid = true;
+        }else{
+            this.tmtValid = false;
+        }
+        return tmtValid;
     }
 
     public TournamentBO getTmBO() {
@@ -83,11 +107,11 @@ public class CreateTournamentBean {
         this.categories = categories;
     }
 
-    public List<Category> getTmtCategories() {
+    public LinkedList<Category> getTmtCategories() {
         return tmtCategories;
     }
 
-    public void setTmtCategories(List<Category> tmtCategories) {
+    public void setTmtCategories(LinkedList<Category> tmtCategories) {
         this.tmtCategories = tmtCategories;
     }
 
@@ -105,7 +129,14 @@ public class CreateTournamentBean {
 
     public void setSelectedCat(Category selectedCat) {
         this.selectedCat = selectedCat;
-        System.out.println("sel cat: "+selectedCat);
+    }
+
+    public boolean isTmtValid() {
+        return tmtValid;
+    }
+
+    public void setTmtValid(boolean tmtValid) {
+        this.tmtValid = tmtValid;
     }
     
     

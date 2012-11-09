@@ -158,10 +158,18 @@
                     <h:commandButton value="Zapisz zmiany" styleClass="editButton">
                         <f:ajax render="@form" execute="@form" listener="#{epBean.update}"/>
                     </h:commandButton>
+                    <h:commandButton value="Anuluj" styleClass="cancelButton">
+                        <f:ajax render="@form" execute="@form" listener="#{epBean.cancelUpdate}"/>
+                    </h:commandButton>
                     <h:panelGroup rendered="#{epBean.actSucceded}">
                         <h:outputText value="Dane pomyślnie zaktualizowane!"/>
                         <script>
                             setTimeout(function(){$('#editContainer').slideUp('slow', function() {})},1500);
+                        </script>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{epBean.actCanceled}">
+                        <script>
+                            $('#editContainer').slideUp('slow', function() {});
                         </script>
                     </h:panelGroup>
                 </h:form>

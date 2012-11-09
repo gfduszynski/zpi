@@ -43,7 +43,7 @@ public class UserManagementBOImpl implements UserManagementBO {
     @Override
     public User getLoggedUser() {
         UsernamePasswordAuthenticationToken loggedUserAuthentication = getLoggedUserAuthentication();
-        User u = findUserByEmail(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
+        User u = findUserByEmailWithClub(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
         return u;
     }
 
@@ -88,9 +88,18 @@ public class UserManagementBOImpl implements UserManagementBO {
         return userRepo.save(u);
     }
 
+    @Transactional
     @Override
     public User findUserByEmail(String email) {
         return userRepo.findByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public User findUserByEmailWithClub(String email) {
+        User user = findUserByEmail(email);
+        user.getUserClub().toString();
+        return user;
     }
 
     @Override

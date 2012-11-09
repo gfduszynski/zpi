@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -68,26 +69,33 @@ public class Post implements Serializable {
         this.id = id;
     }
 
-    public Post(String title, String content, User user) {
+    public Post(String title, String content, User user, Date published, PostLifeTime plt) {
         this.title = title;
         this.content = content;
         this.user = user;
         this.dateCreated = Calendar.getInstance().getTime();
-        this.datePublished = null;
-        //this.datePublished = Calendar.getInstance().getTime();
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 100);
-        this.dateExpires = cal.getTime();
-    }
+        this.datePublished = published;
+        if (plt == null) {
+            this.dateExpires = null;
+        } else {
+            DateTime currentDate = new DateTime();
+            switch (plt.value) {
+                case 1:
+                    currentDate.plusDays(7);
+                    break;
+                case 2:
+                    currentDate.plusDays(14);
+                    break;
+                case 3:
+                    currentDate.plusDays(21);
+                    break;
+                default:
+                    currentDate.plusDays(1);
+                    break;
 
-    public Post(Integer id, String title, String content, Date dateCreated) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.dateCreated = dateCreated;
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 100);
-        this.dateExpires = cal.getTime();
+            }
+            this.dateExpires = currentDate.toDate();
+        }
     }
 
     public Integer getId() {
@@ -170,4 +178,14 @@ public class Post implements Serializable {
     public String toString() {
         return "org.chessclan.dataTier.models.Post[ id=" + id + " ]";
     }
+
+    public enum PostLifeTime {
+
+        WEEK(1), TWOWEEKS(2), THREEWEEKS(3);
+        private int value;
+
+        private PostLifeTime(int value) {
+            this.value = value;
+        }
+    };
 }

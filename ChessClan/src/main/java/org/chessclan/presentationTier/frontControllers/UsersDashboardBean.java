@@ -90,7 +90,7 @@ public class UsersDashboardBean implements Serializable {
     
     public void saveNewUser(List<Boolean> l) {
         if(validateHasNotErrors(newuser,l, false)){
-        newuser.setPassword(umBO.encodePassword(newuser).getEmail());
+        umBO.encodePassword(newuser);
         umBO.saveUser(newuser);
         umBO.assignRole(newuser.getId(), Role.Type.ADMIN);
         editable.put(newuser.getId(), false);
