@@ -48,7 +48,7 @@
                                 <td><h:outputText value="Data urodzenia"/></td>
                                 <td><h:panelGroup id="bdGroup">
                                         <h:outputText value="Pole wymagane, data niepoprawna.&lt;br/&gt;" styleClass="error" rendered="#{epBean.invalidBD}" escape="false"/>
-                                        <h:inputText value="#{epBean.birthDate}" id="bdInput"  styleClass="" >
+                                        <h:inputText value="#{epBean.birthDate}" id="bdInput">
                                             <f:convertDateTime pattern="d-M-yyyy" />
                                             <f:ajax event="change" execute="bdInput" render="bdGroup" listener="#{epBean.validateBD}"/>  
                                         </h:inputText><br/>
@@ -64,7 +64,7 @@
                                         </script>
                                     </h:panelGroup></td>
                                 <td> <h:outputText value="Płeć"/></td>
-                                <td><h:selectOneRadio value="#{epBean.sex}" class="editGray">
+                                <td><h:selectOneRadio value="#{epBean.sex}" disabledClass="editTable">
                                         <f:selectItem itemValue="0" itemLabel="mężczyzna"/>
                                         <f:selectItem itemValue="1" itemLabel="kobieta"/>
                                     </h:selectOneRadio></td>
