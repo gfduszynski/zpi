@@ -323,14 +323,6 @@ div#editContainer{
     display:none;
     background-color: white;
     padding:10px;
-}
-
-#latestPostsForm{
-    height:100%;
-}
-
-TABLE.panelGridClass {
-    width: 100%;
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
@@ -339,6 +331,14 @@ TABLE.panelGridClass {
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background-size:100px 100px;
 }
+
+#latestPostsForm{
+    height:100%;
+}
+
+TABLE.panelGridClass {
+    width: 100%;
+    }
 TABLE.panelGridClass TR TD {
     height: 25px;
     margin: none;
