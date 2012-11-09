@@ -47,6 +47,7 @@ h2{
     background-position:left top;
     width:195px;
     height:130px;
+    cursor: pointer;
 }
 
 div#editContainer{
