@@ -47,6 +47,7 @@ h2{
     background-position:left top;
     width:195px;
     height:130px;
+    cursor: pointer;
 }
 
 div#editContainer{
@@ -222,7 +223,7 @@ div#editContainer{
     margin: 0px 0 -15px 0px;
 }
 
-.regWidth,#j_idt173{
+.regWidth{
     width: 134px;
 }
 
@@ -359,6 +360,14 @@ TABLE.panelGridClass {
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background-size:100px 100px;
 }
+
+#latestPostsForm{
+    height:100%;
+}
+
+TABLE.panelGridClass {
+    width: 100%;
+    }
 TABLE.panelGridClass TR TD {
     height: 25px;
     margin: none;
@@ -395,4 +404,27 @@ TABLE.editTable{
     background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background-size:100px 100px;
+}
+
+TABLE.editTable tr{
+    height: 30px;
+    margin: none;
+}
+TABLE.editTable tr:nth-child(odd) td:nth-child(even){
+    background: #353534;
+    width: 286px;
+}
+/*niebieski*/
+TABLE.editTable tr:nth-child(odd) td:nth-child(odd){
+    background: #00AAE8; 
+    width: 186px;
+}
+/*szary*/
+TABLE.editTable tr:nth-child(even) td:nth-child(even){
+    background: #DFDDDA;
+    width: 286px;
+}
+TABLE.editTable tr:nth-child(even) td:nth-child(odd){
+    background: #353534;
+    
 }

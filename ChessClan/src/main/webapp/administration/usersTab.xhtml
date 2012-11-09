@@ -50,9 +50,9 @@
                         <h:outputLabel for="password" value="Password" class="order-table-odd-row"/>
                         <h:panelGroup id="password">
                             <h:outputText value="Pole wymagane, musi zawierać co najmniej 5 znaków.&lt;br/&gt;" styleClass="error" rendered="#{not udBean.nuvalidation.get(6)}" escape="false"/>
-                            <h:inputText value="#{udBean.newuser.password}" id="passwordInput">
+                            <h:inputSecret value="#{udBean.newuser.password}" id="passwordInput" redisplay="true">
                             <f:ajax event="blur" execute="passwordInput" render="password" listener="#{udBean.validatePassword(udBean.newuser,udBean.nuvalidation)}"/>
-                            </h:inputText>
+                            </h:inputSecret>
                         </h:panelGroup>
                         
                         <h:outputLabel for="enabled" value="Enabled"/>
