@@ -67,11 +67,11 @@
                             </h:inputText>
                         </h:panelGroup>
                         
-                        <h:outputLabel for="creation-date" value="Creation date" class="order-table-odd-row"/>
-                        <h:outputText id="creation-date" value="#{udBean.newuser.creationDate}" class="input-edit-row">
+                        <h:outputLabel for="creation-date" value="Creation date"/>
+                        <h:outputText id="creation-date" value="#{udBean.newuser.creationDate}">
                             <f:convertDateTime pattern="dd-MM-yyyy" />
                         </h:outputText>
-                        <h:outputLabel for="sex" value="Sex" class="order-table-odd-row"/>
+                        <h:outputLabel for="sex" value="Sex"/>
                         <h:selectOneRadio id="sex" value="#{udBean.newuser.sex}">
                             <f:selectItem itemValue="0" itemLabel="♂"/>
                             <f:selectItem itemValue="1" itemLabel="♀"/>

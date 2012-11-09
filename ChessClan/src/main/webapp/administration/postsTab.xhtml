@@ -57,16 +57,16 @@
 
 
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new post" rendered="#{not pdBean.createNewPost}">
+                <h:commandButton value="add new post"    rendered="#{not pdBean.createNewPost}">
                     <f:ajax listener="#{pdBean.addNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" rendered="#{not pdBean.createNewPost}">
+                <h:commandButton value="edit selected"   rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" rendered="#{not pdBean.createNewPost}">
+                <h:commandButton value="remove selected" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.deleteSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" rendered="#{not pdBean.createNewPost}">
+                <h:commandButton value="save selected"   rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
