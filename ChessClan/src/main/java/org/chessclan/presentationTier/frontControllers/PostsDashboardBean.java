@@ -25,6 +25,7 @@ public class PostsDashboardBean implements Serializable {
     private Boolean createNewPost;
     private Boolean deletable;
     private Boolean checkAll;
+    private Boolean hasChecked;
     private Post newpost;
     private String authorEmail;
     private Integer newExpiresAfter;
@@ -64,6 +65,7 @@ public class PostsDashboardBean implements Serializable {
         }
         this.deletable = false;
         this.checkAll = false;
+        this.hasChecked = false;
         this.newExpiresAfter = 7;
         this.expiresAfter = 7;
     }
@@ -408,5 +410,19 @@ public class PostsDashboardBean implements Serializable {
 
     public void setPostValidation(List<Boolean> npvalidation) {
         this.validation.put(id, npvalidation);
+    }
+       
+    public Boolean getHasChecked()
+    {
+        for(int i=0;i<posts.size();i++){
+            if(checked.get(posts.get(i).getId())) { return this.hasChecked = true;
+                }
+        }
+        return this.hasChecked=false;
+    }
+    
+    public void setHasChecked(Boolean hasChecked)
+    {
+        this.hasChecked = hasChecked;
     }
 }
