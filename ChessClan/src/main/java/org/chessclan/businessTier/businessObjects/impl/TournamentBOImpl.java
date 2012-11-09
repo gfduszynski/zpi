@@ -80,7 +80,7 @@ public class TournamentBOImpl implements TournamentBO {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public PairingCard joinTorunament(Tournament t) throws Round.NotJoinableRound {
+    public PairingCard joinTournament(Tournament t) throws Round.NotJoinableRound {
         return joinTournament(t, umBO.getLoggedUser());
     }
 

@@ -310,7 +310,7 @@ public class PostsDashboardBean implements Serializable {
             checked.put(newpost.getId(), false);
             createNewPost = false;
             posts.add(newpost);
-        }
+            }
     }
 
     public void publishNewPost() {
@@ -324,7 +324,7 @@ public class PostsDashboardBean implements Serializable {
             checked.put(newpost.getId(), false);
             createNewPost = false;
             posts.add(newpost);
-        }
+            }
     }
 
     public void addNewPost() {

@@ -19,7 +19,7 @@ import org.chessclan.dataTier.models.User;
  */
 public interface TournamentBO{
     public Tournament registerTournament(int numberOfRounds, float pointsForBye, String name, Date startDate, String description, Club club, Category category);
-    public PairingCard joinTorunament(Tournament t) throws Round.NotJoinableRound;
+    public PairingCard joinTournament(Tournament t) throws Round.NotJoinableRound;
     public PairingCard joinTournament(Tournament t, User u) throws Round.NotJoinableRound;
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers;
     public List<Tournament> findTournamentsByClub(Club club);
