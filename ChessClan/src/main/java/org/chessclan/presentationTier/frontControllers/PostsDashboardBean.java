@@ -310,6 +310,8 @@ public class PostsDashboardBean implements Serializable {
             checked.put(newpost.getId(), false);
             createNewPost = false;
             posts.add(newpost);
+            validation.put(newpost.getId(), Arrays.asList(true, true, false));
+        
             }
     }
 
@@ -324,6 +326,8 @@ public class PostsDashboardBean implements Serializable {
             checked.put(newpost.getId(), false);
             createNewPost = false;
             posts.add(newpost);
+            validation.put(newpost.getId(), Arrays.asList(true, true, false));
+        
             }
     }
 

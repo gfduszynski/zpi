@@ -327,7 +327,7 @@ public class ClubsDashboardBean implements Serializable {
         editable.put(newclub.getId(), false);
         checked.put(newclub.getId(), false);
         createNewClub = false;
-        
+        validation.put(newclub.getId(), Arrays.asList(true, true, true, false));
                 }
     }
     

@@ -269,6 +269,7 @@ public class TournamentsDashboardBean implements Serializable {
         checked.put(newtournament.getId(), false);
         createNewTournament = false;
         tournaments.add(newtournament);
+        
         }
     }
     
@@ -278,6 +279,8 @@ public class TournamentsDashboardBean implements Serializable {
         newtournament.setPointsForBye(1);
         ntvalidation = Arrays.asList(true, true, true, false);
         createNewTournament = true;
+        validation.put(newtournament.getId(), Arrays.asList(true, true, true, false));
+        
     }
     
     public void cancelNewTournament() {

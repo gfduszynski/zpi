@@ -96,6 +96,8 @@ public class UsersDashboardBean implements Serializable {
         checked.put(newuser.getId(), false);
         createNewUser = false;
         users.add(newuser);
+        validation.put(newuser.getId(), Arrays.asList(true, true, true, true, true, true, true, true, false));
+        
         }
     }
 
