@@ -143,10 +143,6 @@
                                             #{post.content}
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Autor</f:facet>
-                                            <h:outputText value="#{loginBean.user.firstName} #{loginBean.user.lastName}"/>
-                                        </h:column>
-                                        <h:column>
                                             <f:facet name="header">Data opublikowania</f:facet>
                                             <h:outputText value="#{post.datePublished}">
                                                 <f:convertDateTime pattern="dd-MM-yyyy"/>

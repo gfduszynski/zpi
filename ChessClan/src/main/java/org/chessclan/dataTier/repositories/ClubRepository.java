@@ -4,6 +4,7 @@
  */
 package org.chessclan.dataTier.repositories;
 
+import java.util.List;
 import org.chessclan.dataTier.models.Club;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ClubRepository extends JpaRepository<Club, Integer> {
     Club findByName(String name);
+    List<Club> findAllWithMembers();
 }

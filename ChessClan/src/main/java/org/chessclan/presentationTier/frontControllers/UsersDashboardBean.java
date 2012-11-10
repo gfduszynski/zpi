@@ -184,7 +184,7 @@ public class UsersDashboardBean implements Serializable {
             }
         }
         if (u.getLogin() != null) {
-            if (u.getLogin().length() > 4 && umBO.findUserByLogin(u.getLogin())==null) {
+            if (u.getLogin().length() > 4 && umBO.findUserByEmail(u.getEmail())==null) {
                 l.set(5,true);
                 return true;
             } else {
