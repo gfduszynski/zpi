@@ -5,32 +5,33 @@
 package org.chessclan.dataTier.repositoriesImpl;
 
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.repositories.ClubRepository;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Daniel
  */
-@Repository("ClubRepository")
+@Transactional
+@Repository
 public class ClubRepositoryImpl implements ClubRepository {
 
-    @PersistenceContext
-    private EntityManager em;
+//    @PersistenceContext
+//    private EntityManager em;
     @Autowired
     private ClubRepository repository;
     @Autowired
     private SessionFactory sessionFactory;
+
+    public ClubRepositoryImpl() {
+    }
 
     @Override
     public Club findByName(String name) {
@@ -124,14 +125,18 @@ public class ClubRepositoryImpl implements ClubRepository {
 
     @Override
     public List<Club> findAllWithMembers() {
-        Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(Club.class);
-        List<Club> clubs = criteria.list();
-        for (Club c : clubs) {
-            c.getUserSet().isEmpty();
-        }
-        session.close();
-        return clubs;
+//        Session session = sessionFactory.openSession();
+//        Criteria criteria = session.createCriteria(Club.class);
+//        List<Club> clubs = criteria.list();
+//        for (Club c : clubs) {
+//            c.getUserSet().isEmpty();
+//        }
+//        session.close();
+        return null;
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {
