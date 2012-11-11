@@ -5,30 +5,26 @@
 package org.chessclan.dataTier.repositoriesImpl;
 
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.repositories.ClubRepository;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Daniel
  */
-@Transactional
-@Repository
 public class ClubRepositoryImpl implements ClubRepository {
 
-//    @PersistenceContext
-//    private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
     @Autowired
     private ClubRepository repository;
-    @Autowired
-    private SessionFactory sessionFactory;
 
     public ClubRepositoryImpl() {
     }
@@ -125,21 +121,19 @@ public class ClubRepositoryImpl implements ClubRepository {
 
     @Override
     public List<Club> findAllWithMembers() {
-//        Session session = sessionFactory.openSession();
-//        Criteria criteria = session.createCriteria(Club.class);
-//        List<Club> clubs = criteria.list();
-//        for (Club c : clubs) {
-//            c.getUserSet().isEmpty();
-//        }
-//        session.close();
-        return null;
+        Query query = em.createQuery("SELECT c FROM Club c");
+        List<Club> list = query.getResultList();
+        for (Club c : list) {
+            c.getUserSet().isEmpty();
+        }
+        return (List<Club>) list;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    public EntityManager getEm() {
+        return em;
     }
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 }
