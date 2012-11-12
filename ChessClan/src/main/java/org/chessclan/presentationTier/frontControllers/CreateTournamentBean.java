@@ -66,6 +66,10 @@ public class CreateTournamentBean implements Serializable{
         }
         return tmtValid;
     }
+    
+    public void logCatChange(){
+        System.out.println("Category changed for: "+this.selectedCat.getName());
+    }
 
     public TournamentBO getTmBO() {
         return tmBO;

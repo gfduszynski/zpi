@@ -11,6 +11,7 @@
     </h:head>
     <h:body>
         <ui:composition>
+            <h:outputScript name="jsf.js" library="javax.faces" target="head" />
             <h:outputScript name="select2.js" library="js" target="head" />
             <h:outputStylesheet name="select2.css" library="css"/>
             <script>
@@ -46,7 +47,7 @@
                     <h:form prependId="false">
                         <script type="text/javascript" charset="utf-8">
                             $(document).ready(function() {
-                                $("#cats").select2();
+                                //$("#cats").select2();
                                 $("#tmtDate").datepicker({
                                     changeMonth: true,
                                     changeYear: true,
@@ -69,19 +70,16 @@
                             </c:forEach> 
                         </div>
                         <!--</c:if>-->
-                        <h:selectOneListbox id="cats" value="#{crTmtBean.selectedCat}">
-                            <c:forEach items="#{crTmtBean.categories}" var="cat" varStatus="loop">
-                                <c:if test="#{loop.first}">
-                                    <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat}"/>
-                                </c:if>
-                                <c:if test="#{not loop.first}">
-                                    <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat}" />
-                                </c:if>
-                            </c:forEach>
-                        </h:selectOneListbox>
-                        <h:commandLink value="Dodaj kategorię">
+                        <h:selectOneMenu value="#{crTmtBean.selectedCat}">
+<!--                            <c:forEach items="#{crTmtBean.categories}" var="cat" varStatus="loop">
+                                <f:selectItem itemLabel="#{cat.name}" itemValue="#{cat}"/>
+                            </c:forEach>-->
+                            <f:selectItems value="#{crTmtBean.categories}" var="cat" itemLabel="#{cat.name}" itemValue="#{cat.name}" />
+                            <f:ajax event="change" execute="@this" render="@form" listener="#{crTmtBean.logCatChange}"/>
+                        </h:selectOneMenu>
+                        <h:commandButton value="Dodaj kategorię">
                             <f:ajax render="@form" execute="@form" listener="#{crTmtBean.addCategory}"/>
-                        </h:commandLink>
+                        </h:commandButton>
                         <h:outputText value="#{crTmtBean.tmtCategories.size()}"/>
                     </h:form>
                 </div>
