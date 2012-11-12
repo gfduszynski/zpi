@@ -14,16 +14,15 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.PostBO;
 import org.chessclan.dataTier.models.Post;
-import org.chessclan.dataTier.models.Post.PostLifeTime;
 import org.chessclan.dataTier.models.User;
 
 /**
  *
  * @author Daniel
  */
-@ManagedBean(name = "upBean")
+@ManagedBean(name = "cPostsBean")
 @ViewScoped
-public class UserPostsBean implements Serializable {
+public class ClubPostsBean implements Serializable {
 
     private List<Post> allPosts;
     private List<Post> userPosts;
@@ -38,7 +37,7 @@ public class UserPostsBean implements Serializable {
     @ManagedProperty("#{loginBean.user}")
     User user;
 
-    public UserPostsBean() {
+    public ClubPostsBean() {
         this.postPublished = false;
         this.postSaved = false;
         this.postWrong = false;
@@ -48,27 +47,27 @@ public class UserPostsBean implements Serializable {
     @PostConstruct
     public void initialize() {
         this.allPosts = postBO.findAllPosts();
-        this.userPosts = postBO.findUserPosts(this.getUser());
+        this.userPosts = postBO.findUserPosts(this.user);
     }
-
-    public void saveAndPublish() {
+    
+        public void saveAndPublish() {
         if (validateContent() && validateTitle()) {
-            PostLifeTime plt = null;
+            Post.PostLifeTime plt;
             switch (postlt) {
                 case 1:
-                    plt = PostLifeTime.WEEK;
+                    plt = Post.PostLifeTime.WEEK;
                     break;
                 case 2:
-                    plt = PostLifeTime.TWOWEEKS;
+                    plt = Post.PostLifeTime.TWOWEEKS;
                     break;
                 case 3:
-                    plt = PostLifeTime.THREEWEEKS;
+                    plt = Post.PostLifeTime.THREEWEEKS;
                     break;
                 default:
-                    plt = PostLifeTime.WEEK;
+                    plt = Post.PostLifeTime.WEEK;
                     break;
             }
-            Post publishedPost = postBO.savePost(new Post(title, content, getUser(), new Date(), plt));
+            Post publishedPost = postBO.savePost(new Post(title, content, user, new Date(), plt));
             if (publishedPost != null) {
                 this.postPublished = true;
                 this.userPosts.add(publishedPost);
@@ -81,22 +80,22 @@ public class UserPostsBean implements Serializable {
 
     public void save() {
         if (validateContent() && validateTitle()) {
-            PostLifeTime plt = null;
+            Post.PostLifeTime plt = null;
             switch (postlt) {
                 case 1:
-                    plt = PostLifeTime.WEEK;
+                    plt = Post.PostLifeTime.WEEK;
                     break;
                 case 2:
-                    plt = PostLifeTime.TWOWEEKS;
+                    plt = Post.PostLifeTime.TWOWEEKS;
                     break;
                 case 3:
-                    plt = PostLifeTime.THREEWEEKS;
+                    plt = Post.PostLifeTime.THREEWEEKS;
                     break;
                 default:
-                    plt = PostLifeTime.WEEK;
+                    plt = Post.PostLifeTime.WEEK;
                     break;
             }
-            Post savedPost = postBO.savePost(new Post(title, content, getUser(), null, plt));
+            Post savedPost = postBO.savePost(new Post(title, content, user, null, plt));
             if (savedPost != null) {
                 this.postSaved = true;
                 this.userPosts.add(savedPost);
@@ -154,14 +153,6 @@ public class UserPostsBean implements Serializable {
         }
     }
 
-    public PostBO getPostBO() {
-        return postBO;
-    }
-
-    public void setPostBO(PostBO postBO) {
-        this.postBO = postBO;
-    }
-
     public List<Post> getAllPosts() {
         return allPosts;
     }
@@ -194,7 +185,7 @@ public class UserPostsBean implements Serializable {
         this.content = content;
     }
 
-    public boolean getPostPublished() {
+    public boolean isPostPublished() {
         return postPublished;
     }
 
@@ -202,7 +193,7 @@ public class UserPostsBean implements Serializable {
         this.postPublished = postPublished;
     }
 
-    public boolean getPostSaved() {
+    public boolean isPostSaved() {
         return postSaved;
     }
 
@@ -210,7 +201,7 @@ public class UserPostsBean implements Serializable {
         this.postSaved = postSaved;
     }
 
-    public boolean getPostWrong() {
+    public boolean isPostWrong() {
         return postWrong;
     }
 
@@ -226,6 +217,14 @@ public class UserPostsBean implements Serializable {
         this.postlt = postlt;
     }
 
+    public PostBO getPostBO() {
+        return postBO;
+    }
+
+    public void setPostBO(PostBO postBO) {
+        this.postBO = postBO;
+    }
+
     public User getUser() {
         return user;
     }
@@ -233,4 +232,6 @@ public class UserPostsBean implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+    
+    
 }

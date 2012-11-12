@@ -70,7 +70,7 @@ public class TournamentsViewBean {
     }
     
     public void joinTournament(Tournament tmt) throws Round.NotJoinableRound{
-        tmBO.joinTorunament(tmt);
+        tmBO.joinTournament(tmt);
     }
 
     public TournamentBO getTmBO() {

@@ -4,15 +4,12 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.ClubBO;
-import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.User;
 
@@ -26,23 +23,21 @@ public class UserClubsBean {
 
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
-    @ManagedProperty(value = "#{loginBean.user}")
-    private User user;
+
     private List<Club> clubs;
     
+    @ManagedProperty(value = "#{loginBean.user.userClub}")
     private Club userClub;
 
+    @ManagedProperty(value = "#{loginBean.user}")
+    private User user;
+    
     public UserClubsBean() {
     }
 
     @PostConstruct
     public void initialize() {
-        this.clubs = new ArrayList<Club>();
-        Iterator<Club> posts = clubBO.findAll().iterator();
-        while (posts.hasNext()) {
-            clubs.add(posts.next());
-        }
-        this.userClub = user.getUserClub();
+        this.clubs = clubBO.findAllWithMembers();
     }
 
     public void signOutFromClub() {
@@ -71,20 +66,20 @@ public class UserClubsBean {
         this.clubs = clubs;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Club getUserClub() {
         return userClub;
     }
 
     public void setUserClub(Club userClub) {
         this.userClub = userClub;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 

@@ -12,7 +12,7 @@
                     });
             </script>
             <h:panelGrid columns="4" rendered="#{cdBean.createNewClub}" id="newClubGrid">
-                        <h:outputLabel for="name" value="Name" class="order-table-odd-row"/>
+                        <h:outputLabel for="name" value="Name"/>
                         <h:panelGroup id="name">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak.&lt;br/&gt;" styleClass="error" rendered="#{not cdBean.ncvalidation.get(0)}" escape="false"/>
                             <h:inputText value="#{cdBean.newclub.name}" id="nInput">

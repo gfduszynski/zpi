@@ -12,6 +12,7 @@
         <ui:composition>
             <ui:composition>
                 <sec:authorize access="hasRole('CLUB_OWNER')">
+                    
                     <script>
                         $(document).ready(function() {
                             $('#editContainer').slideDown('slow', function() {
@@ -20,6 +21,7 @@
                         });
                     </script>
                     <h:form prependId="false">
+                        <!--<h:outputScript name="jsf.js" library="javax.faces" target="head" />-->
                         <h:panelGrid columns="4">
                             <h:outputText value="Nazwa klubu"/>
                             <h:panelGroup id="cnEditGroup">
