@@ -97,9 +97,7 @@ public class UserManagementBOImpl implements UserManagementBO {
     @Override
     @Transactional
     public User findUserByEmailWithClub(String email) {
-        User user = findUserByEmail(email);
-        user.getUserClub().toString();
-        return user;
+        return userRepo.findUserByEmailWithClub(email);
     }
 
     @Override
@@ -146,8 +144,5 @@ public class UserManagementBOImpl implements UserManagementBO {
     public void deleteUsers(Iterable<User> users) {
         userRepo.delete(users);
     }
-
-    public User findUserByLogin(String login) {
-        return userRepo.findByLogin(login);
-    }
+    
 }
