@@ -428,3 +428,11 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background: #353534;
     
 }
+
+.tmtContainer{
+    border: 1px solid #00AAE8;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+    color: white;
+    padding:10px;
+    margin:10px 0px 10px 0px;
+}

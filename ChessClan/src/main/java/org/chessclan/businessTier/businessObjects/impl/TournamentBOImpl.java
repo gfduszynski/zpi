@@ -39,7 +39,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * @author Xcays & Grzesiek
  */
 @Service("TournamentBO")
-public class TournamentBOImpl implements TournamentBO {
+public class TournamentBOImpl implements TournamentBO, Serializable {
 
     @Autowired
     private TournamentRepository tRepo;
@@ -80,11 +80,13 @@ public class TournamentBOImpl implements TournamentBO {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
+    @Override
     public PairingCard joinTournament(Tournament t) throws Round.NotJoinableRound {
         return joinTournament(t, umBO.getLoggedUser());
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
+    @Override
     public PairingCard joinTournament(Tournament t, User u) throws Round.NotJoinableRound {
         if (t.getCurrentRound().getRoundState() != State.JOINING) {
             throw new Round.NotJoinableRound();
@@ -297,39 +299,48 @@ public class TournamentBOImpl implements TournamentBO {
         black.setColor(PairingCard.Color.BLACK);
     }
 
+    @Override
     public List<Tournament> findTournamentsByClub(Club club) {
         return tRepo.findByClub(club);
     }
 
     // DAO Wrappers
+    @Override
     public Tournament saveTournament(Tournament t) {
         return tRepo.save(t);
     }
 
+    @Override
     public Iterable<Tournament> saveTournaments(Iterable<Tournament> t) {
         return tRepo.save(t);
     }
 
+    @Override
     public Tournament findTournamentById(int id) {
         return tRepo.findOne(id);
     }
 
+    @Override
     public Iterable<Tournament> findTournamentsById(Iterable<Integer> ids) {
         return tRepo.findAll(ids);
     }
 
+    @Override
     public Iterable<Tournament> findAll() {
         return tRepo.findAll();
     }
-
+    
+    @Override
     public void deleteTournament(int id) {
         tRepo.delete(id);
     }
-
+    
+    @Override
     public void deleteTournament(Tournament t) {
         tRepo.delete(t);
     }
-
+    
+    @Override
     public void deleteTournaments(Iterable<Tournament> ts) {
         tRepo.delete(ts);
     }

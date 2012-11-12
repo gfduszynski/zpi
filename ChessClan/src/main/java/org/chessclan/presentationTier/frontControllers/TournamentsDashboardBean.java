@@ -274,7 +274,7 @@ public class TournamentsDashboardBean implements Serializable {
     }
     
     public void addNewTournament() {    
-        newtournament = new Tournament("", new Date(), "", clbBO.findClubById(1), catBO.findCategoryById(1), Tournament.State.NOT_STARTED);
+        newtournament = new Tournament("", new Date(), "", clbBO.findClubById(1), catBO.findCategoryById(1), Tournament.State.NOT_STARTED, 1, 7);
         newtournament.setNumberOfRounds(1);
         newtournament.setPointsForBye(1);
         ntvalidation = Arrays.asList(true, true, true, false);

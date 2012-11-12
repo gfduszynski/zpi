@@ -6,7 +6,9 @@ package org.chessclan.businessTier.businessObjects.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.RoleRepository;
@@ -43,7 +45,7 @@ public class UserManagementBOImpl implements UserManagementBO {
     @Override
     public User getLoggedUser() {
         UsernamePasswordAuthenticationToken loggedUserAuthentication = getLoggedUserAuthentication();
-        User u = findUserByEmailWithClub(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
+        User u = userRepo.findByEmail(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
         return u;
     }
 
@@ -95,11 +97,11 @@ public class UserManagementBOImpl implements UserManagementBO {
     }
 
     @Override
-    @Transactional
-    public User findUserByEmailWithClub(String email) {
-        return userRepo.findByEmail(email);
+    @Transactional 
+    public List<User> findClubUsers(Club c){
+        return userRepo.findByUserClub(c);        
     }
-
+    
     @Override
     public User findUserById(int id) {
         return userRepo.findOne(id);
@@ -144,5 +146,23 @@ public class UserManagementBOImpl implements UserManagementBO {
     public void deleteUsers(Iterable<User> users) {
         userRepo.delete(users);
     }
+
+    public User findUserByLogin(String login) {
+        return userRepo.findByLogin(login);
+    }
     
+    @Override
+    public List<User> findByFirstnameAndLastname(String fn, String ln){
+        return userRepo.findByFirstNameAndLastName(fn, ln);
+    }
+    
+    @Override
+    public List<User> findByFirstname(String fn){
+        return userRepo.findByFirstName(fn);
+    }
+    
+    @Override
+    public List<User> findByLasname(String ln){
+        return userRepo.findByLastName(ln);
+    }
 }

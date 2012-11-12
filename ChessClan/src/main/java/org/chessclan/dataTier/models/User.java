@@ -100,11 +100,11 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER, cascade= CascadeType.REMOVE)
     private Set<Role> roleSet;
     @JoinColumn(name = "user_club", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Club userClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Post> postSet;
-    @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "owner", fetch = FetchType.EAGER)
     private Club ownedClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "opponent", fetch = FetchType.LAZY)
     private Set<PairingCard> opponentPairingCardSet;

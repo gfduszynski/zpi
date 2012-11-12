@@ -70,8 +70,33 @@
                     <ui:include src="administration/dashboard.xhtml"/>
                 </sec:authorize>
             </c:if>
-            <h:panelGroup layout="block" class="footer">
-                stopka, projekt na ZPI, #{request.contextPath}
+            <h:panelGroup layout="block" class="footer noMargin noPadding">
+                <style>
+                    .footerElem{
+                        height:16px;
+                        width:112px;
+                        display:inline-block;
+                        border:2px solid;
+                        border-color: #353534;
+                        color:#353534;
+                        background-color: #E09041;
+                        text-align: center;
+                    }
+                    .footerElem2{
+                        width:100%;
+                        display:block;
+                        text-align: center;
+                    }
+                </style>
+                <div class="footerElem2 noMargin noPadding">Autorzy: Grzegorz Duszyński Daniel Engel Tomasz Piechaczek Mateusz Pokrywka</div>
+                <div class="footerElem noMargin noPadding">A</div>
+                <div class="footerElem noMargin noPadding">B</div>
+                <div class="footerElem noMargin noPadding">C</div>
+                <div class="footerElem noMargin noPadding">D</div>
+                <div class="footerElem noMargin noPadding">E</div>
+                <div class="footerElem noMargin noPadding">F</div>
+                <div class="footerElem noMargin noPadding">G</div>
+                <div class="footerElem noMargin noPadding">H</div>
             </h:panelGroup>
         </h:panelGroup>
     </h:body>

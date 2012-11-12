@@ -39,5 +39,8 @@ public interface UserManagementBO{
     public void deleteUser(int id);
     public void deleteUser(User u);
     public void deleteUsers(Iterable<User> users);
-    public User findUserByEmailWithClub(String email);
+    public List<User> findClubUsers(Club c);
+    List<User> findByFirstnameAndLastname(String fn, String ln);
+    List<User> findByFirstname(String fn);
+    List<User> findByLasname(String ln);
 }

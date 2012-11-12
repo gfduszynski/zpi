@@ -15,6 +15,8 @@ import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.dataTier.models.Category;
+import org.chessclan.dataTier.models.Tournament;
+import org.chessclan.dataTier.models.User;
 
 /**
  *
@@ -22,53 +24,89 @@ import org.chessclan.dataTier.models.Category;
  */
 @ManagedBean(name = "crTmtBean")
 @ViewScoped
-public class CreateTournamentBean implements Serializable{
+public class CreateTournamentBean implements Serializable {
 
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
     @ManagedProperty("#{CategoryBO}")
     private CategoryBO ctBO;
+    @ManagedProperty(value = "#{loginBean.user}")
+    private User user;
+    @ManagedProperty("#{ctBean}")
+    ClubTournamentsBean ctBean;
+
     private String tmtName;
     private String tmtDescription;
     private Date tmtDate;
     private List<Category> categories;
     private LinkedList<Category> tmtCategories;
-    private Category selectedCat;
+    private int selectedCatId;
     private boolean tmtValid;
+    private int pointsForBye;
+    private int numberOfRounds;
+    private boolean createTmtSuccess;
 
     public CreateTournamentBean() {
         this.tmtCategories = new LinkedList<Category>();
         this.tmtValid = true;
+        this.pointsForBye=1;
+        this.tmtDate = new Date();
+        createTmtSuccess = false;
     }
 
     @PostConstruct
     public void initialize() {
         this.categories = ctBO.findAll();
-        this.selectedCat = categories.get(0);
+        this.selectedCatId = categories.get(0).getId();
     }
-    
-    public void addCategory(){
-        System.out.println("Category trying to add: "+selectedCat.getName());
-        if(!tmtCategories.contains(this.selectedCat)) {
-            this.tmtCategories.add(selectedCat);
+
+    public void addCategory() {
+        boolean contains = false;
+        for(Category c : tmtCategories){
+            if(c.getId() == selectedCatId){
+                contains = true;
+                return;
+            }
+        }
+        if (!contains) {
+            for(Category c : categories){
+                if(c.getId() == selectedCatId){
+                    this.tmtCategories.add(c);
+                    this.categories.remove(c);
+                    return;
+                }
+            }
         }
     }
-    
-    public void saveTournament(){
-        
+
+    public void saveTournament() {
+        Tournament t = tmBO.saveTournament(new Tournament(tmtName, tmtDate, tmtDescription, user.getOwnedClub(), tmtCategories.get(0), Tournament.State.NOT_STARTED, pointsForBye, numberOfRounds));
+        this.createTmtSuccess = true;
+        List<Tournament> tmp = ctBean.getClubTournaments();
+        tmp.add(t);
+        ctBean.setClubTournaments(tmp);
     }
     
-    public boolean validateTournamentName(){
-        if(this.tmtName.length() > 1){
+    public void addNextTmt(){
+        this.categories = ctBO.findAll();
+        this.createTmtSuccess = false;
+        numberOfRounds = 7;
+        pointsForBye = 1;
+        selectedCatId = categories.get(0).getId();
+        tmtCategories.clear();
+        tmtDate = new Date();
+        tmtDescription="";
+        tmtName="";
+        tmtValid=true;
+    }
+
+    public boolean validateTournamentName() {
+        if (this.tmtName.length() > 1) {
             this.tmtValid = true;
-        }else{
+        } else {
             this.tmtValid = false;
         }
         return tmtValid;
-    }
-    
-    public void logCatChange(){
-        System.out.println("Category changed for: "+this.selectedCat.getName());
     }
 
     public TournamentBO getTmBO() {
@@ -127,12 +165,12 @@ public class CreateTournamentBean implements Serializable{
         this.ctBO = ctBO;
     }
 
-    public Category getSelectedCat() {
-        return selectedCat;
+    public int getSelectedCatId() {
+        return selectedCatId;
     }
 
-    public void setSelectedCat(Category selectedCat) {
-        this.selectedCat = selectedCat;
+    public void setSelectedCatId(int selectedCatId) {
+        this.selectedCatId = selectedCatId;
     }
 
     public boolean isTmtValid() {
@@ -141,6 +179,46 @@ public class CreateTournamentBean implements Serializable{
 
     public void setTmtValid(boolean tmtValid) {
         this.tmtValid = tmtValid;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getPointsForBye() {
+        return pointsForBye;
+    }
+
+    public void setPointsForBye(int pointsForBye) {
+        this.pointsForBye = pointsForBye;
+    }
+
+    public int getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public void setNumberOfRounds(int numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
+    }
+
+    public boolean isCreateTmtSuccess() {
+        return createTmtSuccess;
+    }
+
+    public void setCreateTmtSuccess(boolean createTmtSuccess) {
+        this.createTmtSuccess = createTmtSuccess;
+    }
+
+    public ClubTournamentsBean getCtBean() {
+        return ctBean;
+    }
+
+    public void setCtBean(ClubTournamentsBean ctBean) {
+        this.ctBean = ctBean;
     }
     
     
