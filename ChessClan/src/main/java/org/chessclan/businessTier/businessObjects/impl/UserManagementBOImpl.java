@@ -6,7 +6,9 @@ package org.chessclan.businessTier.businessObjects.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 import org.chessclan.dataTier.repositories.RoleRepository;
@@ -103,6 +105,12 @@ public class UserManagementBOImpl implements UserManagementBO {
     }
 
     @Override
+    @Transactional 
+    public List<User> findClubUsers(Club c){
+        return userRepo.findByUserClub(c);        
+    }
+    
+    @Override
     public User findUserById(int id) {
         return userRepo.findOne(id);
     }
@@ -150,4 +158,5 @@ public class UserManagementBOImpl implements UserManagementBO {
     public User findUserByLogin(String login) {
         return userRepo.findByLogin(login);
     }
+
 }

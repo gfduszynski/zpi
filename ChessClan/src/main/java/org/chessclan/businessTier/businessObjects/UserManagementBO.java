@@ -5,6 +5,8 @@
 package org.chessclan.businessTier.businessObjects;
 
 import java.util.Date;
+import java.util.List;
+import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 import org.springframework.data.domain.Page;
@@ -39,4 +41,5 @@ public interface UserManagementBO{
     public void deleteUser(User u);
     public void deleteUsers(Iterable<User> users);
     public User findUserByEmailWithClub(String email);
+    public List<User> findClubUsers(Club c);
 }
