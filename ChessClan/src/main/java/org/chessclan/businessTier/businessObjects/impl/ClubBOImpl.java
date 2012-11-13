@@ -100,12 +100,6 @@ public class ClubBOImpl implements ClubBO {
 
     @Transactional
     @Override
-    public List<Club> findAllWithMembers() {
-        return clubRepo.findAllWithMembers();
-    }
-
-    @Transactional
-    @Override
     public Iterable<Club> findAllWithOwners() {
         Iterable<Club> result = findAll();
         Iterator<Club> it = result.iterator();
