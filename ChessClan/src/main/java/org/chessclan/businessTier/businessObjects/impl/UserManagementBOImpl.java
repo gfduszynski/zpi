@@ -99,8 +99,9 @@ public class UserManagementBOImpl implements UserManagementBO {
     @Override
     @Transactional
     public User findUserByEmailWithClub(String email) {
-        User user = findUserByEmail(email);
-        user.getUserClub().toString();
+        User user = userRepo.findByEmail(email);
+        if(user.getUserClub()!=null)
+        user.getUserClub().getOwner();
         return user;
     }
 

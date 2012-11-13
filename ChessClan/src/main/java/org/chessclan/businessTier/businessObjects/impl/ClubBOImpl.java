@@ -52,6 +52,7 @@ public class ClubBOImpl implements ClubBO {
     @Override
     public Club joinClub(Club c, User u) {
         u = umBO.findUserById(u.getId());
+        c = clubRepo.findOne(c.getId());
         c.getUserSet().add(u);
         u.setUserClub(c);
         umBO.saveUser(u);
