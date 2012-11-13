@@ -29,5 +29,5 @@ public interface ClubBO{
     public void deleteClub(int id);
     public void deleteClub(Club c);
     public void deleteClubs(Iterable<Club> clubs);
-    public List<Club> findAllWithMembers();
+    public List<User> findClubMembers(Club c);
 }

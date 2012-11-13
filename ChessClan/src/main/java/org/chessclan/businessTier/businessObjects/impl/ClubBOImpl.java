@@ -35,7 +35,13 @@ public class ClubBOImpl implements ClubBO {
         owner.setOwnedClub(c);
         return clubRepo.saveAndFlush(c);
     }
-
+    
+    @Override
+    @Transactional
+    public List<User> findClubMembers(Club c){
+        return umBO.findClubUsers(c);
+    }
+    
     @Transactional
     @Override
     public Club joinClub(Club c) {
@@ -46,6 +52,7 @@ public class ClubBOImpl implements ClubBO {
     @Override
     public Club joinClub(Club c, User u) {
         u = umBO.findUserById(u.getId());
+        c = clubRepo.findOne(c.getId());
         c.getUserSet().add(u);
         u.setUserClub(c);
         umBO.saveUser(u);
@@ -89,12 +96,6 @@ public class ClubBOImpl implements ClubBO {
     @Override
     public List<Club> findAll() {
         return clubRepo.findAll();
-    }
-
-    @Transactional
-    @Override
-    public List<Club> findAllWithMembers() {
-        return clubRepo.findAllWithMembers();
     }
 
     @Transactional
