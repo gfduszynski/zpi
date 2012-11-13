@@ -101,11 +101,7 @@ public class ClubBOImpl implements ClubBO {
     @Transactional
     @Override
     public List<Club> findAllWithMembers() {
-        List<Club> clubs = clubRepo.findAll();
-        for(Club c : clubs){
-            c.getUserSet().toString();
-        }
-        return clubs;
+        return clubRepo.findAllWithMembers();
     }
 
     @Transactional

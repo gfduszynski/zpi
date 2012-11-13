@@ -159,5 +159,4 @@ public class UserManagementBOImpl implements UserManagementBO {
     public User findUserByLogin(String login) {
         return userRepo.findByLogin(login);
     }
-
 }

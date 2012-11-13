@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.ClubBO;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.User;
 
@@ -23,10 +24,12 @@ public class UserClubsBean {
 
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;
+    
+    @ManagedProperty("#{UserManagementBO}")
+    UserManagementBO userBO;
 
     private List<Club> clubs;
-    
-    @ManagedProperty(value = "#{loginBean.user.userClub}")
+
     private Club userClub;
 
     @ManagedProperty(value = "#{loginBean.user}")
@@ -38,6 +41,8 @@ public class UserClubsBean {
     @PostConstruct
     public void initialize() {
         this.clubs = clubBO.findAllWithMembers();
+        this.user = this.userBO.findUserByEmailWithClub(user.getEmail());
+        this.userClub = user.getUserClub();
     }
 
     public void signOutFromClub() {
@@ -82,5 +87,11 @@ public class UserClubsBean {
         this.user = user;
     }
 
+    public UserManagementBO getUserBO() {
+        return userBO;
+    }
 
+    public void setUserBO(UserManagementBO userBO) {
+        this.userBO = userBO;
+    }
 }

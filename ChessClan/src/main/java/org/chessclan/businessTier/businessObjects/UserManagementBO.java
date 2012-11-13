@@ -32,7 +32,6 @@ public interface UserManagementBO{
     public User findUserByEmail(String email);
     public User findUserById(int id);
     public Iterable<User> findUsersById(Iterable<Integer> ids);
-    public User findUserByLogin(String login);
     public boolean isEmailRegistered(String email);
     public Iterable<User> findAll();
     public Page<User> findAll(Pageable p);
