@@ -40,7 +40,7 @@ public class UserClubsBean {
 
     @PostConstruct
     public void initialize() {
-        this.clubs = clubBO.findAllWithMembers();
+        this.clubs = clubBO.findAll();
         this.user = this.userBO.findUserByEmailWithClub(user.getEmail());
         this.userClub = user.getUserClub();
     }
