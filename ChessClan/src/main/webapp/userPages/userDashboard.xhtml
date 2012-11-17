@@ -12,10 +12,7 @@
         <ui:composition>
             <script>
                 $(document).ready(function() {
-                    $("#tabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-                    $("#tabs li").removeClass('ui-corner-top').addClass('ui-corner-left noMargin noPadding');
-                    $("#tabs ul").addClass('noMargin noPadding');
-
+                    $("#tabs").tabs().addClass('ui-tabs ui-helper-clearfix');
                 });
             </script>
             <div id="tabs">
@@ -66,67 +63,56 @@
                                     collapsible: true,
                                     heightStyle: "content"
                                 });
+                                $('#addPostTitle').val('[Tytuł]');
+                                $('#addPostContent').val('[Treść]');
                             });
                         </script>
                         <div id="accordion">
                             <h3 id="addPostHeader">Dodaj ogłoszenie</h3>
                             <div>
+                                <h:panelGrid>
                                 <h:panelGroup id="messages">
                                     <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all">
-<!--                                        <script>
-                                            $("#accordion").accordion({
-                                                collapsible: true,
-                                                heightStyle: "content",
-                                                active: '#myPostsHeader'
-                                            });
-                                        </script>-->
                                         <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                             <strong>Uwaga!</strong> Twoje ogłoszenie zostało opublikowane. Teraz widzą je inni użytkownicy.</p>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{upBean.postSaved}" layout="block" class="ui-state-highlight ui-corner-all">
-<!--                                        <script>
-                                            $("#accordion").accordion({
-                                                collapsible: true,
-                                                heightStyle: "content",
-                                                active: '#myPostsHeader'
-                                            });
-                                        </script>-->
                                         <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                             <strong>Uwaga!</strong> Twoje ogłoszenie zostało zapisane. Aby widzieli je inni użytkownicy, przejdź do zakładki "Moje ogłoszenia" i je opublikuj.</p>
                                     </h:panelGroup>
                                     <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all">
-<!--                                        <script>
-                                            $("#accordion").accordion({
-                                                collapsible: true,
-                                                heightStyle: "content",
-                                                active: '#addPostHeader'
-                                            });
-                                        </script>-->
                                         <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
                                             <strong>Hej!</strong> Dodawanie ogłoszeń to nie zabawa. Proszę wpisać prawidłowe ogłoszenie!</p>
                                     </h:panelGroup>
                                 </h:panelGroup>
-                                <h:outputText value="Tytuł"/>
-                                <h:inputText value="#{upBean.title}">
-                                    <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateTitle}"/>
-                                </h:inputText>
-                                <h:outputText value="Treść"/>
-                                <h:inputText value="#{upBean.content}">
+                                <!-- TYTUŁ -->
+                                <h:panelGroup  style="display: inline-block;">
+                                    <h:inputText value="#{upBean.title}" styleClass="regInput" id="addPostTitle">
+                                        <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateTitle}"/>
+                                    </h:inputText>
+                                    <!-- NA JAK DŁUGO? -->
+                                    <h:outputText value="Na jak długo?"/>
+                                    <h:selectOneMenu value="#{upBean.postlt}">
+                                        <f:selectItem itemValue="1" itemLabel="Tydzień"/>
+                                        <f:selectItem itemValue="2" itemLabel="Dwa tygodnie"/>
+                                        <f:selectItem itemValue="3" itemLabel="Trzy tygodnie"/>
+                                    </h:selectOneMenu>
+                                </h:panelGroup>
+                                <!-- TREŚĆ -->
+                                <h:panelGroup>
+                                <h:inputText value="#{upBean.content}" id="addPostContent">
                                     <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateContent}"/>
                                 </h:inputText>
-                                <h:outputText value="Na jak długo?"/>
-                                <h:selectOneMenu value="#{upBean.postlt}">
-                                    <f:selectItem itemValue="1" itemLabel="Tydzień"/>
-                                    <f:selectItem itemValue="2" itemLabel="Dwa tygodnie"/>
-                                    <f:selectItem itemValue="3" itemLabel="Trzy tygodnie"/>
-                                </h:selectOneMenu>
-                                <h:commandButton value="Zapisz i opublikuj">
-                                    <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
-                                </h:commandButton>
-                                <h:commandButton value="Zapisz">
-                                    <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
-                                </h:commandButton>
-
+                                    </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:commandButton value="Zapisz i opublikuj">
+                                        <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
+                                    </h:commandButton>
+                                    <h:commandButton value="Zapisz">
+                                        <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
+                                    </h:commandButton>
+                                </h:panelGroup>
+                                </h:panelGrid>
                             </div>
                             <h3 id="myPostsHeader">Moje ogłoszenia</h3>
                             <div>

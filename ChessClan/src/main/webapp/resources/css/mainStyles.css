@@ -34,9 +34,11 @@ h2{
 }
 
 .footer{
+    font-weight: bold;
+    color: white;
     background-color: #BBBBBB;
     width:100%;
-    height:40px;
+    height:80px;
     margin:10px 0px 10px 0px;
 }
 
@@ -277,7 +279,7 @@ div#editContainer{
     width: 99%;
 }
 #tabs-1,#tabs-2,#tabs-3,#tabs-4{
-    width: 70%;
+    width: 98%;
 }
 
 .noMargin{
@@ -446,4 +448,15 @@ TABLE.editTable tr:nth-child(even) td:nth-child(even){
 TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background: #353534;
     
+}
+.footerCol1{
+    width: 51%;
+    
+    
+}
+.footerCol2{
+    width: 49%;
+}
+.footerGrid{
+    width: 100%;
 }
