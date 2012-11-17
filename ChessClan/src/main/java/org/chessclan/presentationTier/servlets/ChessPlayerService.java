@@ -34,21 +34,22 @@ public class ChessPlayerService {
 
     @PostConstruct
     public void initialize() {
-
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{param}")
     public Response getGameById(@PathParam("param") String msg) {
-
-        return Response.status(200).entity(msg).build();
+        int id = Integer.parseInt(msg);
+        Game foundGame = gRepo.findOne(id);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
+        return Response.status(200).entity(gson.toJson(foundGame)).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/")
-    public Response getExampleGame() throws JAXBException {
+    @Path("/addExample")
+    public Response saveExampleGame(){
         Game game = new Game("Mistrzostwa Polski 2012", "Wrocław", new Date(), 1, "Daniel Engel", "Michał Engel", Game.GameResult.WHITE_WON, null);
         game.addMove(new Move(1, 2, 1, 3, true));
         game.addMove(new Move(1, 7, 1, 6, true));
