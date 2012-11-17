@@ -8,8 +8,6 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -22,7 +20,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -40,7 +37,6 @@ import javax.validation.constraints.Size;
 public class Game implements Serializable {
 
     public enum GameResult {
-
         WHITE_WON, BLACK_WON, DRAW, UNFINISHED;
     }
     @Expose
@@ -194,7 +190,4 @@ public class Game implements Serializable {
     public void setMoves(Set<Move> moves) {
         this.moves = moves;
     }
-
-
-    
 }

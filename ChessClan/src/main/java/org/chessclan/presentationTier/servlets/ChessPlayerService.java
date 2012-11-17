@@ -14,7 +14,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
 import org.chessclan.dataTier.models.Game;
 import org.chessclan.dataTier.models.Move;
 import org.chessclan.dataTier.repositories.GameRepository;

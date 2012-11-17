@@ -4,13 +4,8 @@
  */
 package org.chessclan.dataTier.models;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,19 +26,6 @@ import javax.validation.constraints.NotNull;
 @Table(name = "moves")
 public class Move implements Serializable {
 
-//    public class MoveSerializer implements JsonSerializer<Move> {
-//        @Override
-//        public JsonElement serialize(Move src, Type typeOfSrc, JsonSerializationContext context) {
-//            JsonObject obj = new JsonObject();
-//            obj.addProperty("id", src.id);
-//            obj.addProperty("fromX", src.fromX);
-//            obj.addProperty("fromY", src.fromY);
-//            obj.addProperty("toX", src.toX);
-//            obj.addProperty("toY", src.toY);
-//            obj.addProperty("isSingular", src.isSingular);
-//            return obj;
-//        }
-//    }
     @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
