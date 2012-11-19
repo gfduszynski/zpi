@@ -62,7 +62,7 @@ public class ClubMembersBean {
             }
         } else {
             if (searchLN == null || searchLN.isEmpty()) {
-                this.foundUsers = umBO.findByLasname(searchFN);
+                this.foundUsers = umBO.findByLastname(searchFN);
             } else {
                 this.foundUsers = umBO.findByFirstnameAndLastname(searchFN, searchLN);
             }
