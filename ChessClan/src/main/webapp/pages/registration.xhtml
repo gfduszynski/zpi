@@ -77,7 +77,7 @@
                             <f:ajax event="change" execute="sInput" render="sGroup" listener="#{rgsBean.validateStatute}"/>
                         </h:selectBooleanCheckbox>
                     </h:panelGroup>
-                    <h:outputText value="Akceptuję "/><a href="#{request.contextPath}/tos" styleClass="link">regulamin.</a><br/>
+                    <h:outputText value="Akceptuję "/><a href="#{request.contextPath}/tos" class="link">regulamin.</a><br/>
                     <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.register}"/>
                     </h:commandButton>
@@ -140,7 +140,7 @@
                             <f:ajax event="change" execute="stInput" render="stGroup" listener="#{rgsBean.validateStatute}"/>
                         </h:selectBooleanCheckbox>
                     </h:panelGroup>
-                    <h:outputText value="Akceptuję "/><a href="#{request.contextPath}/tos" styleClass="link">regulamin.</a><br/>
+                    <h:outputText value="Akceptuję "/><a href="#{request.contextPath}/tos" class="link" disableClass="">regulamin.</a><br/>
                     <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>
                     </h:commandButton>

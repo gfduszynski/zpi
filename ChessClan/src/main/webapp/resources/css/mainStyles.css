@@ -1,7 +1,10 @@
 html{
     overflow-y: scroll;
 }
-
+/* PODSTAWOWE STAŁE NARZĘDZIA:  */
+.width100{
+    width: 100%;
+}
 body{
     text-align: center;
     /*background-color:#F0EEEB;*/
@@ -34,9 +37,11 @@ h2{
 }
 
 .footer{
+    font-weight: bold;
+    color: white;
     background-color: #BBBBBB;
     width:100%;
-    height:40px;
+    height:80px;
     margin:10px 0px 10px 0px;
 }
 
@@ -53,6 +58,7 @@ h2{
 div#editContainer{
     width:960px;
     padding:0px;
+    background-color: transparent;
 }
 
 .loginStuff{
@@ -276,7 +282,7 @@ div#editContainer{
     width: 99%;
 }
 #tabs-1,#tabs-2,#tabs-3,#tabs-4{
-    width: 70%;
+    width: 98%;
 }
 
 .noMargin{
@@ -395,15 +401,33 @@ TABLE.panelGridClass TR TD select{
 .editBlue{
     background-color: #00AAE8;
 }
+.editButton{
+    height: 30px;
+    width: 100%;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#353534;
+    display:inline-block;
+    color:white;
+    font-weight:bold;
+    text-decoration:none;
+}
+.editDone{
+    color: white;
+    text-align: center;
+}
 TABLE.editTable{
     width: 100%;
-    background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
+    color: white;
+    background-color: transparent;
+   /* background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -moz-linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
     background: -webkit-linear-gradient(45deg, #F9F6F4 44%, #DFDDDA 46%, #DFDDDA 43%, #F9F6F4 43%, #F9F6F4 86%, #DFDDDA 151%);
     -webkit-background-size: 200px 210px;
     background: -o-linear-gradient(45deg, #F9F6F4 49%, #DFDDDA 50%, #DFDDDA 46%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 103%) 0% 1%/100px 100px transparent;
     background: linear-gradient(45deg, #F9F6F4 47%, #DFDDDA 45%, #DFDDDA 43%, #F9F6F4 48%, #F9F6F4 96%, #DFDDDA 104%);
-    background-size:100px 100px;
+    background-size:100px 100px;*/
 }
 
 TABLE.editTable tr{
@@ -427,4 +451,58 @@ TABLE.editTable tr:nth-child(even) td:nth-child(even){
 TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background: #353534;
     
+}
+.footerCol1{
+    width: 51%;
+    
+    
+}
+.footerCol2{
+    width: 49%;
+}
+.footerGrid{
+    width: 100%;
+}
+#addPostTitle{
+    width:67%;
+}
+.addPostDate{
+    margin: 0 0 0 12px;
+}
+#addPostContent{
+    width: 100%;
+    overflow: auto;
+    height: 200px;
+    resize: none;
+}
+.addPost{
+    width: 100%;
+}
+.allButton{
+    height: 30px;
+    margin: 2px;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color: #353534;
+    font-family:arial;
+    font-size:16px;
+    font-weight:normal;
+    padding:6px 27px;
+    text-decoration:none;
+}
+.allButton:hover {
+    background-color: #00AAE8;
+    color: white; 
+}
+.addPostButton{
+    width: 180px;
+}
+.addPostButtonMy{
+    width: 100px;
+}
+.addPostMy{
+    column-width: 20%;
 }
