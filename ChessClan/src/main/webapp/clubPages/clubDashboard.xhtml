@@ -26,7 +26,8 @@
                 </ul>
                 <div id="tabs-1">
                     <h:form prependId="false" id="clubTmtsForm">
-                        <c:if test="#{not empty ctBean.clubTournaments}">
+                        <h:messages/>
+                        <c:if test="#{(not empty ctBean.clubTournaments) and (not cTmtCBean.nowInMods)}">
                             <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
                                 <h:panelGroup layout="block" styleClass="tmtContainer">
                                     #{tmt.name} <a href="#{request.contextPath}/tournaments/#{tmt.id}">Wyświetl szczegółowy widok</a><br/>
@@ -34,14 +35,9 @@
                                     Opis: #{tmt.description}<br/>
                                     Ilość rund: #{tmt.numberOfRounds}<br/>
                                     Punkty potrzebne do odejścia: #{tmt.pointsForBye}<br/>
-                                    <c:if test="#{tmt.state == 'STARTED'}">
-                                        <h:commandButton value="Kontynuuj prowadzenie turnieju">
-
-                                        </h:commandButton>
-                                    </c:if>
                                     <c:if test="#{tmt.state == 'NOT_STARTED'}">
                                         <h:commandButton value="Rozpocznij prowadzenie turnieju">
-
+                                            <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                         </h:commandButton>
                                     </c:if>
                                 </h:panelGroup>
@@ -49,6 +45,9 @@
                         </c:if>
                         <c:if test="#{empty ctBean.clubTournaments}">
                             <h:outputText value="Nie masz żadnych zgłoszonych turnieji."/>
+                        </c:if>
+                        <c:if test="#{cTmtCBean.nowInMods}">
+                            <ui:include src="tmtCreator.xhtml"/>
                         </c:if>
                     </h:form>
                 </div>
@@ -91,10 +90,10 @@
                             </c:forEach>
                         </c:if>
                         <c:if test="#{empty cmmBean.members}">
-                        <h:panelGroup layout="block" class="ui-state-error ui-corner-all">
-                            <p><span class="ui-icon ui-icon-highlight" style="float: left; margin-right: .3em;"></span>
-                                <strong>Hej!</strong> Do Twojego klubu nie jest zapisany żaden użytkownik.</p>
-                        </h:panelGroup>
+                            <h:panelGroup layout="block" class="ui-state-error ui-corner-all">
+                                <p><span class="ui-icon ui-icon-highlight" style="float: left; margin-right: .3em;"></span>
+                                    <strong>Hej!</strong> Do Twojego klubu nie jest zapisany żaden użytkownik.</p>
+                            </h:panelGroup>
                         </c:if>
                     </h:form>
                 </div>

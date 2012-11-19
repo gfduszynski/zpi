@@ -101,6 +101,18 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
+    @Override
+    public Tournament leaveTournament(Tournament t, PairingCard pc) throws Round.NotJoinableRound {
+        if (t.getCurrentRound().getRoundState() != State.JOINING) {
+            throw new Round.NotJoinableRound();
+        }
+
+        t.getPairingCardSet().remove(pc);
+        pcRepo.delete(pc);
+        return tRepo.saveAndFlush(t);
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers {
         t = tRepo.findOne(t.getId());
         Round currentRound = t.getCurrentRound();
@@ -329,19 +341,28 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     public Iterable<Tournament> findAll() {
         return tRepo.findAll();
     }
-    
+
     @Override
     public void deleteTournament(int id) {
         tRepo.delete(id);
     }
-    
+
     @Override
     public void deleteTournament(Tournament t) {
         tRepo.delete(t);
     }
-    
+
     @Override
     public void deleteTournaments(Iterable<Tournament> ts) {
         tRepo.delete(ts);
+    }
+
+    @Override
+    public Tournament fetchRelations(Tournament t) {
+        Tournament tRes = tRepo.findOne(t.getId());
+        for (PairingCard pc : tRes.getPairingCardSet() ) {
+            pc.getPlayer().getFirstName().toString();
+        }
+        return tRes;
     }
 }

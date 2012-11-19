@@ -162,7 +162,7 @@ public class UserManagementBOImpl implements UserManagementBO {
     }
     
     @Override
-    public List<User> findByLasname(String ln){
+    public List<User> findByLastname(String ln){
         return userRepo.findByLastName(ln);
     }
 }

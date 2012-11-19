@@ -42,5 +42,5 @@ public interface UserManagementBO{
     public List<User> findClubUsers(Club c);
     List<User> findByFirstnameAndLastname(String fn, String ln);
     List<User> findByFirstname(String fn);
-    List<User> findByLasname(String ln);
+    List<User> findByLastname(String ln);
 }
