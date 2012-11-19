@@ -70,7 +70,7 @@
                         <div id="accordion">
                             <h3 id="addPostHeader">Dodaj ogłoszenie</h3>
                             <div>
-                                <h:panelGrid>
+                                <h:panelGrid styleClass="addPost">
                                 <h:panelGroup id="messages">
                                     <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all">
                                         <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -86,13 +86,13 @@
                                     </h:panelGroup>
                                 </h:panelGroup>
                                 <!-- TYTUŁ -->
-                                <h:panelGroup  style="display: inline-block;">
+                                <h:panelGroup>
                                     <h:inputText value="#{upBean.title}" styleClass="regInput" id="addPostTitle">
                                         <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateTitle}"/>
                                     </h:inputText>
                                     <!-- NA JAK DŁUGO? -->
-                                    <h:outputText value="Na jak długo?"/>
-                                    <h:selectOneMenu value="#{upBean.postlt}">
+                                    <h:outputText value="Termin ważności:" styleClass="addPostDate"/>
+                                    <h:selectOneMenu value="#{upBean.postlt}" styleClass="addPostDate">
                                         <f:selectItem itemValue="1" itemLabel="Tydzień"/>
                                         <f:selectItem itemValue="2" itemLabel="Dwa tygodnie"/>
                                         <f:selectItem itemValue="3" itemLabel="Trzy tygodnie"/>
@@ -100,15 +100,15 @@
                                 </h:panelGroup>
                                 <!-- TREŚĆ -->
                                 <h:panelGroup>
-                                <h:inputText value="#{upBean.content}" id="addPostContent">
+                                <h:inputTextarea value="#{upBean.content}" id="addPostContent">
                                     <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateContent}"/>
-                                </h:inputText>
+                                </h:inputTextarea>
                                     </h:panelGroup>
                                 <h:panelGroup>
-                                    <h:commandButton value="Zapisz i opublikuj">
+                                    <h:commandButton value="Zapisz i opublikuj" styleClass="allButton addPostButton">
                                         <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
                                     </h:commandButton>
-                                    <h:commandButton value="Zapisz">
+                                    <h:commandButton value="Zapisz" styleClass="allButton addPostButton">
                                         <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
                                     </h:commandButton>
                                 </h:panelGroup>
@@ -117,7 +117,7 @@
                             <h3 id="myPostsHeader">Moje ogłoszenia</h3>
                             <div>
                                 <c:if test="#{upBean.userPosts.size()>0}">
-                                    <h:dataTable value="#{upBean.userPosts}" var="post">
+                                    <h:dataTable value="#{upBean.userPosts}" var="post" columnClasses="addPostMy" styleClass="width100">
                                         <h:column>
                                             <!-- column header -->
                                             <f:facet name="header">Tytuł</f:facet>
@@ -136,16 +136,16 @@
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Publikowanie</f:facet>        
-                                            <h:commandButton value="Opublikuj" rendered="#{post.datePublished == null}">
+                                            <h:commandButton value="Opublikuj" rendered="#{post.datePublished == null}" styleClass="allButton addPostButtonMy">
                                                 <f:ajax render="@form" listener="#{upBean.publishPost(post)}"/>
                                             </h:commandButton>            
-                                            <h:commandButton value="Ukryj" rendered="#{post.datePublished != null}">
+                                            <h:commandButton value="Ukryj" rendered="#{post.datePublished != null}" styleClass="allButton addPostButtonMy">
                                                 <f:ajax render="@form" listener="#{upBean.unPublishPost(post)}"/>
                                             </h:commandButton>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Usuń</f:facet>         
-                                            <h:commandButton value="Usuń">
+                                            <h:commandButton value="Usuń" styleClass="allButton addPostButtonMy">
                                                 <f:ajax render="@form" listener="#{upBean.removePost(post)}"/>
                                             </h:commandButton>
                                         </h:column>

@@ -141,7 +141,7 @@ public class UserPostsBean implements Serializable {
     
     public boolean validateContent() {
         if (content != null) {
-            if (title.length() == 0 || title.equals("[Treść]")) {
+            if (content.length() == 0 || content.equals("[Treść]")) {
                 this.postWrong = true;
                 return false;
             } else {

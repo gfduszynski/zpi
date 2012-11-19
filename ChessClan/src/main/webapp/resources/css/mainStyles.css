@@ -1,7 +1,10 @@
 html{
     overflow-y: scroll;
 }
-
+/* PODSTAWOWE STAŁE NARZĘDZIA:  */
+.width100{
+    width: 100%;
+}
 body{
     text-align: center;
     /*background-color:#F0EEEB;*/
@@ -459,4 +462,47 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
 }
 .footerGrid{
     width: 100%;
+}
+#addPostTitle{
+    width:67%;
+}
+.addPostDate{
+    margin: 0 0 0 12px;
+}
+#addPostContent{
+    width: 100%;
+    overflow: auto;
+    height: 200px;
+    resize: none;
+}
+.addPost{
+    width: 100%;
+}
+.allButton{
+    height: 30px;
+    margin: 2px;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color: #353534;
+    font-family:arial;
+    font-size:16px;
+    font-weight:normal;
+    padding:6px 27px;
+    text-decoration:none;
+}
+.allButton:hover {
+    background-color: #00AAE8;
+    color: white; 
+}
+.addPostButton{
+    width: 180px;
+}
+.addPostButtonMy{
+    width: 100px;
+}
+.addPostMy{
+    column-width: 20%;
 }
