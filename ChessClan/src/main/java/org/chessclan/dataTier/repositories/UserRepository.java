@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByLogin(String login);
     @Transactional
     public List<User> findByUserClub(Club c);
+    List<User> findByFirstName(String firstName);
+    List<User> findByLastName(String lastName);
+    List<User> findByFirstNameAndLastName(String firstName, String lastName);
 }

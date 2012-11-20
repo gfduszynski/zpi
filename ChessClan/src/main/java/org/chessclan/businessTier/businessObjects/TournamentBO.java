@@ -12,6 +12,7 @@ import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -32,4 +33,7 @@ public interface TournamentBO{
     public void deleteTournament(int id);
     public void deleteTournament(Tournament t);
     public void deleteTournaments(Iterable<Tournament> ts);
+    public Tournament leaveTournament(Tournament t, PairingCard pc) throws Round.NotJoinableRound;
+    @Transactional
+    public Tournament fetchRelations(Tournament t);
 }
