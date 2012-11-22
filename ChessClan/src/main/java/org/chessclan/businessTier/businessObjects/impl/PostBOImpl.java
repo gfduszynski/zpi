@@ -150,7 +150,9 @@ public class PostBOImpl implements PostBO{
     @Override
     public Post findOnePost(Integer id)
     {
-        return postRepo.findOne(id);
+        Post post = postRepo.findOne(id);
+        User user = post.getUser();
+        return post;
     }
     
     @Override

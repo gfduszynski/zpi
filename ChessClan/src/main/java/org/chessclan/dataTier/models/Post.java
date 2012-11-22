@@ -59,7 +59,7 @@ public class Post implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateExpires;
     @JoinColumn(name = "user", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User user;
 
     public Post() {
@@ -147,6 +147,7 @@ public class Post implements Serializable {
     }
 
     public User getUser() {
+        //user.getEmail();
         return user;
     }
 

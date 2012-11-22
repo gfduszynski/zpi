@@ -1,42 +1,67 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>ChessClan</title>
-
-        <h:outputStylesheet library="css" name="jquery-ui.css"/>
+        <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAACQkJAD09PQASEhIAWFhYAAsLCwD9/f0AFBQUANLS0gANDQ0A////ALu7uwAGBgYAxMTEAGVlZQA6OjoADw8PABgYGAAzMzMACAgIABEREQCUlJQACgoKAPz8/AATExMADAwMAP7+/gAFBQUAOTk5AA4ODgAgICAABwcHAPn5+QAQEBAAo6OjAIGBgQBWVlYAioqKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhghIR0JEAUMAAAAAAAAAAoPHQUdFgUTGgAAAAAAAAAKChkZARYTCgoAAAAAAAAACgofBRMWAwoKAAAAAAAAAAoKGhYFFhcKCgAAAAAAAAAKCgoBHwUGCgoAAAAAAAAACgoKARYWCgoKAAAAAAAAAAoKCgwWHwoKCgAAAAAAAAAKJRATGwwWIgoAAAAAAAAACgoKBx0UCgoKAAAAAAAAAAoKIB8FEw0KCgAAAAAAAAAKCgEWGRYTCgoAAAAAAAAACgoQCREEHwoKAAAAAAAAAAoKDh4ZHCQKCgAAAAAAAAAKCggVBSMLCgoAAAAAAAAACgoKEgcHCgoKAAAAAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAAA=" rel="icon" type="image/x-icon" />
+        <h:outputScript library="js" name="jquery.dotdotdot.js"/>
         <h:outputScript library="js" name="jquery.js"/>
         <h:outputScript library="js" name="jquery-ui.js"/>
-        <script type="text/javascript">
-            var from = 0;
-            var to = 15;
-            $('.prevPage').css('color','red').hide('slow').show(3000);
+        <h:outputScript library="js" name="jquery.dotdotdot.js"/>
+        
+        <script>
+            var page = 1;
+            $(document).ready(function() {
+                 $('.group').hide();
+                 $(".group:lt(16)").show(1000);
+             });
         </script>
         
-
+        <script>
+            $(function(){
+                function previousPageFC(event) {
+                    page--;
+                    $('.group').hide();
+                    $('.group').slice((page-1)*16,page*16).show(1000);
+                    return false;
+                }
+                function nextPageFC(event) {
+                    page++;
+                    $('.group').hide();
+                    $('.group').slice((page-1)*16,page*16).show(1000);
+                    return false;
+                }
+                $('#previousPage').click(previousPageFC);
+                $('#gotonextPage').click(nextPageFC);
+                $('a[href$="-1"]').attr("href", "#");
+            });
+        </script>                
     </h:head>
     <h:body>
+       
         <h:panelGroup layout="block" class="content" id="full-content">
             <ui:include src="../pages/header.xhtml"/>
+                <h1> Turnieje</h1>
             <c:forEach items="#{atvBean.allTournaments}" begin="0" end="16" var="tmt" rendered="#{atvBean.selectedTournament == null}" varStatus="loop">
                 <h:outputLink value="#{request.contextPath}/tournaments/#{tmt.id}">
                     <h:panelGroup class="group tmt#{atvBean.getCurrentTnmIndex(tmt.id)}" layout="block" rendered="#{not empty atvBean.allTournaments}" style="border: 1px solid #363636; margin: 5px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 220px; height: 220px; float: left; overflow: hidden;">
                         <h:outputText value="#{tmt.name}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;	white-space: pre; white-space: pre-wrap; white-space: pre-line; white-space: -pre-wrap; white-space: -o-pre-wrap; white-space: -moz-pre-wrap; white-space: -hp-pre-wrap; word-wrap: break-word;"/>
-                        <h:outputText value="Klubu: Szarak" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
+                        <h:outputText value="Klubu: #{tmt.club.name}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
                         <h:outputText value="Termin: #{tmt.date}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
-                        <h:outputText value="Opis: #{tmt.description}"     style="display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
+                        <h:outputText class="description" value="Opis: #{tmt.description}" style="overflow: hidden; display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
                     </h:panelGroup>              
                 </h:outputLink>    
             </c:forEach>
-            
-            <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament == null}" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 100%; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px;">
-               <!--<h:outputLink id="prevPage"  value="#{request.contextPath}/tournaments" onclick="from -= 16; to -=16; document.location.reload(true)" style="display: block; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&lt;"/></h:outputLink>
-                --><h:outputText value="KLIK" class="prevPage" />
+            <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament == null and not empty atvBean.allTournaments}" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 100%; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px;">
+               <h:panelGroup layout="block" id="prevPage" style="display: block; cursor: pointer; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;">&lt;</h:panelGroup>
                <h:outputLink id="resetPage" value="#{request.contextPath}" style="display: block; min-width: 320px; height: 100px; float:left; text-align:center; text-decoration: none;background-color: #DFDDDA; color: #000;">&and;</h:outputLink>
-               <h:outputLink id="nextPage" value="#{request.contextPath}/tournaments" onclick="from += 16; to +=16; document.location.reload(true)" style="display: block; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&gt;"/></h:outputLink>                          
+               <h:panelGroup layout="block" id="nextPage" style="display: block; cursor: pointer; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;">&gt;</h:panelGroup>
             </h:panelGroup>
             
             
