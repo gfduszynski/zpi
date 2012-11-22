@@ -4,6 +4,7 @@
  */
 package org.chessclan.businessTier.businessObjects.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -38,7 +39,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * @author Xcays & Grzesiek
  */
 @Service("TournamentBO")
-public class TournamentBOImpl implements TournamentBO {
+public class TournamentBOImpl implements TournamentBO, Serializable {
 
     @Autowired
     private TournamentRepository tRepo;
@@ -79,11 +80,13 @@ public class TournamentBOImpl implements TournamentBO {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
+    @Override
     public PairingCard joinTournament(Tournament t) throws Round.NotJoinableRound {
         return joinTournament(t, umBO.getLoggedUser());
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
+    @Override
     public PairingCard joinTournament(Tournament t, User u) throws Round.NotJoinableRound {
         if (t.getCurrentRound().getRoundState() != State.JOINING) {
             throw new Round.NotJoinableRound();
@@ -98,6 +101,17 @@ public class TournamentBOImpl implements TournamentBO {
     }
 
     @Override
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Tournament leaveTournament(Tournament t, PairingCard pc) throws Round.NotJoinableRound {
+        if (t.getCurrentRound().getRoundState() != State.JOINING) {
+            throw new Round.NotJoinableRound();
+        }
+
+        t.getPairingCardSet().remove(pc);
+        pcRepo.delete(pc);
+        return tRepo.saveAndFlush(t);
+    }
+
     @Transactional(propagation = Propagation.MANDATORY)
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers {
         t = tRepo.findOne(t.getId());
@@ -341,5 +355,14 @@ public class TournamentBOImpl implements TournamentBO {
     @Override
     public void deleteTournaments(Iterable<Tournament> ts) {
         tRepo.delete(ts);
+    }
+
+    @Override
+    public Tournament fetchRelations(Tournament t) {
+        Tournament tRes = tRepo.findOne(t.getId());
+        for (PairingCard pc : tRes.getPairingCardSet() ) {
+            pc.getPlayer().getFirstName().toString();
+        }
+        return tRes;
     }
 }

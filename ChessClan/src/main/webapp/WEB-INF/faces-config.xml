@@ -23,7 +23,7 @@
             <base-name>Messages</base-name>
             <var>msg</var>
         </resource-bundle>
-
+       
     </application>
 
 </faces-config>

@@ -24,7 +24,7 @@ import org.chessclan.dataTier.models.User;
 @ManagedBean(name = "upBean")
 @ViewScoped
 public class UserPostsBean implements Serializable {
-
+    
     private List<Post> allPosts;
     private List<Post> userPosts;
     private String title;
@@ -37,20 +37,20 @@ public class UserPostsBean implements Serializable {
     PostBO postBO;
     @ManagedProperty("#{loginBean.user}")
     User user;
-
+    
     public UserPostsBean() {
         this.postPublished = false;
         this.postSaved = false;
         this.postWrong = false;
         this.postlt = 1;
     }
-
+    
     @PostConstruct
     public void initialize() {
         this.allPosts = postBO.findAllPosts();
         this.userPosts = postBO.findUserPosts(this.getUser());
     }
-
+    
     public void saveAndPublish() {
         if (validateContent() && validateTitle()) {
             PostLifeTime plt = null;
@@ -78,7 +78,7 @@ public class UserPostsBean implements Serializable {
             this.content = "";
         }
     }
-
+    
     public void save() {
         if (validateContent() && validateTitle()) {
             PostLifeTime plt = null;
@@ -106,130 +106,130 @@ public class UserPostsBean implements Serializable {
             this.content = "";
         }
     }
-
+    
     public void publishPost(Post post) {
         post.setDatePublished(Calendar.getInstance().getTime());
         postBO.savePost(post);
     }
-
+    
     public void unPublishPost(Post post) {
         post.setDatePublished(null);
         this.allPosts.remove(post);
         postBO.savePost(post);
     }
-
+    
     public void removePost(Post post) {
         this.userPosts.remove(post);
         this.allPosts.remove(post);
         postBO.deletePost(post);
     }
-
+    
     public boolean validateTitle() {
         if (title != null) {
-            if (title.length() > 0) {
-                this.postWrong = false;
-                return true;
-            } else {
+            if (title.length() == 0 || title.equals("[Tytuł]")) {
                 this.postWrong = true;
                 return false;
+            } else {
+                this.postWrong = false;
+                return true;
             }
         } else {
             this.postWrong = true;
             return false;
         }
     }
-
+    
     public boolean validateContent() {
         if (content != null) {
-            if (content.length() > 0) {
-                this.postWrong = false;
-                return true;
-            } else {
+            if (content.length() == 0 || content.equals("[Treść]")) {
                 this.postWrong = true;
                 return false;
+            } else {
+                this.postWrong = false;
+                return true;
             }
         } else {
             this.postWrong = true;
             return false;
         }
     }
-
+    
     public PostBO getPostBO() {
         return postBO;
     }
-
+    
     public void setPostBO(PostBO postBO) {
         this.postBO = postBO;
     }
-
+    
     public List<Post> getAllPosts() {
         return allPosts;
     }
-
+    
     public void setAllPosts(List<Post> allPosts) {
         this.allPosts = allPosts;
     }
-
+    
     public List<Post> getUserPosts() {
         return userPosts;
     }
-
+    
     public void setUserPosts(List<Post> userPosts) {
         this.userPosts = userPosts;
     }
-
+    
     public String getTitle() {
         return title;
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     public String getContent() {
         return content;
     }
-
+    
     public void setContent(String content) {
         this.content = content;
     }
-
+    
     public boolean getPostPublished() {
         return postPublished;
     }
-
+    
     public void setPostPublished(boolean postPublished) {
         this.postPublished = postPublished;
     }
-
+    
     public boolean getPostSaved() {
         return postSaved;
     }
-
+    
     public void setPostSaved(boolean postSaved) {
         this.postSaved = postSaved;
     }
-
+    
     public boolean getPostWrong() {
         return postWrong;
     }
-
+    
     public void setPostWrong(boolean postWrong) {
         this.postWrong = postWrong;
     }
-
+    
     public int getPostlt() {
         return postlt;
     }
-
+    
     public void setPostlt(int postlt) {
         this.postlt = postlt;
     }
-
+    
     public User getUser() {
         return user;
     }
-
+    
     public void setUser(User user) {
         this.user = user;
     }

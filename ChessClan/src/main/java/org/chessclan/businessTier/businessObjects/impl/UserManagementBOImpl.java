@@ -45,7 +45,7 @@ public class UserManagementBOImpl implements UserManagementBO {
     @Override
     public User getLoggedUser() {
         UsernamePasswordAuthenticationToken loggedUserAuthentication = getLoggedUserAuthentication();
-        User u = findUserByEmailWithClub(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
+        User u = userRepo.findByEmail(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
         return u;
     }
 
@@ -94,15 +94,6 @@ public class UserManagementBOImpl implements UserManagementBO {
     @Override
     public User findUserByEmail(String email) {
         return userRepo.findByEmail(email);
-    }
-
-    @Override
-    @Transactional
-    public User findUserByEmailWithClub(String email) {
-        User user = userRepo.findByEmail(email);
-        if(user.getUserClub()!=null)
-        user.getUserClub().getOwner();
-        return user;
     }
 
     @Override
@@ -158,5 +149,20 @@ public class UserManagementBOImpl implements UserManagementBO {
 
     public User findUserByLogin(String login) {
         return userRepo.findByLogin(login);
+    }
+    
+    @Override
+    public List<User> findByFirstnameAndLastname(String fn, String ln){
+        return userRepo.findByFirstNameAndLastName(fn, ln);
+    }
+    
+    @Override
+    public List<User> findByFirstname(String fn){
+        return userRepo.findByFirstName(fn);
+    }
+    
+    @Override
+    public List<User> findByLastname(String ln){
+        return userRepo.findByLastName(ln);
     }
 }

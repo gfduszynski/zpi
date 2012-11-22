@@ -35,8 +35,10 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+
     public enum FIDETitle {
-        NO_TITLE,WCM,WFM,CM,WIM,FM,WGM,IM,GM;
+
+        NO_TITLE, WCM, WFM, CM, WIM, FM, WGM, IM, GM;
     }
     private static final long serialVersionUID = 1L;
     @Id
@@ -97,19 +99,21 @@ public class User implements Serializable {
     @Column(name = "fide_title")
     @Enumerated(EnumType.ORDINAL)
     private FIDETitle fideTitle = FIDETitle.NO_TITLE;
-    @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER, cascade= CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "userSet", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Role> roleSet;
     @JoinColumn(name = "user_club", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Club userClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Post> postSet;
-    @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "owner", fetch = FetchType.EAGER)
     private Club ownedClub;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "opponent", fetch = FetchType.LAZY)
     private Set<PairingCard> opponentPairingCardSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "player", fetch = FetchType.LAZY)
     private Set<PairingCard> pairingCardSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.LAZY)
+    private Set<Game> games;
 
     public User() {
     }
@@ -117,7 +121,7 @@ public class User implements Serializable {
     public User(Integer id) {
         this.id = id;
     }
-    
+
     public User(String login, String email, String password, String firstName, String lastName, Date birthDate, Date creationDate) {
         this.login = login;
         this.email = email;
@@ -309,5 +313,14 @@ public class User implements Serializable {
     public void setFideTitle(FIDETitle fideTitle) {
         this.fideTitle = fideTitle;
     }
+
+    public Set<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(Set<Game> games) {
+        this.games = games;
+    }
+    
     
 }

@@ -98,6 +98,5 @@
             <column name="name" value="Junior starszy Kobiety"/>
         </insert>
     </changeSet>
-        
 
 </databaseChangeLog>
