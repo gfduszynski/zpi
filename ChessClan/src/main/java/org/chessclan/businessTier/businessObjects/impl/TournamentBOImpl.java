@@ -4,7 +4,6 @@
  */
 package org.chessclan.businessTier.businessObjects.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -98,6 +97,7 @@ public class TournamentBOImpl implements TournamentBO {
         return pcRepo.saveAndFlush(pc);
     }
 
+    @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers {
         t = tRepo.findOne(t.getId());
@@ -296,40 +296,49 @@ public class TournamentBOImpl implements TournamentBO {
         black.setColorDiff(black.getColorDiff() - 1);
         black.setColor(PairingCard.Color.BLACK);
     }
-
+    
+    @Override
     public List<Tournament> findTournamentsByClub(Club club) {
         return tRepo.findByClub(club);
     }
 
     // DAO Wrappers
+    @Override
     public Tournament saveTournament(Tournament t) {
         return tRepo.save(t);
     }
 
+    @Override
     public Iterable<Tournament> saveTournaments(Iterable<Tournament> t) {
         return tRepo.save(t);
     }
 
+    @Override
     public Tournament findTournamentById(int id) {
         return tRepo.findOne(id);
     }
 
+    @Override
     public Iterable<Tournament> findTournamentsById(Iterable<Integer> ids) {
         return tRepo.findAll(ids);
     }
 
+    @Override
     public Iterable<Tournament> findAll() {
         return tRepo.findAll();
     }
 
+    @Override
     public void deleteTournament(int id) {
         tRepo.delete(id);
     }
 
+    @Override
     public void deleteTournament(Tournament t) {
         tRepo.delete(t);
     }
 
+    @Override
     public void deleteTournaments(Iterable<Tournament> ts) {
         tRepo.delete(ts);
     }

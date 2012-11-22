@@ -14,15 +14,25 @@
             <h:panelGroup layout="block" class="elements">
                 <h1> Tablica ogłoszeń</h1>
                 <c:forEach items="#{pvBean.posts}" var="post" rendered="#{pvBean.selectedPost == null}">
-                    <h:panelGroup layout="block" rendered="#{not empty pvBean.posts}">
-                        <h:outputText value="#{post.title}"/>
-                        <h:outputText value="Autor: #{post.user}"/>
-                        <h:outputText value="Zawartość: #{post.content}"/>
-                        <h:outputText value="Kiedy opublikowano #{post.datePublished}"/>
-                    </h:panelGroup>
-                    <c:if test="#{!loop.last}"><hr/></c:if>
-                </c:forEach>
-                <h:panelGroup layout="block" rendered="#{empty pvBean.posts and pvBean.selectedPost == null}">
+                <h:panelGroup class="group" layout="block" rendered="#{not empty pvBean.posts}" style="border: 1px solid #363636; margin: 2px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 300px; height: 200px; float: left; overflow: hidden;">
+                    <h:outputText value="#{post.title}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;"/>
+                    <h:outputText value="Dodał: #{post.user.login}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
+                    <h:outputText value="Opublikowano: #{post.datePublished}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
+                    <h:outputText value="Opis: #{post.content}"     style="display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
+                </h:panelGroup>              
+            </c:forEach>
+<!--            
+            <h:panelGroup class="group" layout="block" rendered="#{pvBean.selectedPost == null}" style="border: 1px solid #363636; margin: 2px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 100%; height: 25px; float: left; overflow: hidden;">
+                <h:commandLink value="remove"> rendered=""
+                     <f:ajax execute="@form" render="@form" listener="#{pdBean.deletePost(post)}"/>
+                </h:commandLink>
+                <h:commandLink value="cancel"> rendered="#{pdBean.editable[post.id]}" 
+                    <f:ajax execute="@form" render="@form" listener="#{pdBean.deselectOneEditable(post.id)}"/>
+                </h:commandLink>
+            </h:panelGroup>     
+                -->
+                
+                        <h:panelGroup layout="block" rendered="#{empty pvBean.posts and pvBean.selectedPost == null}">
                     <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
                         <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                             <strong>Niestety!</strong> Nie ma żadnych ogłoszeń zarejestrowanych w systemie.</p>

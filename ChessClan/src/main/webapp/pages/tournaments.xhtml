@@ -3,38 +3,63 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>ChessClan</title>
 
         <h:outputStylesheet library="css" name="jquery-ui.css"/>
-        <h:outputScript library="js" name="jquery-1.8.2.js"/>
+        <h:outputScript library="js" name="jquery.js"/>
         <h:outputScript library="js" name="jquery-ui.js"/>
+        <script type="text/javascript">
+            var from = 0;
+            var to = 15;
+            $('.prevPage').css('color','red').hide('slow').show(3000);
+        </script>
+        
 
     </h:head>
     <h:body>
-        <h:panelGroup layout="block" class="content">
-
-            <ui:include src="header.xhtml"/>
-
-            <c:forEach items="#{atvBean.allTournaments}" var="tmt" rendered="#{atvBean.selectedTournament == null}" varStatus="loop">
-                <h:panelGroup layout="block" rendered="#{not empty atvBean.allTournaments}">
-                    <h:outputText value="#{tmt.name}"/>
-                    <h:outputText value="Nazwa klubu: #{tmt.club.name}"/>
-                    <h:outputText value="Kiedy: #{tmt.date}"/>
-                    <h:outputText value="Opis: #{tmt.description}"/>
-                </h:panelGroup>
-                <c:if test="#{!loop.last}"><hr/></c:if>
+        <h:panelGroup layout="block" class="content" id="full-content">
+            <ui:include src="../pages/header.xhtml"/>
+            <c:forEach items="#{atvBean.allTournaments}" begin="0" end="16" var="tmt" rendered="#{atvBean.selectedTournament == null}" varStatus="loop">
+                <h:outputLink value="#{request.contextPath}/tournaments/#{tmt.id}">
+                    <h:panelGroup class="group tmt#{atvBean.getCurrentTnmIndex(tmt.id)}" layout="block" rendered="#{not empty atvBean.allTournaments}" style="border: 1px solid #363636; margin: 5px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 220px; height: 220px; float: left; overflow: hidden;">
+                        <h:outputText value="#{tmt.name}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;	white-space: pre; white-space: pre-wrap; white-space: pre-line; white-space: -pre-wrap; white-space: -o-pre-wrap; white-space: -moz-pre-wrap; white-space: -hp-pre-wrap; word-wrap: break-word;"/>
+                        <h:outputText value="Klubu: Szarak" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
+                        <h:outputText value="Termin: #{tmt.date}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
+                        <h:outputText value="Opis: #{tmt.description}"     style="display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
+                    </h:panelGroup>              
+                </h:outputLink>    
             </c:forEach>
+            
+            <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament == null}" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 100%; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px;">
+               <!--<h:outputLink id="prevPage"  value="#{request.contextPath}/tournaments" onclick="from -= 16; to -=16; document.location.reload(true)" style="display: block; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&lt;"/></h:outputLink>
+                --><h:outputText value="KLIK" class="prevPage" />
+               <h:outputLink id="resetPage" value="#{request.contextPath}" style="display: block; min-width: 320px; height: 100px; float:left; text-align:center; text-decoration: none;background-color: #DFDDDA; color: #000;">&and;</h:outputLink>
+               <h:outputLink id="nextPage" value="#{request.contextPath}/tournaments" onclick="from += 16; to +=16; document.location.reload(true)" style="display: block; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&gt;"/></h:outputLink>                          
+            </h:panelGroup>
+            
+            
             <h:panelGroup layout="block" rendered="#{empty atvBean.allTournaments and atvBean.selectedTournament == null}">
                 <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
                     <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                        <strong>Niestety!</strong> Nie ma żadnych turnieji zarejestrowanych w systemie.</p>
+                        <strong>Niestety!</strong> Nie ma żadnych turniei zarejestrowanych w systemie.</p>
                 </h:panelGroup>
             </h:panelGroup>
             <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament !=null}">
-                <h2>#{atvBean.selectedTournament.name}</h2>
-                <h2>#{atvBean.selectedTournament.description}</h2>
+
+                <h:panelGroup  layout="block" style="border: 1px solid #363636; margin: 2px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 960px; min-height: 350px; float: left; overflow: hidden;">
+                      <h:outputText value="#{atvBean.selectedTournament.name}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;"/>
+                      <h:outputText value="Klub: POPRAWA" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
+                    <h:outputText value="Termin: #{atvBean.selectedTournament.date}}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
+                    <h:outputText value="Opis: #{atvBean.selectedTournament.description}"     style="display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
+                </h:panelGroup>
+                <h:panelGroup layout="block" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 100%; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px;">
+                    <h:outputLink value="#{request.contextPath}/tournaments/#{atvBean.getPrevFromId(atvBean.selectedTournament.id)}" style="display: block; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&lt;" rendered="#{atvBean.getPrevFromId(atvBean.selectedTournament.id)!=-1}"/></h:outputLink>
+                    <h:outputLink value="#{request.contextPath}/tournaments" style="display: block; min-width: 320px; height: 100px; float:left; text-align:center; text-decoration: none;background-color: #DFDDDA; color: #000;">&and;</h:outputLink>
+                    <h:outputLink value="#{request.contextPath}/tournaments/#{atvBean.getNextFromId(atvBean.selectedTournament.id)}" style="display: block; padding-top: 20px; min-width: 320px; height: 100px; float:right; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&gt;" rendered="#{atvBean.getNextFromId(atvBean.selectedTournament.id)!=-1}"/></h:outputLink>                            
+                </h:panelGroup>
             </h:panelGroup>
 
         </h:panelGroup>

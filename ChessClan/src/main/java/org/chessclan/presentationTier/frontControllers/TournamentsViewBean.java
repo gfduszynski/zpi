@@ -5,6 +5,7 @@
 package org.chessclan.presentationTier.frontControllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,34 +32,71 @@ public class TournamentsViewBean {
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
     private List<Tournament> allTournaments;
+    private List<Integer> mapTournaments;
     private Tournament selectedTournament;
     private boolean joiningSucc;
-
+    private Integer page;
+    private Map<Integer,ArrayList<Integer>> mapToPrevAndNext;
     public TournamentsViewBean() {
     }
 
     @PostConstruct
     public void initialize() {
 
+        this.mapToPrevAndNext = new HashMap<Integer,ArrayList<Integer>>();
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String tournamentId = params.get("id");
+        page = 1;
         try {
             int ti = Integer.valueOf(tournamentId);
             this.selectedTournament = tmBO.findTournamentById(ti);
             if(this.selectedTournament == null){
                 loadTournaments();
             }
-
+            
         } catch (NumberFormatException e) {
             loadTournaments();
         }
+            helpMapping();
+            loadMapping();
+        
     }
 
     private void loadTournaments() {
         this.allTournaments = new ArrayList<Tournament>();
         Iterator<Tournament> tournaments = tmBO.findAll().iterator();
+        Integer index = 0;
         while (tournaments.hasNext()) {
-            allTournaments.add(tournaments.next());
+            Tournament tmp = tournaments.next();
+            tmp.getClub();
+            allTournaments.add(tmp);
+            ++index;
+        }
+    }
+   
+     private void helpMapping() {
+        this.mapTournaments = new ArrayList<Integer>();
+        Iterator<Tournament> tournaments = tmBO.findAll().iterator();
+        Integer index = 0;
+        while (tournaments.hasNext()) {
+            Tournament tmp = tournaments.next();
+            tmp.getClub();
+            mapTournaments.add(tmp.getId());
+            ++index;
+        }
+    }
+    
+    private void loadMapping()
+    {     
+        for(int i = 0 ; i <= mapTournaments.size()-1 ; i++){
+            ArrayList<Integer> altmp = new ArrayList<Integer>();
+            if(i == 0){
+                altmp.add(-1);
+            } else {altmp.add(mapTournaments.get(i-1));}
+            if (i == mapTournaments.size()-1){
+                altmp.add(-1);
+            } else{{altmp.add(mapTournaments.get(i+1));}}
+            this.mapToPrevAndNext.put(mapTournaments.get(i), altmp);
         }
     }
     
@@ -104,6 +142,54 @@ public class TournamentsViewBean {
     public void setJoiningSucc(boolean joiningSucc) {
         this.joiningSucc = joiningSucc;
     }
+
+    public Map<Integer, ArrayList<Integer>> getMapToPrevAndNext()
+    {
+        return this.mapToPrevAndNext;
+    }
     
+    public void setMapToPrevAndNext(Map<Integer, ArrayList<Integer>> tmpmap)
+    {
+        this.mapToPrevAndNext = tmpmap;
+    }
     
+    public Integer getPrevFromId(Integer id){
+        if(mapToPrevAndNext.get(id)!=null)
+        {
+            return mapToPrevAndNext.get(id).get(0);
+        }
+        return -1;
+    }
+    
+    public Integer incrPage(){
+        int tmp = page;
+        return ++tmp;
+    }
+    
+    public Integer decrPage(){
+        int tmp = page;
+        return --tmp;
+    }
+    
+    public Integer getPage(){
+        return page;
+    }
+    
+    public void setPage(Integer page){
+        this.page=page;
+    }
+    
+    public Integer getNextFromId(Integer id){
+        if(mapToPrevAndNext.get(id)!=null)
+        {
+            return mapToPrevAndNext.get(id).get(1);
+        }
+        return -1;
+    }
+    
+    public Integer getCurrentTnmIndex(Integer id)
+    {
+        return mapTournaments.indexOf(id);
+    }
+
 }
