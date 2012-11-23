@@ -92,14 +92,6 @@ public class Tournament implements Serializable {
         this.id = id;
     }
 
-    public Tournament(Integer id, String name, Date date, String description, Club club) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.description = description;
-        this.club = club;
-    }
-
     public Tournament(String name, Date date, String description, Club club, Category category, State state, int pointForBye, int numberOfRounds) {
         this.name = name;
         this.date = date;

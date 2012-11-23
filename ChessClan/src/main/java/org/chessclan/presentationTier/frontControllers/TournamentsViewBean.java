@@ -7,6 +7,7 @@ package org.chessclan.presentationTier.frontControllers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -16,9 +17,11 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
+import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Round.State;
 import org.chessclan.dataTier.models.Tournament;
+import org.chessclan.dataTier.models.User;
 
 /**
  *
@@ -26,7 +29,7 @@ import org.chessclan.dataTier.models.Tournament;
  */
 @ManagedBean(name = "atvBean")
 @ViewScoped
-public class TournamentsViewBean {
+public class TournamentsViewBean implements Serializable {
 
     @Transient
     @ManagedProperty("#{TournamentBO}")
@@ -37,6 +40,9 @@ public class TournamentsViewBean {
     private boolean joiningSucc;
     private Integer page;
     private Map<Integer,ArrayList<Integer>> mapToPrevAndNext;
+    private List<Tournament> userTournaments;
+    @ManagedProperty(value = "#{loginBean.user}")
+    private User user;
     public TournamentsViewBean() {
     }
 
@@ -50,7 +56,7 @@ public class TournamentsViewBean {
         try {
             int ti = Integer.valueOf(tournamentId);
             this.selectedTournament = tmBO.findTournamentById(ti);
-            if(this.selectedTournament == null){
+            if (this.selectedTournament == null) {
                 loadTournaments();
             }
             
@@ -63,15 +69,7 @@ public class TournamentsViewBean {
     }
 
     private void loadTournaments() {
-        this.allTournaments = new ArrayList<Tournament>();
-        Iterator<Tournament> tournaments = tmBO.findAll().iterator();
-        Integer index = 0;
-        while (tournaments.hasNext()) {
-            Tournament tmp = tournaments.next();
-            tmp.getClub();
-            allTournaments.add(tmp);
-            ++index;
-        }
+        this.allTournaments = tmBO.findTournamentsWithClubAndRoundsAndPC();
     }
    
      private void helpMapping() {
@@ -98,17 +96,29 @@ public class TournamentsViewBean {
             } else{{altmp.add(mapTournaments.get(i+1));}}
             this.mapToPrevAndNext.put(mapTournaments.get(i), altmp);
         }
+
+        userTournaments = tmBO.findUserTournaments(user);
     }
-    
-    public boolean isJoinable(Tournament tmt){
-        if(tmt.getCurrentRound().getRoundState() == State.JOINING){
+
+    public boolean isJoinable(Tournament tmt) {
+        if (tmt.getCurrentRound().getRoundState() == State.JOINING) {
             return true;
         }
         return false;
     }
-    
-    public void joinTournament(Tournament tmt) throws Round.NotJoinableRound{
+
+    public void joinTournament(Tournament tmt) throws Round.NotJoinableRound {
         tmBO.joinTournament(tmt);
+    }
+
+    public boolean userIsMember(Tournament t) {
+        boolean userInTmt = false;
+        for (PairingCard pc : t.getPairingCardSet()) {
+            if (pc.getPlayer().getId() == user.getId()) {
+                userInTmt = true;
+            }
+        }
+        return userInTmt;
     }
 
     public TournamentBO getTmBO() {
@@ -192,4 +202,20 @@ public class TournamentsViewBean {
         return mapTournaments.indexOf(id);
     }
 
+
+    public List<Tournament> getUserTournaments() {
+        return userTournaments;
+    }
+
+    public void setUserTournaments(List<Tournament> userTournaments) {
+        this.userTournaments = userTournaments;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

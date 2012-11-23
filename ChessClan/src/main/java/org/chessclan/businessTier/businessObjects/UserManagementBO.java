@@ -40,7 +40,12 @@ public interface UserManagementBO{
     public void deleteUser(User u);
     public void deleteUsers(Iterable<User> users);
     public List<User> findClubUsers(Club c);
+    @Transactional
     List<User> findByFirstnameAndLastname(String fn, String ln);
+    @Transactional
     List<User> findByFirstname(String fn);
+    @Transactional
     List<User> findByLastname(String ln);
+    @Transactional
+    User findUserWithClub(User user);
 }

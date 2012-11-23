@@ -41,6 +41,8 @@ public class UserClubsBean {
     @PostConstruct
     public void initialize() {
         this.clubs = clubBO.findAll();
+        this.user = userBO.findUserWithClub(user);
+        this.userClub = user.getUserClub();
     }
 
     public void signOutFromClub() {

@@ -6,12 +6,16 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.PairingCard;
+import org.chessclan.dataTier.models.Round.NoPlayers;
+import org.chessclan.dataTier.models.Round.NotFinished;
 import org.chessclan.dataTier.models.Round.NotJoinableRound;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
@@ -25,6 +29,7 @@ import org.chessclan.dataTier.models.User;
 public class ClubTournamentCreatorBean implements Serializable {
 
     private boolean nowInMods;
+    private boolean notValidCriteria;
     private String searchFN;
     private String searchLN;
     private Tournament currentTmt;
@@ -45,8 +50,9 @@ public class ClubTournamentCreatorBean implements Serializable {
         nowInMods = true;
     }
 
-    public void addPlayer(PairingCard pc) throws NotJoinableRound {
-        tmBO.joinTournament(currentTmt, pc.getPlayer());
+    public void addPlayer(User user) throws NotJoinableRound {
+        PairingCard result = tmBO.joinTournament(currentTmt, user);
+        this.currentTmt.getPairingCardSet().add(result);
     }
 
     public void removeUser(PairingCard pc) throws NotJoinableRound {
@@ -56,15 +62,40 @@ public class ClubTournamentCreatorBean implements Serializable {
     public void findUsers() {
         if (searchFN == null || searchFN.isEmpty()) {
             if (searchLN == null || searchLN.isEmpty()) {
+                this.notValidCriteria = true;
+                return;
             } else {
-                this.foundUsers = umBO.findByFirstname(searchFN);
+                this.foundUsers = umBO.findByLastname(searchLN);
             }
         } else {
             if (searchLN == null || searchLN.isEmpty()) {
-                this.foundUsers = umBO.findByLastname(searchFN);
+                this.foundUsers = umBO.findByFirstname(searchFN);
             } else {
                 this.foundUsers = umBO.findByFirstnameAndLastname(searchFN, searchLN);
             }
+        }
+        if (foundUsers.size() > 0) {
+            this.notValidCriteria = false;
+        }
+    }
+    
+    public boolean isMember(User u){
+        for(PairingCard pc : currentTmt.getPairingCardSet())
+        {
+            if(pc.getPlayer().getId() == u.getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void goToNextRound(){
+        try {
+            this.currentTmt = tmBO.goToNextRound(currentTmt);
+        } catch (NotFinished ex) {
+            Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoPlayers ex) {
+            Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -122,5 +153,13 @@ public class ClubTournamentCreatorBean implements Serializable {
 
     public void setFoundUsers(List<User> foundUsers) {
         this.foundUsers = foundUsers;
+    }
+
+    public boolean isNotValidCriteria() {
+        return notValidCriteria;
+    }
+
+    public void setNotValidCriteria(boolean notValidCriteria) {
+        this.notValidCriteria = notValidCriteria;
     }
 }

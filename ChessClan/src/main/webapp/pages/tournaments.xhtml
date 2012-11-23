@@ -75,7 +75,7 @@
 
                 <h:panelGroup  layout="block" style="border: 1px solid #363636; margin: 2px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 960px; min-height: 350px; float: left; overflow: hidden;">
                       <h:outputText value="#{atvBean.selectedTournament.name}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;"/>
-                      <h:outputText value="Klub: POPRAWA" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
+                      <h:outputText value="Klub: #{atvBean.selectedTournament.club.name}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
                     <h:outputText value="Termin: #{atvBean.selectedTournament.date}}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
                     <h:outputText value="Opis: #{atvBean.selectedTournament.description}"     style="display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
                 </h:panelGroup>
