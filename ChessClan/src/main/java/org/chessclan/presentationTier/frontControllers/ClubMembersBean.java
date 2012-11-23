@@ -34,6 +34,7 @@ public class ClubMembersBean {
     private boolean notValidCriteria;
 
     public ClubMembersBean() {
+        notValidCriteria = false;
     }
 
     @PostConstruct
@@ -58,11 +59,11 @@ public class ClubMembersBean {
             if (searchLN == null || searchLN.isEmpty()) {
                 this.notValidCriteria = true;
             } else {
-                this.foundUsers = umBO.findByFirstname(searchFN);
+                this.foundUsers = umBO.findByLastname(searchLN);
             }
         } else {
             if (searchLN == null || searchLN.isEmpty()) {
-                this.foundUsers = umBO.findByLastname(searchFN);
+                this.foundUsers = umBO.findByFirstname(searchFN);
             } else {
                 this.foundUsers = umBO.findByFirstnameAndLastname(searchFN, searchLN);
             }
@@ -113,7 +114,7 @@ public class ClubMembersBean {
         return searchLN;
     }
 
-    public void setSsearchLN(String searchLN) {
+    public void setSearchLN(String searchLN) {
         this.searchLN = searchLN;
     }
 

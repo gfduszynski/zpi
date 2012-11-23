@@ -17,6 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly=false,propagation= Propagation.REQUIRED) 
 public interface TournamentRepository extends JpaRepository<Tournament, Integer> {
-    
+    public List<Tournament> findAll();
     public List<Tournament> findByClub(Club club);
 }
