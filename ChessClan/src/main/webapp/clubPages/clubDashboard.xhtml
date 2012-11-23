@@ -12,9 +12,7 @@
         <ui:composition>
             <script>
                 $(function() {
-                    $("#tabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-                    $("#tabs li").removeClass('ui-corner-top').addClass('ui-corner-left noMargin noPadding');
-                    $("#tabs ul").addClass('noMargin noPadding');
+                    $("#tabs").tabs();
                 });
             </script>
             <div id="tabs" class="noPadding">
@@ -57,7 +55,7 @@
                     <h:form>
                         <h:panelGroup rendered="#{cmmBean.notValidCriteria}" layout="block" class="ui-state-error ui-corner-all">
                             <p><span class="ui-icon ui-icon-highlight" style="float: left; margin-right: .3em;"></span>
-                                <strong>Hej!</strong> Przynajmniej jedno z pól nie możę być puste.</p>
+                                <strong>Hej!</strong> Kryteria wyszukiwania nie spowodowały znalezienia żadnego użytkownika.</p>
                         </h:panelGroup>
                         <h4>Znajdź użytkownika</h4>
                         <h:outputText value="Imię: "/>
@@ -71,11 +69,12 @@
                             <c:forEach items="#{cmmBean.foundUsers}" var="member">
                                 <h:panelGroup layout="block" styleClass="tmtContainer">
                                     <h:outputText value="#{member.firstName} #{member.lastName}"/>
-                                    <c:if test="#{member.userClub == null}">
-                                        <h:commandButton value="Usuń członka">
-                                            <f:ajax render="@form" execute="@form" listener="#{cmmBean.addMember(member)}"/>
-                                        </h:commandButton>
-                                    </c:if>
+                                    <h:commandButton value="Dodaj członka" rendered="#{member.userClub == null}">
+                                        <f:ajax render="@form" execute="@form" listener="#{cmmBean.addMember(member)}"/>
+                                    </h:commandButton>
+                                    <h:panelGroup rendered="#{member.userClub != null}">
+                                        Klub: #{member.userClub.name}
+                                    </h:panelGroup>
                                 </h:panelGroup>
                             </c:forEach>
                         </c:if>

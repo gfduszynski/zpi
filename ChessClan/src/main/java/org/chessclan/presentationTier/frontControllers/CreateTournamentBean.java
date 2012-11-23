@@ -15,6 +15,8 @@ import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.CategoryBO;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.dataTier.models.Category;
+import org.chessclan.dataTier.models.Round.NoPlayers;
+import org.chessclan.dataTier.models.Round.NotFinished;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
 
@@ -79,12 +81,10 @@ public class CreateTournamentBean implements Serializable {
         }
     }
 
-    public void saveTournament() {
-        Tournament t = tmBO.saveTournament(new Tournament(tmtName, tmtDate, tmtDescription, user.getOwnedClub(), tmtCategories.get(0), Tournament.State.NOT_STARTED, pointsForBye, numberOfRounds));
+    public void saveTournament() throws NotFinished, NoPlayers {
+        Tournament t = tmBO.registerTournament(numberOfRounds, pointsForBye, tmtName, tmtDate, tmtDescription, user.getOwnedClub(), tmtCategories.get(0));
         this.createTmtSuccess = true;
-        List<Tournament> tmp = ctBean.getClubTournaments();
-        tmp.add(t);
-        ctBean.setClubTournaments(tmp);
+        ctBean.getClubTournaments().add(t);
     }
     
     public void addNextTmt(){

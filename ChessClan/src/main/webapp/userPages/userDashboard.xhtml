@@ -23,7 +23,7 @@
                     <li><a href="#tabs-4">Kluby</a></li>
                 </ul>
                 <div id="tabs-1">
-                    <c:forEach items="#{atvBean.allTournaments}" var="tmt">
+                    <c:forEach items="#{atvBean.userTournaments}" var="tmt" rendered="#{not empty atvBean.userTournaments}">
                         <h:panelGroup layout="block" >
                             <h:outputText value="#{tmt.name}"/>
                             <h:outputText value="Nazwa klubu: #{tmt.club.name}"/>
@@ -32,6 +32,10 @@
                         </h:panelGroup>
                         <hr/>
                     </c:forEach>
+                    <h:panelGroup rendered="#{empty atvBean.userTournaments}" layout="block"  class="ui-state-highlight ui-corner-all">
+                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                            <strong>Gratulacje!</strong> Nie jesteś zapisany na żaden turniej.</p>
+                    </h:panelGroup>
                 </div>
                 <div id="tabs-2">
 
@@ -46,7 +50,7 @@
                                 <h:outputText value="Nazwa klubu: #{tmt.club.name}"/>
                                 <h:outputText value="Kiedy: #{tmt.date}"/>
                                 <h:outputText value="Opis: #{tmt.description}"/>
-                                <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt)}">
+                                <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}">
                                     <f:ajax render="@form" listener="#{atvBean.joinTournament(tmt)}"/>
                                 </h:commandButton>
                             </h:form>
@@ -71,47 +75,47 @@
                             <h3 id="addPostHeader">Dodaj ogłoszenie</h3>
                             <div>
                                 <h:panelGrid styleClass="addPost">
-                                <h:panelGroup id="messages">
-                                    <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all">
-                                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                            <strong>Uwaga!</strong> Twoje ogłoszenie zostało opublikowane. Teraz widzą je inni użytkownicy.</p>
+                                    <h:panelGroup id="messages">
+                                        <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all">
+                                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                                <strong>Uwaga!</strong> Twoje ogłoszenie zostało opublikowane. Teraz widzą je inni użytkownicy.</p>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{upBean.postSaved}" layout="block" class="ui-state-highlight ui-corner-all">
+                                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                                <strong>Uwaga!</strong> Twoje ogłoszenie zostało zapisane. Aby widzieli je inni użytkownicy, przejdź do zakładki "Moje ogłoszenia" i je opublikuj.</p>
+                                        </h:panelGroup>
+                                        <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all">
+                                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                                                <strong>Hej!</strong> Dodawanie ogłoszeń to nie zabawa. Proszę wpisać prawidłowe ogłoszenie!</p>
+                                        </h:panelGroup>
                                     </h:panelGroup>
-                                    <h:panelGroup rendered="#{upBean.postSaved}" layout="block" class="ui-state-highlight ui-corner-all">
-                                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                            <strong>Uwaga!</strong> Twoje ogłoszenie zostało zapisane. Aby widzieli je inni użytkownicy, przejdź do zakładki "Moje ogłoszenia" i je opublikuj.</p>
+                                    <!-- TYTUŁ -->
+                                    <h:panelGroup>
+                                        <h:inputText value="#{upBean.title}" styleClass="regInput" id="addPostTitle">
+                                            <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateTitle}"/>
+                                        </h:inputText>
+                                        <!-- NA JAK DŁUGO? -->
+                                        <h:outputText value="Termin ważności:" styleClass="addPostDate"/>
+                                        <h:selectOneMenu value="#{upBean.postlt}" styleClass="addPostDate">
+                                            <f:selectItem itemValue="1" itemLabel="Tydzień"/>
+                                            <f:selectItem itemValue="2" itemLabel="Dwa tygodnie"/>
+                                            <f:selectItem itemValue="3" itemLabel="Trzy tygodnie"/>
+                                        </h:selectOneMenu>
                                     </h:panelGroup>
-                                    <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all">
-                                        <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                                            <strong>Hej!</strong> Dodawanie ogłoszeń to nie zabawa. Proszę wpisać prawidłowe ogłoszenie!</p>
+                                    <!-- TREŚĆ -->
+                                    <h:panelGroup>
+                                        <h:inputTextarea value="#{upBean.content}" id="addPostContent">
+                                            <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateContent}"/>
+                                        </h:inputTextarea>
                                     </h:panelGroup>
-                                </h:panelGroup>
-                                <!-- TYTUŁ -->
-                                <h:panelGroup>
-                                    <h:inputText value="#{upBean.title}" styleClass="regInput" id="addPostTitle">
-                                        <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateTitle}"/>
-                                    </h:inputText>
-                                    <!-- NA JAK DŁUGO? -->
-                                    <h:outputText value="Termin ważności:" styleClass="addPostDate"/>
-                                    <h:selectOneMenu value="#{upBean.postlt}" styleClass="addPostDate">
-                                        <f:selectItem itemValue="1" itemLabel="Tydzień"/>
-                                        <f:selectItem itemValue="2" itemLabel="Dwa tygodnie"/>
-                                        <f:selectItem itemValue="3" itemLabel="Trzy tygodnie"/>
-                                    </h:selectOneMenu>
-                                </h:panelGroup>
-                                <!-- TREŚĆ -->
-                                <h:panelGroup>
-                                <h:inputTextarea value="#{upBean.content}" id="addPostContent">
-                                    <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateContent}"/>
-                                </h:inputTextarea>
+                                    <h:panelGroup>
+                                        <h:commandButton value="Zapisz i opublikuj" styleClass="allButton addPostButton">
+                                            <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
+                                        </h:commandButton>
+                                        <h:commandButton value="Zapisz" styleClass="allButton addPostButton">
+                                            <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
+                                        </h:commandButton>
                                     </h:panelGroup>
-                                <h:panelGroup>
-                                    <h:commandButton value="Zapisz i opublikuj" styleClass="allButton addPostButton">
-                                        <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
-                                    </h:commandButton>
-                                    <h:commandButton value="Zapisz" styleClass="allButton addPostButton">
-                                        <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
-                                    </h:commandButton>
-                                </h:panelGroup>
                                 </h:panelGrid>
                             </div>
                             <h3 id="myPostsHeader">Moje ogłoszenia</h3>
