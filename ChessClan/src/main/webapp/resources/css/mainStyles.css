@@ -506,3 +506,18 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
 .addPostMy{
     column-width: 20%;
 }
+TABLE.userTable{
+    width: 100%;
+    background-color: transparent;
+}
+TABLE.userTable tr{
+    height: 30px;
+    margin: none;
+}
+/* TABLE.userTable tr:nth-child(odd){
+    background: #353534;
+} */
+TABLE.userTable tr:nth-child(even){
+    background: #BBBBBB;
+    color: white;
+}

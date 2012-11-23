@@ -117,7 +117,7 @@
                             <h3 id="myPostsHeader">Moje ogłoszenia</h3>
                             <div>
                                 <c:if test="#{upBean.userPosts.size()>0}">
-                                    <h:dataTable value="#{upBean.userPosts}" var="post" columnClasses="addPostMy" styleClass="width100">
+                                    <h:dataTable value="#{upBean.userPosts}" var="post" columnClasses="addPostMy" styleClass="width100 userTable">
                                         <h:column>
                                             <!-- column header -->
                                             <f:facet name="header">Tytuł</f:facet>
