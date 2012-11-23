@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Game;
 import org.chessclan.dataTier.models.Move;
 import org.chessclan.dataTier.repositories.GameRepository;
@@ -30,6 +31,8 @@ public class ChessPlayerService {
 
     @Autowired
     GameRepository gRepo;
+    @Autowired
+    UserManagementBO umBO;
 
     @PostConstruct
     public void initialize() {
@@ -48,12 +51,12 @@ public class ChessPlayerService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/addExample")
-    public Response saveExampleGame(){
+    public Response saveExampleGame() {
         Game game = new Game("Mistrzostwa Polski 2012", "Wrocław", new Date(), 1, "Daniel Engel", "Michał Engel", Game.GameResult.WHITE_WON, null);
-        game.addMove(new Move(1, 2, 1, 3, true));
-        game.addMove(new Move(1, 7, 1, 6, true));
-        game.addMove(new Move(8, 2, 8, 3, true));
-        game.addMove(new Move(8, 7, 8, 6, true));
+        game.addMove(new Move(1, 1, 1, 3, true));
+        game.addMove(new Move(4, 6, 4, 4, true));
+        game.addMove(new Move(1, 3, 1, 4, true));
+        game.addMove(new Move(4, 4, 4, 3, true));
         gRepo.save(game);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
         return Response.status(200).entity(gson.toJson(game)).build();
@@ -65,5 +68,13 @@ public class ChessPlayerService {
 
     public void setgRepo(GameRepository gRepo) {
         this.gRepo = gRepo;
+    }
+
+    public UserManagementBO getUmBO() {
+        return umBO;
+    }
+
+    public void setUmBO(UserManagementBO umBO) {
+        this.umBO = umBO;
     }
 }
