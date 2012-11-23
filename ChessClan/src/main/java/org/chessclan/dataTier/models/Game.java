@@ -8,7 +8,8 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -85,7 +86,7 @@ public class Game implements Serializable {
     private GameResult result;
     @Expose
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partOf", fetch = FetchType.EAGER)
-    private Set<Move> moves;
+    private List<Move> moves;
     @Expose
     @JoinColumn(name = "owner", referencedColumnName = "id")
     @ManyToOne(optional = true, fetch = FetchType.EAGER)
@@ -102,7 +103,7 @@ public class Game implements Serializable {
         this.white = white;
         this.black = black;
         this.result = result;
-        this.moves = new HashSet<Move>();
+        this.moves = new LinkedList<Move>();
         this.owner = owner;
     }
     
@@ -183,11 +184,11 @@ public class Game implements Serializable {
         this.id = id;
     }
 
-    public Set<Move> getMoves() {
+    public List<Move> getMoves() {
         return moves;
     }
 
-    public void setMoves(Set<Move> moves) {
+    public void setMoves(List<Move> moves) {
         this.moves = moves;
     }
 }

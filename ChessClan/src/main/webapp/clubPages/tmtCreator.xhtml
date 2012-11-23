@@ -11,6 +11,7 @@
     <h:body>
         <ui:composition>
             <h:form prependId="false">
+                <h:messages/>
                 <c:if test="#{cTmtCBean.currentTmt.state == 'NOT_STARTED'}">
                     <c:if test="#{empty cTmtCBean.currentTmt.pairingCardSet}">
                         <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
