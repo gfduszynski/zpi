@@ -37,6 +37,9 @@
                                         <h:commandButton value="Rozpocznij prowadzenie turnieju">
                                             <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                         </h:commandButton>
+                                        <h:commandButton value="Usuń turniej">
+                                            <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
+                                        </h:commandButton>
                                     </c:if>
                                 </h:panelGroup>
                             </c:forEach>

@@ -35,7 +35,12 @@ public class ClubTournamentsBean implements Serializable {
     public void initialize() {
         this.clubTournaments = tmBO.findTournamentsByClub(user.getOwnedClub());
     }
-    
+
+    public void removeTmt(Tournament t) {
+        this.clubTournaments.remove(t);
+        tmBO.deleteTournament(t);
+    }
+
     public User getUser() {
         return user;
     }

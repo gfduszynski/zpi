@@ -78,18 +78,17 @@ public class ClubTournamentCreatorBean implements Serializable {
             this.notValidCriteria = false;
         }
     }
-    
-    public boolean isMember(User u){
-        for(PairingCard pc : currentTmt.getPairingCardSet())
-        {
-            if(pc.getPlayer().getId() == u.getId()){
+
+    public boolean isMember(User u) {
+        for (PairingCard pc : currentTmt.getPairingCardSet()) {
+            if (pc.getPlayer().getId() == u.getId()) {
                 return true;
             }
         }
         return false;
     }
-    
-    public void goToNextRound(){
+
+    public void goToNextRound() {
         try {
             this.currentTmt = tmBO.goToNextRound(currentTmt);
         } catch (NotFinished ex) {
