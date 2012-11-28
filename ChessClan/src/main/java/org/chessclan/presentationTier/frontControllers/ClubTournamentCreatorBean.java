@@ -76,6 +76,8 @@ public class ClubTournamentCreatorBean implements Serializable {
         }
         if (foundUsers.size() > 0) {
             this.notValidCriteria = false;
+        }else{
+            this.notValidCriteria = true;
         }
     }
 
