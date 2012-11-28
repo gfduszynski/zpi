@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -30,8 +31,6 @@ import org.chessclan.dataTier.repositories.RoundRepository;
 import org.chessclan.dataTier.repositories.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -39,7 +38,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * @author Xcays & Grzesiek
  */
 @Service("TournamentBO")
-public class TournamentBOImpl implements TournamentBO {
+public class TournamentBOImpl implements TournamentBO, Serializable {
 
     @Autowired
     private TournamentRepository tRepo;
@@ -53,12 +52,8 @@ public class TournamentBOImpl implements TournamentBO {
     private UserManagementBO umBO;
 
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
-    public Tournament registerTournament(int numberOfRounds, float pointsForBye, String name, Date startDate, String description, Club club, Category category) {
-        Tournament t = new Tournament(null, name, startDate, description, club);
-        t.setPointsForBye(pointsForBye);
-        t.setCategory(category);
-        t.setNumberOfRounds(numberOfRounds);
+    public Tournament registerTournament(int numberOfRounds, int pointsForBye, String name, Date startDate, String description, Club club, Category category) {
+        Tournament t = new Tournament(name, startDate, description, club, category, Tournament.State.NOT_STARTED, pointsForBye, numberOfRounds);
         t = tRepo.save(t);
         Round prevRound = new Round(null, -1, Round.State.JOINING);
         t.setCurrentRound(prevRound);
@@ -79,12 +74,12 @@ public class TournamentBOImpl implements TournamentBO {
         return tRepo.saveAndFlush(t);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Override
     public PairingCard joinTournament(Tournament t) throws Round.NotJoinableRound {
         return joinTournament(t, umBO.getLoggedUser());
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Override
     public PairingCard joinTournament(Tournament t, User u) throws Round.NotJoinableRound {
         if (t.getCurrentRound().getRoundState() != State.JOINING) {
             throw new Round.NotJoinableRound();
@@ -94,11 +89,22 @@ public class TournamentBOImpl implements TournamentBO {
         pc.setTournament(t);
         pc.setRound(t.getCurrentRound());
         pc.setColor(PairingCard.Color.NO_COLOR);
-        u.getPairingCardSet().add(pc);
+        //u.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Override
+    public Tournament leaveTournament(Tournament t, PairingCard pc) throws Round.NotJoinableRound {
+        if (t.getCurrentRound().getRoundState() != State.JOINING) {
+            throw new Round.NotJoinableRound();
+        }
+
+        t.getPairingCardSet().remove(pc);
+        pcRepo.delete(pc);
+        return tRepo.saveAndFlush(t);
+    }
+
+    @Override
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers {
         t = tRepo.findOne(t.getId());
         Round currentRound = t.getCurrentRound();
@@ -297,40 +303,93 @@ public class TournamentBOImpl implements TournamentBO {
         black.setColor(PairingCard.Color.BLACK);
     }
 
+    @Override
     public List<Tournament> findTournamentsByClub(Club club) {
         return tRepo.findByClub(club);
     }
 
     // DAO Wrappers
+    @Override
     public Tournament saveTournament(Tournament t) {
         return tRepo.save(t);
     }
 
+    @Override
     public Iterable<Tournament> saveTournaments(Iterable<Tournament> t) {
         return tRepo.save(t);
     }
 
+    @Override
     public Tournament findTournamentById(int id) {
         return tRepo.findOne(id);
     }
 
+    @Override
     public Iterable<Tournament> findTournamentsById(Iterable<Integer> ids) {
         return tRepo.findAll(ids);
     }
 
+    @Override
     public Iterable<Tournament> findAll() {
         return tRepo.findAll();
     }
 
+    @Override
     public void deleteTournament(int id) {
         tRepo.delete(id);
     }
 
+    @Override
     public void deleteTournament(Tournament t) {
         tRepo.delete(t);
     }
 
+    @Override
     public void deleteTournaments(Iterable<Tournament> ts) {
         tRepo.delete(ts);
+    }
+
+    @Override
+    public Tournament fetchRelations(Tournament t) {
+        Tournament tRes = tRepo.findOne(t.getId());
+        for (PairingCard pc : tRes.getPairingCardSet()) {
+            pc.getPlayer().getFirstName().toString();
+        }
+        return tRes;
+    }
+
+    @Override
+    public List<Tournament> findTournamentsWithClubAndRoundsAndPC() {
+        List<Tournament> result = tRepo.findAll();
+        for (Tournament t : result) {
+            t.getClub().getName().toString();
+            t.getCurrentRound().getRoundState().toString();
+            if(!t.getPairingCardSet().isEmpty()){
+                Iterator<PairingCard> iter = t.getPairingCardSet().iterator();
+                while(iter.hasNext()){
+                    iter.next().getPlayer().getFirstName();
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Tournament> findUserTournaments(User user) {
+        List<Tournament> result = tRepo.findAll();
+        List<Tournament> userTmt = new LinkedList<Tournament>();
+        for (Tournament t : result) {
+            t.getClub().getName().toString();
+            boolean userInTmt = false;
+            for (PairingCard pc : t.getCurrentRound().getPairingCardSet()) {
+                if (pc.getPlayer().getId() == user.getId()) {
+                    userInTmt = true;
+                }
+            }
+            if(userInTmt){
+                userTmt.add(t);
+            }
+        }
+        return userTmt;
     }
 }

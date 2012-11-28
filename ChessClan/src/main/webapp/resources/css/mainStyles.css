@@ -5,6 +5,21 @@ html{
 .width100{
     width: 100%;
 }
+.gray{
+   background-color: #BBBBBB;   
+}
+.textWhite{
+    color: white;
+}
+.right{
+    float: right;
+}
+.marR5{
+    margin-right: 5px;
+}
+.marL5{
+    margin-left: 5px;
+}
 body{
     text-align: center;
     /*background-color:#F0EEEB;*/
@@ -260,20 +275,9 @@ div#editContainer{
     background-color: #353534;
     color:white;
 }
-
-.postHeader{
-
-}
-
-.postContent{
-
-}
-
 .postTitleDate{
     text-align: right;
 }
-
-
 .hiddenButton{
     display:none;
 }
@@ -452,6 +456,13 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background: #353534;
     
 }
+.tmtContainer{
+    border: 1px solid #00AAE8;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+    color: white;
+    padding:10px;
+    margin:10px 0px 10px 0px;
+}
 .footerCol1{
     width: 51%;
     
@@ -467,7 +478,8 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     width:67%;
 }
 .addPostDate{
-    margin: 0 0 0 12px;
+    -webkit-margin: 0 0 0 12px;
+    margin: 0 0 0 10px;
 }
 #addPostContent{
     width: 100%;
@@ -520,4 +532,19 @@ TABLE.userTable tr{
 TABLE.userTable tr:nth-child(even){
     background: #BBBBBB;
     color: white;
+}
+TABLE.userTable thead{
+    background: #000000;
+    color: white;
+}
+.allPostHeader{
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+.allPostContent{
+    margin: 0 0 15px 5px;
+}
+.allPostDate{
+    float: right;
+    margin: 0 0 15px 0;
 }

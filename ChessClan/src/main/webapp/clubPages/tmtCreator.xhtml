@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Chessclan</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <h:form prependId="false">
+                <c:if test="#{cTmtCBean.currentTmt.state == 'NOT_STARTED'}">
+                    <c:if test="#{empty cTmtCBean.currentTmt.pairingCardSet}">
+                        <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
+                            <p><span class="ui-icon ui-icon-highlight" style="float: left; margin-right: .3em;"></span>
+                                <strong>Niestety,</strong> nikt jeszcze nie zapisał się na turniej.</p>
+                        </h:panelGroup>
+                    </c:if>
+                    <h:commandButton value="Rozpocznij turniej">
+                        <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
+                    </h:commandButton>
+                    <h:outputText value="Imię: "/>
+                    <h:inputText value="#{cTmtCBean.searchFN}">
+                        <f:ajax execute="@this" render="@form" listener="#{cTmtCBean.findUsers}"/>
+                    </h:inputText>
+                    <h:outputText value="Nazwisko: "/>
+                    <h:inputText value="#{cTmtCBean.searchLN}">
+                        <f:ajax execute="@this" render="@form" listener="#{cTmtCBean.findUsers}"/>
+                    </h:inputText>
+                    <h:commandButton value="Szukaj">
+                        <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.findUsers}"/>
+                    </h:commandButton>
+                    <br/>
+                    <h:panelGroup rendered="#{empty cTmtCBean.notValidCriteria}" layout="block" class="ui-state-highlight ui-corner-all">
+                        <p><span class="ui-icon ui-icon-error" style="float: left; margin-right: .3em;"></span>
+                            <strong>Niestety,</strong> nie znaleziono użytkowników o podanym kryterium.</p>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not empty cTmtCBean.foundUsers}">
+                        Znalezieni użytkownicy:<br/>
+                        <c:forEach items="#{cTmtCBean.foundUsers}" var="user" varStatus="loop">
+                            Imię:#{user.firstName} #{user.lastName}
+                            <c:if test="#{not cTmtCBean.isMember(user)}">
+                                <h:commandButton value="Dodaj użytkownika do turnieju">
+                                    <f:ajax render="@form" listener="#{cTmtCBean.addPlayer(user)}"/>
+                                </h:commandButton>
+                            </c:if>
+                            <c:if test="#{cTmtCBean.isMember(user)}">
+                                Gracz jest już uczestnikiem turnieju.
+                            </c:if>
+                            <br/>
+                        </c:forEach>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not empty cTmtCBean.currentTmt.pairingCardSet}">
+                        Zapisani gracze:<br/>
+                        <c:forEach items="#{cTmtCBean.currentTmt.pairingCardSet}" var="pc" varStatus="loop">
+                            Imię:#{pc.player.firstName} #{pc.player.lastName}<br/>
+                        </c:forEach>
+                    </h:panelGroup>
+                </c:if>
+            </h:form>
+        </ui:composition>
+    </h:body>
+</html>
+

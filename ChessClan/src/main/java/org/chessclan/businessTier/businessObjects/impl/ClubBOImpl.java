@@ -58,12 +58,14 @@ public class ClubBOImpl implements ClubBO {
         umBO.saveUser(u);
         return clubRepo.save(c);
     }
-
+    
+    @Transactional
     @Override
     public Club leaveClub() {
         return leaveClub(umBO.getLoggedUser().getUserClub(), umBO.getLoggedUser());
     }
-
+    
+    @Transactional
     @Override
     public Club leaveClub(Club c, User u) {
         c.getUserSet().remove(u);

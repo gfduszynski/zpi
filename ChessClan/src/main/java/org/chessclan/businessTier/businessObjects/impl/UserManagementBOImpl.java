@@ -45,7 +45,7 @@ public class UserManagementBOImpl implements UserManagementBO {
     @Override
     public User getLoggedUser() {
         UsernamePasswordAuthenticationToken loggedUserAuthentication = getLoggedUserAuthentication();
-        User u = findUserByEmailWithClub(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
+        User u = userRepo.findByEmail(((org.springframework.security.core.userdetails.User) loggedUserAuthentication.getPrincipal()).getUsername());
         return u;
     }
 
@@ -98,19 +98,10 @@ public class UserManagementBOImpl implements UserManagementBO {
 
     @Override
     @Transactional
-    public User findUserByEmailWithClub(String email) {
-        User user = userRepo.findByEmail(email);
-        if(user.getUserClub()!=null)
-        user.getUserClub().getOwner();
-        return user;
+    public List<User> findClubUsers(Club c) {
+        return userRepo.findByUserClub(c);
     }
 
-    @Override
-    @Transactional 
-    public List<User> findClubUsers(Club c){
-        return userRepo.findByUserClub(c);        
-    }
-    
     @Override
     public User findUserById(int id) {
         return userRepo.findOne(id);
@@ -158,5 +149,40 @@ public class UserManagementBOImpl implements UserManagementBO {
 
     public User findUserByLogin(String login) {
         return userRepo.findByLogin(login);
+    }
+
+    @Override
+    public List<User> findByFirstnameAndLastname(String fn, String ln) {
+        return fetchClubs(userRepo.findByFirstNameAndLastName(fn, ln));
+    }
+
+    @Override
+    public List<User> findByFirstname(String fn) {
+        userRepo.findByFirstName(fn);
+        return fetchClubs(userRepo.findByFirstName(fn));
+    }
+
+    @Override
+    public List<User> findByLastname(String ln) {
+        return fetchClubs(userRepo.findByLastName(ln));
+    }
+
+    @Transactional
+    private List<User> fetchClubs(List<User> users) {
+        for (User u : users) {
+            if (u.getUserClub() != null) {
+                u.getUserClub().getName().toString();
+            }
+        }
+        return users;
+    }
+    
+    @Override
+    public User findUserWithClub(User user) {
+        User u = userRepo.findOne(user.getId());
+        if (u.getUserClub() != null) {
+            u.getUserClub().getName().toString();
+        }
+        return u;
     }
 }

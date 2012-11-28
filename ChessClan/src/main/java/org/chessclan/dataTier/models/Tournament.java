@@ -64,8 +64,6 @@ public class Tournament implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 2048)
     @Column(name = "description")
     private String description;
@@ -94,21 +92,15 @@ public class Tournament implements Serializable {
         this.id = id;
     }
 
-    public Tournament(Integer id, String name, Date date, String description, Club club) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.description = description;
-        this.club = club;
-    }
-
-    public Tournament(String name, Date date, String description, Club club, Category category, State state) {
+    public Tournament(String name, Date date, String description, Club club, Category category, State state, int pointForBye, int numberOfRounds) {
         this.name = name;
         this.date = date;
         this.description = description;
         this.club = club;
         this.category = category;
         this.state = state;
+        this.pointsForBye = pointForBye;
+        this.numberOfRounds = numberOfRounds;
     }
     
     public Integer getId() {
