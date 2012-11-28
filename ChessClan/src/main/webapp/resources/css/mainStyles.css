@@ -5,6 +5,9 @@ html{
 .width100{
     width: 100%;
 }
+.width50{
+    width: 50%;
+}
 .gray{
    background-color: #BBBBBB;   
 }
@@ -417,6 +420,18 @@ TABLE.panelGridClass TR TD select{
     font-weight:bold;
     text-decoration:none;
 }
+.cancelButton{
+    height: 30px;
+    width: 100%;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color:black;
+    font-weight:bold;
+    text-decoration:none;
+}
 .editDone{
     color: white;
     text-align: center;
@@ -509,6 +524,25 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background-color: #00AAE8;
     color: white; 
 }
+.allButton2{
+    height: 30px;
+    margin: 2px;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color: #353534;
+    font-family:arial;
+    font-size:16px;
+    font-weight:normal;
+    padding:6px 27px;
+    text-decoration:none;
+}
+.allButton2:hover {
+    background-color: #E09041;
+    color: white; 
+}
 .addPostButton{
     width: 180px;
 }
@@ -547,4 +581,22 @@ TABLE.userTable thead{
 .allPostDate{
     float: right;
     margin: 0 0 15px 0;
+}
+#tmtName{
+    width: 69%;
+}
+#tmtDate{
+    width: 10%;
+}
+.addTourContent{
+    width: 100%;
+    overflow: auto;
+    height: 200px;
+    resize: none;
+}
+#pointsSpinner,#roundsSpinner{
+    width: 25px;
+}
+.tmtStartMenagingButton{
+    width: 53%;
 }

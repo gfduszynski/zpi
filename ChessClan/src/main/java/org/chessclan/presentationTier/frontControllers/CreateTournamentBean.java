@@ -108,6 +108,14 @@ public class CreateTournamentBean implements Serializable {
         }
         return tmtValid;
     }
+    public boolean validateTournamentContent() {
+        if (this.tmtName.length() > 1) {
+            this.tmtValid = true;
+        } else {
+            this.tmtValid = false;
+        }
+        return tmtValid;
+    }
 
     public TournamentBO getTmBO() {
         return tmBO;
