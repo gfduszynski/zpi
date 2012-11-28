@@ -94,6 +94,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public Tournament leaveTournament(Tournament t, PairingCard pc) throws Round.NotJoinableRound {
         if (t.getCurrentRound().getRoundState() != State.JOINING) {
             throw new Round.NotJoinableRound();
@@ -302,7 +303,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         black.setColorDiff(black.getColorDiff() - 1);
         black.setColor(PairingCard.Color.BLACK);
     }
-
+    
     @Override
     public List<Tournament> findTournamentsByClub(Club club) {
         return tRepo.findByClub(club);
@@ -355,6 +356,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         for (PairingCard pc : tRes.getPairingCardSet()) {
             pc.getPlayer().getFirstName().toString();
         }
+        t.getCurrentRound().getRoundState().toString();
         return tRes;
     }
 
