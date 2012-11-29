@@ -11,6 +11,12 @@ html{
 .gray{
    background-color: #BBBBBB;   
 }
+.blue{
+    background-color: #00AAE8;
+}
+.textBlack{
+    color: black;
+}
 .textWhite{
     color: white;
 }
@@ -405,9 +411,6 @@ TABLE.panelGridClass TR TD select{
 .editRow{
     height: 30px;
 }
-.editBlue{
-    background-color: #00AAE8;
-}
 .editButton{
     height: 30px;
     width: 100%;
@@ -543,6 +546,26 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background-color: #E09041;
     color: white; 
 }
+.headerButton,editButton{
+    height: 20px;
+    margin: 0px;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color: #353534;
+    font-family:arial;
+    font-size:16px;
+    font-weight:normal;
+    padding:6px 27px;
+    text-decoration:none;
+    color: black;
+}
+.headerButton:hover {
+    background-color: #E09041;
+    color: white; 
+}
 .addPostButton{
     width: 180px;
 }
@@ -599,4 +622,9 @@ TABLE.userTable thead{
 }
 .tmtStartMenagingButton{
     width: 53%;
+}
+.hello{
+    font-weight: bold;
+    font-size: larger;
+    color: #00AAE8;
 }

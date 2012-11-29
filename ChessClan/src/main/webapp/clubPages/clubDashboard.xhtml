@@ -82,7 +82,7 @@
                             <c:forEach items="#{cmmBean.members}" var="member">
                                 <h:panelGroup layout="block" styleClass="tmtContainer">
                                     <h:outputText value="#{member.firstName} #{member.lastName}"/>
-                                    <h:commandButton value="Usuń członka" styleClass="allButton addPostButton">
+                                    <h:commandButton value="Usuń członka" styleClass="allButton2 addPostButton">
                                         <f:ajax render="@form" execute="@form" listener="#{cmmBean.removeMember(member)}"/>
                                     </h:commandButton>
                                 </h:panelGroup>
@@ -147,7 +147,7 @@
                             </h:selectOneMenu>
                             <h:panelGroup layout="block" rendered="#{empty crTmtBean.tmtCategories}" lass="ui-state-highlight ui-corner-all">
                                 <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                    <strong>Uwaga!</strong> Przed utworzeniem turnieju należy dodać kategorie, jakie będą rozgrywane na turnieju.</p>
+                                    <strong>Uwaga!</strong> Przed utworzeniem turnieju należy dodać kategorie, które będą na nim rozgrywane.</p>
                             </h:panelGroup>
                             <br/>
                             <h:commandButton value="Dodaj turniej" styleClass="allButton addPostButton">

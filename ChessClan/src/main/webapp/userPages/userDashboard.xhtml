@@ -74,7 +74,7 @@
                         <div id="accordion">
                             <h3 id="addPostHeader">Dodaj ogłoszenie</h3>
                             <div>
-                                <h:panelGrid styleClass="addost">
+                                <h:panelGrid styleClass="addPost">
                                     <h:panelGroup id="messages">
                                         <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all">
                                             <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -209,8 +209,8 @@
                                     </h:panelGroup>
                                     <h:panelGroup>
                                         <h:outputText value="#{ucBean.userClub.description}"/>
-                                    </h:panelGroup>
-                                    <h:commandButton value="Wypisz się" onclick="actItem = 'allClubsHeader';">
+                                    </h:panelGroup><br/>
+                                    <h:commandButton value="Wypisz się" onclick="actItem = 'allClubsHeader';" styleClass="allButton">
                                         <f:ajax render="@form" listener="#{ucBean.signOutFromClub}" />
                                     </h:commandButton>
                                 </h:panelGroup>
@@ -236,11 +236,11 @@
                                     </h:column>
                                     <h:column>
                                         <f:facet name="header"></f:facet>
-                                        <h:commandButton value="Zapisz się" rendered="#{ucBean.userClub == null}" onclick="actItem = 'myClubHeader';">
+                                        <h:commandButton value="Zapisz się" rendered="#{ucBean.userClub == null}" onclick="actItem = 'myClubHeader';" styleClass="allButton">
                                             <f:ajax render="@form" listener="#{ucBean.signToClub(club)}"/>
                                         </h:commandButton>                                            
 
-                                        <h:commandButton value="Wypisz się" rendered="#{ucBean.userClub == club}" onclick="actItem = 'allClubsHeader';">
+                                        <h:commandButton styleClass="allButton" value="Wypisz się" rendered="#{ucBean.userClub == club}" onclick="actItem = 'allClubsHeader';">
                                             <f:ajax render="@form" listener="#{ucBean.signOutFromClub}"/>
                                         </h:commandButton>
                                     </h:column>
