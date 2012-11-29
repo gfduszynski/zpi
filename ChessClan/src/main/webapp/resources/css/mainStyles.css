@@ -5,6 +5,30 @@ html{
 .width100{
     width: 100%;
 }
+.width50{
+    width: 50%;
+}
+.gray{
+   background-color: #BBBBBB;   
+}
+.blue{
+    background-color: #00AAE8;
+}
+.textBlack{
+    color: black;
+}
+.textWhite{
+    color: white;
+}
+.right{
+    float: right;
+}
+.marR5{
+    margin-right: 5px;
+}
+.marL5{
+    margin-left: 5px;
+}
 body{
     text-align: center;
     /*background-color:#F0EEEB;*/
@@ -260,20 +284,9 @@ div#editContainer{
     background-color: #353534;
     color:white;
 }
-
-.postHeader{
-
-}
-
-.postContent{
-
-}
-
 .postTitleDate{
     text-align: right;
 }
-
-
 .hiddenButton{
     display:none;
 }
@@ -398,9 +411,6 @@ TABLE.panelGridClass TR TD select{
 .editRow{
     height: 30px;
 }
-.editBlue{
-    background-color: #00AAE8;
-}
 .editButton{
     height: 30px;
     width: 100%;
@@ -410,6 +420,18 @@ TABLE.panelGridClass TR TD select{
     background-color:#353534;
     display:inline-block;
     color:white;
+    font-weight:bold;
+    text-decoration:none;
+}
+.cancelButton{
+    height: 30px;
+    width: 100%;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color:black;
     font-weight:bold;
     text-decoration:none;
 }
@@ -452,7 +474,6 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background: #353534;
     
 }
-
 .tmtContainer{
     border: 1px solid #00AAE8;
     background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
@@ -460,7 +481,6 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     padding:10px;
     margin:10px 0px 10px 0px;
 }
-
 .footerCol1{
     width: 51%;
     
@@ -476,7 +496,8 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     width:67%;
 }
 .addPostDate{
-    margin: 0 0 0 12px;
+    -webkit-margin: 0 0 0 12px;
+    margin: 0 0 0 10px;
 }
 #addPostContent{
     width: 100%;
@@ -506,6 +527,45 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background-color: #00AAE8;
     color: white; 
 }
+.allButton2{
+    height: 30px;
+    margin: 2px;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color: #353534;
+    font-family:arial;
+    font-size:16px;
+    font-weight:normal;
+    padding:6px 27px;
+    text-decoration:none;
+}
+.allButton2:hover {
+    background-color: #E09041;
+    color: white; 
+}
+.headerButton,editButton{
+    height: 20px;
+    margin: 0px;
+    border: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#DFDDDA;
+    display:inline-block;
+    color: #353534;
+    font-family:arial;
+    font-size:16px;
+    font-weight:normal;
+    padding:6px 27px;
+    text-decoration:none;
+    color: black;
+}
+.headerButton:hover {
+    background-color: #E09041;
+    color: white; 
+}
 .addPostButton{
     width: 180px;
 }
@@ -515,4 +575,56 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
 .addPostMy{
     column-width: 20%;
 }
->>>>>>> 49cd1e9cd3a082d54e22774b272c0aa43da62bc0
+TABLE.userTable{
+    width: 100%;
+    background-color: transparent;
+}
+TABLE.userTable tr{
+    height: 30px;
+    margin: none;
+}
+/* TABLE.userTable tr:nth-child(odd){
+    background: #353534;
+} */
+TABLE.userTable tr:nth-child(even){
+    background: #BBBBBB;
+    color: white;
+}
+TABLE.userTable thead{
+    background: #000000;
+    color: white;
+}
+.allPostHeader{
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+.allPostContent{
+    margin: 0 0 15px 5px;
+}
+.allPostDate{
+    float: right;
+    margin: 0 0 15px 0;
+}
+#tmtName{
+    width: 69%;
+}
+#tmtDate{
+    width: 10%;
+}
+.addTourContent{
+    width: 100%;
+    overflow: auto;
+    height: 200px;
+    resize: none;
+}
+#pointsSpinner,#roundsSpinner{
+    width: 25px;
+}
+.tmtStartMenagingButton{
+    width: 53%;
+}
+.hello{
+    font-weight: bold;
+    font-size: larger;
+    color: #00AAE8;
+}
