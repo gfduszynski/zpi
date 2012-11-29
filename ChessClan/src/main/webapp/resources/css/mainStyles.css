@@ -29,6 +29,7 @@ html{
 .marL5{
     margin-left: 5px;
 }
+/* /PODSTAWOWE STAŁE NARZĘDZIA:  */
 body{
     text-align: center;
     /*background-color:#F0EEEB;*/
@@ -313,11 +314,6 @@ div#editContainer{
 .postHeader{
     font-weight: bold;
 }
-
-.postContent{
-
-}
-
 .postTitleDate{
     float: right;
     padding-right: 10px;
@@ -599,11 +595,19 @@ TABLE.userTable thead{
     font-weight: bold;
 }
 .allPostContent{
-    margin: 0 0 15px 5px;
+   margin: 0 5px 0 5px;
 }
 .allPostDate{
     float: right;
     margin: 0 0 15px 0;
+}
+.allPostBox{
+    text-align: justify;
+    
+}
+.allPostBox:hover{
+    background: url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") repeat scroll 50% 50% #00AAE8;
+    color: white;
 }
 #tmtName{
     width: 69%;
