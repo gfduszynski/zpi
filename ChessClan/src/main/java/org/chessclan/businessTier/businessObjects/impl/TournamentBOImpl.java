@@ -31,7 +31,6 @@ import org.chessclan.dataTier.repositories.RoundRepository;
 import org.chessclan.dataTier.repositories.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -109,7 +108,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
 
     @Override
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers {
-        t = tRepo.findOne(t.getId());
+        t = fetchRelations(t);
         Round currentRound = t.getCurrentRound();
         // If too few players
         if (currentRound.getPairingCardSet().size() < 2) {
@@ -358,7 +357,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         for (PairingCard pc : tRes.getPairingCardSet()) {
             pc.getPlayer().getFirstName().toString();
         }
-        t.getCurrentRound().getRoundState().toString();
+        tRes.getCurrentRound().getId().toString();
+        if(tRes.getCurrentRound().getNextRound() != null)
+            tRes.getCurrentRound().getNextRound().getId().toString();
         return tRes;
     }
 

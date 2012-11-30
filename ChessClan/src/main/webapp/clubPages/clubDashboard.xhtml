@@ -23,7 +23,7 @@
                     <li><a href="#tabs-4">Nowy turniej</a></li>
                 </ul>
                 <div id="tabs-1">
-                    <h:form prependId="false" id="clubTmtsForm">
+                    <h:form prependId="false" id="clubTmtsForm" onkeypress="if (event.keyCode == 13) {return false; }">
                         <h:messages/>
                         <c:if test="#{(not empty ctBean.clubTournaments) and (not cTmtCBean.nowInMods)}">
                             <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
@@ -34,8 +34,11 @@
                                     Ilość rund: #{tmt.numberOfRounds}<br/>
                                     Punkty potrzebne do odejścia: #{tmt.pointsForBye}<br/>
                                     <c:if test="#{tmt.state == 'NOT_STARTED'}">
-                                        <h:commandButton value="Rozpocznij prowadzenie turnieju">
+                                        <h:commandButton value="Rozpocznij prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
                                             <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
+                                        </h:commandButton>
+                                        <h:commandButton value="Usuń turniej">
+                                            <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
                                         </h:commandButton>
                                     </c:if>
                                 </h:panelGroup>
@@ -61,8 +64,8 @@
                         <h:outputText value="Imię: "/>
                         <h:inputText value="#{cmmBean.searchFN}"/>
                         <h:outputText value="Nazwisko: "/>
-                        <h:inputText value="#{cmmBean.searchLN}"/>
-                        <h:commandButton value="Szukaj">
+                        <h:inputText value="#{cmmBean.searchLN}"/><br/>
+                        <h:commandButton value="Szukaj" styleClass="allButton addPostButton">
                             <f:ajax execute="@form" render="@form" listener="#{cmmBean.findUsers}"/>
                         </h:commandButton>
                         <c:if test="#{not empty cmmBean.foundUsers}">
@@ -82,7 +85,7 @@
                             <c:forEach items="#{cmmBean.members}" var="member">
                                 <h:panelGroup layout="block" styleClass="tmtContainer">
                                     <h:outputText value="#{member.firstName} #{member.lastName}"/>
-                                    <h:commandButton value="Usuń członka">
+                                    <h:commandButton value="Usuń członka" styleClass="allButton2 addPostButton">
                                         <f:ajax render="@form" execute="@form" listener="#{cmmBean.removeMember(member)}"/>
                                     </h:commandButton>
                                 </h:panelGroup>
@@ -109,50 +112,55 @@
                                         dateFormat: "d-m-yy"});
                                     $("#pointsSpinner").spinner();
                                     $("#roundsSpinner").spinner();
+                                    $('#tmtName').val('[Nazwa Turnieju]');
+                                    $('#tmtDescription').val('[Opis]');
+                                    
                                 });
                             </script>
-                            <h:outputText value="Nazwa turnieju: "/>
                             <h:outputText rendered="#{not crTmtBean.tmtValid}" value="Nazwa klubu niepoprawna.&lt;br/&gt;"/>
-                            <h:inputText id="tmtName" value="#{crTmtBean.tmtName}">
-                                <f:ajax event="blur" execute="@form" rendered="@form" listener="#{crTmtBean.validateTournamentName}"/>
-                            </h:inputText><br/>
-                            <h:outputText value="Opis: "/>
-                            <h:inputText value="#{crTmtBean.tmtDescription}"/><br/>
-                            <h:outputText value="Data odbycia turnieju: "/>
+                            <!-- TYTUŁ -->
+                            <h:inputText value="#{crTmtBean.tmtName}" id="tmtName">
+                                <f:ajax event="blur" execute="@this" rendered="messages" listener="#{crTmtBean.validateTournamentName}"/>
+                            </h:inputText>
+                            <h:outputText value="Data odbycia turnieju: " styleClass="addPostDate"/>
                             <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate">
                                 <f:convertDateTime pattern="d-M-yyyy" />
                             </h:inputText><br/>
+                            <h:panelGroup>
+                            <h:inputTextarea value="#{crTmtBean.tmtDescription}" styleClass="addTourContent" id="tmtDescription"/>
+                           </h:panelGroup><br/>
+                           <h:panelGrid columns="2">
                             <h:outputText value="Punkty do opuszczenia gry: "/>
-                            <h:inputText value="#{crTmtBean.pointsForBye}" id="pointsSpinner"/><br/>
+                            <h:inputText value="#{crTmtBean.pointsForBye}" id="pointsSpinner" styleClass="marL5"/>
                             <h:outputText value="Ilość rund: "/>
-                            <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner"/><br/>
-                            <h:panelGroup layout="block" rendered="#{empty crTmtBean.tmtCategories}" lass="ui-state-highlight ui-corner-all">
-                                <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                    <strong>Ej ty, chodź tu!</strong> Dodaj kategorię, jakie będą rozgrywane na turnieju.</p>
-
-                            </h:panelGroup>
+                            <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner" styleClass="marL5"/></h:panelGrid><br/>
                             <h:panelGroup layout="block" rendered="#{not empty crTmtBean.tmtCategories}" style="display: block;">
                                 <h4>Kategorie rozgrywane w turnieju:</h4>
                                 <c:forEach items="#{crTmtBean.tmtCategories}" var="cat">
-                                    <h:outputText value="#{cat.name}"/><br/>
+                                    <h:outputText value="#{cat.name}"/><br/><br/>
                                 </c:forEach> 
                             </h:panelGroup>
+                            <h:commandButton value="Dodaj kategorię" styleClass="allButton addPostButton">
+                                <f:ajax render="@form" execute="@form" listener="#{crTmtBean.addCategory}"/>
+                            </h:commandButton>
                             <h:selectOneMenu value="#{crTmtBean.selectedCatId}">
                                 <c:forEach items="#{crTmtBean.categories}" var="category">
                                     <f:selectItem itemLabel="#{category.name}" itemValue="#{category.id}"/>
                                 </c:forEach>
                             </h:selectOneMenu>
-                            <h:commandButton value="Dodaj kategorię">
-                                <f:ajax render="@form" execute="@form" listener="#{crTmtBean.addCategory}"/>
-                            </h:commandButton><br/>
-                            <h:commandButton value="Dodaj turniej">
+                            <h:panelGroup layout="block" rendered="#{empty crTmtBean.tmtCategories}" lass="ui-state-highlight ui-corner-all">
+                                <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                    <strong>Uwaga!</strong> Przed utworzeniem turnieju należy dodać kategorie, które będą na nim rozgrywane.</p>
+                            </h:panelGroup>
+                            <br/>
+                            <h:commandButton value="Dodaj turniej" styleClass="allButton addPostButton">
                                 <f:ajax event="click" execute="@form" render="@form :clubTmtsForm" listener="#{crTmtBean.saveTournament}"/>
                             </h:commandButton>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{crTmtBean.createTmtSuccess}" class="ui-state-highlight ui-corner-all">
                             <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                 <strong>Uwaga!</strong> Turniej został utworzony. Przejdź do zakładki "Turnieje", aby rozpocząć przeprowadzanie turnieji.</p>
-                            <h:commandButton value="Dodaj kolejny turniej">
+                            <h:commandButton value="Dodaj kolejny turniej" styleClass="allButton addPostButton">
                                 <f:ajax render="@form" execute="@form" listener="#{crTmtBean.addNextTmt}"/>
                             </h:commandButton>
                         </h:panelGroup>

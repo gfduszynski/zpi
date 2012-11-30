@@ -37,6 +37,7 @@ public interface TournamentBO{
     @Transactional
     public Iterable<Tournament> findAll();
     public void deleteTournament(int id);
+    @Transactional
     public void deleteTournament(Tournament t);
     public void deleteTournaments(Iterable<Tournament> ts);
     @Transactional

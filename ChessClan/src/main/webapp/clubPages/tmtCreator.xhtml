@@ -10,8 +10,13 @@
     </h:head>
     <h:body>
         <ui:composition>
-            <h:form prependId="false">
+            <!--<h:form prependId="false" id="findForm">-->
                 <h:messages/>
+                <div style="display:block;">
+                    <h:commandButton value="Wróć do wszystkich turniei">
+                        <f:ajax render="@form" listener="#{cTmtCBean.setNowInMods(false)}"/>
+                    </h:commandButton>
+                </div>
                 <c:if test="#{cTmtCBean.currentTmt.state == 'NOT_STARTED'}">
                     <c:if test="#{empty cTmtCBean.currentTmt.pairingCardSet}">
                         <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
@@ -34,22 +39,18 @@
                         <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.findUsers}"/>
                     </h:commandButton>
                     <br/>
-                    <h:panelGroup rendered="#{empty cTmtCBean.notValidCriteria}" layout="block" class="ui-state-highlight ui-corner-all">
+                    <h:panelGroup rendered="#{cTmtCBean.notValidCriteria}" layout="block" class="ui-state-highlight ui-corner-all">
                         <p><span class="ui-icon ui-icon-error" style="float: left; margin-right: .3em;"></span>
                             <strong>Niestety,</strong> nie znaleziono użytkowników o podanym kryterium.</p>
                     </h:panelGroup>
                     <h:panelGroup rendered="#{not empty cTmtCBean.foundUsers}">
                         Znalezieni użytkownicy:<br/>
                         <c:forEach items="#{cTmtCBean.foundUsers}" var="user" varStatus="loop">
-                            Imię:#{user.firstName} #{user.lastName}
-                            <c:if test="#{not cTmtCBean.isMember(user)}">
-                                <h:commandButton value="Dodaj użytkownika do turnieju">
-                                    <f:ajax render="@form" listener="#{cTmtCBean.addPlayer(user)}"/>
-                                </h:commandButton>
-                            </c:if>
-                            <c:if test="#{cTmtCBean.isMember(user)}">
-                                Gracz jest już uczestnikiem turnieju.
-                            </c:if>
+                            <h:outputText value="Imię i nazwisko:#{user.firstName} #{user.lastName}"/>
+                            <h:commandButton rendered="#{not cTmtCBean.isMember(user)}" value="Dodaj użytkownika do turnieju">
+                                <f:ajax render="@form" listener="#{cTmtCBean.addPlayer(user)}"/>
+                            </h:commandButton>
+                            <h:outputText rendered="#{cTmtCBean.isMember(user)}" value="Gracz jest już uczestnikiem turnieju."/>
                             <br/>
                         </c:forEach>
                     </h:panelGroup>
@@ -60,7 +61,7 @@
                         </c:forEach>
                     </h:panelGroup>
                 </c:if>
-            </h:form>
+            <!--</h:form>-->
         </ui:composition>
     </h:body>
 </html>
