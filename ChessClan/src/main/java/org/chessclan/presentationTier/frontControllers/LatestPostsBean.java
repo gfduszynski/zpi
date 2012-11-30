@@ -67,6 +67,16 @@ public class LatestPostsBean implements Serializable {
         }
     }
 
+    public List<Post> getLatestPosts() {
+        return latestPosts;
+    }
+
+    public void setLatestPosts(List<Post> latestPosts) {
+        this.latestPosts = latestPosts;
+    }
+    
+    
+
     public PostBO getPostBO() {
         return postBO;
     }

@@ -2,6 +2,9 @@ html{
     overflow-y: scroll;
 }
 /* PODSTAWOWE STAŁE NARZĘDZIA:  */
+.displayNone{
+    display:none;
+}
 .width100{
     width: 100%;
 }
@@ -310,29 +313,6 @@ div#editContainer{
 #bdInput,#pInput{
     margin-bottom: 5px;
 }
-
-.postHeader{
-    font-weight: bold;
-}
-.postTitleDate{
-    float: right;
-    padding-right: 10px;
-}
-
-.seeAllPostsButton{
-    width:295px;
-    height:28px;
-    margin: -32px 0px 0px -5px;
-    background-color: black;
-    opacity: 0.8;
-    color:white;
-    border:0px;
-}
-
-.hiddenButton{
-    display:none;
-}
-
 #editContainer{
     display:none;
     background-color: white;
@@ -350,7 +330,63 @@ div#editContainer{
     width:280px;
     height:40px;
 }
-
+/* DO KOREKTY */
+.news ul {
+    padding: 0px;
+}
+.news-item {
+    height: 70px;
+    list-style-type:none;
+    text-align: justify; 
+    text-justify: newspaper;
+}
+.news-item:hover{
+    background: url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") repeat scroll 50% 50% #00AAE8;
+    color: white;
+    cursor: pointer;
+}
+.news-item-header{
+    font-weight: bold;
+}
+.news-item-title {
+    float:left;
+}
+.news-item-date {
+    float:right;
+}
+.news-item-content {
+    float:left;
+    height: 50px;
+}
+.news-controls{
+    color:white;
+    background-color: black;
+    display: inline-table;
+    width:295px;
+    height:28px;
+    margin-left: -5px;
+    margin-top: 7px;
+    text-align: center;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.news-controls span{
+    width: 30%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.news-controls span:nth-of-type(2){
+    width: 40%;
+}
+.news-controls span:hover{
+    color: #00AAE8;
+    cursor: pointer;
+}
+/* KONIEC KOREKTY */
 .postContainer{
     background-color: #EEEEEE;
     padding:5px;
