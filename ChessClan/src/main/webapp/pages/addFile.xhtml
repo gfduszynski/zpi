@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>ChessClan</title>
+        <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAACQkJAD09PQASEhIAWFhYAAsLCwD9/f0AFBQUANLS0gANDQ0A////ALu7uwAGBgYAxMTEAGVlZQA6OjoADw8PABgYGAAzMzMACAgIABEREQCUlJQACgoKAPz8/AATExMADAwMAP7+/gAFBQUAOTk5AA4ODgAgICAABwcHAPn5+QAQEBAAo6OjAIGBgQBWVlYAioqKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhghIR0JEAUMAAAAAAAAAAoPHQUdFgUTGgAAAAAAAAAKChkZARYTCgoAAAAAAAAACgofBRMWAwoKAAAAAAAAAAoKGhYFFhcKCgAAAAAAAAAKCgoBHwUGCgoAAAAAAAAACgoKARYWCgoKAAAAAAAAAAoKCgwWHwoKCgAAAAAAAAAKJRATGwwWIgoAAAAAAAAACgoKBx0UCgoKAAAAAAAAAAoKIB8FEw0KCgAAAAAAAAAKCgEWGRYTCgoAAAAAAAAACgoQCREEHwoKAAAAAAAAAAoKDh4ZHCQKCgAAAAAAAAAKCggVBSMLCgoAAAAAAAAACgoKEgcHCgoKAAAAAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAAA=" rel="icon" type="image/x-icon" />
+        <h:outputScript library="js" name="jquery.dotdotdot.js"/>
+        <h:outputScript library="js" name="jquery.js"/>
+        <h:outputScript library="js" name="jquery-ui.js"/>
+        <h:outputScript library="js" name="jquery.dotdotdot.js"/>             
+    </h:head>
+    <h:body>
+       
+        <h:panelGroup layout="block" class="content" id="full-content">
+            <ui:include src="../pages/header.xhtml"/>
+                <h1>Wgraj plik rozgrywki szachowej w formacie .PGN</h1>
+            <h:panelGroup layout="block" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 100%; height: 400px; float: left; overflow: hidden; text-align: center; font-size: 60px;">
+                <div id="drop_zone" style="background-color: violet;">Drop files here</div>
+                <output id="list" style="font-size: 14px;"></output>
+                <script type="text/javascript">
+                    //<![CDATA[ 
+                    function checkCompability() {
+                        if (window.File && window.FileReader && window.FileList && window.Blob) {
+                            function handleFileSelect(evt) {
+                                evt.stopPropagation();
+                                evt.preventDefault();
+
+                                var files = evt.dataTransfer.files;
+                                var f = files[0];
+                                //Opis pliku - jak nie potrzeba to do wywalenia
+                                var output="";
+                                output = '<strong>' + f.name + '</strong> (' + f.type+')';
+                                //sprawdzanie typu MIME pliku
+                                if(f.type.match('image.*') || f.type.match('audio.*') || f.type.match('application.*') || f.type.match('text.*') || f.type.match('example') || f.type.match('message') || f.type.match('model') || f.type.match('multipart.*'))
+                                {
+                                    alert('Niepoprawny typ MIME pliku.'); 
+                                    return;
+                                }
+                                //sprawdzanie rozszerzenia pliku
+                                else if(!endsWith(f.name, '.pgn'))
+                                {
+                                    alert('Niepoprawne rozszerzenie pliku. Aplikacja obsługuje pliki o rozszerzeniu .pgn'); 
+                                    return;
+                                }
+                                // przetwarzanie zawartości pliku
+                                else
+                                {
+                                    document.getElementById('list').innerHTML = output;
+                                    var blob = f.slice(0, f.size);
+                                    var reader = new FileReader();
+                                    reader.readAsText(blob);
+                                    //Ogólnie to lipa jeśli użytkownik ma w jednym pliku kilka partii, ale można to łatwo rozbudować :>
+                                    reader.onloadend = function(evt) {
+                                        if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+                                            function replaceAll(str1, str2, str3, str4){
+                                                var tmp = str1;
+                                                while(tmp.indexOf(str2)!==-1)
+                                                    tmp=tmp.replace(str4,str3);
+                                                return tmp;
+                                            }
+                                            function getRealValue(str1, str2){
+                                                var tmp = str1.match(str2);
+                                                if(tmp!=null){return tmp[1];}else{return 'Brak danych';}
+                                            }
+                                            function getMoveInJson(chessboard, move,who)
+                                            {
+                                                if(move.valueOf()==='O-O-O'.valueOf())alert('Roszada Hetmańska dla ' +( who==0 ? 'białych':'czarnych'));
+                                                else if(move.valueOf()==='O-O'.valueOf())alert('Roszada Królewska dla ' +( who==0 ? 'białych':'czarnych'));
+                                                else
+                                                {
+                                                    if(move.length == 2)
+                                                    {
+                                                        var tmp1 = move.charAt(0);
+                                                        var tmp2 = move.charAt(1);
+                                                        alert('Pozycja: x:'+tmp1 +' y: '+tmp2);
+                                                    }
+                                                    else if(move.length == 3)
+                                                    {
+                                                        var tmp1 = move.charAt(0);
+                                                        var tmp2 = move.charAt(1);
+                                                        var tmp3 = move.charAt(2);
+                                                        alert('Pozycja: x:'+tmp1 +' y: '+tmp2 +' z: '+tmp3);       
+                                                    }
+                                                    else if(move.length == 4)
+                                                    {
+                                                        var tmp1 = move.charAt(0);
+                                                        var tmp2 = move.charAt(1);
+                                                        var tmp3 = move.charAt(2);
+                                                        var tmp4 = move.charAt(3);
+                                                        alert('Pozycja: x:'+tmp1 +' y: '+tmp2 +' z: '+tmp3 +' V: '+tmp4);   
+                                                    }
+                                                    else alert('Nie można przetworzyć ruchu. Niepoprawny zapis.');
+                                                }
+                                            }
+                                            // szukanie pozycji na planszy ;]
+                                            var jsonOutput = '{"id":"0","event":"';
+                                            var fileContent = evt.target.result;
+                                            
+                                            jsonOutput +=getRealValue(fileContent, /\[Event "(.*)"\]/)+'","site":"'
+                                                        +getRealValue(fileContent, /\[Site "(.*)"\]/)+'","date":"'
+                                                        +getRealValue(fileContent, /\[Date "(.*)"\]/)+'","round":"'
+                                                        +getRealValue(fileContent, /\[Round "(.*)"\]/)+'","white":"'
+                                                        +getRealValue(fileContent, /\[White "(.*)"\]/)+'","black":"'
+                                                        +getRealValue(fileContent, /\[Black "(.*)"\]/)+'","result":"';
+                                                    
+                                            fileContent = fileContent.replace(/\[Event "(.*)"\]/,'').replace(/\[Site "(.*)"\]/,'').replace(/\[Date "(.*)"\]/,'').replace(/\[Round "(.*)"\]/,'').replace(/\[White "(.*)"\]/,'').replace(/\[Black "(.*)"\]/,'');
+                                            
+                                            var result = fileContent.match(/\[Result "(.*)"\]/);
+                                            var resultNum;
+                                            if(result!=null)
+                                            {
+                                                fileContent=fileContent.replace(/\[Result "(.*)"\]/,''); 
+                                                result=result[1];
+                                                resultNum = result;
+                                                if(result.valueOf()=="1-0".valueOf())result="WHITE_WON";
+                                                else if(result.valueOf()=="0-1".valueOf())result="BLACK_WON";
+                                                else result="DRAW";
+                                            }
+                                            else
+                                            {
+                                                result='Brak danych';
+                                            }
+                                            jsonOutput +=result+'","moves":['
+                                            //Przypadek wielu gier w pliku
+                                            if(fileContent.indexOf('[Event')!=-1){
+                                                while(fileContent.indexOf(']')!==-1 && fileContent.indexOf('[Event')>fileContent.indexOf(']'))
+                                                    fileContent=fileContent.replace(/(.*)"\]/,'');
+                                            } 
+                                            //i jedna gra w pliku
+                                            else {
+                                                fileContent = replaceAll(fileContent, ']', '', /(.*)"\]/);
+                                            }
+                                            //usuwanie komentarzy z całości
+                                            fileContent = replaceAll(fileContent, '{', '', /\{(.*)\}/);
+                                            fileContent = replaceAll(fileContent, ';', '', /;.*$/m);
+                                            //usuwanie wyniku
+                                            // co by mi łatwiej było :D
+                                            fileContent=fileContent.replace(resultNum,'');
+                                            fileContent = replaceAll(fileContent,'x','','x');
+                                            var iterate = 1;
+                                            //Usuwanie numeru ruchu i trimowanie
+                                            while(fileContent.indexOf(iterate+'.')!==-1){fileContent=fileContent.replace(iterate+'.',' '); iterate++;}
+                                            fileContent = replaceAll(fileContent,'+',' ','+');
+                                            fileContent = fileContent.trim();
+                                            var Board = new Array(8);
+                                            Board[0] = ['rwl', 'nwl', 'bwl', 'qw', 'kw', 'bwr', 'nwr', 'rwr'];
+                                            Board[1] = ['aw', 'bw', 'cw', 'dw', 'ew', 'fw', 'gw', 'hw'];
+                                            Board[2] = ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'];
+                                            Board[3] = ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'];
+                                            Board[4] = ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'];
+                                            Board[5] = ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'];
+                                            Board[6] = ['ab', 'bb', 'cb', 'db', 'eb', 'fb', 'gb', 'hb'];
+                                            Board[7] = ['rbl', 'nbl', 'bbl', 'qb', 'kb', 'bbr', 'nbr', 'rbr'];
+                                            
+                                            var moves = fileContent.split(/\s+/);
+                                            
+                                            var itermoves = 0;
+                                            
+                                            for(itermoves; itermoves<moves.length; itermoves++)
+                                                getMoveInJson(Board, moves[itermoves],itermoves%2);
+                                            
+                                            
+                                            alert('jsonOutput: '+jsonOutput+' fileContent: '+fileContent);
+                                            
+                                        }
+                                       };
+                                }
+                            }
+
+                            function handleDragOver(evt) {
+                                evt.stopPropagation();
+                                evt.preventDefault();
+                                evt.dataTransfer.dropEffect = 'copy';
+                            }
+                            // sprawdzanie suffixu stringa
+                            function endsWith(str, suffix) {
+                                return str.indexOf(suffix, str.length - suffix.length) !== -1;
+                            }
+                            // podpinanie listenerów
+                            var dropZone = document.getElementById('drop_zone');
+                            dropZone.addEventListener('dragover', handleDragOver, false);
+                            dropZone.addEventListener('drop', handleFileSelect, false);
+                        } else {
+                            alert('Program nie jest kompatybilny z używaną przeglądarką. Zainstaluj nowszą wersję przeglądarki.');
+                        }
+                    }
+                    window.onload = checkCompability; 
+                    //]]>  
+                 </script>
+            </h:panelGroup>       
+     </h:panelGroup>
+    </h:body>
+</html>
