@@ -167,12 +167,12 @@
                             <div>
                                 <h:panelGroup layout="block" id="allPostsTable">
                                     <c:forEach items="#{upBean.allPosts}" var="post" varStatus="loop">
-                                        <h:panelGroup styleClass='#{loop.index%2==1?"gray textWhite":""}' layout="block">
+                                        <h:panelGroup styleClass='#{loop.index%2==1?"gray textWhite allPostBox":"allPostBox"}' layout="block">
                                         <h:panelGroup layout="block" styleClass="allPostHeader">
                                             <h:outputText value="#{post.title}" styleClass="allPostTitle marL5"/>
                                             <h:outputText value="#{post.datePublished}" styleClass="right marR5"/>
                                         </h:panelGroup>
-                                        <h:panelGroup layout="block" class="postContent">
+                                        <h:panelGroup layout="block" class="allPostContent">
                                             <h:outputText value="#{post.content}" styleClass="allPostContent"/>
                                         </h:panelGroup>
                                         </h:panelGroup>
