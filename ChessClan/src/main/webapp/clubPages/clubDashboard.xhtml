@@ -33,14 +33,15 @@
                                     Opis: #{tmt.description}<br/>
                                     Ilość rund: #{tmt.numberOfRounds}<br/>
                                     Punkty potrzebne do odejścia: #{tmt.pointsForBye}<br/>
-                                    <c:if test="#{tmt.state == 'NOT_STARTED'}">
-                                        <h:commandButton value="Rozpocznij prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
-                                            <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
-                                        </h:commandButton>
-                                        <h:commandButton value="Usuń turniej">
-                                            <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
-                                        </h:commandButton>
-                                    </c:if>
+                                    <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
+                                    </h:commandButton>
+                                    <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
+                                    </h:commandButton>
+                                    <h:commandButton value="Usuń turniej">
+                                        <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
+                                    </h:commandButton>
                                 </h:panelGroup>
                             </c:forEach>
                         </c:if>
@@ -127,13 +128,13 @@
                                 <f:convertDateTime pattern="d-M-yyyy" />
                             </h:inputText><br/>
                             <h:panelGroup>
-                            <h:inputTextarea value="#{crTmtBean.tmtDescription}" styleClass="addTourContent" id="tmtDescription"/>
-                           </h:panelGroup><br/>
-                           <h:panelGrid columns="2">
-                            <h:outputText value="Punkty do opuszczenia gry: "/>
-                            <h:inputText value="#{crTmtBean.pointsForBye}" id="pointsSpinner" styleClass="marL5"/>
-                            <h:outputText value="Ilość rund: "/>
-                            <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner" styleClass="marL5"/></h:panelGrid><br/>
+                                <h:inputTextarea value="#{crTmtBean.tmtDescription}" styleClass="addTourContent" id="tmtDescription"/>
+                            </h:panelGroup><br/>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Punkty do opuszczenia gry: "/>
+                                <h:inputText value="#{crTmtBean.pointsForBye}" id="pointsSpinner" styleClass="marL5"/>
+                                <h:outputText value="Ilość rund: "/>
+                                <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner" styleClass="marL5"/></h:panelGrid><br/>
                             <h:panelGroup layout="block" rendered="#{not empty crTmtBean.tmtCategories}" style="display: block;">
                                 <h4>Kategorie rozgrywane w turnieju:</h4>
                                 <c:forEach items="#{crTmtBean.tmtCategories}" var="cat">
