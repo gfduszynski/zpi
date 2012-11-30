@@ -108,7 +108,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
 
     @Override
     public Tournament goToNextRound(Tournament t) throws Round.NotFinished, Round.NoPlayers {
-        t = tRepo.findOne(t.getId());
+        t = fetchRelations(t);
         Round currentRound = t.getCurrentRound();
         // If too few players
         if (currentRound.getPairingCardSet().size() < 2) {
@@ -357,7 +357,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         for (PairingCard pc : tRes.getPairingCardSet()) {
             pc.getPlayer().getFirstName().toString();
         }
-        t.getCurrentRound().getRoundState().toString();
+        tRes.getCurrentRound().getId().toString();
+        if(tRes.getCurrentRound().getNextRound() != null)
+            tRes.getCurrentRound().getNextRound().getId().toString();
         return tRes;
     }
 

@@ -55,7 +55,7 @@ public class TournamentsViewBean implements Serializable {
         page = 1;
         try {
             int ti = Integer.valueOf(tournamentId);
-            this.selectedTournament = tmBO.findTournamentById(ti);
+            this.selectedTournament = tmBO.fetchRelations(tmBO.findTournamentById(ti));
             if (this.selectedTournament == null) {
                 loadTournaments();
             }
