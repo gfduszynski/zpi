@@ -126,7 +126,7 @@
                                             <!-- column header -->
                                             <f:facet name="header">Tytuł</f:facet>
                                             <!-- row record -->
-                                            #{post.title}
+                                            #{post.title} 
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Treść</f:facet>
@@ -167,7 +167,7 @@
                             <div>
                                 <h:panelGroup layout="block" id="allPostsTable">
                                     <c:forEach items="#{upBean.allPosts}" var="post" varStatus="loop">
-                                        <h:panelGroup styleClass='#{loop.index%2==1?"gray textWhite allPostBox":"allPostBox"}' layout="block">
+                                        <h:panelGroup styleClass='#{loop.index%2==1?"gray allPostBox":"allPostBox"}' layout="block">
                                         <h:panelGroup layout="block" styleClass="allPostHeader">
                                             <h:outputText value="#{post.title}" styleClass="allPostTitle marL5"/>
                                             <h:outputText value="#{post.datePublished}" styleClass="right marR5"/>

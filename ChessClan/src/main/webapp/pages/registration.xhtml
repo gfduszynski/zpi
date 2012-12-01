@@ -71,8 +71,8 @@
                             <f:ajax event="blur" execute="pInput" render="pGroup" listener="#{rgsBean.validatePassword}"/>
                         </h:inputSecret><br/>
                     </h:panelGroup>
-                    <h:panelGroup id="sGroup">
-                        <h:outputText value="Musisz zaakceptować regulamin.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.statuteError}" escape="false"/>
+                    <h:panelGroup id="sGroup" styleClass="marT5">
+                        <h:outputText value="Musisz zaakceptować regulamin, jeśli chcesz się zarejestrować&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.statuteError}" escape="false"/>
                         <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}" id="sInput">
                             <f:ajax event="change" execute="sInput" render="sGroup" listener="#{rgsBean.validateStatute}"/>
                         </h:selectBooleanCheckbox>
@@ -134,12 +134,12 @@
                             <f:ajax event="blur" execute="paInput" render="paGroup" listener="#{rgsBean.validatePassword}"/>
                         </h:inputSecret><br/>
                     </h:panelGroup>
-                    <h:panelGroup id="stGroup">
+                    <h:panelGroup layout="block" id="stGroup">
                         <h:outputText value="Musisz zaakceptować regulamin.&lt;br/&gt;" styleClass="error" rendered="#{rgsBean.statuteError}" escape="false"/>
                         <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}" id="stInput">
                             <f:ajax event="change" execute="stInput" render="stGroup" listener="#{rgsBean.validateStatute}"/>
                         </h:selectBooleanCheckbox>
-                    </h:panelGroup>
+                        </h:panelGroup>
                     <h:outputText value="Akceptuję "/><a href="#{request.contextPath}/tos" class="link" disableClass="">regulamin.</a><br/>
                     <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>

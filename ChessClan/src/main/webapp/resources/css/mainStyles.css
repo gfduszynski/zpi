@@ -11,6 +11,9 @@ html{
 .gray{
    background-color: #BBBBBB;   
 }
+.grayDark{
+    background-color: #BBBBBB;
+}
 .blue{
     background-color: #00AAE8;
 }
@@ -28,6 +31,9 @@ html{
 }
 .marL5{
     margin-left: 5px;
+}
+.marT5,#sGroup,#stGroup{
+    margin-top: 5px;
 }
 /* /PODSTAWOWE STAŁE NARZĘDZIA:  */
 body{
@@ -249,6 +255,11 @@ div#editContainer{
     width: 270px;
 }
 
+#stGroup{
+    display: inline-block;
+    padding-top: 5px;
+}
+
 .regChoose{
     width: 275px;
     margin: 0px 0 -15px 0px;
@@ -307,7 +318,7 @@ div#editContainer{
     padding: 0px;
 }
 
-#bdInput,#pInput{
+#bdInput,#pInput,#paGroup{
     margin-bottom: 5px;
 }
 
@@ -574,21 +585,25 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
 TABLE.userTable{
     width: 100%;
     background-color: transparent;
+    text-align: justify;
 }
 TABLE.userTable tr{
     height: 30px;
     margin: none;
 }
-/* TABLE.userTable tr:nth-child(odd){
-    background: #353534;
-} */
 TABLE.userTable tr:nth-child(even){
     background: #BBBBBB;
-    color: white;
 }
 TABLE.userTable thead{
     background: #000000;
     color: white;
+}
+.TABLE.userTable:hover{
+    background: url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") repeat scroll 50% 50% #00AAE8;
+    color: white;
+}
+.TABLE.userTable td{
+    margin: 0 10px 0 10px;
 }
 .allPostHeader{
     margin: 0 0 5px 0;
@@ -631,4 +646,40 @@ TABLE.userTable thead{
     font-weight: bold;
     font-size: larger;
     color: #00AAE8;
+}
+.postBox{
+    border: 1px solid #363636; 
+    margin: 5px; 
+    padding: 4px; 
+    color:#000; 
+    opacity:0.7; 
+    width: 220px; 
+    height: 220px; 
+    float: left; 
+    overflow: hidden;
+    background-color: #00EE59;
+}
+.postBox2{
+     border: 1px solid #363636; 
+    margin: 5px; 
+    padding: 4px; 
+    color:#000; 
+    opacity:0.7; 
+    width: 220px; 
+    height: 220px; 
+    float: left; 
+    overflow: hidden;
+    background-color: #0025EB;
+}
+.postBox3{
+     border: 1px solid #363636; 
+    margin: 5px; 
+    padding: 4px; 
+    color:#000; 
+    opacity:0.7; 
+    width: 220px; 
+    height: 220px; 
+    float: left; 
+    overflow: hidden;
+    background-color: #FF8500;
 }
