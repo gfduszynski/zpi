@@ -6,6 +6,7 @@ package org.chessclan.businessTier.businessObjects;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.chessclan.dataTier.models.Category;
 import org.chessclan.dataTier.models.Club;
 import org.chessclan.dataTier.models.PairingCard;
@@ -48,4 +49,5 @@ public interface TournamentBO{
     public List<Tournament> findTournamentsWithClubAndRoundsAndPC();
     @Transactional 
     public List<Tournament> findUserTournaments(User user);    
+    List<PairingCard> getResults(Tournament t);
 }

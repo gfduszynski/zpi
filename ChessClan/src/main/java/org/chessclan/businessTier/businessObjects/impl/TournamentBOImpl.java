@@ -266,6 +266,16 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         return newPairingCards;
     }
 
+    @Override
+    public List<PairingCard> getResults(Tournament tmt) {
+        List<PairingCard> result = new ArrayList<PairingCard>(tmt.getPairingCardSet().size());
+        for (PairingCard pc : tmt.getPairingCardSet()) {
+            result.add(pc);
+        }
+        Collections.sort(result);
+        return result;
+    }
+
     private HashMap<Float, LinkedList<PairingCard>> generateScoreBrackets(Set<PairingCard> oldPairingCards, Round currentRound) {
         HashMap<Float, LinkedList<PairingCard>> scoreBrackets = new HashMap<Float, LinkedList<PairingCard>>();
         // Assign players to their score brackets with new pairing card
@@ -360,10 +370,14 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     @Override
     public Tournament fetchRelations(Tournament t) {
         Tournament tRes = tRepo.findOne(t.getId());
-        for (PairingCard pc : tRes.getPairingCardSet()) {
-            pc.getPlayer().getFirstName().toString();
+        if (tRes.getPairingCardSet() != null) {
+            for (PairingCard pc : tRes.getPairingCardSet()) {
+                pc.getPlayer().getFirstName().toString();
+            }
         }
-        tRes.getCurrentRound().getId().toString();
+        if (tRes.getCurrentRound() != null) {
+            tRes.getCurrentRound().getId().toString();
+        }
         if (tRes.getCurrentRound().getNextRound() != null) {
             tRes.getCurrentRound().getNextRound().getId().toString();
         }

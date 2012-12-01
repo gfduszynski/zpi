@@ -61,7 +61,7 @@
                 </h:panelGroup>
             </c:if>
             <c:if test="#{cTmtCBean.currentTmt.state == 'STARTED'}">
-                <h:outputText value="Turniej trwa!"/>                
+                <h:outputText value="Turniej trwa! Runda numer: #{cTmtCBean.currentTmt.currentRound.id}"/>                
                 <h:commandButton value="Zakończ rundę i przejdź do następnej">
                     <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
                 </h:commandButton><br/>
@@ -77,7 +77,11 @@
                 </c:forEach>
             </c:if>
             <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
-                
+                <h:outputText value="Turniej zakończony! Wyniki:"/>
+                <c:forEach items="#{cTmtCBean.results}" var="result" varStatus="loop">
+                    <h:outputText value="Miejsce #{loop.index+1}: #{result.player.firstName} #{result.player.lastName} Ilość punktów: #{result.score}"/>
+                    <br/>
+                </c:forEach>
             </c:if>
         </ui:composition>
     </h:body>
