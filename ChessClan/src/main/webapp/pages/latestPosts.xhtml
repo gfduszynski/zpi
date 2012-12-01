@@ -9,43 +9,49 @@
     <h:body>
         <ui:composition>
             <h:outputScript library="js" name="jquery.dotdotdot.js"/>
-            <h:outputScript library="js" name="bootstrap.js"/>
-            <h:outputStylesheet library="css" name="bootstrap.css"/>
+            <h:outputScript library="js" name="jquery.easy-ticker.js"/>
             <h:form prependId="false" id="latestPostsForm">
                 <script>
-                    $('.five').hover(
-                        function() {
-                            $('.seeAllPostsButton').slideToggle();
-                        }
-                    );
-                    $(document).ready(function() {
-                        $('.ellipsis').dotdotdot({ ellipsis: '... '});
+                    $(document).ready(function(){
+                        $('#newsSlider').easyTicker({
+                            direction: 'up',
+                            speed: 'slow',
+                            interval: 7000,
+                            height: 'auto',
+                            visible: 3,
+                            mousePause: 1,
+                            controls:{
+                                up:'.news-prev',
+                                down:'.news-next'
+                            }
+                        });
+                    });
+                    $("document").ready(function() {
+                        $('.news-item-content').dotdotdot({ ellipsis: '... '});
                     });
                 </script>
                 <div class="postsHeader">
                     <h:outputText value="Najnowsze ogłoszenia"/>
                 </div>
-                <div id="myCarousel" class="carousel slide">
-                    <div class="carousel-inner">
-                        <c:forEach items="#{lpBean.carousel}" var="postPage" varStatus="outerLoop">
-                            <h:panelGroup layout="block" class="#{outerLoop.first?'active':''} item">
-                                <c:forEach items="#{postPage}" var="post" varStatus="loop">
-                                    <h:panelGroup layout="block" class="postContainer">
-                                        <h:outputText value="#{post.title}" styleClass="postHeader"/>
-                                        <h:outputText value="#{post.datePublished}" class="postTitleDate"/>
-                                        <h:panelGroup class="ellipsis">#{post.content}</h:panelGroup>
-                                    </h:panelGroup>
-<!--                                    <c:if test="${not loop.last}">
-                                        <hr/> 
-                                    </c:if>-->
-                                </c:forEach>
-                            </h:panelGroup>
+                <div id="newsSlider" class="news">
+                    <ul>
+                        <c:forEach items="#{lpBean.latestPosts}" var="post" varStatus="loop">
+                            <li class="news-item" onclick="$(location).attr('href', '#{request.contextPath}/posts/#{post.id}');">
+                                <div class="news-item-header">
+                                    <span class="news-item-title">#{post.title}</span>
+                                    <span class="news-item-date">#{post.datePublished}</span>
+                                </div>
+                                <span class="news-item-content">#{post.content}</span>
+                            </li>
                         </c:forEach>
-                    </div>
-                    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-                    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                    </ul>
                 </div>
-                <h:commandButton value="Zobacz wszystkie" class="seeAllPostsButton hiddenButton" onclick="$(location).attr('href', '#{request.contextPath}/posts');" type="button"/>
+                <div class="news-controls">
+                    <span class="news-prev">▲</span>
+                    <span onclick="$(location).attr('href', '#{request.contextPath}/posts');">Zobacz wszystkie</span>
+                    <span class="news-next">▼</span>
+                </div>
+                
             </h:form>
 
         </ui:composition>
