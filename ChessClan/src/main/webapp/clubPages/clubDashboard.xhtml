@@ -39,6 +39,9 @@
                                     <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
                                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                     </h:commandButton>
+                                    <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Pokaż wyniki turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
+                                    </h:commandButton>
                                     <h:commandButton value="Usuń turniej">
                                         <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
                                     </h:commandButton>

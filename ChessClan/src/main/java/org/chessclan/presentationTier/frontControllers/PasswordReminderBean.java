@@ -4,6 +4,7 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -18,7 +19,7 @@ import org.chessclan.utils.SendEmailHelper;
  */
 @ManagedBean
 @ViewScoped
-public class PasswordReminderBean {
+public class PasswordReminderBean implements Serializable{
 
     private String email;
     private boolean emailDoesntExists;
