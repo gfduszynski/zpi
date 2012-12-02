@@ -1,0 +1,23 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+newmtl gms001_desk__Vra_GMS00103.jpg_GMS00103.jpg
+Ns 9.803922
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.694118 0.694118 0.694118
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Textures/GMS00103.jpg
+
+
+newmtl gms001_metall__V
+Ns 998.039216
+Ka 0.000000 0.000000 0.000000
+Kd 0.318745 0.195765 0.107922
+Ks 1.000000 1.000000 1.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+
