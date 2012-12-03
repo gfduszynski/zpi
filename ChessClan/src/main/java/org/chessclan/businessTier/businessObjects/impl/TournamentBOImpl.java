@@ -410,13 +410,15 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             t.getClub().getName().toString();
             boolean userInTmt = false;
             if (t.getCurrentRound() != null) {
-                for (PairingCard pc : t.getCurrentRound().getPairingCardSet()) {
-                    if (pc.getPlayer().getId() == user.getId()) {
-                        userInTmt = true;
+                if (t.getCurrentRound().getPairingCardSet() != null) {
+                    for (PairingCard pc : t.getCurrentRound().getPairingCardSet()) {
+                        if (pc.getPlayer().getId() == user.getId()) {
+                            userInTmt = true;
+                        }
                     }
-                }
-                if (userInTmt) {
-                    userTmt.add(t);
+                    if (userInTmt) {
+                        userTmt.add(t);
+                    }
                 }
             }
         }
