@@ -27,22 +27,22 @@
                         <h:messages/>
                         <c:if test="#{(not empty ctBean.clubTournaments) and (not cTmtCBean.nowInMods)}">
                             <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
-                                <h:panelGroup layout="block" styleClass="tmtContainer">
+                                <h:panelGroup layout="block"  styleClass='#{loop.index%2==1?"tmtContainer right":"tmtContainer left"}'>
                                     #{tmt.name} <a href="#{request.contextPath}/tournaments/#{tmt.id}">Wyświetl szczegółowy widok</a><br/>
                                     Data: #{tmt.date}<br/>
                                     Opis: #{tmt.description}<br/>
                                     Ilość rund: #{tmt.numberOfRounds}<br/>
                                     Punkty potrzebne do odejścia: #{tmt.pointsForBye}<br/>
-                                    <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                    <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                    <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Pokaż wyniki turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                    <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Pokaż wyniki turnieju" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                     </h:commandButton>
-                                    <h:commandButton value="Usuń turniej">
+                                    <h:commandButton value="Usuń turniej" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
                                     </h:commandButton>
                                 </h:panelGroup>
@@ -57,6 +57,121 @@
                     </h:form>
                 </div>
                 <div id="tabs-2">
+                    <h:form prependId="false" >
+                        <script>
+                            $(function() {
+                                $("#accordion").accordion({
+                                    collapsible: true,
+                                    heightStyle: "content"
+                                });
+                                $('#addPostTitle').val('[Tytuł]');
+                                $('#addPostContent').val('[Treść]');
+                            });
+                        </script>
+                        <div id="accordion">
+                            <h3 id="addPostHeader">Dodaj ogłoszenie</h3>
+                            <div>
+                                <h:panelGrid styleClass="addPost">
+                                    <h:panelGroup id="messages">
+                                        <h:panelGroup rendered="#{upBean.postPublished}" layout="block" class="ui-state-highlight ui-corner-all">
+                                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                                <strong>Uwaga!</strong> Twoje ogłoszenie zostało opublikowane. Teraz widzą je inni użytkownicy.</p>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{upBean.postSaved}" layout="block" class="ui-state-highlight ui-corner-all">
+                                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                                <strong>Uwaga!</strong> Twoje ogłoszenie zostało zapisane. Aby widzieli je inni użytkownicy, przejdź do zakładki "Moje ogłoszenia" i je opublikuj.</p>
+                                        </h:panelGroup>
+                                        <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all">
+                                            <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                                                <strong>Hej!</strong> Dodawanie ogłoszeń to nie zabawa. Proszę wpisać prawidłowe ogłoszenie!</p>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+                                    <!-- TYTUŁ -->
+                                    <h:panelGroup>
+                                        <h:inputText value="#{upBean.title}" styleClass="regInput" id="addPostTitle">
+                                            <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateTitle}"/>
+                                        </h:inputText>
+                                        <!-- NA JAK DŁUGO? -->
+                                        <h:outputText value="Termin ważności:" styleClass="addPostDate"/>
+                                        <h:selectOneMenu value="#{upBean.postlt}" styleClass="addPostDate">
+                                            <f:selectItem itemValue="1" itemLabel="Tydzień"/>
+                                            <f:selectItem itemValue="2" itemLabel="Dwa tygodnie"/>
+                                            <f:selectItem itemValue="3" itemLabel="Trzy tygodnie"/>
+                                        </h:selectOneMenu>
+                                    </h:panelGroup>
+                                    <!-- TREŚĆ -->
+                                    <h:panelGroup>
+                                        <h:inputTextarea value="#{upBean.content}" id="addPostContent">
+                                            <f:ajax event="blur" execute="@this" render="messages" listener="#{upBean.validateContent}"/>
+                                        </h:inputTextarea>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:commandButton value="Zapisz i opublikuj" styleClass="allButton addPostButton">
+                                            <f:ajax execute="@form" render="@form" listener="#{upBean.saveAndPublish}"/>
+                                        </h:commandButton>
+                                        <h:commandButton value="Zapisz" styleClass="allButton addPostButton">
+                                            <f:ajax execute="@form" render="@form" listener="#{upBean.save}"/>
+                                        </h:commandButton>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h3 id="myPostsHeader">Moje ogłoszenia</h3>
+                            <div>
+                                <c:if test="#{upBean.userPosts.size()>0}">
+                                    <h:dataTable value="#{upBean.userPosts}" var="post" columnClasses="addPostMy" styleClass="width100 userTable">
+                                        <h:column>
+                                            <!-- column header -->
+                                            <f:facet name="header">Tytuł</f:facet>
+                                            <!-- row record -->
+                                            #{post.title} 
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Treść</f:facet>
+                                            #{post.content}
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">Zarządzaj</f:facet> 
+                                            <h:outputText value="#{post.datePublished}" styleClass="top">
+                                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                            </h:outputText>
+                                            <h:commandButton value="Opublikuj" rendered="#{post.datePublished == null}" styleClass="allButton addPostButtonMy">
+                                                <f:ajax render="@form" listener="#{upBean.publishPost(post)}"/>
+                                            </h:commandButton>            
+                                            <h:commandButton value="Ukryj" rendered="#{post.datePublished != null}" styleClass="allButton addPostButtonMy">
+                                                <f:ajax render="@form" listener="#{upBean.unPublishPost(post)}"/>
+                                            </h:commandButton>
+                                            <h:commandButton value="Usuń" styleClass="allButton addPostButtonMy">
+                                                <f:ajax render="@form" listener="#{upBean.removePost(post)}"/>
+                                            </h:commandButton>
+                                        </h:column>
+                                    </h:dataTable>
+                                </c:if>
+                                <c:if test="#{upBean.userPosts.size() == 0}">
+                                    <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+                                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                            Nie masz żadnego zapisanego ogłoszenia. Aby je stworzyć, przejdź do zakładki "Dodaj ogłoszenie"
+                                        </p>
+                                    </h:panelGroup>
+                                </c:if>
+                            </div>
+                            <h3>Wszystkie ogłoszenia</h3>
+                            <div>
+                                <h:panelGroup layout="block" id="allPostsTable">
+                                    <c:forEach items="#{upBean.allPosts}" var="post" varStatus="loop">
+                                        <h:panelGroup styleClass='#{loop.index%4==0?"allPostBox":(loop.index%4==1?"gray allPostBox":(loop.index%4==2?"gray allPostBox":"allPostBox"))}' layout="block">
+                                            <h:panelGroup layout="block" styleClass="allPostHeader">
+                                                <h:outputText value="#{post.title}" styleClass="allPostTitle marL5"/>
+                                                <h:outputText value="#{post.datePublished}" styleClass="right marR5 allPostDate"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup layout="block" class="allPostContent">
+                                                <h:outputText value="#{post.content}" styleClass="allPostContent"/>
+                                            </h:panelGroup>
+                                        </h:panelGroup>
+                                    </c:forEach>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                    </h:form>
                 </div>
                 <div id="tabs-3">
                     <h:form>

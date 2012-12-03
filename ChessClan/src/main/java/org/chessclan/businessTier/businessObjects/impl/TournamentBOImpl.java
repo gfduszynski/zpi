@@ -376,11 +376,11 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             }
         }
         if (tRes.getCurrentRound() != null) {
-            tRes.getCurrentRound().getId().toString();
+            if (tRes.getCurrentRound().getNextRound() != null) {
+                tRes.getCurrentRound().getNextRound().getId().toString();
+            }
         }
-        if (tRes.getCurrentRound().getNextRound() != null) {
-            tRes.getCurrentRound().getNextRound().getId().toString();
-        }
+
         return tRes;
     }
 
@@ -389,7 +389,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         List<Tournament> result = tRepo.findAll();
         for (Tournament t : result) {
             t.getClub().getName().toString();
-            t.getCurrentRound().getRoundState().toString();
+            if (t.getCurrentRound() != null) {
+                t.getCurrentRound().getRoundState().toString();
+            }
             if (!t.getPairingCardSet().isEmpty()) {
                 Iterator<PairingCard> iter = t.getPairingCardSet().iterator();
                 while (iter.hasNext()) {
@@ -407,13 +409,17 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         for (Tournament t : result) {
             t.getClub().getName().toString();
             boolean userInTmt = false;
-            for (PairingCard pc : t.getCurrentRound().getPairingCardSet()) {
-                if (pc.getPlayer().getId() == user.getId()) {
-                    userInTmt = true;
+            if (t.getCurrentRound() != null) {
+                if (t.getCurrentRound().getPairingCardSet() != null) {
+                    for (PairingCard pc : t.getCurrentRound().getPairingCardSet()) {
+                        if (pc.getPlayer().getId() == user.getId()) {
+                            userInTmt = true;
+                        }
+                    }
+                    if (userInTmt) {
+                        userTmt.add(t);
+                    }
                 }
-            }
-            if (userInTmt) {
-                userTmt.add(t);
             }
         }
         return userTmt;
