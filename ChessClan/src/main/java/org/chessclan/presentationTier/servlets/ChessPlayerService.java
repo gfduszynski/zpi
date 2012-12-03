@@ -9,7 +9,9 @@ import com.google.gson.GsonBuilder;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -49,6 +51,18 @@ public class ChessPlayerService {
         return Response.status(200).entity(gson.toJson(foundGame)).build();
     }
 
+    @POST
+    @Path("/addGame")
+    public Response loadGame(String x) {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
+        Game g = (Game) gson.fromJson(x, Game.class);
+        for(Move m : g.getMoves()){
+            m.setPartOf(g);
+        }
+        gRepo.save(g);
+        return Response.status(200).entity("OK").build();
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/addExample")
@@ -68,7 +82,7 @@ public class ChessPlayerService {
     @Path("/getAll")
     public Response loadAll() {
         List<Game> games = gRepo.findAll();
-        for(Game g: games){
+        for (Game g : games) {
             g.setMoves(null);
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();

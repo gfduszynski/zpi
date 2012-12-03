@@ -3,13 +3,57 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <h:body>
         <ui:composition>
-            <h:form prependId="false" >
-                <h3>Najnowsze turnieje</h3>
+            <h:outputScript library="js" name="jquery.dotdotdot.js"/>
+            <h:outputScript library="js" name="jquery.easy-ticker.js"/>
+            <h:form prependId="false" id="latestTmtsForm">
+                <script>
+                    $(document).ready(function(){
+                        $('#newsSlider2').easyTicker({
+                            direction: 'up',
+                            speed: 'slow',
+                            interval: 7000,
+                            height: 'auto',
+                            visible: 3,
+                            mousePause: 1,
+                            controls:{
+                                up:'.news-prev',
+                                down:'.news-next'
+                            }
+                        });
+                    });
+                    $("document").ready(function() {
+                        $('.news-item-content').dotdotdot({ ellipsis: '... '});
+                    });
+                </script>
+                <div class="postsHeader">
+                    <h:outputText value="Nadchodzące turnieje"/>
+                </div>
+                <div id="newsSlider2" class="news">
+                    <ul>
+                        <c:forEach items="#{ltmtsBean.latestTmts}" var="tmt" varStatus="loop">
+                            <li class="news-item" onclick="$(location).attr('href', '#{request.contextPath}/tournaments/#{tmt.id}');">
+                                <div class="news-item-header">
+                                    <span class="news-item-title">#{tmt.name}</span>
+                                    <span class="news-item-date">#{tmt.date}</span>
+                                </div>
+                                <span class="news-item-content">#{tmt.description}</span>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+                <div class="news-controls">
+                    <span class="news-prev">▲</span>
+                    <span onclick="$(location).attr('href', '#{request.contextPath}/posts');">Zobacz wszystkie</span>
+                    <span class="news-next">▼</span>
+                </div>
+                
             </h:form>
+
         </ui:composition>
 
     </h:body>
