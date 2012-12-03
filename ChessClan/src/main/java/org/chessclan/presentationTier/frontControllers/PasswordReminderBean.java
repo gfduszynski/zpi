@@ -27,11 +27,13 @@ public class PasswordReminderBean implements Serializable{
     private boolean emailSendingFailed;
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO umBO;
+    private boolean actCanceled;
 
     public PasswordReminderBean() {
         this.emailDoesntExists = false;
         this.emailSent = false;
         this.emailSendingFailed = false;
+        this.actCanceled = false;
     }
 
     public void sendEmail() {
@@ -91,5 +93,15 @@ public class PasswordReminderBean implements Serializable{
 
     public void setEmailSendingFailed(boolean emailSendingFailed) {
         this.emailSendingFailed = emailSendingFailed;
+    }
+     public void cancelUpdate() {
+        this.actCanceled = true;
+    }
+     public boolean isActCanceled() {
+        return actCanceled;
+    }
+
+    public void setActCanceled(boolean actCanceled) {
+        this.actCanceled = actCanceled;
     }
 }

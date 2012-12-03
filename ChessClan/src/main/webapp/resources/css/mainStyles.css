@@ -121,6 +121,7 @@ div#editContainer{
 .loginStuff{
     width:475px;
     float:right;
+    display: inline-block;
     /*    margin-top: -50px;*/
 }
 
@@ -883,4 +884,5 @@ TABLE.userTable thead{
     text-justify: newspaper;
     padding: 10px;
 }
+
     
