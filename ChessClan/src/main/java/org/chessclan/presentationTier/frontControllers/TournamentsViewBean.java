@@ -40,7 +40,7 @@ public class TournamentsViewBean implements Serializable {
     private boolean joiningSucc;
     private Integer page;
     private Map<Integer,ArrayList<Integer>> mapToPrevAndNext;
-    private List<Tournament> userTournaments;
+//    private List<Tournament> userTournaments;
     @ManagedProperty(value = "#{loginBean.user}")
     private User user;
     public TournamentsViewBean() {
@@ -97,7 +97,7 @@ public class TournamentsViewBean implements Serializable {
             this.mapToPrevAndNext.put(mapTournaments.get(i), altmp);
         }
 
-        userTournaments = tmBO.findUserTournaments(user);
+        //userTournaments = tmBO.findUserTournaments(user);
     }
 
     public boolean isJoinable(Tournament tmt) {
@@ -203,13 +203,13 @@ public class TournamentsViewBean implements Serializable {
     }
 
 
-    public List<Tournament> getUserTournaments() {
-        return userTournaments;
-    }
-
-    public void setUserTournaments(List<Tournament> userTournaments) {
-        this.userTournaments = userTournaments;
-    }
+//    public List<Tournament> getUserTournaments() {
+//        return userTournaments;
+//    }
+//
+//    public void setUserTournaments(List<Tournament> userTournaments) {
+//        this.userTournaments = userTournaments;
+//    }
 
     public User getUser() {
         return user;
