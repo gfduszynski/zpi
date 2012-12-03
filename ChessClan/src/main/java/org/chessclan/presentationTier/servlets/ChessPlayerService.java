@@ -7,6 +7,7 @@ package org.chessclan.presentationTier.servlets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -60,6 +61,18 @@ public class ChessPlayerService {
         gRepo.save(game);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
         return Response.status(200).entity(gson.toJson(game)).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/getAll")
+    public Response loadAll() {
+        List<Game> games = gRepo.findAll();
+        for(Game g: games){
+            g.setMoves(null);
+        }
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
+        return Response.status(200).entity(gson.toJson(games)).build();
     }
 
     public GameRepository getgRepo() {
