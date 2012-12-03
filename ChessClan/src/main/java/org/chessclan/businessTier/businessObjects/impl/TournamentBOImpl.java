@@ -123,17 +123,23 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
                 }
             }
         }
+        if (t.getState() == Tournament.State.NOT_STARTED) {
+            t.setState(Tournament.State.STARTED);
+        }
         // If tournament not yet started, start it
         if (currentRound.getRoundState() == Round.State.JOINING) {
             currentRound.setRoundState(Round.State.FINISHED);
         }
         t.setCurrentRound(currentRound.getNextRound());
-        currentRound.getNextRound().setRoundState(State.STARTED);
-        // Find pairs for players
-        Set<PairingCard> newPairingCards = mockupPairPlayers(currentRound.getPairingCardSet(), currentRound.getNextRound());
-        currentRound.getNextRound().setPairingCardSet(newPairingCards);
-
-        return tRepo.saveAndFlush(t);
+        if (t.getCurrentRound() == null) {
+            t.setState(Tournament.State.FINISHED);
+        } else {
+            currentRound.getNextRound().setRoundState(State.STARTED);
+            // Find pairs for players
+            Set<PairingCard> newPairingCards = mockupPairPlayers(currentRound.getPairingCardSet(), currentRound.getNextRound());
+            currentRound.getNextRound().setPairingCardSet(newPairingCards);
+        }
+        return tRepo.save(t);
     }
 
     private Set<PairingCard> mockupPairPlayers(Set<PairingCard> oldPairingCards, Round currentRound) {
@@ -260,6 +266,16 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         return newPairingCards;
     }
 
+    @Override
+    public List<PairingCard> getResults(Tournament tmt) {
+        List<PairingCard> result = new ArrayList<PairingCard>(tmt.getPairingCardSet().size());
+        for (PairingCard pc : tmt.getPairingCardSet()) {
+            result.add(pc);
+        }
+        Collections.sort(result);
+        return result;
+    }
+
     private HashMap<Float, LinkedList<PairingCard>> generateScoreBrackets(Set<PairingCard> oldPairingCards, Round currentRound) {
         HashMap<Float, LinkedList<PairingCard>> scoreBrackets = new HashMap<Float, LinkedList<PairingCard>>();
         // Assign players to their score brackets with new pairing card
@@ -304,7 +320,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         black.setColorDiff(black.getColorDiff() - 1);
         black.setColor(PairingCard.Color.BLACK);
     }
-    
+
     @Override
     public List<Tournament> findTournamentsByClub(Club club) {
         return tRepo.findByClub(club);
@@ -354,12 +370,17 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     @Override
     public Tournament fetchRelations(Tournament t) {
         Tournament tRes = tRepo.findOne(t.getId());
-        for (PairingCard pc : tRes.getPairingCardSet()) {
-            pc.getPlayer().getFirstName().toString();
+        if (tRes.getPairingCardSet() != null) {
+            for (PairingCard pc : tRes.getPairingCardSet()) {
+                pc.getPlayer().getFirstName().toString();
+            }
         }
-        tRes.getCurrentRound().getId().toString();
-        if(tRes.getCurrentRound().getNextRound() != null)
+        if (tRes.getCurrentRound() != null) {
+            tRes.getCurrentRound().getId().toString();
+        }
+        if (tRes.getCurrentRound().getNextRound() != null) {
             tRes.getCurrentRound().getNextRound().getId().toString();
+        }
         return tRes;
     }
 
@@ -369,9 +390,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         for (Tournament t : result) {
             t.getClub().getName().toString();
             t.getCurrentRound().getRoundState().toString();
-            if(!t.getPairingCardSet().isEmpty()){
+            if (!t.getPairingCardSet().isEmpty()) {
                 Iterator<PairingCard> iter = t.getPairingCardSet().iterator();
-                while(iter.hasNext()){
+                while (iter.hasNext()) {
                     iter.next().getPlayer().getFirstName();
                 }
             }
@@ -391,7 +412,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
                     userInTmt = true;
                 }
             }
-            if(userInTmt){
+            if (userInTmt) {
                 userTmt.add(t);
             }
         }

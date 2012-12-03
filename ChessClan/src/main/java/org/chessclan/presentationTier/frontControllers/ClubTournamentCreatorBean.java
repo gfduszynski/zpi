@@ -38,7 +38,8 @@ public class ClubTournamentCreatorBean implements Serializable {
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO umBO;
     private List<User> foundUsers;
-
+    private List<PairingCard> results;
+    
     public ClubTournamentCreatorBean() {
         this.nowInMods = false;
     }
@@ -97,6 +98,10 @@ public class ClubTournamentCreatorBean implements Serializable {
             Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoPlayers ex) {
             Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(currentTmt.getState() == Tournament.State.FINISHED)
+        {
+            this.results = tmBO.getResults(currentTmt);
         }
     }
 
@@ -162,5 +167,13 @@ public class ClubTournamentCreatorBean implements Serializable {
 
     public void setNotValidCriteria(boolean notValidCriteria) {
         this.notValidCriteria = notValidCriteria;
+    }
+
+    public List<PairingCard> getResults() {
+        return results;
+    }
+
+    public void setResults(List<PairingCard> results) {
+        this.results = results;
     }
 }

@@ -16,6 +16,11 @@
             <h:outputStylesheet library="css" name="jquery-ui.css"/>
             <h:outputScript library="js" name="jquery-ui.js"/>
             <h:outputScript library="js" name="jquery.ui.datepicker-pl.js"/>
+            <h:outputScript library="js" name="Three.js"/>
+            <h:outputScript library="js" name="ChessPlayer.js"/>
+            <h:outputScript library="js" name="MTLLoader.js"/>
+            <h:outputScript library="js" name="OBJLoader.js"/>
+            <h:outputScript library="js" name="OBJMTLLoader.js"/>
             <script type="text/javascript">
                 $('#headerLogo').live('click', function() {
                     window.location = "#{request.contextPath}";
@@ -23,12 +28,29 @@
                 function showEditProfile(){
                     $('#editContainer').load('userPages/editProfile.xhtml');
                 }
+                $(document).ready(function(){
+                    var cc = null;
+                    $('.chess-player-show').click(function()
+                    {
+                        if(cc==null){
+                            cc = new ChessPlayer($('#chess-player'));
+                            cc.loadJSON("#{request.contextPath}/rest/cpService/addExample"); 
+                        }
+                        $(".chess-player-window").toggleClass("chess-player-window-hidden",500);
+                        $(".chess-player-window").css("overflow","visible");
+                    });
+                });
+                
             </script>
 
             <h:panelGroup layout="block" class="header">
                 <h:panelGroup layout="block" class="logo" id="headerLogo">
                 </h:panelGroup>
-
+                <div class="chess-player-window chess-player-window-hidden">
+                    <div id="chess-player"></div>
+                    <div class="chess-player-show"><div class="line"/><span class="chess-player-show-content">ChessPlayer</span></div>
+                </div>
+                
                 <c:if test="#{not loginBean.loggedUser}">
                     <h:form id="loginForm" prependId="false" class="loginStuff">
                         <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
