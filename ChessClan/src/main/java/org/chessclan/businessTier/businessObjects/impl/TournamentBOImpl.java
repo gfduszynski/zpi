@@ -376,11 +376,11 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             }
         }
         if (tRes.getCurrentRound() != null) {
-            tRes.getCurrentRound().getId().toString();
+            if (tRes.getCurrentRound().getNextRound() != null) {
+                tRes.getCurrentRound().getNextRound().getId().toString();
+            }
         }
-        if (tRes.getCurrentRound().getNextRound() != null) {
-            tRes.getCurrentRound().getNextRound().getId().toString();
-        }
+
         return tRes;
     }
 
