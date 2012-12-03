@@ -102,8 +102,9 @@ public class TournamentsViewBean implements Serializable {
             }
             this.mapToPrevAndNext.put(mapTournaments.get(i), altmp);
         }
-
-        userTournaments = tmBO.findUserTournaments(user);
+        if (user != null) {
+            userTournaments = tmBO.findUserTournaments(user);
+        }
     }
 
     public boolean isJoinable(Tournament tmt) {
