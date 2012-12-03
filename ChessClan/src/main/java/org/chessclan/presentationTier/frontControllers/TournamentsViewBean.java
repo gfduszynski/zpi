@@ -39,17 +39,18 @@ public class TournamentsViewBean implements Serializable {
     private Tournament selectedTournament;
     private boolean joiningSucc;
     private Integer page;
-    private Map<Integer,ArrayList<Integer>> mapToPrevAndNext;
+    private Map<Integer, ArrayList<Integer>> mapToPrevAndNext;
     private List<Tournament> userTournaments;
     @ManagedProperty(value = "#{loginBean.user}")
     private User user;
+
     public TournamentsViewBean() {
     }
 
     @PostConstruct
     public void initialize() {
 
-        this.mapToPrevAndNext = new HashMap<Integer,ArrayList<Integer>>();
+        this.mapToPrevAndNext = new HashMap<Integer, ArrayList<Integer>>();
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String tournamentId = params.get("id");
         page = 1;
@@ -59,20 +60,20 @@ public class TournamentsViewBean implements Serializable {
             if (this.selectedTournament == null) {
                 loadTournaments();
             }
-            
+
         } catch (NumberFormatException e) {
             loadTournaments();
         }
-            helpMapping();
-            loadMapping();
-        
+        helpMapping();
+        loadMapping();
+
     }
 
     private void loadTournaments() {
         this.allTournaments = tmBO.findTournamentsWithClubAndRoundsAndPC();
     }
-   
-     private void helpMapping() {
+
+    private void helpMapping() {
         this.mapTournaments = new ArrayList<Integer>();
         Iterator<Tournament> tournaments = tmBO.findAll().iterator();
         Integer index = 0;
@@ -83,17 +84,22 @@ public class TournamentsViewBean implements Serializable {
             ++index;
         }
     }
-    
-    private void loadMapping()
-    {     
-        for(int i = 0 ; i <= mapTournaments.size()-1 ; i++){
+
+    private void loadMapping() {
+        for (int i = 0; i <= mapTournaments.size() - 1; i++) {
             ArrayList<Integer> altmp = new ArrayList<Integer>();
-            if(i == 0){
+            if (i == 0) {
                 altmp.add(-1);
-            } else {altmp.add(mapTournaments.get(i-1));}
-            if (i == mapTournaments.size()-1){
+            } else {
+                altmp.add(mapTournaments.get(i - 1));
+            }
+            if (i == mapTournaments.size() - 1) {
                 altmp.add(-1);
-            } else{{altmp.add(mapTournaments.get(i+1));}}
+            } else {
+                {
+                    altmp.add(mapTournaments.get(i + 1));
+                }
+            }
             this.mapToPrevAndNext.put(mapTournaments.get(i), altmp);
         }
 
@@ -101,6 +107,9 @@ public class TournamentsViewBean implements Serializable {
     }
 
     public boolean isJoinable(Tournament tmt) {
+        if (tmt.getCurrentRound() == null) {
+            return false;
+        }
         if (tmt.getCurrentRound().getRoundState() == State.JOINING) {
             return true;
         }
@@ -153,55 +162,49 @@ public class TournamentsViewBean implements Serializable {
         this.joiningSucc = joiningSucc;
     }
 
-    public Map<Integer, ArrayList<Integer>> getMapToPrevAndNext()
-    {
+    public Map<Integer, ArrayList<Integer>> getMapToPrevAndNext() {
         return this.mapToPrevAndNext;
     }
-    
-    public void setMapToPrevAndNext(Map<Integer, ArrayList<Integer>> tmpmap)
-    {
+
+    public void setMapToPrevAndNext(Map<Integer, ArrayList<Integer>> tmpmap) {
         this.mapToPrevAndNext = tmpmap;
     }
-    
-    public Integer getPrevFromId(Integer id){
-        if(mapToPrevAndNext.get(id)!=null)
-        {
+
+    public Integer getPrevFromId(Integer id) {
+        if (mapToPrevAndNext.get(id) != null) {
             return mapToPrevAndNext.get(id).get(0);
         }
         return -1;
     }
-    
-    public Integer incrPage(){
+
+    public Integer incrPage() {
         int tmp = page;
         return ++tmp;
     }
-    
-    public Integer decrPage(){
+
+    public Integer decrPage() {
         int tmp = page;
         return --tmp;
     }
-    
-    public Integer getPage(){
+
+    public Integer getPage() {
         return page;
     }
-    
-    public void setPage(Integer page){
-        this.page=page;
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
-    
-    public Integer getNextFromId(Integer id){
-        if(mapToPrevAndNext.get(id)!=null)
-        {
+
+    public Integer getNextFromId(Integer id) {
+        if (mapToPrevAndNext.get(id) != null) {
             return mapToPrevAndNext.get(id).get(1);
         }
         return -1;
     }
-    
-    public Integer getCurrentTnmIndex(Integer id)
-    {
+
+    public Integer getCurrentTnmIndex(Integer id) {
         return mapTournaments.indexOf(id);
     }
-
 
     public List<Tournament> getUserTournaments() {
         return userTournaments;
