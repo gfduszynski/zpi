@@ -24,13 +24,12 @@
                 </ul>
                 <div id="tabs-1">
                     <c:forEach items="#{atvBean.userTournaments}" var="tmt" rendered="#{not empty atvBean.userTournaments}">
-                        <h:panelGroup layout="block" >
+                        <h:panelGroup layout="inline-block" >
                             <h:outputText value="#{tmt.name}"/>
                             <h:outputText value="Nazwa klubu: #{tmt.club.name}"/>
                             <h:outputText value="Kiedy: #{tmt.date}"/>
                             <h:outputText value="Opis: #{tmt.description}"/>
                         </h:panelGroup>
-                        <hr/>
                     </c:forEach>
                     <h:panelGroup rendered="#{empty atvBean.userTournaments}" layout="block"  class="ui-state-highlight ui-corner-all">
                         <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -39,23 +38,27 @@
                 </div>
                 <div id="tabs-2">
 
-                    <c:forEach items="#{atvBean.allTournaments}" var="tmt">
-                        <h:panelGroup layout="block" >
+                    <c:forEach items="#{atvBean.allTournaments}" var="tmt" varStatus="loop">
+                        <h:panelGroup styleClass='#{loop.index%4==0?"allPostBox":(loop.index%4==1?"gray allPostBox":(loop.index%4==2?"gray allPostBox":"allPostBox"))}' layout="block">
                             <h:form prependId="false">
                                 <h:panelGroup rendered="#{atvBean.joiningSucc}" layout="block" class="ui-state-highlight ui-corner-all">
                                     <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                         <strong>Gratulacje!</strong> Zostałeś zapisany na turniej.</p>
                                 </h:panelGroup>
+                                <h:panelGroup layout="block" styleClass="allPostHeader">
                                 <h:outputText value="#{tmt.name}"/>
                                 <h:outputText value="Nazwa klubu: #{tmt.club.name}"/>
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" class="allPostContent">
                                 <h:outputText value="Kiedy: #{tmt.date}"/>
                                 <h:outputText value="Opis: #{tmt.description}"/>
-                                <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}">
+                                </h:panelGroup>
+                                <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
                                     <f:ajax render="@form" listener="#{atvBean.joinTournament(tmt)}"/>
                                 </h:commandButton>
                             </h:form>
                         </h:panelGroup>
-                        <hr/>
+                        
                     </c:forEach>
 
                 </div>
@@ -126,29 +129,23 @@
                                             <!-- column header -->
                                             <f:facet name="header">Tytuł</f:facet>
                                             <!-- row record -->
-                                            #{post.title}
+                                            #{post.title} 
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">Treść</f:facet>
                                             #{post.content}
                                         </h:column>
                                         <h:column>
-                                            <f:facet name="header">Data opublikowania</f:facet>
-                                            <h:outputText value="#{post.datePublished}">
+                                            <f:facet name="header">Zarządzaj</f:facet> 
+                                            <h:outputText value="#{post.datePublished}" styleClass="top">
                                                 <f:convertDateTime pattern="dd-MM-yyyy"/>
                                             </h:outputText>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Publikowanie</f:facet>        
-                                            <h:commandButton value="Opublikuj" rendered="#{post.datePublished == null}" styleClass="allButton addPostButtonMy">
+                                             <h:commandButton value="Opublikuj" rendered="#{post.datePublished == null}" styleClass="allButton addPostButtonMy">
                                                 <f:ajax render="@form" listener="#{upBean.publishPost(post)}"/>
                                             </h:commandButton>            
                                             <h:commandButton value="Ukryj" rendered="#{post.datePublished != null}" styleClass="allButton addPostButtonMy">
                                                 <f:ajax render="@form" listener="#{upBean.unPublishPost(post)}"/>
                                             </h:commandButton>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">Usuń</f:facet>         
                                             <h:commandButton value="Usuń" styleClass="allButton addPostButtonMy">
                                                 <f:ajax render="@form" listener="#{upBean.removePost(post)}"/>
                                             </h:commandButton>
@@ -167,10 +164,10 @@
                             <div>
                                 <h:panelGroup layout="block" id="allPostsTable">
                                     <c:forEach items="#{upBean.allPosts}" var="post" varStatus="loop">
-                                        <h:panelGroup styleClass='#{loop.index%2==1?"gray textWhite allPostBox":"allPostBox"}' layout="block">
+                                        <h:panelGroup styleClass='#{loop.index%4==0?"allPostBox":(loop.index%4==1?"gray allPostBox":(loop.index%4==2?"gray allPostBox":"allPostBox"))}' layout="block">
                                         <h:panelGroup layout="block" styleClass="allPostHeader">
                                             <h:outputText value="#{post.title}" styleClass="allPostTitle marL5"/>
-                                            <h:outputText value="#{post.datePublished}" styleClass="right marR5"/>
+                                            <h:outputText value="#{post.datePublished}" styleClass="right marR5 allPostDate"/>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block" class="allPostContent">
                                             <h:outputText value="#{post.content}" styleClass="allPostContent"/>
@@ -203,12 +200,15 @@
                                     </p>
                                 </h:panelGroup>
                                 <h:panelGroup layout="block" rendered="#{ucBean.userClub != null}">
-                                    <h4>#{ucBean.userClub.name}</h4>
+                                    <h:panelGroup layout="block" styleClass="myClubHead">
+                                    <h:outputText value="#{ucBean.userClub.name}" styleClass="left myClubName"/>
                                     <h:panelGroup>
-                                        <h:outputText value="Data utworzenia: #{ucBean.userClub.creationDate}"/>
+                                        <h:outputText value="Data utworzenia: #{ucBean.userClub.creationDate}" styleClass="right myClubDate"/>
                                     </h:panelGroup>
-                                    <h:panelGroup>
-                                        <h:outputText value="#{ucBean.userClub.description}"/>
+                                    </h:panelGroup>
+                                    <br/>
+                                    <h:panelGroup layout="block" styleClass="myClubContent">
+                                        <h:outputText value="#{ucBean.userClub.description}" />
                                     </h:panelGroup><br/>
                                     <h:commandButton value="Wypisz się" onclick="actItem = 'allClubsHeader';" styleClass="allButton">
                                         <f:ajax render="@form" listener="#{ucBean.signOutFromClub}" />
@@ -219,7 +219,7 @@
 
                             <h3 id="allClubsHeader">Wszystkie kluby w systemie</h3>
                             <div>
-                                <h:dataTable value="#{ucBean.clubs}" var="club">
+                                <h:dataTable value="#{ucBean.clubs}" var="club" styleClass="width100 userTable">
                                     <h:column>
                                         <!-- column header -->
                                         <f:facet name="header">Nazwa klubu</f:facet>
@@ -236,7 +236,7 @@
                                     </h:column>
                                     <h:column>
                                         <f:facet name="header"></f:facet>
-                                        <h:commandButton value="Zapisz się" rendered="#{ucBean.userClub == null}" onclick="actItem = 'myClubHeader';" styleClass="allButton">
+                                        <h:commandButton value="Zapisz się" layout="block" rendered="#{ucBean.userClub == null}" onclick="actItem = 'myClubHeader';" styleClass="allButton">
                                             <f:ajax render="@form" listener="#{ucBean.signToClub(club)}"/>
                                         </h:commandButton>                                            
 

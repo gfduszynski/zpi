@@ -27,22 +27,22 @@
                         <h:messages/>
                         <c:if test="#{(not empty ctBean.clubTournaments) and (not cTmtCBean.nowInMods)}">
                             <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
-                                <h:panelGroup layout="block" styleClass="tmtContainer">
+                                <h:panelGroup layout="block"  styleClass='#{loop.index%2==1?"tmtContainer right":"tmtContainer left"}'>
                                     #{tmt.name} <a href="#{request.contextPath}/tournaments/#{tmt.id}">Wyświetl szczegółowy widok</a><br/>
                                     Data: #{tmt.date}<br/>
                                     Opis: #{tmt.description}<br/>
                                     Ilość rund: #{tmt.numberOfRounds}<br/>
                                     Punkty potrzebne do odejścia: #{tmt.pointsForBye}<br/>
-                                    <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                    <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                    <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Pokaż wyniki turnieju" styleClass="allButton2 tmtStartMenagingButton">
+                                    <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Pokaż wyniki turnieju" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                                     </h:commandButton>
-                                    <h:commandButton value="Usuń turniej">
+                                    <h:commandButton value="Usuń turniej" styleClass="allButton2">
                                         <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
                                     </h:commandButton>
                                 </h:panelGroup>
