@@ -31,5 +31,10 @@
         <pattern value="/tos" />
         <view-id value="/pages/terms.xhtml" />
     </url-mapping>
-  
+    
+    
+    <url-mapping id="addFile">
+        <pattern value="/addFile" />
+        <view-id value="/pages/addFile.xhtml" />
+    </url-mapping>
 </pretty-config>
