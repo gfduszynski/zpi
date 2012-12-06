@@ -39,11 +39,7 @@
                         $(".chess-player-window").toggleClass("chess-player-window-hidden",500);
                         $(".chess-player-window").css("overflow","visible");
                     });
-                });
-//                function showPassReminder(){
-//                    $('#remindPass').load('pages/passwordReminder.xhtml');
-//                }
-                
+                });    
             </script>
 
             <h:panelGroup layout="block" class="header">
@@ -58,9 +54,7 @@
                     <script>
                             function showPassReminder() {
                                 $('#editContainer').load('pages/passwordReminder.xhtml');
-                                $('#loginForm').slideUp('fast', function() {
-                            // Animation complete.
-                        });
+                                $('#loginForm').slideUp('fast');
                             }
                         </script>
                     <h:form id="loginForm" prependId="false" class="loginStuff">
