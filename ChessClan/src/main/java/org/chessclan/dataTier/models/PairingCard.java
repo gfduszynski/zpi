@@ -7,6 +7,7 @@ package org.chessclan.dataTier.models;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -43,17 +44,17 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
     @Basic(optional = false)
     @NotNull
     @JoinColumn(name = "tournament")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Tournament tournament;
     @Basic(optional = false)
     @NotNull
     @JoinColumn(name = "round")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Round round;
     @Basic(optional = false)
     @NotNull
     @JoinColumn(name = "player")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User player;
     @JoinColumn(name = "opponent", referencedColumnName = "id")
     @OneToOne(fetch = FetchType.LAZY)

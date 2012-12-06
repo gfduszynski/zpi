@@ -80,22 +80,22 @@
         
         <insert tableName="category">
             <column name="id" valueNumeric="1"/>
-            <column name="name" value="Junior młodszy Mężczyźni"/>
+            <column name="name" value="Mistrzostwa Polski"/>
         </insert>
 
         <insert tableName="category">
             <column name="id" valueNumeric="2"/>
-            <column name="name" value="Junior młodszy Kobiety"/>
+            <column name="name" value="Turniej okręgowy"/>
         </insert>
         
         <insert tableName="category">
             <column name="id" valueNumeric="3"/>
-            <column name="name" value="Junior starszy Mężczyźni"/>
+            <column name="name" value="Turniej towarzyski"/>
         </insert>
         
         <insert tableName="category">
             <column name="id" valueNumeric="4"/>
-            <column name="name" value="Junior starszy Kobiety"/>
+            <column name="name" value="Mistrzostwa Świata"/>
         </insert>
     </changeSet>
 
