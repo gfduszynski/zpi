@@ -19,7 +19,8 @@
         <script>
             var page = 1;
             $(document).ready(function() {
-                 $('.group').hide();
+                 //$('.group').hide();
+                 //$('.group:lt(16)').slideDown('slow', function() {});
                  $(".group:lt(16)").show(1000);
              });
         </script>
@@ -51,9 +52,10 @@
             <ui:include src="../pages/header.xhtml"/>
                 <h1> Tablica ogłoszeń</h1>
                 <!-- Generowanie postów -->
-            <c:forEach  items="#{pvBean.posts}" var="post" rendered="#{pvBean.selectedPost == null}" varStatus="loop">
+            <div style="margin-bottom: 1100px;">
+                <c:forEach  items="#{pvBean.posts}" var="post" rendered="#{pvBean.selectedPost == null}" varStatus="loop">
                 <h:outputLink value="#{request.contextPath}/posts/#{post.id}">
-                    <h:panelGroup styleClass='#{loop.index%3==1?"group postBox":(loop.index%3==2?"group postBox2":"group postBox3")}' layout="block" rendered="#{not empty pvBean.posts}">
+                    <h:panelGroup styleClass='#{loop.index%3==1?"group postBox":(loop.index%3==2?"group postBox2":"group postBox3")}' layout="block" style="display:none;" rendered="#{not empty pvBean.posts}">
                         <h:outputText value="#{post.title}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;	white-space: pre; white-space: pre-wrap; white-space: pre-line; white-space: -pre-wrap; white-space: -o-pre-wrap; white-space: -moz-pre-wrap; white-space: -hp-pre-wrap; word-wrap: break-word;"/>
                         <h:outputText value="Dodał: #{post.user.email}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
                         <h:outputText value="Dodano: #{post.datePublished}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
@@ -62,7 +64,8 @@
                 </h:outputLink>  
                 <!-- nawigator postów-->
             </c:forEach>
-            <h:panelGroup layout="block" rendered="#{pvBean.selectedPost == null and not empty pvBean.posts}" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 100%; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px;">
+            </div>
+            <h:panelGroup layout="block" rendered="#{pvBean.selectedPost == null and not empty pvBean.posts}" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 960px; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px; z-index:100; position:fixed; bottom:0px;">
                <h:panelGroup layout="block" id="previousPage" style="display: block; cursor: pointer; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;">&lt;</h:panelGroup>
                <h:outputLink id="resetPage" value="#{request.contextPath}" style="display: block; min-width: 320px; height: 100px; float:left; text-align:center; text-decoration: none;background-color: #DFDDDA; color: #000;">&and;</h:outputLink>
                <h:panelGroup layout="block" id="gotonextPage" style="display: block; cursor: pointer; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;">&gt;</h:panelGroup>
