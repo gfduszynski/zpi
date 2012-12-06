@@ -61,7 +61,7 @@
                 </h:panelGroup>
             </c:if>
             <c:if test="#{cTmtCBean.currentTmt.state == 'STARTED'}">
-                <h:outputText value="Turniej trwa! Runda numer: #{cTmtCBean.currentTmt.currentRound.id}"/>                
+                <h:outputText value="Turniej trwa! Runda numer: #{cTmtCBean.currentTmt.currentRound.number+1}"/>                
                 <h:commandButton value="Zakończ rundę i przejdź do następnej">
                     <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
                 </h:commandButton><br/>
