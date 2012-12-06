@@ -21,8 +21,8 @@
                             visible: 3,
                             mousePause: 1,
                             controls:{
-                                up:'.news-prev',
-                                down:'.news-next'
+                                up:'.tmts-prev',
+                                down:'.tmts-next'
                             }
                         });
                     });
@@ -47,9 +47,9 @@
                     </ul>
                 </div>
                 <div class="news-controls">
-                    <span class="news-prev">▲</span>
-                    <span onclick="$(location).attr('href', '#{request.contextPath}/posts');">Zobacz wszystkie</span>
-                    <span class="news-next">▼</span>
+                    <span class="tmts-prev">▲</span>
+                    <span onclick="$(location).attr('href', '#{request.contextPath}/tournaments');">Zobacz wszystkie</span>
+                    <span class="tmts-next">▼</span>
                 </div>
                 
             </h:form>

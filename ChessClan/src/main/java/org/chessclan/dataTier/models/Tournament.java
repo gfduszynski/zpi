@@ -74,7 +74,7 @@ public class Tournament implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Category category;
     @JoinColumn(name = "club", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Club club;
     @Basic(optional = false)
     @NotNull
