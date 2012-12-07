@@ -135,7 +135,15 @@ function ChessPlayer(DOMTarget){
                     _this.camera.lookAt(_this.scene.position);
                     _this.renderer.render(_this.scene,_this.camera);
 		});
-		// Configure summary
+                // Players
+                this.summary.append($('<span>').attr({
+			class: "chess-player-summary-players"
+		}).html("Biały: "+this.game.white+(this.game.result=='WHITE_WON'?"(Wygrał)":"")+'<br/>vs<br/>'+" Czarny: "+this.game.black+(this.game.result=='WHITE_WON'?"":"(Wygrał)")));
+		// Game info
+                this.summary.append($('<span>').attr({
+			class: "chess-player-summary-info"
+		}).html(this.game.event+', '+this.game.site+'<br/>'+this.game.date));
+                //Upload area
                 this.summary.append($('<span>').attr({
 			class: "chess-player-summary-upload",
                         ondragenter: "this.classList.add('over');",

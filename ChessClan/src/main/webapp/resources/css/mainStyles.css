@@ -852,12 +852,34 @@ TABLE.userTable thead{
 .chess-player-summary {
     margin-top: 3px;
     height:100px;
+    vertical-align: middle;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 20px;
+}
+.chess-player-summary-players{
+    height: 100px;
+    width: 39.7%;
+    margin-right: 0.5%;
+    display: inline-block;
+    background-color: #41BBF0;    
+    line-height: 33px;
+    float:left;
+}
+.chess-player-summary-info{
+    height: 100px;
+    width: 39.7%;
+    margin-right: 0.5%;
+    display: inline-block;
+    background-color: #41BBF0;
+    line-height: 50px;
 }
 .chess-player-summary-upload{
+    float:right;
     height: 100px;
     width: 19.6%;
-    margin-right: 0.5%;
-    display: block;
+    margin-right: 0%;
+    display: inline-block;
     background-size: 50%;
     background-repeat: no-repeat;
     background-position:center;
