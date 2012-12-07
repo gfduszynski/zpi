@@ -175,7 +175,18 @@ function ChessPlayer(DOMTarget){
                     }
                 });
 	}
-	
+    // resize
+    this.onWindowResize = function(event) {
+        var _this = event.data;
+        var WIDTH = $(_this.canvas).width(),
+            HEIGHT = $(_this.canvas).height();
+        _this.renderer.setSize(WIDTH, HEIGHT);
+        _this.camera.aspect = WIDTH / HEIGHT;
+        _this.camera.updateProjectionMatrix();
+        _this.renderer.render(_this.scene,_this.camera);
+
+
+    }
 		// Init Three
 	this.initThree = function(){
 		// set the scene size
@@ -246,6 +257,8 @@ function ChessPlayer(DOMTarget){
 		this.camera = camera;
 		this.scene = scene;
 		this.renderer = renderer;
+                // Add resize listner
+                $(window).resize( this, this.onWindowResize );
 	}
 	
 	this.loadModels = function(){
