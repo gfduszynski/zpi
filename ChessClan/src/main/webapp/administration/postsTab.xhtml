@@ -44,29 +44,29 @@
                 </h:selectOneMenu>
 
 
-                <h:commandButton value="save post" rendered="#{pdBean.createNewPost and pdBean.npvalidation.get(0) and pdBean.npvalidation.get(1)}">
+                <h:commandButton value="save post" styleClass="allButton" rendered="#{pdBean.createNewPost and pdBean.npvalidation.get(0) and pdBean.npvalidation.get(1)}">
                     <f:ajax listener="#{pdBean.saveNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="publish" rendered="#{pdBean.createNewPost}">
+                <h:commandButton value="publish" styleClass="allButton" rendered="#{pdBean.createNewPost}">
                     <f:ajax listener="#{pdBean.publishNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="cancel" rendered="#{pdBean.createNewPost}">
+                <h:commandButton value="cancel" styleClass="allButton" rendered="#{pdBean.createNewPost}">
                     <f:ajax listener="#{pdBean.cancelNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>                              
             </h:panelGrid>
 
 
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new post"    rendered="#{not pdBean.createNewPost}">
+                <h:commandButton value="add new post"  styleClass="allButton"  rendered="#{not pdBean.createNewPost}">
                     <f:ajax listener="#{pdBean.addNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected"   rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
+                <h:commandButton value="edit selected"  styleClass="allButton" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
+                <h:commandButton value="remove selected" styleClass="allButton" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.deleteSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected"   rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
+                <h:commandButton value="save selected" styleClass="allButton"  rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
