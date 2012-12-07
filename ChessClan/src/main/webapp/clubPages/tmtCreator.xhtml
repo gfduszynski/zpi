@@ -23,20 +23,23 @@
                             <strong>Niestety,</strong> nikt jeszcze nie zapisał się na turniej.</p>
                     </h:panelGroup>
                 </c:if>
+                <h:commandButton value="Rozpocznij turniej" styleClass="allButton width56">
+                    <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
+                </h:commandButton><br/>
                 <h:panelGroup styleClass="width50">
-                <h:outputText value="Imię: "/>
-                <h:inputText value="#{cTmtCBean.searchFN}">
-                    <f:ajax execute="@this" render="@form" listener="#{cTmtCBean.findUsers}"/>
-                </h:inputText>
-                <h:outputText value="Nazwisko: "/>
-                <h:inputText value="#{cTmtCBean.searchLN}">
-                    <f:ajax execute="@this" render="@form" listener="#{cTmtCBean.findUsers}"/>
-                </h:inputText>
+                    <h:outputText value="Imię: "/>
+                    <h:inputText value="#{cTmtCBean.searchFN}">
+                        <f:ajax execute="@this" render="@form" listener="#{cTmtCBean.findUsers}"/>
+                    </h:inputText>
+                    <h:outputText value="Nazwisko: "/>
+                    <h:inputText value="#{cTmtCBean.searchLN}">
+                        <f:ajax execute="@this" render="@form" listener="#{cTmtCBean.findUsers}"/>
+                    </h:inputText>
                 </h:panelGroup><br/>
                 <h:commandButton value="Szukaj" styleClass="allButton width56">
                     <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.findUsers}"/>
                 </h:commandButton>
-               
+
                 <br/>
                 <h:panelGroup rendered="#{cTmtCBean.notValidCriteria}" layout="block" class="ui-state-highlight ui-corner-all">
                     <p><span class="ui-icon ui-icon-error" style="float: left; margin-right: .3em;"></span>
@@ -46,30 +49,32 @@
                     Znalezieni użytkownicy:<br/>
                     <c:forEach items="#{cTmtCBean.foundUsers}" var="user" varStatus="loop">
                         <h:panelGroup layout="inline-block" styleClass="width56 tmtContainer height50px ">
-                        <h:outputText value="Imię i nazwisko:#{user.firstName} #{user.lastName}"/>
-                        <h:commandButton rendered="#{not cTmtCBean.isMember(user)}" value="Dodaj użytkownika do turnieju" styleClass="allButton2 right">
-                            <f:ajax render="@form" listener="#{cTmtCBean.addPlayer(user)}"/>
-                        </h:commandButton>
-                        <h:outputText rendered="#{cTmtCBean.isMember(user)}" value="Gracz jest już uczestnikiem turnieju."/>
+                            <h:outputText value="Imię i nazwisko:#{user.firstName} #{user.lastName}"/>
+                            <h:commandButton rendered="#{not cTmtCBean.isMember(user)}" value="Dodaj użytkownika do turnieju" styleClass="allButton2 right">
+                                <f:ajax render="@form" listener="#{cTmtCBean.addPlayer(user)}"/>
+                            </h:commandButton>
+                            <h:outputText rendered="#{cTmtCBean.isMember(user)}" value="Gracz jest już uczestnikiem turnieju."/>
                         </h:panelGroup>
                     </c:forEach>
-                 </h:panelGroup>
+                </h:panelGroup>
                 <br/>
                 <h:panelGroup rendered="#{not empty cTmtCBean.currentTmt.pairingCardSet}">
                     <b>Zapisani gracze:</b><br/>
                     <c:forEach items="#{cTmtCBean.currentTmt.pairingCardSet}" var="pc" varStatus="loop">
-                        Imię:#{pc.player.firstName} #{pc.player.lastName}<br/>
+                        <h:panelGroup layout="inline-block" styleClass="width56 tmtContainer height50px ">
+                            Imię:#{pc.player.firstName} #{pc.player.lastName}
+                            <h:commandButton value="Usuń użytownika z turnieju" styleClass="allButton2 right">
+                                <f:ajax render="@form" listener="#{cTmtCBean.removeUser(pc)}"/>
+                            </h:commandButton>
+                        </h:panelGroup>
                     </c:forEach>
                 </h:panelGroup>
             </c:if>
-            <h:commandButton value="Rozpocznij turniej" styleClass="allButton width56">
-                    <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
-            </h:commandButton>
             <c:if test="#{cTmtCBean.currentTmt.state == 'STARTED'}">
-                <h:outputText value="Turniej trwa! Runda numer: #{cTmtCBean.currentTmt.currentRound.number+1}"/>                
-                <h:commandButton value="Zakończ rundę i przejdź do następnej">
+                <h:commandButton value="Zakończ rundę i przejdź do następnej" styleClass="allButton width56">
                     <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
                 </h:commandButton><br/>
+                <h:outputText value="Turniej trwa! Runda numer: #{cTmtCBean.currentTmt.currentRound.number+1}"/>                
                 <c:forEach items="#{cTmtCBean.currentTmt.currentRound.pairingCardSet}" var="pc" varStatus="loop">
                     <h:outputText value="Gracz:#{pc.player.firstName} #{pc.player.lastName} kolor: #{pc.color}"/><br/>
                     <h:outputText value="gra z:#{pc.opponent.player.firstName} #{pc.opponent.player.lastName} kolor: #{pc.opponent.color}"/><br/>

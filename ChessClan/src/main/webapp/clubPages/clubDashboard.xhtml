@@ -24,7 +24,6 @@
                 </ul>
                 <div id="tabs-1">
                     <h:form prependId="false" id="clubTmtsForm" onkeypress="if (event.keyCode == 13) {return false; }">
-                        <h:messages/>
                         <c:if test="#{(not empty ctBean.clubTournaments) and (not cTmtCBean.nowInMods)}">
                             <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
                                 <h:panelGroup layout="block"  styleClass='#{loop.index%2==1?"tmtContainer right":"tmtContainer left"}'>

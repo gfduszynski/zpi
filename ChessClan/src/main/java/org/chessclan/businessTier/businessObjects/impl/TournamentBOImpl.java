@@ -394,6 +394,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         if (tRes.getPairingCardSet() != null) {
             for (PairingCard pc : tRes.getPairingCardSet()) {
                 pc.getPlayer().getFirstName().toString();
+                if(pc.getOpponent() != null){
+                    pc.getOpponent().getPlayer().getFirstName().toString();
+                }
             }
         }
         if (tRes.getCurrentRound() != null) {
