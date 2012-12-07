@@ -18,6 +18,7 @@
             <h:outputScript library="js" name="jquery.ui.datepicker-pl.js"/>
             <h:outputScript library="js" name="Three.js"/>
             <h:outputScript library="js" name="ChessPlayer.js"/>
+            <h:outputScript library="js" name="ChessPlayer.PGNLoader.js"/>
             <h:outputScript library="js" name="MTLLoader.js"/>
             <h:outputScript library="js" name="OBJLoader.js"/>
             <h:outputScript library="js" name="OBJMTLLoader.js"/>
@@ -43,18 +44,6 @@
                 function showPassReminder(){
                     $('#remindPass').load('pages/passwordReminder.xhtml');
                 }
-                $(document).ready(function(){
-                    var cc = null;
-                    $('.chess-player-show').click(function()
-                    {
-                        if(cc==null){
-                            cc = new ChessPlayer($('#chess-player'));
-                            cc.loadJSON("#{request.contextPath}/rest/cpService/addExample"); 
-                        }
-                        $(".chess-player-window").toggleClass("chess-player-window-hidden",500);
-                        $(".chess-player-window").css("overflow","visible");
-                    });
-                });
                 
             </script>
 
