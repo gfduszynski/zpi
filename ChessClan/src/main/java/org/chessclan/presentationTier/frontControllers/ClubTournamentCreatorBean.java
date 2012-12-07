@@ -6,6 +6,7 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -38,7 +39,7 @@ public class ClubTournamentCreatorBean implements Serializable {
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO umBO;
     private List<User> foundUsers;
-    private List<PairingCard> results;
+    private Map<User, Integer> results;
     
     public ClubTournamentCreatorBean() {
         this.nowInMods = false;
@@ -169,11 +170,13 @@ public class ClubTournamentCreatorBean implements Serializable {
         this.notValidCriteria = notValidCriteria;
     }
 
-    public List<PairingCard> getResults() {
+    public Map<User, Integer> getResults() {
         return results;
     }
 
-    public void setResults(List<PairingCard> results) {
+    public void setResults(Map<User, Integer> results) {
         this.results = results;
     }
+
+
 }

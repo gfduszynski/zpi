@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
@@ -136,6 +137,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         } else {
             currentRound.getNextRound().setRoundState(State.STARTED);
             // Find pairs for players
+            
+            
+            
             Set<PairingCard> newPairingCards = mockupPairPlayers(currentRound.getPairingCardSet(), currentRound.getNextRound());
             currentRound.getNextRound().setPairingCardSet(newPairingCards);
         }
@@ -267,12 +271,19 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Override
-    public List<PairingCard> getResults(Tournament tmt) {
-        List<PairingCard> result = new ArrayList<PairingCard>(tmt.getPairingCardSet().size());
+    public Map<User, Integer> getResults(Tournament tmt) {
+        Map<User, Integer> result = new HashMap<User, Integer>();
         for (PairingCard pc : tmt.getPairingCardSet()) {
-            result.add(pc);
+            if(!result.containsKey(pc.getPlayer()))
+            {
+                result.put(pc.getPlayer(), (int)pc.getScore());
+            }
+            else
+            {
+                Integer tmp = result.get(pc.getPlayer());
+                result.put(pc.getPlayer(), tmp+(int)pc.getScore());
+            }
         }
-        Collections.sort(result);
         return result;
     }
 
@@ -359,6 +370,16 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
 
     @Override
     public void deleteTournament(Tournament t) {
+        if (t.getRoundSet() != null) {
+            for (Round r : t.getRoundSet()) {
+                rRepo.delete(r);
+            }
+        }
+        if (t.getPairingCardSet() != null) {
+            for (PairingCard pc : t.getPairingCardSet()) {
+                pcRepo.delete(pc);
+            }
+        }
         tRepo.delete(t);
     }
 

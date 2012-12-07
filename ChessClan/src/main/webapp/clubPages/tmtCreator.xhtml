@@ -65,13 +65,13 @@
                 <h:commandButton value="Zakończ rundę i przejdź do następnej">
                     <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
                 </h:commandButton><br/>
-                <c:forEach items="#{cTmtCBean.currentTmt.pairingCardSet}" var="pc" varStatus="loop">
+                <c:forEach items="#{cTmtCBean.currentTmt.currentRound.pairingCardSet}" var="pc" varStatus="loop">
                     <h:outputText value="Gracz:#{pc.player.firstName} #{pc.player.lastName} kolor: #{pc.color}"/><br/>
                     <h:outputText value="gra z:#{pc.opponent.player.firstName} #{pc.opponent.player.lastName} kolor: #{pc.opponent.color}"/><br/>
                     <h:outputText value="Wygrał: "/>
                     <h:selectOneRadio value="#{pc.score}">
-                        <f:selectItem itemValue="#{pc.color == PairingCard.Color.WHITE?'1':'0'}" itemLabel="biały"/>
-                        <f:selectItem itemValue="#{pc.color == PairingCard.Color.BLACK?'0':'1'}" itemLabel="czarny"/>
+                        <f:selectItem itemValue="#{pc.color == PairingCard.Color.BLACK?1:0}" itemLabel="czarny"/>
+                        <f:selectItem itemValue="#{pc.color == PairingCard.Color.BLACK?0:1}" itemLabel="biały"/>
                         <f:selectItem itemValue="0.5" itemLabel="pat"/>
                     </h:selectOneRadio>
                 </c:forEach>
