@@ -96,16 +96,16 @@
                 <h:commandButton value="add new admin" rendered="#{not udBean.createNewUser}" styleClass="allButton">
                     <f:ajax listener="#{udBean.addNewUser()}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" rendered="#{(not udBean.createNewUser) and udBean.hasChecked}">
+                <h:commandButton value="edit selected" styleClass="allButton" rendered="#{(not udBean.createNewUser) and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
+                <h:commandButton value="save selected" styleClass="allButton" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="disable selected" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
+                <h:commandButton value="disable selected" styleClass="allButton" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.disableSelected()}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="enable selected" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
+                <h:commandButton value="enable selected" styleClass="allButton" rendered="#{not udBean.createNewUser and udBean.hasChecked}">
                     <f:ajax listener="#{udBean.enableSelected()}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
