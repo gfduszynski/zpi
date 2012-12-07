@@ -67,15 +67,15 @@ public class Round implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date roundEnd;
     @JoinColumn(name = "prev_round", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Round prevRound;
     @JoinColumn(name = "next_round", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Round nextRound;
     @JoinColumn(name = "tournament", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tournament tournament;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "round", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.ALL}, mappedBy = "round", fetch = FetchType.LAZY)
     private Set<PairingCard> pairingCardSet;
 
     public Round() {

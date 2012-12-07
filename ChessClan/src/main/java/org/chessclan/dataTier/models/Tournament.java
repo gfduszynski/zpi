@@ -68,7 +68,7 @@ public class Tournament implements Serializable {
     @Column(name = "description")
     private String description;
     @JoinColumn(name = "current_round", referencedColumnName = "id")
-    @OneToOne(optional = true, fetch = FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToOne(optional = true, fetch = FetchType.LAZY, cascade={CascadeType.ALL, CascadeType.REMOVE})
     private Round currentRound;
     @JoinColumn(name = "category", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -80,9 +80,9 @@ public class Tournament implements Serializable {
     @NotNull
     @Column(name = "number_of_rounds")
     private int numberOfRounds = 7;
-    @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "tournament", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, mappedBy = "tournament", fetch = FetchType.LAZY)
     private Set<Round> roundSet = new HashSet<Round>();
-    @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "tournament", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, mappedBy = "tournament", fetch = FetchType.LAZY)
     private Set<PairingCard> pairingCardSet = new HashSet<PairingCard>();
 
     public Tournament() {

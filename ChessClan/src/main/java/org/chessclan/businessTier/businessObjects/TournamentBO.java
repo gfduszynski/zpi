@@ -49,5 +49,5 @@ public interface TournamentBO{
     public List<Tournament> findTournamentsWithClubAndRoundsAndPC();
     @Transactional 
     public List<Tournament> findUserTournaments(User user);    
-    List<PairingCard> getResults(Tournament t);
+    Map<User, Integer> getResults(Tournament t);
 }
