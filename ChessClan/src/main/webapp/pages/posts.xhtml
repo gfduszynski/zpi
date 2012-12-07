@@ -55,8 +55,8 @@
                     <h:panelGroup styleClass='#{loop.index%3==1?"group postBox":(loop.index%3==2?"group postBox2":"group postBox3")}' layout="block" style="display:none;" rendered="#{not empty pvBean.posts}">
                         <h:outputText value="#{post.title}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;	white-space: pre; white-space: pre-wrap; white-space: pre-line; white-space: -pre-wrap; white-space: -o-pre-wrap; white-space: -moz-pre-wrap; white-space: -hp-pre-wrap; word-wrap: break-word;"/>
                         <h:outputText value="Dodał: #{post.user.email}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
-                        <h:outputText value="Dodano: #{post.datePublished}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
-                        <h:outputText class="desc" value="Opis: #{post.content}" style="overflow: hidden; display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
+                        <h:outputText value="#{post.datePublished}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/><br/>
+                        <h:outputText class="desc" value="#{post.content}" style="overflow: hidden; text-align: justify; display: block; width: 100%; font: 22px Helvetica, Arial, sans-serif;"/>
                     </h:panelGroup>              
                 </h:outputLink>  
                 <!-- nawigator postów-->

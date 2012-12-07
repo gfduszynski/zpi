@@ -735,11 +735,12 @@ TABLE.userTable thead{
     height: 220px; 
     float: left; 
     overflow: hidden;
-    background-color: #00EE59;
+    background-color: #DFDDDA;
 }
 .postBox2{
-     border: 1px solid #363636; 
+    border: 1px solid #363636; 
     margin: 5px; 
+    color: white;
     padding: 4px; 
     color:#000; 
     opacity:0.7; 
@@ -747,7 +748,7 @@ TABLE.userTable thead{
     height: 220px; 
     float: left; 
     overflow: hidden;
-    background-color: #0025EB;
+    background-color: #353534;
 }
 .postBox3{
      border: 1px solid #363636; 
@@ -759,7 +760,10 @@ TABLE.userTable thead{
     height: 220px; 
     float: left; 
     overflow: hidden;
-    background-color: #FF8500;
+     background-color:#00AAE8;
+    -moz-box-shadow: inset 0px -8px 40px -19px #000000;
+    -webkit-box-shadow: inset 0px -8px 40px -19px #000000;
+    box-shadow: inset 0px -8px 40px -19px #000000;
 }
 /* Chess Player*/
 #chess-player {
@@ -894,6 +898,11 @@ TABLE.userTable thead{
     margin:10px 8px 0 8px;
     width: 55%;
     display: inline-block;
+}
+.remindButton{
+    
+    width: 78%;
+    -moz-width: 77%;
 }
 
     
