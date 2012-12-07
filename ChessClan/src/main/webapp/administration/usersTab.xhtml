@@ -78,7 +78,7 @@
                         </h:selectOneRadio>
                         
                             
-                        <h:commandButton id="command-save-new" value="save user" rendered="#{udBean.createNewUser and 
+                        <h:commandButton id="command-save-new" styleClass="allButton" value="save user" rendered="#{udBean.createNewUser and 
                                                                                              (udBean.nuvalidation.get(0) and udBean.nuvalidation.get(1)and
                                                                                               udBean.nuvalidation.get(2) and udBean.nuvalidation.get(3)and
                                                                                               udBean.nuvalidation.get(4) and udBean.nuvalidation.get(5)and
@@ -86,14 +86,14 @@
                             <f:ajax listener="#{udBean.saveNewUser(udBean.nuvalidation)}" render="@form" execute="@form"/>
                         </h:commandButton>
                         
-                        <h:commandButton value="cancel" rendered="#{udBean.createNewUser}">
+                        <h:commandButton value="cancel" rendered="#{udBean.createNewUser}" styleClass="allButton">
                             <f:ajax listener="#{udBean.cancelNewUser}" render="@form" execute="@form"/>
                         </h:commandButton>
                     </h:panelGrid>
             
             
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new admin" rendered="#{not udBean.createNewUser}">
+                <h:commandButton value="add new admin" rendered="#{not udBean.createNewUser}" styleClass="allButton">
                     <f:ajax listener="#{udBean.addNewUser()}" render="@form" execute="@form"/>
                 </h:commandButton>
                 <h:commandButton value="edit selected" rendered="#{(not udBean.createNewUser) and udBean.hasChecked}">
