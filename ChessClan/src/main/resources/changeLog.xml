@@ -239,7 +239,7 @@
         <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="category"         constraintName="tournament_category_ref" referencedTableName="category"     referencedColumnNames="id"/>    
         <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="current_round"    constraintName="tournament_round_ref"    referencedTableName="rounds"       referencedColumnNames="id"/>    
         <addForeignKeyConstraint baseTableName="tournaments" baseColumnNames="club"             constraintName="tournament_club_ref"     referencedTableName="clubs"        referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="prev_round"       constraintName="round_round_ref"         referencedTableName="rounds"       referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="prev_round"       constraintName="round_round_ref"         referencedTableName="rounds"       referencedColumnNames="id" onDelete="CASCADE"/>
         <addForeignKeyConstraint baseTableName="rounds"      baseColumnNames="tournament"       constraintName="round_tournament_ref"    referencedTableName="tournaments"  referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="results"     baseColumnNames="tournament"       constraintName="results_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="round"       constraintName="pcard_round_ref"       referencedTableName="rounds"       referencedColumnNames="id"/>
