@@ -38,23 +38,23 @@
                         <h:outputLabel for="description" value="Description"/>
                         <h:inputTextarea id="description" value="#{cdBean.newclub.description}"/>
                         
-                        <h:commandButton value="save club" rendered="#{cdBean.createNewClub and cdBean.ncvalidation.get(0) and cdBean.ncvalidation.get(1)}">
+                        <h:commandButton value="save club" rendered="#{cdBean.createNewClub and cdBean.ncvalidation.get(0) and cdBean.ncvalidation.get(1)}" styleClass="allButton">
                             <f:ajax listener="#{cdBean.saveNewClub()}" render="@form" execute="@form"/>
                         </h:commandButton>
                         
-                        <h:commandButton value="cancel" rendered="#{cdBean.createNewClub}">
+                        <h:commandButton value="cancel" rendered="#{cdBean.createNewClub}" styleClass="allButton">
                             <f:ajax listener="#{cdBean.cancelNewClub}" render="@form" execute="@form"/>
                         </h:commandButton>                              
             </h:panelGrid>
             
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new club" rendered="#{not cdBean.createNewClub}">
+                <h:commandButton value="add new club" styleClass="allButton" rendered="#{not cdBean.createNewClub}">
                     <f:ajax listener="#{cdBean.addNewClub()}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" rendered="#{(not cdBean.createNewClub) and cdBean.hasChecked}">
+                <h:commandButton value="edit selected" styleClass="allButton" rendered="#{(not cdBean.createNewClub) and cdBean.hasChecked}">
                     <f:ajax listener="#{cdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" rendered="#{cdBean.deletable and not cdBean.createNewClub}">
+                <h:commandButton value="remove selected" styleClass="allButton" rendered="#{cdBean.deletable and not cdBean.createNewClub}">
                     <f:ajax listener="#{cdBean.removeSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
                 <h:commandButton value="save selected" rendered="#{not cdBean.createNewClub and cdBean.hasChecked}">

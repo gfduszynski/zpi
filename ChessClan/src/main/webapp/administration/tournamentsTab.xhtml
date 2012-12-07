@@ -60,32 +60,32 @@
                             <f:selectItems value="#{tdBean.categoryList}" var="catlist" itemValue="#{catlist}" itemLabel="#{catlist.label}"/>
                         </h:selectOneMenu>
 
-                        <h:commandButton value="save tournament" rendered="#{tdBean.createNewTournament and tdBean.ntvalidation.get(0) and tdBean.ntvalidation.get(1) and tdBean.ntvalidation.get(2)}">
+                        <h:commandButton styleClass="allButton" value="save tournament" rendered="#{tdBean.createNewTournament and tdBean.ntvalidation.get(0) and tdBean.ntvalidation.get(1) and tdBean.ntvalidation.get(2)}">
                             <f:ajax listener="#{tdBean.saveNewTournament}" render="@form" execute="@form"/>
                         </h:commandButton>
                         
-                        <h:commandButton value="cancel" rendered="#{cdBean.createNewClub}">
+                        <h:commandButton styleClass="allButton" value="cancel" rendered="#{cdBean.createNewClub}">
                             <f:ajax listener="#{tdBean.cancelNewClub}" render="@form" execute="@form"/>
                         </h:commandButton>                              
             </h:panelGrid>
 
             
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new tournament" rendered="#{not tdBean.createNewTournament}">
+                <h:commandButton value="add new tournament" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.addNewTournament}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" rendered="#{not tdBean.createNewTournament}">
+                <h:commandButton value="edit selected" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" rendered="#{tdBean.deletable and not tdBean.createNewTournament}">
+                <h:commandButton value="remove selected" styleClass="allButton" rendered="#{tdBean.deletable and not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.removeSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" rendered="#{not tdBean.createNewTournament}">
+                <h:commandButton value="save selected" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
                 
                 
-                <h:commandButton value="generate torunaments">
+                <h:commandButton value="generate torunaments" styleClass="allButton">
                     <f:ajax listener="#{tdBean.generateTournaments}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>

@@ -11,6 +11,9 @@ html{
 .width50{
     width: 50%;
 }
+.width56{
+    width: 56% !important;
+}
 .height50px{
     height: 50px !important;
 }
@@ -213,10 +216,10 @@ div#editContainer{
 .four{
     color: white;
     float:left;
-    width:285px;
+    width:280px;
     height:290px;
     background-color:#353534;
-    padding:0px 0px 0px 5px;
+    padding:0px 5px 0px 5px;
     margin: 5px 5px 0px 5px;
 
 }
@@ -224,7 +227,7 @@ div#editContainer{
 .five{
     color:black;
     float:left;
-    width:285px;
+    width:280px;
     height:290px;
     background-color:#DFDDDA;
     padding:0px 5px 0px 5px;
@@ -398,7 +401,7 @@ div#editContainer{
     color:white;
     background-color: black;
     display: inline-table;
-    width:295px;
+    width:290px;
     height:28px;
     margin-left: -5px;
     margin-top: 7px;
@@ -732,11 +735,12 @@ TABLE.userTable thead{
     height: 220px; 
     float: left; 
     overflow: hidden;
-    background-color: #00EE59;
+    background-color: #DFDDDA;
 }
 .postBox2{
-     border: 1px solid #363636; 
+    border: 1px solid #363636; 
     margin: 5px; 
+    color: white;
     padding: 4px; 
     color:#000; 
     opacity:0.7; 
@@ -744,7 +748,7 @@ TABLE.userTable thead{
     height: 220px; 
     float: left; 
     overflow: hidden;
-    background-color: #0025EB;
+    background-color: #353534;
 }
 .postBox3{
      border: 1px solid #363636; 
@@ -756,7 +760,10 @@ TABLE.userTable thead{
     height: 220px; 
     float: left; 
     overflow: hidden;
-    background-color: #FF8500;
+     background-color:#00AAE8;
+    -moz-box-shadow: inset 0px -8px 40px -19px #000000;
+    -webkit-box-shadow: inset 0px -8px 40px -19px #000000;
+    box-shadow: inset 0px -8px 40px -19px #000000;
 }
 /* Chess Player*/
 #chess-player {
@@ -846,25 +853,32 @@ TABLE.userTable thead{
 .chess-player-canvas {
     margin-top: 3px;
     width:100%;
+    height:400px;
     background: #41BBF0;
     margin-bottom: -3px;
 }
 .chess-player-summary {
     margin-top: 3px;
     height:100px;
-    vertical-align: middle;
+    width: 100%;
     text-align: center;
     color: #FFFFFF;
     font-size: 20px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .chess-player-summary-players{
     height: 100px;
     width: 39.7%;
     margin-right: 0.5%;
     display: inline-block;
-    background-color: #41BBF0;    
+    background-color: #41BBF0;
+    vertical-align: top;
     line-height: 33px;
-    float:left;
 }
 .chess-player-summary-info{
     height: 100px;
@@ -872,10 +886,10 @@ TABLE.userTable thead{
     margin-right: 0.5%;
     display: inline-block;
     background-color: #41BBF0;
-    line-height: 50px;
+    vertical-align: top;
+    line-height: 33px;
 }
 .chess-player-summary-upload{
-    float:right;
     height: 100px;
     width: 19.6%;
     margin-right: 0%;
@@ -885,6 +899,7 @@ TABLE.userTable thead{
     background-position:center;
     background-color: #41BBF0;
     background-image: url(data:image/png;base64,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);
+    vertical-align: top;
 }
 .chess-player-summary-upload.over{
     background-size: 40%;
@@ -924,6 +939,19 @@ TABLE.userTable thead{
     text-align: justify;
     text-justify: newspaper;
     padding: 10px;
+}
+.searchContainer{
+    border: 1px solid #00AAE8;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+    color: white;
+    margin:10px 8px 0 8px;
+    width: 55%;
+    display: inline-block;
+}
+.remindButton{
+    
+    width: 78%;
+    -moz-width: 77%;
 }
 
     
