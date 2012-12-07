@@ -11,6 +11,9 @@ html{
 .width50{
     width: 50%;
 }
+.width56{
+    width: 56% !important;
+}
 .height50px{
     height: 50px !important;
 }
@@ -883,6 +886,14 @@ TABLE.userTable thead{
     text-align: justify;
     text-justify: newspaper;
     padding: 10px;
+}
+.searchContainer{
+    border: 1px solid #00AAE8;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+    color: white;
+    margin:10px 8px 0 8px;
+    width: 55%;
+    display: inline-block;
 }
 
     
