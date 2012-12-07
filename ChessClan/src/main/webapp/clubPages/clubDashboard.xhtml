@@ -184,27 +184,29 @@
                         <h:inputText value="#{cmmBean.searchFN}"/>
                         <h:outputText value="Nazwisko: "/>
                         <h:inputText value="#{cmmBean.searchLN}"/><br/>
-                        <h:commandButton value="Szukaj" styleClass="allButton addPostButton">
+                        <h:commandButton value="Szukaj" styleClass="allButton width56 marT5"><br/>
                             <f:ajax execute="@form" render="@form" listener="#{cmmBean.findUsers}"/>
                         </h:commandButton>
                         <c:if test="#{not empty cmmBean.foundUsers}">
-                            <c:forEach items="#{cmmBean.foundUsers}" var="member">
-                                <h:panelGroup layout="block" styleClass="tmtContainer">
-                                    <h:outputText value="#{member.firstName} #{member.lastName}"/>
-                                    <h:commandButton value="Dodaj członka" rendered="#{member.userClub == null}">
-                                        <f:ajax render="@form" execute="@form" listener="#{cmmBean.addMember(member)}"/>
-                                    </h:commandButton>
-                                    <h:panelGroup rendered="#{member.userClub != null}">
-                                        Klub: #{member.userClub.name}
+                           
+                                <c:forEach items="#{cmmBean.foundUsers}" var="member">
+                                    <h:panelGroup layout="block" styleClass="tmtContainer">
+                                        <h:outputText value="#{member.firstName} #{member.lastName}"/>
+                                        <h:commandButton value="Dodaj członka" rendered="#{member.userClub == null}" styleClass="allButton2 right">
+                                            <f:ajax render="@form" execute="@form" listener="#{cmmBean.addMember(member)}"/>
+                                        </h:commandButton>
+                                        <h:panelGroup rendered="#{member.userClub != null}">
+                                            Klub: #{member.userClub.name}
+                                        </h:panelGroup>
                                     </h:panelGroup>
-                                </h:panelGroup>
-                            </c:forEach>
+                                </c:forEach>
+                           
                         </c:if>
                         <c:if test="#{not empty cmmBean.members}">
                             <c:forEach items="#{cmmBean.members}" var="member">
-                                <h:panelGroup layout="block" styleClass="tmtContainer">
+                                <h:panelGroup layout="block" styleClass="searchContainer">
                                     <h:outputText value="#{member.firstName} #{member.lastName}"/>
-                                    <h:commandButton value="Usuń członka" styleClass="allButton2 addPostButton">
+                                    <h:commandButton value="Usuń członka" styleClass="allButton2 addPostButton right">
                                         <f:ajax render="@form" execute="@form" listener="#{cmmBean.removeMember(member)}"/>
                                     </h:commandButton>
                                 </h:panelGroup>
