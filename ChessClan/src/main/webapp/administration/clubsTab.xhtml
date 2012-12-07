@@ -57,7 +57,7 @@
                 <h:commandButton value="remove selected" styleClass="allButton" rendered="#{cdBean.deletable and not cdBean.createNewClub}">
                     <f:ajax listener="#{cdBean.removeSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" rendered="#{not cdBean.createNewClub and cdBean.hasChecked}">
+                <h:commandButton value="save selected" styleClass="allButton" rendered="#{not cdBean.createNewClub and cdBean.hasChecked}">
                     <f:ajax listener="#{cdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
@@ -131,7 +131,7 @@
                     <h:commandLink value="edit" rendered="#{not cdBean.editable[club.id]}">
                         <f:ajax listener="#{cdBean.selectOneEditable(club.id)}" execute="@form" render="@form"/>
                     </h:commandLink>
-                    <h:panelGrid columns="1" class="buttons-column">
+                    <h:panelGrid columns="1" class="buttons-column" styleClass="allButton">
                         <h:commandLink value="update" rendered="#{cdBean.editable[club.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{cdBean.updateClub(club)}"/>
                         </h:commandLink>
