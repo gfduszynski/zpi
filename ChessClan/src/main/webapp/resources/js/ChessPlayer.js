@@ -136,8 +136,11 @@ function ChessPlayer(DOMTarget){
                     _this.renderer.render(_this.scene,_this.camera);
 		});
 		// Configure summary
-                this.summary;
-		
+                this.summary.append($('<span>').attr({
+			class: "chess-player-summary-upload",
+                        ondragenter: "this.classList.add('over');",
+                        ondragleave: "this.classList.remove('over');"
+		}).html('&nbsp;'));
 		
 		
 		// Add nodes to target
