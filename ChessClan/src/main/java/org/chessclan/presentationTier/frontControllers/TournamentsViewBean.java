@@ -20,7 +20,6 @@ import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
 import org.chessclan.dataTier.models.Round.NotJoinableRound;
-import org.chessclan.dataTier.models.Round.State;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
 
@@ -44,7 +43,8 @@ public class TournamentsViewBean implements Serializable {
     @ManagedProperty(value = "#{loginBean.user}")
     private User user;
     private Tournament joinedTmt;
-
+    private boolean showMineOnly;
+    
     public TournamentsViewBean() {
     }
 
@@ -66,11 +66,22 @@ public class TournamentsViewBean implements Serializable {
         }
         helpMapping();
         loadMapping();
-
     }
 
     private void loadTournaments() {
         this.allTournaments = tmBO.findTournamentsWithClubAndRoundsAndPC();
+        this.userTournaments = new ArrayList<Tournament>();
+        for(Tournament t : allTournaments)
+        {
+            for(PairingCard pc : t.getPairingCardSet())
+            {
+                if(pc.getPlayer().getId() == user.getId())
+                {
+                    userTournaments.add(t);
+                    break;
+                }
+            }
+        }
     }
 
     private void helpMapping() {
@@ -102,15 +113,9 @@ public class TournamentsViewBean implements Serializable {
             }
             this.mapToPrevAndNext.put(mapTournaments.get(i), altmp);
         }
-        if (user != null) {
-            userTournaments = tmBO.findUserTournaments(user);
-        }
     }
 
     public boolean isJoinable(Tournament tmt) {
-        if (tmt.getCurrentRound() == null) {
-            return false;
-        }
         if (tmt.getState() == Tournament.State.NOT_STARTED) {
             return true;
         }
@@ -118,9 +123,6 @@ public class TournamentsViewBean implements Serializable {
     }
     
     public boolean isStarted(Tournament tmt) {
-        if (tmt.getCurrentRound() == null) {
-            return false;
-        }
         if (tmt.getState() == Tournament.State.STARTED) {
             return true;
         }
@@ -128,9 +130,6 @@ public class TournamentsViewBean implements Serializable {
     }
     
         public boolean isFinished(Tournament tmt) {
-        if (tmt.getCurrentRound() == null) {
-            return false;
-        }
         if (tmt.getState() == Tournament.State.FINISHED) {
             return true;
         }
@@ -256,6 +255,14 @@ public class TournamentsViewBean implements Serializable {
 
     public void setJoinedTmt(Tournament joinedTmt) {
         this.joinedTmt = joinedTmt;
+    }
+
+    public boolean isShowMineOnly() {
+        return showMineOnly;
+    }
+
+    public void setShowMineOnly(boolean showMineOnly) {
+        this.showMineOnly = showMineOnly;
     }
     
     
