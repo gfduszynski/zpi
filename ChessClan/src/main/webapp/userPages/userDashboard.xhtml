@@ -21,14 +21,14 @@
                 </ul>
                 <div id="tabs-2">
                     <h:form prependId="false">
-                        <div class="height50px">
+                        <div class="filterTmtsBox">
                             <h:selectBooleanCheckbox  value="#{atvBean.showMineOnly}">
                                 <f:ajax render="@form" execute="@this"/>
                             </h:selectBooleanCheckbox>
-                            <h:outputText value="Pokaż tylko te, w których biorę udział"/>
+                            <h:outputText value="  Pokaż tylko te, w których biorę udział"/>
                         </div><hr/>
                         <c:forEach items="#{atvBean.showMineOnly == false?atvBean.allTournaments:atvBean.userTournaments}" var="tmt" varStatus="loop">
-                            <h:panelGroup styleClass='#{loop.index%4==0?"allPostBox":(loop.index%4==1?"gray allPostBox":(loop.index%4==2?"gray allPostBox":"allPostBox"))}' layout="block">
+                            <h:panelGroup styleClass='#{loop.index%4==0?"grayDark allPostBox":(loop.index%4==1?"gray allPostBox":(loop.index%4==2?"gray allPostBox":"grayDark allPostBox"))}' layout="block">
                                 <h:panelGroup layout="block" styleClass="allPostHeader pad10">
                                     <h:outputText value="Kiedy: #{tmt.date}" styleClass="right marR5 "/>
                                     <h:outputText value="#{tmt.name}" styleClass="bold"/><br/>

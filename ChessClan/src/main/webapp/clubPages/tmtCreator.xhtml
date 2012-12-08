@@ -9,12 +9,9 @@
     </h:head>
     <h:body>
         <ui:composition>
-            <!--<h:form prependId="false" id="findForm">-->
-            <div style="display:block;">
-                <h:commandButton value="Wróć do wszystkich turniei" styleClass="allButton width56">
-                    <f:ajax render="@form" listener="#{cTmtCBean.setNowInMods(false)}"/>
-                </h:commandButton>
-            </div>
+            <h:commandButton value="Wróć do wszystkich turniei" styleClass="allButton right">
+                <f:ajax render="@form" listener="#{cTmtCBean.setNowInMods(false)}"/>
+            </h:commandButton>
             <c:if test="#{cTmtCBean.currentTmt.state == 'NOT_STARTED'}">
                 <c:if test="#{empty cTmtCBean.currentTmt.pairingCardSet}">
                     <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
@@ -75,6 +72,7 @@
                 </h:commandButton><br/>
                 <h:outputText value="Turniej trwa! Runda numer: #{cTmtCBean.currentTmt.currentRound.number+1}"/>                
                 <c:forEach items="#{cTmtCBean.getFilteredCurrentRoundPC()}" var="pc" varStatus="loop">
+                    <c:if test="#{pc.opponent != null}">
                     <h:outputText value="Gracz:#{pc.player.firstName} #{pc.player.lastName} kolor: #{pc.color}"/><br/>
                     <h:outputText value="gra z:#{pc.opponent.player.firstName} #{pc.opponent.player.lastName} kolor: #{pc.opponent.color}"/><br/>
                     <h:outputText value="Wygrał: "/>
@@ -83,6 +81,10 @@
                         <f:selectItem itemValue="#{pc.color == PairingCard.Color.BLACK?0:1}" itemLabel="biały"/>
                         <f:selectItem itemValue="0.5" itemLabel="pat"/>
                     </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{pc.opponent == null}">
+                         <h:outputText value="Gracz:#{pc.player.firstName} #{pc.player.lastName} otrzymał wolny los."/><br/>
+                    </c:if>
                 </c:forEach>
             </c:if>
             <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
