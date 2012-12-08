@@ -44,7 +44,7 @@ public class TournamentsViewBean implements Serializable {
     private User user;
     private Tournament joinedTmt;
     private boolean showMineOnly;
-    
+
     public TournamentsViewBean() {
     }
 
@@ -61,7 +61,8 @@ public class TournamentsViewBean implements Serializable {
                 loadTournaments();
             }
 
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             loadTournaments();
         }
         helpMapping();
@@ -71,14 +72,13 @@ public class TournamentsViewBean implements Serializable {
     private void loadTournaments() {
         this.allTournaments = tmBO.findTournamentsWithClubAndRoundsAndPC();
         this.userTournaments = new ArrayList<Tournament>();
-        for(Tournament t : allTournaments)
-        {
-            for(PairingCard pc : t.getPairingCardSet())
-            {
-                if(pc.getPlayer().getId() == user.getId())
-                {
-                    userTournaments.add(t);
-                    break;
+        if (user != null) {
+            for (Tournament t : allTournaments) {
+                for (PairingCard pc : t.getPairingCardSet()) {
+                    if (pc.getPlayer().getId() == user.getId()) {
+                        userTournaments.add(t);
+                        break;
+                    }
                 }
             }
         }
@@ -121,15 +121,15 @@ public class TournamentsViewBean implements Serializable {
         }
         return false;
     }
-    
+
     public boolean isStarted(Tournament tmt) {
         if (tmt.getState() == Tournament.State.STARTED) {
             return true;
         }
         return false;
     }
-    
-        public boolean isFinished(Tournament tmt) {
+
+    public boolean isFinished(Tournament tmt) {
         if (tmt.getState() == Tournament.State.FINISHED) {
             return true;
         }
@@ -140,19 +140,16 @@ public class TournamentsViewBean implements Serializable {
         tmBO.joinTournament(tmt);
         this.joinedTmt = tmt;
     }
-    
-    public void leaveTournament(Tournament tmt) throws NotJoinableRound
-    {
+
+    public void leaveTournament(Tournament tmt) throws NotJoinableRound {
         PairingCard pc = null;
-        for(PairingCard it : tmt.getPairingCardSet())
-        {
-            if(it.getPlayer().getId() == user.getId())
-            {
+        for (PairingCard it : tmt.getPairingCardSet()) {
+            if (it.getPlayer().getId() == user.getId()) {
                 pc = it;
             }
         }
         tmBO.leaveTournament(tmt, pc);
-                
+
     }
 
     public boolean userIsMember(Tournament t) {
@@ -264,6 +261,4 @@ public class TournamentsViewBean implements Serializable {
     public void setShowMineOnly(boolean showMineOnly) {
         this.showMineOnly = showMineOnly;
     }
-    
-    
 }
