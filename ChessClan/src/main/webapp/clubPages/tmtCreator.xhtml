@@ -74,7 +74,7 @@
                     <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
                 </h:commandButton><br/>
                 <h:outputText value="Turniej trwa! Runda numer: #{cTmtCBean.currentTmt.currentRound.number+1}"/>                
-                <c:forEach items="#{cTmtCBean.currentTmt.currentRound.pairingCardSet}" var="pc" varStatus="loop">
+                <c:forEach items="#{cTmtCBean.getFilteredCurrentRoundPC()}" var="pc" varStatus="loop">
                     <h:outputText value="Gracz:#{pc.player.firstName} #{pc.player.lastName} kolor: #{pc.color}"/><br/>
                     <h:outputText value="gra z:#{pc.opponent.player.firstName} #{pc.opponent.player.lastName} kolor: #{pc.opponent.color}"/><br/>
                     <h:outputText value="Wygrał: "/>
@@ -95,4 +95,3 @@
         </ui:composition>
     </h:body>
 </html>
-

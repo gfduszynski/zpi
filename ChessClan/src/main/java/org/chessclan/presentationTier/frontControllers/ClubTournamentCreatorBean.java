@@ -7,6 +7,7 @@ package org.chessclan.presentationTier.frontControllers;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -178,5 +179,7 @@ public class ClubTournamentCreatorBean implements Serializable {
         this.results = results;
     }
 
-
+    public Set<PairingCard> getFilteredCurrentRoundPC(){
+        return this.tmBO.filterUniquePairingCards(this.currentTmt.getCurrentRound());
+    }
 }
