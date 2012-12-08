@@ -4,6 +4,7 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +21,7 @@ import org.chessclan.dataTier.models.User;
  */
 @ManagedBean(name = "ucBean")
 @ViewScoped
-public class UserClubsBean {
+public class UserClubsBean implements Serializable{
 
     @ManagedProperty("#{ClubBO}")
     ClubBO clubBO;

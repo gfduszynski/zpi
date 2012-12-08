@@ -4,10 +4,10 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
+import org.chessclan.dataTier.models.Round.NotJoinableRound;
 import org.chessclan.dataTier.models.Round.State;
 import org.chessclan.dataTier.models.Tournament;
 import org.chessclan.dataTier.models.User;
@@ -37,19 +38,18 @@ public class TournamentsViewBean implements Serializable {
     private List<Tournament> allTournaments;
     private List<Integer> mapTournaments;
     private Tournament selectedTournament;
-    private boolean joiningSucc;
     private Integer page;
     private Map<Integer, ArrayList<Integer>> mapToPrevAndNext;
     private List<Tournament> userTournaments;
     @ManagedProperty(value = "#{loginBean.user}")
     private User user;
+    private Tournament joinedTmt;
 
     public TournamentsViewBean() {
     }
 
     @PostConstruct
     public void initialize() {
-
         this.mapToPrevAndNext = new HashMap<Integer, ArrayList<Integer>>();
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String tournamentId = params.get("id");
@@ -119,6 +119,21 @@ public class TournamentsViewBean implements Serializable {
 
     public void joinTournament(Tournament tmt) throws Round.NotJoinableRound {
         tmBO.joinTournament(tmt);
+        this.joinedTmt = tmt;
+    }
+    
+    public void leaveTournament(Tournament tmt) throws NotJoinableRound
+    {
+        PairingCard pc = null;
+        for(PairingCard it : tmt.getPairingCardSet())
+        {
+            if(it.getPlayer().getId() == user.getId())
+            {
+                pc = it;
+            }
+        }
+        tmBO.leaveTournament(tmt, pc);
+                
     }
 
     public boolean userIsMember(Tournament t) {
@@ -153,14 +168,6 @@ public class TournamentsViewBean implements Serializable {
 
     public void setSelectedTournament(Tournament selectedTournament) {
         this.selectedTournament = selectedTournament;
-    }
-
-    public boolean isJoiningSucc() {
-        return joiningSucc;
-    }
-
-    public void setJoiningSucc(boolean joiningSucc) {
-        this.joiningSucc = joiningSucc;
     }
 
     public Map<Integer, ArrayList<Integer>> getMapToPrevAndNext() {
@@ -222,4 +229,14 @@ public class TournamentsViewBean implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Tournament getJoinedTmt() {
+        return joinedTmt;
+    }
+
+    public void setJoinedTmt(Tournament joinedTmt) {
+        this.joinedTmt = joinedTmt;
+    }
+    
+    
 }

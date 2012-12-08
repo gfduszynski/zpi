@@ -249,7 +249,7 @@ body .ui-tooltip { border-width: 2px; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #ffffff; text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #dfddda; background: #dfddda url("jqueryui/ui-bg_flat_80_dfddda_40x100.png.xhtml?ln=images") 50% 50% repeat-x; font-weight: bold; color: #000000; }
 .ui-state-hover a, .ui-state-hover a:hover, .ui-state-hover a:link, .ui-state-hover a:visited { color: #000000; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #aaaaaa; background: #F9F6F4 url("jqueryui/ui-bg_glass_65_F9F6F4_1x400.png.xhtml?ln=images") 50% 50% repeat-x; font-weight: bold; color: #212121; }
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #aaaaaa; background: #F9F6F4 url("jqueryui/ui-bg_glass_65_ffffff_1x400.png.xhtml?ln=images") 50% 50% repeat-x; font-weight: bold; color: #212121; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #212121; text-decoration: none; }
 
 /* Interaction Cues
