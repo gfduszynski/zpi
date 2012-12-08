@@ -145,6 +145,19 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         }
         return tRepo.save(t);
     }
+    @Transactional
+    public Set<PairingCard> filterUniquePairingCards(Round currentRound){
+        Set<PairingCard> pairingCards = rRepo.findOne(currentRound.getId()).getPairingCardSet();
+        Set<PairingCard> newPairingCards = new HashSet<PairingCard>(pairingCards);
+        Iterator<PairingCard> iterator = pairingCards.iterator();
+        while(iterator.hasNext()){
+            PairingCard pc = iterator.next();
+            if(newPairingCards.contains(pc)&&pc.getOpponent()!=null){
+                newPairingCards.remove(pc.getOpponent());
+            }
+        }
+        return newPairingCards;
+    }
 
     private Set<PairingCard> mockupPairPlayers(Set<PairingCard> oldPairingCards, Round currentRound) {
         Set<PairingCard> newPairingCards = new HashSet<PairingCard>();
