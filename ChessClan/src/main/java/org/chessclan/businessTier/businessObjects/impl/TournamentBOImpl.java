@@ -91,6 +91,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         pc.setTournament(t);
         pc.setRound(t.getCurrentRound());
         pc.setColor(PairingCard.Color.NO_COLOR);
+        t.getPairingCardSet().add(pc);
         //u.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
     }
@@ -101,10 +102,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         if (t.getCurrentRound().getRoundState() != State.JOINING) {
             throw new Round.NotJoinableRound();
         }
-
         t.getPairingCardSet().remove(pc);
         pcRepo.delete(pc);
-        return tRepo.saveAndFlush(t);
+        return t;
     }
 
     @Override

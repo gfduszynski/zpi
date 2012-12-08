@@ -620,6 +620,10 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     background-color: #E09041;
     color: white; 
 }
+
+allButtonNoHover{
+    .allButton2;
+}
 .headerButton,editButton{
     height: 20px;
     margin: 0px;
