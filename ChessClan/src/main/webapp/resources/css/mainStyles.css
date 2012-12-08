@@ -687,7 +687,7 @@ TABLE.userTable thead{
 .allPostContent{
    margin: 0 5px 0 5px;
    overflow-y: auto;
-   height: 200px;
+   height: 145px;
 }
 .allPostDate{
     display: inline-block;

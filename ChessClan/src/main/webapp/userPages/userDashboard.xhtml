@@ -57,8 +57,8 @@
                                 <h:panelGroup layout="block" class="allPostContent marL5">
                                 <h:outputText value="#{tmt.description}"/>
                                 </h:panelGroup>
-                                <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
-                                    <f:ajax render="@form" listener="#{atvBean.joinTournament(tmt)}"/>
+                                <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px" onclick="$(this).css('display', 'none');">
+                                    <f:ajax render="@form" execute="@form" listener="#{atvBean.joinTournament(tmt)}"/>
                                 </h:commandButton>
                             </h:form>
                         </h:panelGroup>
