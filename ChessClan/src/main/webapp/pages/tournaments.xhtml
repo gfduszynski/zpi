@@ -52,14 +52,15 @@
 
                 <c:forEach items="#{atvBean.allTournaments}" begin="0" end="16" var="tmt" rendered="#{atvBean.selectedTournament == null}" varStatus="loop">
                 <h:outputLink value="#{request.contextPath}/tournaments/#{tmt.id}">
-                    <h:panelGroup class="group tmt#{atvBean.getCurrentTnmIndex(tmt.id)}" layout="block" rendered="#{not empty atvBean.allTournaments}" style="border: 1px solid #363636; margin: 5px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 220px; height: 220px; float: left; overflow: hidden; display:none;">
+                    <h:panelGroup  styleClass='#{loop.index%3==1?"group postBox":(loop.index%3==2?"group postBox2":"group postBox3")}' layout="block" rendered="#{not empty atvBean.allTournaments}"  style="display: none">
                         <h:outputText value="#{tmt.name}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;	white-space: pre; white-space: pre-wrap; white-space: pre-line; white-space: -pre-wrap; white-space: -o-pre-wrap; white-space: -moz-pre-wrap; white-space: -hp-pre-wrap; word-wrap: break-word;"/>
                         <h:outputText value="Klubu: #{tmt.club.name}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
                         <h:outputText value="Termin: #{tmt.date}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
-                        <h:outputText class="description" value="Opis: #{tmt.description}" style="overflow: hidden; display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
+                        <h:outputText class="description" value="#{tmt.description}" style="overflow: hidden; display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
                     </h:panelGroup>              
                 </h:outputLink>    
             </c:forEach>
+                
                 <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament == null and not empty atvBean.allTournaments}" style="width: 960px; height: 100px;"></h:panelGroup>
             <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament == null and not empty atvBean.allTournaments}" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 960px; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px; z-index:100; position:fixed; bottom:0px;">
                <h:panelGroup layout="block" id="prevPage" style="display: block; cursor: pointer; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;">&lt;</h:panelGroup>

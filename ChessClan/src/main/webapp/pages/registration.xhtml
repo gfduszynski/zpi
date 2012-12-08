@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
-
     <h:body>
         <ui:composition>
+            <h2><h:outputText value="Rejestracja"/></h2>
             <h:form prependId="false" >
                 <h:outputText value="Jako kto chcesz się zalogować?"/><br/>
-                <h:commandButton value="Gracz"  styleClass="regButton regWidth #{rgsBean.regOption==0?'activeReg':'inactiveReg'}">
+                <h:commandButton value="GRACZ"  styleClass="regButton regWidth #{rgsBean.regOption==0?'activeReg':'inactiveReg'}">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(0)}"/>
                 </h:commandButton>
-                <h:commandButton value="Organizator" styleClass="regButton regWidth #{rgsBean.regOption==1?'activeReg':'inactiveReg'}">
+                <h:commandButton value="KLUB" styleClass="regButton regWidth #{rgsBean.regOption==1?'activeReg':'inactiveReg'}">
                     <f:ajax event="click" render="@form" execute="@form" listener="#{rgsBean.setRegOption(1)}"/>
                 </h:commandButton>
-                <h2><h:outputText value="Rejestracja"/></h2>
                 <h:panelGroup rendered="#{rgsBean.regOption == 0}">
                     <h:outputText value="Imię"/><br/>
                     <h:panelGroup id="fnGroup">
@@ -139,7 +136,7 @@
                         <h:selectBooleanCheckbox value="#{rgsBean.acceptedStatute}" id="stInput">
                             <f:ajax event="change" execute="stInput" render="stGroup" listener="#{rgsBean.validateStatute}"/>
                         </h:selectBooleanCheckbox>
-                        </h:panelGroup>
+                    </h:panelGroup>
                     <h:outputText value="Akceptuję "/><a href="#{request.contextPath}/tos" class="link" disableClass="">regulamin.</a><br/>
                     <h:commandButton value="Rejestruj" styleClass="regButton activeReg">
                         <f:ajax event="click" execute="@form" render="@form" listener="#{rgsBean.registerClub}"/>

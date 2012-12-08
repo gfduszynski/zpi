@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -88,12 +87,11 @@
             </c:if>
             <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
                 <h:outputText value="Turniej zakończony! Wyniki:"/>
-                <c:forEach items="#{cTmtCBean.results}" var="result" varStatus="loop">
-                    <h:outputText value="Miejsce #{loop.index+1}: #{result.player.firstName} #{result.player.lastName} Ilość punktów: #{result.score}"/>
+                <c:forEach items="#{cTmtCBean.results.keySet.iterator}" var="result" varStatus="loop">
+                    <h:outputText value="Miejsce #{loop.index+1}: #{result.firstName} #{result.lastName} Ilość punktów: #{cTmtCBean.results.get(result)}"/>
                     <br/>
                 </c:forEach>
             </c:if>
         </ui:composition>
     </h:body>
 </html>
-
