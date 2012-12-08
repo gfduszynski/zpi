@@ -49,8 +49,6 @@
         <h:panelGroup layout="block" class="content" id="full-content">
             <ui:include src="../pages/header.xhtml"/>
             <div class="news-browser">
-                <c:set var="lastDateProcessed" scope="request" value="#{null}" />
-                
                     <c:forEach  items="#{pvBean.postDates}" var="date">
                         <span class="news-browser-day">
                             <div class="news-browser-entries">
