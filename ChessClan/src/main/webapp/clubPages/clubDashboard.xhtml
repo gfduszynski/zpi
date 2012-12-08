@@ -1,7 +1,5 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
+<!DOCTYPE html>
+<html xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core">
@@ -187,19 +185,19 @@
                             <f:ajax execute="@form" render="@form" listener="#{cmmBean.findUsers}"/>
                         </h:commandButton>
                         <c:if test="#{not empty cmmBean.foundUsers}">
-                           
-                                <c:forEach items="#{cmmBean.foundUsers}" var="member">
-                                    <h:panelGroup layout="block" styleClass="tmtContainer">
-                                        <h:outputText value="#{member.firstName} #{member.lastName}"/>
-                                        <h:commandButton value="Dodaj członka" rendered="#{member.userClub == null}" styleClass="allButton2 right">
-                                            <f:ajax render="@form" execute="@form" listener="#{cmmBean.addMember(member)}"/>
-                                        </h:commandButton>
-                                        <h:panelGroup rendered="#{member.userClub != null}">
-                                            Klub: #{member.userClub.name}
-                                        </h:panelGroup>
+
+                            <c:forEach items="#{cmmBean.foundUsers}" var="member">
+                                <h:panelGroup layout="block" styleClass="tmtContainer">
+                                    <h:outputText value="#{member.firstName} #{member.lastName}"/>
+                                    <h:commandButton value="Dodaj członka" rendered="#{member.userClub == null}" styleClass="allButton2 right">
+                                        <f:ajax render="@form" execute="@form" listener="#{cmmBean.addMember(member)}"/>
+                                    </h:commandButton>
+                                    <h:panelGroup rendered="#{member.userClub != null}">
+                                        Klub: #{member.userClub.name}
                                     </h:panelGroup>
-                                </c:forEach>
-                           
+                                </h:panelGroup>
+                            </c:forEach>
+
                         </c:if>
                         <c:if test="#{not empty cmmBean.members}">
                             <c:forEach items="#{cmmBean.members}" var="member">
@@ -221,8 +219,8 @@
                 </div>
                 <div id="tabs-4">
                     <h:form prependId="false">
-                        <h:messages/>
                         <h:panelGroup rendered="#{not crTmtBean.createTmtSuccess}">
+                            <h:outputText rendered="#{not crTmtBean.dateValid}" styleClass="error right" value="Data turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
                             <h2>Nowy turniej</h2>
                             <script type="text/javascript" charset="utf-8">
                                 $(document).ready(function() {
@@ -230,57 +228,79 @@
                                         changeMonth: true,
                                         changeYear: true,
                                         dateFormat: "d-m-yy"});
-                                    $("#pointsSpinner").spinner();
-                                    $("#roundsSpinner").spinner();
-                                    $('#tmtName').val('[Nazwa Turnieju]');
-                                    $('#tmtDescription').val('[Opis]');
-                                    
+                                    $("#pointsSpinner").spinner({
+                                        step: 0.5,
+                                        spin: function( event, ui ) 
+                                        {
+                                            var points = ui.value;
+                                            if(!$.isNumeric(points)){
+                                                $('#drawPoints').html(' Podana wartość nie jest liczbą.');
+                                            }else{
+                                                if(points>0){
+                                                    $('#drawPoints').html(' Punkty za remis: '+points/2);
+                                                }else{
+                                                    $('#drawPoints').html(' Liczba ta musi być dodatnia.');
+                                                }
+                                            }
+                                        }
+                                    });
+                                    $("#roundsSpinner").spinner();                                    
                                 });
                             </script>
-                            <h:outputText rendered="#{not crTmtBean.tmtValid}" value="Nazwa klubu niepoprawna.&lt;br/&gt;"/>
-                            <!-- TYTUŁ -->
+                            <h:outputText id="nameError" rendered="#{not crTmtBean.nameValid}" styleClass="error" value="Nazwa turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
                             <h:inputText value="#{crTmtBean.tmtName}" id="tmtName">
-                                <f:ajax event="blur" execute="@this" rendered="messages" listener="#{crTmtBean.validateTournamentName}"/>
+                                <f:ajax event="blur" execute="@this" render="@form" listener="#{crTmtBean.validateTournamentName}"/>
                             </h:inputText>
                             <h:outputText value="Data odbycia turnieju: " styleClass="addPostDate"/>
                             <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate">
                                 <f:convertDateTime pattern="d-M-yyyy" />
+                                <f:ajax event="change" execute="@this" render="@form" listener="#{crTmtBean.validateDate}"/>
                             </h:inputText><br/>
                             <h:panelGroup>
-                                <h:inputTextarea value="#{crTmtBean.tmtDescription}" styleClass="addTourContent" id="tmtDescription"/>
+                                <h:outputText rendered="#{not crTmtBean.descValid}" styleClass="error" value="Opis turnieju niepoprawny.&lt;br/&gt;" escape="false"/>
+                                <h:inputTextarea value="#{crTmtBean.tmtDescription}" styleClass="addTourContent" id="tmtDescription">
+                                    <f:ajax event="blur" execute="@this" render="@form" listener="#{crTmtBean.validateTournamentDesc}"/>
+                                </h:inputTextarea>
                             </h:panelGroup><br/>
-                            <h:panelGrid columns="2">
-                                <h:outputText value="Punkty do opuszczenia gry: "/>
-                                <h:inputText value="#{crTmtBean.pointsForBye}" id="pointsSpinner" styleClass="marL5"/>
-                                <h:outputText value="Ilość rund: "/>
-                                <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner" styleClass="marL5"/>
-                            </h:panelGrid><br/>
+                            <h:outputText rendered="#{not crTmtBean.pointsValid}" styleClass="error" value="Liczba punktów niepoprawna.&lt;br/&gt;" escape="false"/>
+                            <h:outputText value="Punkty do za wygranie partii: "/>
+                            <h:inputText  value="#{crTmtBean.pointsForBye}" id="pointsSpinner" styleClass="marL5"/>
+                            <h:outputText value=" Punkty za remis: #{crTmtBean.pointsForBye/2}" id="drawPoints"/><br/>
+                            <h:outputText rendered="#{not crTmtBean.roundsValid}" styleClass="error" value="Liczba rund turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
+                            <h:outputText value="Ilość rund: "/>
+                            <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner" styleClass="marL5">
+                                <!--<f:ajax render="@form" listener="#{crTmtBean.validateRounds}"/>-->
+                            </h:inputText><br/>
                             <h:panelGroup id="catsSubForm">
                                 <h:panelGroup layout="block" rendered="#{not empty crTmtBean.tmtCategories}" style="display: block;">
-                                    <h4>Kategorie rozgrywane w turnieju:</h4>
+                                    <h4>Kategoria turnieju:</h4>
                                     <c:forEach items="#{crTmtBean.tmtCategories}" var="cat">
-                                        <h:outputText value="#{cat.name}"/><br/><br/>
+                                        <h:outputText value="#{cat.name}"/>
+                                        <h:commandButton value="Usuń kategorię">
+                                            <f:ajax render="@form" listener="#{crTmtBean.removeCat(cat)}"/>
+                                        </h:commandButton>
+                                        <br/><br/>
                                     </c:forEach> 
                                 </h:panelGroup>
-                                <h:commandButton value="Dodaj kategorię" styleClass="allButton addPostButton">
+                                <h:commandButton value="Wybierz kategorię" styleClass="allButton addPostButton" rendered="#{crTmtBean.tmtCategories.size() == 0}">
                                     <f:ajax render="catsSubForm" execute="catsSubForm" listener="#{crTmtBean.addCategory}"/>
                                 </h:commandButton>
-                                <h:selectOneMenu value="#{crTmtBean.selectedCatId}">
+                                <h:selectOneMenu value="#{crTmtBean.selectedCatId}" rendered="#{crTmtBean.tmtCategories.size() == 0}">
                                     <c:forEach items="#{crTmtBean.categories}" var="category">
                                         <f:selectItem itemLabel="#{category.name}" itemValue="#{category.id}"/>
                                     </c:forEach>
                                 </h:selectOneMenu>
-                                <h:panelGroup layout="block" rendered="#{empty crTmtBean.tmtCategories}" lass="ui-state-highlight ui-corner-all">
+<!--                                <h:panelGroup layout="block" rendered="#{empty crTmtBean.tmtCategories}" lass="ui-state-highlight ui-corner-all">
                                     <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                         <strong>Uwaga!</strong> Przed utworzeniem turnieju należy dodać kategorie, które będą na nim rozgrywane.</p>
-                                </h:panelGroup>
+                                </h:panelGroup>-->
                             </h:panelGroup>
                             <br/>
                             <h:commandButton value="Dodaj turniej" styleClass="allButton addPostButton">
                                 <f:ajax event="click" execute="@form" render="@form :clubTmtsForm" listener="#{crTmtBean.saveTournament}"/>
                             </h:commandButton>
                         </h:panelGroup>
-                        <h:panelGroup rendered="#{crTmtBean.createTmtSuccess}" class="ui-state-highlight ui-corner-all">
+                        <h:panelGroup rendered="#{crTmtBean.createTmtSuccess}" class="ui-state-error ui-corner-all">
                             <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                 <strong>Uwaga!</strong> Turniej został utworzony. Przejdź do zakładki "Turnieje", aby rozpocząć przeprowadzanie turnieji.</p>
                             <h:commandButton value="Dodaj kolejny turniej" styleClass="allButton addPostButton">
