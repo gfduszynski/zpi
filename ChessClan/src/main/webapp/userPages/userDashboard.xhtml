@@ -15,41 +15,27 @@
             </script>
             <div id="tabs">
                 <ul>
-                    <li><a href="#tabs-1">Moje turnieje</a></li>
                     <li><a href="#tabs-2">Przeglądaj turnieje</a></li>
                     <li><a href="#tabs-3">Ogłoszenia</a></li>
                     <li><a href="#tabs-4">Kluby</a></li>
                 </ul>
-                <div id="tabs-1">
-                    <c:forEach items="#{atvBean.userTournaments}" var="tmt" rendered="#{not empty atvBean.userTournaments}">
-                        <h:panelGroup layout="block"  styleClass='#{loop.index%2==1?"tmtContainer right height300px":"tmtContainer left height250px"}'>
-                            <h:outputText value="Kiedy: #{tmt.date}" styleClass="right marR5"/>
-                            <h:outputText value="#{tmt.name}" styleClass="bold"/><br/>
-                            <h:outputText value="Nazwa klubu: #{tmt.club.name}"/><br/>
-                            <hr/>
-                            <h:panelGroup styleClass="myTmtContent">
-                                <h:outputText value="#{tmt.description}" /><br/>
-                            </h:panelGroup>
-                        </h:panelGroup>
-                    </c:forEach>
-                    <h:panelGroup rendered="#{empty atvBean.userTournaments}" layout="block"  class="ui-state-highlight ui-corner-all">
-                        <p>
-                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                            <label>Nie jesteś zapisany na żaden turniej.</label>
-                        </p>
-                    </h:panelGroup>
-                </div>
                 <div id="tabs-2">
                     <h:form prependId="false">
-                        <c:forEach items="#{atvBean.allTournaments}" var="tmt" varStatus="loop">
+                        <div class="height50px">
+                            <h:selectBooleanCheckbox  value="#{atvBean.showMineOnly}">
+                                <f:ajax render="@form" execute="@this"/>
+                            </h:selectBooleanCheckbox>
+                            <h:outputText value="Pokaż tylko te, w których biorę udział"/>
+                        </div><hr/>
+                        <c:forEach items="#{atvBean.showMineOnly == false?atvBean.allTournaments:atvBean.userTournaments}" var="tmt" varStatus="loop">
                             <h:panelGroup styleClass='#{loop.index%4==0?"allPostBox":(loop.index%4==1?"gray allPostBox":(loop.index%4==2?"gray allPostBox":"allPostBox"))}' layout="block">
                                 <h:panelGroup layout="block" styleClass="allPostHeader pad10">
                                     <h:outputText value="Kiedy: #{tmt.date}" styleClass="right marR5 "/>
                                     <h:outputText value="#{tmt.name}" styleClass="bold"/><br/>
                                     <h:outputText value="Nazwa klubu: #{tmt.club.name}"/><br/>
-<!--                                    <h:outputText value="Stan: Nie rozpoczęty" rendered="#{atvBean.isJoinable(tmt)}"/>
-                                    <h:outputText value="Stan: Aktualnie trwa" rendered="#{atvBean.isStated(tmt)}"/>
-                                    <h:outputText value="Stan: Zakończony" rendered="#{atvBean.isFinished(tmt)}"/><br/>-->
+                                    <h:outputText value="Stan: Nie rozpoczęty" rendered="#{atvBean.isJoinable(tmt)}"/>
+                                    <h:outputText value="Stan: Aktualnie trwa" rendered="#{atvBean.isStarted(tmt)}"/>
+                                    <h:outputText value="Stan: Zakończony" rendered="#{atvBean.isFinished(tmt)}"/><br/>
                                     <hr/>
                                 </h:panelGroup>
                                 <h:panelGroup layout="block" class="allPostContent marL5">
