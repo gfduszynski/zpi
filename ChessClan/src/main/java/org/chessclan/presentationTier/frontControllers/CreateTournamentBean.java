@@ -36,22 +36,23 @@ public class CreateTournamentBean implements Serializable {
     private User user;
     @ManagedProperty("#{ctBean}")
     ClubTournamentsBean ctBean;
-
-    private String tmtName;
-    private String tmtDescription;
+    private String tmtName = "[Nazwa turnieju]";
+    private String tmtDescription = "[Opis]";
     private Date tmtDate;
     private List<Category> categories;
     private LinkedList<Category> tmtCategories;
     private int selectedCatId;
-    private boolean tmtValid;
-    private int pointsForBye;
-    private int numberOfRounds;
+    private boolean nameValid = true;
+    private boolean descValid = true;
+    private boolean dateValid = true;
+    private boolean pointsValid = true;
+    private boolean roundsValid = true;
+    private String pointsForBye = "1";
+    private String numberOfRounds = "7";
     private boolean createTmtSuccess;
 
     public CreateTournamentBean() {
         this.tmtCategories = new LinkedList<Category>();
-        this.tmtValid = true;
-        this.pointsForBye=1;
         this.tmtDate = new Date();
         createTmtSuccess = false;
     }
@@ -63,16 +64,19 @@ public class CreateTournamentBean implements Serializable {
     }
 
     public void addCategory() {
+        if (tmtCategories.size() > 0) {
+            return;
+        }
         boolean contains = false;
-        for(Category c : tmtCategories){
-            if(c.getId() == selectedCatId){
+        for (Category c : tmtCategories) {
+            if (c.getId() == selectedCatId) {
                 contains = true;
                 return;
             }
         }
         if (!contains) {
-            for(Category c : categories){
-                if(c.getId() == selectedCatId){
+            for (Category c : categories) {
+                if (c.getId() == selectedCatId) {
                     this.tmtCategories.add(c);
                     this.categories.remove(c);
                     return;
@@ -82,39 +86,86 @@ public class CreateTournamentBean implements Serializable {
     }
 
     public void saveTournament() throws NotFinished, NoPlayers {
-        Tournament t = tmBO.registerTournament(numberOfRounds, pointsForBye, tmtName, tmtDate, tmtDescription, user.getOwnedClub(), tmtCategories.get(0));
-        this.createTmtSuccess = true;
-        ctBean.getClubTournaments().add(t);
+        if (validateTournamentName() && validateTournamentDesc() && validateDate() && validatePoints() && validateRounds() && tmtCategories.size() > 0) {
+            Tournament t = tmBO.registerTournament(Integer.parseInt(numberOfRounds), Integer.parseInt(pointsForBye), tmtName, tmtDate, tmtDescription, user.getOwnedClub(), tmtCategories.get(0));
+            this.createTmtSuccess = true;
+            ctBean.getClubTournaments().add(t);
+        }
     }
-    
-    public void addNextTmt(){
+
+    public void addNextTmt() {
         this.categories = ctBO.findAll();
         this.createTmtSuccess = false;
-        numberOfRounds = 7;
-        pointsForBye = 1;
+        numberOfRounds = "7";
+        pointsForBye = "1";
         selectedCatId = categories.get(0).getId();
         tmtCategories.clear();
         tmtDate = new Date();
-        tmtDescription="";
-        tmtName="";
-        tmtValid=true;
+        tmtDescription = "";
+        tmtName = "";
     }
 
     public boolean validateTournamentName() {
         if (this.tmtName.length() > 1) {
-            this.tmtValid = true;
+            nameValid = true;
         } else {
-            this.tmtValid = false;
+            nameValid = false;
         }
-        return tmtValid;
+        return nameValid;
     }
-    public boolean validateTournamentContent() {
-        if (this.tmtName.length() > 1) {
-            this.tmtValid = true;
+
+    public boolean validateTournamentDesc() {
+        if (this.tmtDescription.length() > 1) {
+            descValid = true;
         } else {
-            this.tmtValid = false;
+            descValid = false;
         }
-        return tmtValid;
+        return descValid;
+    }
+
+    public boolean validateDate() {
+        if (this.tmtDate == null) {
+            dateValid = false;
+        } else {
+            dateValid = true;
+        }
+        return dateValid;
+    }
+
+    public boolean validatePoints() {
+        try {
+            float tmp = Float.parseFloat(pointsForBye);
+            if (tmp > 0) {
+                pointsValid = true;
+            } else {
+                pointsValid = false;
+            }
+        }
+        catch (Exception e) {
+            pointsValid = false;
+        }
+        return pointsValid;
+    }
+
+    public boolean validateRounds() {
+        try {
+            int tmp = Integer.parseInt(numberOfRounds);
+            if (tmp > 0) {
+                roundsValid = true;
+            } else {
+                roundsValid = false;
+            }
+        }
+        catch (Exception c) {
+            roundsValid = false;
+        }
+
+        return roundsValid;
+    }
+
+    public void removeCat(Category cat) {
+        this.tmtCategories.remove(cat);
+        this.categories.add(cat);
     }
 
     public TournamentBO getTmBO() {
@@ -181,14 +232,6 @@ public class CreateTournamentBean implements Serializable {
         this.selectedCatId = selectedCatId;
     }
 
-    public boolean isTmtValid() {
-        return tmtValid;
-    }
-
-    public void setTmtValid(boolean tmtValid) {
-        this.tmtValid = tmtValid;
-    }
-
     public User getUser() {
         return user;
     }
@@ -197,19 +240,19 @@ public class CreateTournamentBean implements Serializable {
         this.user = user;
     }
 
-    public int getPointsForBye() {
+    public String getPointsForBye() {
         return pointsForBye;
     }
 
-    public void setPointsForBye(int pointsForBye) {
+    public void setPointsForBye(String pointsForBye) {
         this.pointsForBye = pointsForBye;
     }
 
-    public int getNumberOfRounds() {
+    public String getNumberOfRounds() {
         return numberOfRounds;
     }
 
-    public void setNumberOfRounds(int numberOfRounds) {
+    public void setNumberOfRounds(String numberOfRounds) {
         this.numberOfRounds = numberOfRounds;
     }
 
@@ -228,6 +271,44 @@ public class CreateTournamentBean implements Serializable {
     public void setCtBean(ClubTournamentsBean ctBean) {
         this.ctBean = ctBean;
     }
-    
-    
+
+    public boolean isNameValid() {
+        return nameValid;
+    }
+
+    public void setNameValid(boolean nameValid) {
+        this.nameValid = nameValid;
+    }
+
+    public boolean isDescValid() {
+        return descValid;
+    }
+
+    public void setDescValid(boolean descValid) {
+        this.descValid = descValid;
+    }
+
+    public boolean isDateValid() {
+        return dateValid;
+    }
+
+    public void setDateValid(boolean dateValid) {
+        this.dateValid = dateValid;
+    }
+
+    public boolean isPointsValid() {
+        return pointsValid;
+    }
+
+    public void setPointsValid(boolean pointsValid) {
+        this.pointsValid = pointsValid;
+    }
+
+    public boolean isRoundsValid() {
+        return roundsValid;
+    }
+
+    public void setRoundsValid(boolean roundsValid) {
+        this.roundsValid = roundsValid;
+    }
 }
