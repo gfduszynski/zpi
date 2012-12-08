@@ -47,6 +47,9 @@
                                     <h:outputText value="Kiedy: #{tmt.date}" styleClass="right marR5 "/>
                                     <h:outputText value="#{tmt.name}" styleClass="bold"/><br/>
                                     <h:outputText value="Nazwa klubu: #{tmt.club.name}"/><br/>
+<!--                                    <h:outputText value="Stan: Nie rozpoczęty" rendered="#{atvBean.isJoinable(tmt)}"/>
+                                    <h:outputText value="Stan: Aktualnie trwa" rendered="#{atvBean.isStated(tmt)}"/>
+                                    <h:outputText value="Stan: Zakończony" rendered="#{atvBean.isFinished(tmt)}"/><br/>-->
                                     <hr/>
                                 </h:panelGroup>
                                 <h:panelGroup layout="block" class="allPostContent marL5">

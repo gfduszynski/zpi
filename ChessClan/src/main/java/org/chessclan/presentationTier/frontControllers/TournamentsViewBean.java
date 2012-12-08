@@ -111,7 +111,27 @@ public class TournamentsViewBean implements Serializable {
         if (tmt.getCurrentRound() == null) {
             return false;
         }
-        if (tmt.getCurrentRound().getRoundState() == State.JOINING) {
+        if (tmt.getState() == Tournament.State.NOT_STARTED) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean isStarted(Tournament tmt) {
+        if (tmt.getCurrentRound() == null) {
+            return false;
+        }
+        if (tmt.getState() == Tournament.State.STARTED) {
+            return true;
+        }
+        return false;
+    }
+    
+        public boolean isFinished(Tournament tmt) {
+        if (tmt.getCurrentRound() == null) {
+            return false;
+        }
+        if (tmt.getState() == Tournament.State.FINISHED) {
             return true;
         }
         return false;
