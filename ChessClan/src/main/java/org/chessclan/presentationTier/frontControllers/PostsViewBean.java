@@ -6,6 +6,8 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +29,7 @@ import org.chessclan.dataTier.models.Post;
 public class PostsViewBean implements Serializable {
 
     private List<Post> posts;
+    private List<Date> postDates;
     @ManagedProperty("#{PostBO}")
     PostBO postBO;
     private Post selectedPost;
@@ -56,21 +59,35 @@ public class PostsViewBean implements Serializable {
         } catch (NumberFormatException e) {
             loadPosts();
         }
-            helpMapping();
-            loadMapping();
+        helpMapping();
+        loadMapping();
+            
     }
 
     private void loadPosts() {
         this.posts = new ArrayList<Post>();
+        this.postDates = new ArrayList<Date>();
         Iterator<Post> posts = postBO.findAllPostsWithUsers().iterator();
         while (posts.hasNext()) {
             Post tmp = posts.next();
             this.posts.add(tmp);
         }
+        //Sort posts by date
+        Collections.sort(this.posts);
+        for(Post p:this.posts){
+            if(!postDates.contains(p.getDatePublished())){
+                postDates.add(p.getDatePublished());
+            }
+        }
+        
     }
 
     public List<Post> getPosts() {
         return posts;
+    }
+
+    public List<Date> getPostDates() {
+        return postDates;
     }
 
     public void setPosts(List<Post> posts) {
