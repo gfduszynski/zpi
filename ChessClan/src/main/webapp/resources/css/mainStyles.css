@@ -425,6 +425,52 @@ div#editContainer{
     color: #00AAE8;
     cursor: pointer;
 }
+.news-browser{
+    width:960px;
+    height:600px;
+    display:block;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.news-browser-day{
+    height:100%;
+    display: inline-block;
+    margin-right: 20px;
+}
+.news-browser-entries{
+    height:90%;
+    padding:2px;
+    -moz-column-count:auto;
+    -webkit-column-count:auto;
+    column-count:auto;
+    column-width:250px;
+    column-gap:40px;
+    -moz-column-width:250px;
+    -moz-column-gap:40px;
+    -webkit-column-width:250px;
+    -webkit-column-gap:40px;  
+    -moz-column-rule:4px outset #e9e9e9;
+    -webkit-column-rule:4px outset #e9e9e9;
+    column-rule:4px outset #e9e9e9;
+}
+.news-browser-entry{
+    border-top: #e9e9e9 solid 2px;
+    padding:10px;
+    width: 250px;
+    margin-bottom:20px;
+}
+.news-browser-entries :first-child{
+    border-top: #8A8A8A solid 4px;
+}
+.news-browser-date{
+    text-align: center;
+    padding:4px;
+    height:20px;
+    background: url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") repeat scroll 50% 50% #00AAE8;
+    color: white;
+    font-variant: small-caps;
+    font-size: 17px;
+}
 /* KONIEC KOREKTY */
 .postContainer{
     background-color: #EEEEEE;

@@ -385,8 +385,10 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Override
+    @Transactional
     public void deleteTournament(Tournament t) {
-        if (t.getRoundSet() != null) {
+        
+        /*if (t.getRoundSet() != null) {
             for (Round r : t.getRoundSet()) {
                 rRepo.delete(r);
             }
@@ -395,8 +397,12 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             for (PairingCard pc : t.getPairingCardSet()) {
                 pcRepo.delete(pc);
             }
-        }
+        }*/
+        catRepo.findOne(t.getCategory().getId());
+        rRepo.findOne(t.getCurrentRound().getId());
+        
         tRepo.delete(t);
+        tRepo.flush();
     }
 
     @Override

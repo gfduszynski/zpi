@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "posts")
-public class Post implements Serializable {
+public class Post implements Serializable, Comparable<Post> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -173,10 +173,14 @@ public class Post implements Serializable {
         }
         return true;
     }
-
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.Post[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(Post o) {
+        return -1*datePublished.compareTo(o.datePublished);
     }
 
     public enum PostLifeTime {
