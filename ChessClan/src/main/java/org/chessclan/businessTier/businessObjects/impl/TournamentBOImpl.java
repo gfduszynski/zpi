@@ -102,8 +102,11 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         if (t.getCurrentRound().getRoundState() != State.JOINING) {
             throw new Round.NotJoinableRound();
         }
+        rRepo.findOne(t.getCurrentRound().getId());
+        umBO.findUserById(pc.getPlayer().getId());
         t.getPairingCardSet().remove(pc);
         pcRepo.delete(pc);
+        pcRepo.flush();
         return t;
     }
 
