@@ -21,7 +21,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -78,23 +77,23 @@ public class Post implements Serializable {
         if (plt == null) {
             this.dateExpires = null;
         } else {
-            DateTime currentDate = new DateTime();
+            Calendar c = Calendar.getInstance();
             switch (plt.value) {
                 case 1:
-                    currentDate.plusDays(7);
+                    c.add(Calendar.DATE, 7);
                     break;
                 case 2:
-                    currentDate.plusDays(14);
+                    c.add(Calendar.DATE, 14);
                     break;
                 case 3:
-                    currentDate.plusDays(21);
+                    c.add(Calendar.DATE, 21);
                     break;
                 default:
-                    currentDate.plusDays(1);
+                    c.add(Calendar.DATE, 7);
                     break;
 
             }
-            this.dateExpires = currentDate.toDate();
+            this.dateExpires = c.getTime();
         }
     }
 
