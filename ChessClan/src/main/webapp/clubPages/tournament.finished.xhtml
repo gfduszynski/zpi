@@ -11,7 +11,7 @@
             </script>
             <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
                 <h:outputText value="Turniej zakończony! Wyniki:"/>
-                <c:forEach items="#{cTmtCBean.results.keySet.iterator}" var="result" varStatus="loop">
+                <c:forEach items="#{cTmtCBean.results.keySet().toArray()}" var="result" varStatus="loop">
                     <h:outputText value="Miejsce #{loop.index+1}: #{result.firstName} #{result.lastName} Ilość punktów: #{cTmtCBean.results.get(result)}"/>
                     <br/>
                 </c:forEach>
