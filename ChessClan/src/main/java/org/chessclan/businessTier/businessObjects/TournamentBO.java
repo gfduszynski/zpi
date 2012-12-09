@@ -50,7 +50,8 @@ public interface TournamentBO{
     public List<Tournament> findTournamentsWithClubAndRoundsAndPC();
     @Transactional 
     public List<Tournament> findUserTournaments(User user);    
-    Map<User, Integer> getResults(Tournament t);
+    Map<User, Float> getResults(Tournament t);
     @Transactional
     public Set<PairingCard> filterUniquePairingCards(Round currentRound);
+    public PairingCard savePairingCard(PairingCard pc);
 }
