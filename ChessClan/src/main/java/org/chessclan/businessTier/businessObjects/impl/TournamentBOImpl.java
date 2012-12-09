@@ -183,7 +183,6 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             PairingCard p = new PairingCard(sortedPlayers.get(0), currentRound);
             p.setByes(p.getByes() + 1);
             p.setColor(PairingCard.Color.NO_COLOR);
-            p.setScore(p.getScore() + 1);
             p.setOpponent(null);
             newPairingCards.add(p);
         }
@@ -287,17 +286,17 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Override
-    public Map<User, Integer> getResults(Tournament tmt) {
-        Map<User, Integer> result = new HashMap<User, Integer>();
+    public Map<User, Float> getResults(Tournament tmt) {
+        Map<User, Float> result = new HashMap<User, Float>();
         for (PairingCard pc : tmt.getPairingCardSet()) {
             if(!result.containsKey(pc.getPlayer()))
             {
-                result.put(pc.getPlayer(), (int)pc.getScore());
+                result.put(pc.getPlayer(), pc.getScore());
             }
             else
             {
-                Integer tmp = result.get(pc.getPlayer());
-                result.put(pc.getPlayer(), tmp+(int)pc.getScore());
+                Float tmp = result.get(pc.getPlayer());
+                result.put(pc.getPlayer(), tmp+pc.getScore());
             }
         }
         return result;
@@ -387,7 +386,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     @Override
     @Transactional
     public void deleteTournament(Tournament t) {
-        
+        t = tRepo.findOne(t.getId());
         /*if (t.getRoundSet() != null) {
             for (Round r : t.getRoundSet()) {
                 rRepo.delete(r);
@@ -399,7 +398,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             }
         }*/
         catRepo.findOne(t.getCategory().getId());
-        rRepo.findOne(t.getCurrentRound().getId());
+        //rRepo.findOne(t.getCurrentRound().getId());
         
         tRepo.delete(t);
         tRepo.flush();
@@ -470,5 +469,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             }
         }
         return userTmt;
+    }
+    @Override
+    public PairingCard savePairingCard(PairingCard pc){
+        return pcRepo.saveAndFlush(pc);
     }
 }

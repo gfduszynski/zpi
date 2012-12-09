@@ -5,6 +5,7 @@
 package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class ClubTournamentCreatorBean implements Serializable {
     @ManagedProperty("#{UserManagementBO}")
     private UserManagementBO umBO;
     private List<User> foundUsers;
-    private Map<User, Integer> results;
+    private Map<User, Float> results;
     
     public ClubTournamentCreatorBean() {
         this.nowInMods = false;
@@ -48,14 +49,36 @@ public class ClubTournamentCreatorBean implements Serializable {
     public void loadTmt(Tournament t) {
 
         this.currentTmt = tmBO.fetchRelations(t);
-
         nowInMods = true;
+        if(currentTmt.getState() == Tournament.State.FINISHED)
+        {
+            this.results = tmBO.getResults(currentTmt);
+        }
     }
     
     public int getNumberOfPlayers(){
         return tmBO.filterUniquePairingCards(currentTmt.getCurrentRound()).size();
     }
-
+    
+    public void winner(PairingCard pc, int status){
+        switch(status){
+            case 1:
+                pc.setScore(currentTmt.getPointsForBye());
+                pc.getOpponent().setScore(0);
+                break;
+            case 0:
+                pc.setScore(currentTmt.getPointsForBye()/2);
+                pc.getOpponent().setScore(currentTmt.getPointsForBye()/2);
+                break;
+            case -1:
+                pc.setScore(0);
+                pc.getOpponent().setScore(currentTmt.getPointsForBye());
+                break;
+        }
+        tmBO.savePairingCard(pc);
+        tmBO.savePairingCard(pc.getOpponent());
+    }
+        
     public void addPlayer(User user) throws NotJoinableRound {
         tmBO.joinTournament(currentTmt, user);
     }
@@ -158,15 +181,18 @@ public class ClubTournamentCreatorBean implements Serializable {
         this.notValidCriteria = notValidCriteria;
     }
 
-    public Map<User, Integer> getResults() {
+    public Map<User, Float> getResults() {
         return results;
     }
 
-    public void setResults(Map<User, Integer> results) {
+    public void setResults(Map<User, Float> results) {
         this.results = results;
     }
 
     public Set<PairingCard> getFilteredCurrentRoundPC(){
-        return this.tmBO.filterUniquePairingCards(this.currentTmt.getCurrentRound());
+        Set<PairingCard> filterUniquePairingCards = this.tmBO.filterUniquePairingCards(this.currentTmt.getCurrentRound());
+        for(PairingCard pc:filterUniquePairingCards){
+        }
+        return filterUniquePairingCards;
     }
 }

@@ -16,37 +16,30 @@
                 <div class="tournament">
                     <span class="pairingcards">
                         <p>Rezultat rundy #{cTmtCBean.currentTmt.currentRound.number+1}</p>
-                        <div class="pairingcards-list">
+                        <h:panelGroup layout="block" styleClass="pairingcards-list" id="pairing-card-list">
                             <c:forEach items="#{cTmtCBean.getFilteredCurrentRoundPC()}" var="pc" varStatus="loop">
                                 <c:if test="#{pc.opponent != null}">
-                                    <div class="pairingcard">
+                                    <h:panelGroup layout="block" styleClass="pairingcard">
                                         <div class="choose">
-                                            <h:selectOneRadio layout="pageDirection" value="#{pc.score}" styleClass="option-list" >
-                                                <f:selectItem itemValue="1" itemLabel="">
-                                                    <f:ajax execute="#{pc.setScore(cTmtCBean.currentTmt.pointsForBye)}"/>
-                                                    <f:ajax execute="#{pc.opponent.setScore(0)}"/>
-                                                </f:selectItem>
-                                                <f:selectItem itemValue="0" itemLabel="">
-                                                    <f:ajax execute="#{pc.opponent.setScore(cTmtCBean.currentTmt.pointsForBye/2)}"/>
-                                                    <f:ajax execute="#{pc.setScore(cTmtCBean.currentTmt.pointsForBye/2)}"/>
-                                                </f:selectItem>
-                                                <f:selectItem itemValue="-1" itemLabel="">
-                                                    <f:ajax execute="#{pc.opponent.setScore(cTmtCBean.currentTmt.pointsForBye)}"/>
-                                                    <f:ajax execute="#{pc.setScore(0)}"/>
-                                                </f:selectItem>
+                                            <h:selectOneRadio layout="pageDirection" value="#{state}" styleClass="option-list">
+                                                <f:selectItem itemValue="#{1}" itemLabel=""></f:selectItem>
+                                                <f:selectItem itemValue="#{0}" itemLabel=""></f:selectItem>
+                                                <f:selectItem itemValue="#{-1}" itemLabel=""></f:selectItem>
+                                                <f:ajax event="change" execute="@this" listener="#{cTmtCBean.winner(pc,state)}" render="pairing-card-list"></f:ajax>
                                             </h:selectOneRadio>
+                                                
                                         </div>
                                         <div class="pairingcard-player #{pc.color == 'BLACK'?'black':'white'}">
-                                            <span>#{pc.player.firstName} #{pc.player.lastName} #{pc.score}</span>
+                                            <span>#{pc.player.firstName} #{pc.player.lastName}</span>
                                             <p class="details">#{pc.player.email}</p>
                                             <p class="details">#{pc.player.userClub.name}</p>
                                         </div>
                                         <div class="pairingcard-player #{pc.opponent.color == 'BLACK'?'black':'white'}">
-                                            <span>#{pc.opponent.player.firstName} #{pc.opponent.player.lastName} #{pc.opponent.score}</span>
+                                            <span>#{pc.opponent.player.firstName} #{pc.opponent.player.lastName}</span>
                                             <p class="details">#{pc.opponent.player.email}</p>
                                             <p class="details">#{pc.opponent.player.userClub.name}</p>
                                         </div>
-                                    </div>
+                                    </h:panelGroup>
                                 </c:if>
                                 <c:if test="#{pc.opponent == null}">
                                     <div class="pairingcard">
@@ -58,7 +51,7 @@
                                     </div>
                                 </c:if>
                             </c:forEach>
-                        </div>
+                        </h:panelGroup>
                     </span>
                     <span class="spacer"></span>
                     <h:panelGroup id="list" styleClass="tournament-summary">
