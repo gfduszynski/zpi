@@ -14,62 +14,45 @@
         <h:outputScript library="js" name="jquery.js"/>
         <h:outputScript library="js" name="jquery-ui.js"/>
         <h:outputScript library="js" name="jquery.dotdotdot.js"/>
+        <h:outputScript library="js" name="jquery.mousewheel.min.js"/>
         <h:outputStylesheet library="css" name="mainStyle.css"/>
 
-        <script>
-            var page = 1;
-            $(document).ready(function() {
-                 $(".group:lt(16)").show(1000);
-             });
-        </script>
-        
-        <script>
-            $(function(){
-                function previousPageFC(event) {
-                    page--;
-                    $('.group').hide();
-                    $('.group').slice((page-1)*16,page*16).show(1000);
-                    return false;
-                }
-                function nextPageFC(event) {
-                    page++;
-                    $('.group').hide();
-                    $('.group').slice((page-1)*16,page*16).show(1000);
-                    return false;
-                }
-                $('#previousPage').click(previousPageFC);
-                $('#gotonextPage').click(nextPageFC);
-                $('a[href$="-1"]').attr("href", "#");
-            });
-        </script>
-                
     </h:head>
     <h:body>
-       
+        <script type="text/javascript">
+            $(function() {
+                $(".news-browser").mousewheel(function(event, delta) {
+                    this.scrollLeft -= (delta * 30);
+                    event.preventDefault();
+                });
+                var id = document.location.href.split("#")[1];
+                $(".news-browser-entry[id=" + id + "]").addClass("news-browser-entry-target");
+            });
+        </script>
         <h:panelGroup layout="block" class="content" id="full-content">
             <ui:include src="../pages/header.xhtml"/>
+            <a href="#{request.contextPath}" class="news-return-link"><p>« Powrót na stronę główną</p></a>
             <div class="news-browser">
-                <c:set var="lastDateProcessed" scope="request" value="#{null}" />
-                
-                    <c:forEach  items="#{pvBean.postDates}" var="date">
-                        <span class="news-browser-day">
-                            <div class="news-browser-entries">
-                                <c:forEach  items="#{pvBean.posts}" var="post" rendered="#{pvBean.selectedPost == null}" varStatus="loop">
-                                    <c:if test="#{post.datePublished.equals(date)}">
-                                    <div class="news-browser-entry">
-                                    <h:outputText value="#{post.title}"/>
-                                    <h:outputText value="Dodał: #{post.user.email}"/>
-                                    <h:outputText value="#{post.datePublished}"/><br/>
-                                    <h:outputText class="desc" value="#{post.content}"/>
-                                    
+                <c:forEach  items="#{pvBean.postDates}" var="date">
+                    <span class="news-browser-day">
+                        <div class="news-browser-entries">
+                            <c:forEach  items="#{pvBean.posts}" var="post" rendered="#{pvBean.selectedPost == null}" varStatus="loop">
+                                <c:if test="#{post.datePublished.equals(date)}">
+                                    <div id="#{post.id}" class="news-browser-entry">
+                                        <p class="title">#{post.title}</p>
+                                        <p class="author">#{post.user.email}</p>
+                                        <p class="date">#{post.datePublished}</p>
+                                        <p class="content">#{post.content}</p>                                    
                                     </div>
-                                    </c:if>
-                                </c:forEach>
-                            </div>
-                            <div class="news-browser-date">opublikowano dnia #{date}</div>
-                        </span>
-                    </c:forEach>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                        <div class="news-browser-date">opublikowano dnia #{date}</div>
+                    </span>
+                </c:forEach>
             </div>
+            <a href="#{request.contextPath}" class="news-return-link"><p>« Powrót na stronę główną</p></a>
+            <ui:include src="../pages/footer.xhtml"/>
         </h:panelGroup>
     </h:body>
 </html>
