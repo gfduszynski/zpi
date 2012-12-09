@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.servlet.ServletException;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
@@ -24,7 +24,7 @@ import org.chessclan.dataTier.models.User;
  * @author Daniel
  */
 @ManagedBean(name = "rgsBean")
-@SessionScoped
+@ViewScoped
 public class RegistrationBean implements Serializable {
 
     private String firstName;
@@ -201,9 +201,10 @@ public class RegistrationBean implements Serializable {
         boolean val3 = validateBD();
         boolean val4 = validateEmail();
         boolean val5 = validateStatute();
+        boolean val6 = validatePassword();
         System.out.print("registrating...");
         System.out.println("params: " + val1 + " : " + val2 + " : " + val3 + " : " + val4 + " : " + val5 + " : ");
-        if (val1 && val2 && val3 && val4 && val5) {
+        if (val1 && val2 && val3 && val4 && val5 && val6) {
             User u = umBO.registerUser(email, email, true, password, firstName, lastName, birthDate, sex);
             umBO.assignRole(u.getId(), Role.Type.USER);
             this.regSucceeded = true;
