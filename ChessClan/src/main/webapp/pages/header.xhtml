@@ -50,21 +50,30 @@
                     <div id="chess-player"></div>
                     <div class="chess-player-show"><div class="line"/><span class="chess-player-show-content">ChessPlayer</span></div>
                 </div>
-                
+
                 <c:if test="#{not loginBean.loggedUser}">
                     <script>
-                            function showPassReminder() {
-                                $('#editContainer').load('pages/passwordReminder.xhtml');
-                                $('#loginForm').slideUp('fast');
-                            }
-                        </script>
+                        function showPassReminder() {
+                            $('#editContainer').load('pages/passwordReminder.xhtml');
+                            $('#loginForm').slideUp('fast');
+                        }
+                    </script>
                     <h:form id="loginForm" prependId="false" class="loginStuff">
-                        <h:outputText value="Zły login lub hasło." rendered="#{loginBean.loginError}"/><br/>
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                if($('#j_usernameError').html() != '' || $('#j_passwordError').html() != ''){
+                                    $('#logicLoginError').remove();
+                                    $('#logicLoginError2').remove();
+                                }
+                            });
+                        </script>
                         <h:panelGrid columns="2">
                             <h:outputText value="Login:" />
                             <h:outputText value="Hasło:" />
-                            <h:message for="j_username"/>
-                            <h:message for="j_password"/>
+                            <h:message for="j_username" styleClass="error" id="j_usernameError"/>
+                            <h:message for="j_password" styleClass="error" id="j_passwordError"/>
+                            <h:outputText value="Nieprawidłowy email lub hasło." rendered="#{loginBean.loginError}" styleClass="error" id="logicLoginError"/>
+                            <h:outputText value="   " rendered="#{loginBean.loginError}"  id="logicLoginError2"/>
                             <h:inputText id="j_username" value="#{loginBean.username}" required="true" styleClass="logUser" requiredMessage="Nie podałeś emaila."/>
                             <h:inputSecret id="j_password" value="#{loginBean.password}" required="true" redisplay="true" styleClass="logPass" requiredMessage="Nie podałeś hasła."/>
                             <h:panelGroup layout="block">
