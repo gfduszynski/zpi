@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:body>
+        <ui:composition>
+            <script type="text/javascript">
+                document.title = "ChessClan - Turniej - Przygotuj";
+            </script>
+            <h:commandLink value="Rozpocznij turniej »" styleClass="next-round">
+                    <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
+            </h:commandLink>
+            <div class="tournament">
+                <span class="invite">
+                    <p>Zaproś uczestników</p>
+                    <div class="search">
+                        <span>Wpisz imię lub nazwisko:</span>
+                        <h:inputText value="#{cTmtCBean.search}">
+                            <f:ajax event="keyup" execute="@this" render="foundUsers" listener="#{cTmtCBean.findUsers}"/>
+                            <f:ajax event="click" render="@this" listener="#{cTmtCBean.setSearch('')}"/>
+                        </h:inputText>
+                    </div>
+
+                    <h:panelGroup id="foundUsers" layout="span">
+                        <p>Znalezieni uczestnicy:</p>
+                        <c:forEach items="#{cTmtCBean.foundUsers}" var="user" varStatus="loop">
+                            <c:if test="#{!cTmtCBean.isMember(user)}">
+                                <div class="player">
+                                    <h:commandButton value="+" styleClass="add">
+                                        <f:ajax render="@form" listener="#{cTmtCBean.addPlayer(user)}"/>
+                                    </h:commandButton>
+                                    <span>#{user.firstName} #{user.lastName}</span>
+                                    <p class="details">#{user.userClub.name}</p>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                    </h:panelGroup>
+                </span>
+                <span class="spacer"></span>
+                <h:panelGroup id="list" styleClass="list">
+                    <p>Zaproszeni uczestnicy</p>
+                    <c:forEach items="#{cTmtCBean.currentTmt.pairingCardSet}" var="pc" varStatus="loop">
+                        <div class="player">
+                            <h:commandButton value="x" styleClass="remove">
+                                <f:ajax render="@form" listener="#{cTmtCBean.removeUser(pc)}"/>
+                            </h:commandButton>
+                            <span>#{pc.player.firstName} #{pc.player.lastName}</span>
+                            <p class="details">#{pc.player.userClub.name}</p>
+                        </div>
+                    </c:forEach>
+                    <span class="summary">
+                        <p>liczba graczy: #{cTmtCBean.currentTmt.pairingCardSet.size()}</p> 
+                    </span>
+                </h:panelGroup>
+            </div>
+            <h:commandLink value="Rozpocznij turniej »" styleClass="next-round">
+                    <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
+            </h:commandLink>
+        </ui:composition>
+    </h:body>
+</html>

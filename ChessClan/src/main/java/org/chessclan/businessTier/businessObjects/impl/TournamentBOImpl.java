@@ -426,7 +426,8 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
                 tRes.getCurrentRound().getNextRound().getId().toString();
             }
         }
-
+        tRes.getCategory().getName();
+        tRes.getClub().getName();
         return tRes;
     }
 
