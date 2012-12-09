@@ -20,54 +20,53 @@
 
     <h:body>
         <h:panelGroup layout="block" class="content">
-
-            <div id="editContainer"></div>
-
             <ui:include src="pages/header.xhtml"/>
+            <div class="body">            
+                <div id="editContainer"></div>
+                <c:if test="#{not loginBean.loggedUser}">
+                    <h:panelGroup layout="block" class="elements">
+                        <h:panelGroup layout="block" class="firstColumn">
+                            <h:panelGroup layout="block" class="one">
 
-            <c:if test="#{not loginBean.loggedUser}">
-                <h:panelGroup layout="block" class="elements">
-                    <h:panelGroup layout="block" class="firstColumn">
-                        <h:panelGroup layout="block" class="one">
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" class="two">
 
+                            </h:panelGroup>
                         </h:panelGroup>
-                        <h:panelGroup layout="block" class="two">
+                        <h:panelGroup layout="block" class="secondColumn">
+                            <h:panelGroup layout="block" class="three">
+                                <ui:include src="pages/registration.xhtml"/>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" class="thirdColumn">
+                            <h:panelGroup layout="block" class="four">
+                                <ui:include src="pages/latestTournaments.xhtml"/>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" class="five">
+                                <ui:include src="pages/latestPosts.xhtml"/>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" class="fourthColumn">
+                            <h:panelGroup layout="block" class="six">
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" class="seven">
 
+                            </h:panelGroup>
                         </h:panelGroup>
                     </h:panelGroup>
-                    <h:panelGroup layout="block" class="secondColumn">
-                        <h:panelGroup layout="block" class="three">
-                            <ui:include src="pages/registration.xhtml"/>
-                        </h:panelGroup>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" class="thirdColumn">
-                        <h:panelGroup layout="block" class="four">
-                            <ui:include src="pages/latestTournaments.xhtml"/>
-                        </h:panelGroup>
-                        <h:panelGroup layout="block" class="five">
-                            <ui:include src="pages/latestPosts.xhtml"/>
-                        </h:panelGroup>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" class="fourthColumn">
-                        <h:panelGroup layout="block" class="six">
-                        </h:panelGroup>
-                        <h:panelGroup layout="block" class="seven">
-
-                        </h:panelGroup>
-                    </h:panelGroup>
-                </h:panelGroup>
-            </c:if>
-            <c:if test="#{loginBean.loggedUser}">
-                <sec:authorize access="hasRole('USER')">
-                    <ui:include src="userPages/userDashboard.xhtml" rendered="#{sec:areAnyGranted('USER')}"/>
-                </sec:authorize>
-                <sec:authorize access="hasRole('CLUB_OWNER')">
-                    <ui:include src="clubPages/clubDashboard.xhtml"/>
-                </sec:authorize>
-                <sec:authorize access="hasRole('ADMIN')">
-                    <ui:include src="administration/dashboard.xhtml"/>
-                </sec:authorize>
-            </c:if>
+                </c:if>
+                <c:if test="#{loginBean.loggedUser}">
+                    <sec:authorize access="hasRole('USER')">
+                        <ui:include src="userPages/userDashboard.xhtml" rendered="#{sec:areAnyGranted('USER')}"/>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('CLUB_OWNER')">
+                        <ui:include src="clubPages/clubDashboard.xhtml"/>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ADMIN')">
+                        <ui:include src="administration/dashboard.xhtml"/>
+                    </sec:authorize>
+                </c:if>
+            </div>
             <ui:include src="/pages/footer.xhtml"/>
         </h:panelGroup>
     </h:body>

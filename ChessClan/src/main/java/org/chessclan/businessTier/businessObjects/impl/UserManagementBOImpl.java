@@ -155,7 +155,13 @@ public class UserManagementBOImpl implements UserManagementBO {
     public List<User> findByFirstnameAndLastname(String fn, String ln) {
         return fetchClubs(userRepo.findByFirstNameAndLastName(fn, ln));
     }
-
+    
+    @Override
+    @Transactional
+    public List<User> findByFirstNameContainingOrLastNameContaining(String fn, String ln){
+        return userRepo.findByFirstNameContainingOrLastNameContaining(fn, ln);
+    }
+    
     @Override
     public List<User> findByFirstname(String fn) {
         userRepo.findByFirstName(fn);

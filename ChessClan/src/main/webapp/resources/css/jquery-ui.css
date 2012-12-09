@@ -240,6 +240,7 @@ body .ui-tooltip { border-width: 2px; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: MyriadPro,Arial,sans-serif; font-size: 1em; }
 .ui-widget-content { border: 1px solid #aaaaaa; background: #f9f6f4 url("jqueryui/ui-bg_glow-ball_75_f9f6f4_600x600.png.xhtml?ln=images") 50% 35% repeat-x; color: #000000; }
 .ui-widget-content a { color: #000000; }
+.ui-widget-content a:hover{ color:#00AAE8; }
 .ui-widget-header { border: 1px solid #00aae8; background: #00aae8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat; color: #222222; font-weight: bold; }
 .ui-widget-header a { color: #222222; }
 
