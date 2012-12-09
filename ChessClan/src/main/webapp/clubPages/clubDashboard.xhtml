@@ -218,9 +218,12 @@
                     </h:form>
                 </div>
                 <div id="tabs-4">
+                    <h:outputStylesheet library="css" name="tipsy.css"/>
+                    <h:outputScript library="js" name="jquery.tipsy.js"/>
+                    <h:outputScript library="js" name="validation.js"/>
                     <h:form prependId="false">
                         <h:panelGroup rendered="#{not crTmtBean.createTmtSuccess}">
-                            <h:outputText rendered="#{not crTmtBean.dateValid}" styleClass="error right" value="Data turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
+                            <h:inputHidden id="hiddenMsg" value="Opis turnieju niepoprawny."/>
                             <h2>Nowy turniej</h2>
                             <script type="text/javascript" charset="utf-8" >
                                 //<![CDATA[ 
@@ -260,19 +263,39 @@
                                 });
                                 //]]>
                             </script>
-                            <h:outputText id="nameError" rendered="#{not crTmtBean.nameValid}" styleClass="error" value="Nazwa turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
-                            <h:inputText value="#{crTmtBean.tmtName}" id="tmtName">
-                                <f:ajax event="blur" execute="@this" render="@form" listener="#{crTmtBean.validateTournamentName}"/>
-                            </h:inputText>
+                            <h:panelGroup id="tmtNameGroup">
+                                <h:panelGroup rendered="#{not crTmtBean.nameValid}">
+                                    <script type="text/javascript">
+                                        showTips(tmtName, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 's');
+                                    </script>
+                                </h:panelGroup>
+                                <h:inputText value="#{crTmtBean.tmtName}" id="tmtName" alt="Nazwa turnieju niepoprawna.">
+                                    <f:ajax event="blur" execute="@this" render="tmtNameGroup" listener="#{crTmtBean.validateTournamentName}" onevent="hideTips(tmtName)"/>
+                                </h:inputText>
+                            </h:panelGroup>
                             <h:outputText value="Data odbycia turnieju: " styleClass="addPostDate"/>
-                            <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate">
-                                <f:convertDateTime pattern="d-M-yyyy" />
-                                <f:ajax event="change" execute="@this" render="@form" listener="#{crTmtBean.validateDate}"/>
-                            </h:inputText><br/>
-                            <h:panelGroup>
-                                <h:outputText rendered="#{not crTmtBean.descValid}" styleClass="error" value="Opis turnieju niepoprawny.&lt;br/&gt;" escape="false"/>
+                            <h:panelGroup id="dateGroup">
+                                <h:panelGroup rendered="#{not crTmtBean.dateValid}">
+                                    <script type="text/javascript">
+                                        showTips(tmtDate, function(val){
+                                            var dateRegex = /^(\d{1,2})\-(\d{1,2})\-(\d{4})$/; 
+                                            if(val.match(dateRegex))return true; else return false;}, 0, false, 0, 's');
+                                    </script>
+                                </h:panelGroup>
+                                <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate" alt="Data niepoprawna.">
+                                    <f:convertDateTime pattern="d-M-yyyy" />
+                                    <f:ajax event="change" execute="@this" render="dateGroup" listener="#{crTmtBean.validateDate}" onevent="hideTips(tmtDate)"/>
+                                </h:inputText>
+                            </h:panelGroup>
+                            <br/>
+                            <h:panelGroup id="tmtDescGroup">
+                                <h:panelGroup rendered="#{not crTmtBean.descValid}">
+                                    <script type="text/javascript">
+                                        showTips(tmtDescription, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 'w');
+                                    </script>
+                                </h:panelGroup>
                                 <h:inputTextarea value="#{crTmtBean.tmtDescription}" styleClass="addTourContent" id="tmtDescription">
-                                    <f:ajax event="blur" execute="@this" render="@form" listener="#{crTmtBean.validateTournamentDesc}"/>
+                                    <f:ajax event="blur" execute="@this" render="tmtDescGroup" listener="#{crTmtBean.validateTournamentDesc}" onevent="hideTips(tmtDescription)"/>
                                 </h:inputTextarea>
                             </h:panelGroup><br/>
                             <h:outputText rendered="#{not crTmtBean.pointsValid}" styleClass="error" value="Liczba punktów niepoprawna.&lt;br/&gt;" escape="false"/>

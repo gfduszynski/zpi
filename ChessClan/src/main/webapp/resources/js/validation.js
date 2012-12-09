@@ -25,6 +25,7 @@ function showTips(input, criteria, index, notErrorMsg, offst, pos){
         });
         if(!criteria(jInput.val())){
             jInput.tipsy('show');
+            console.log('Show!');
         }
         jInput.keyup(function() {
             if(criteria(jInput.val())){
