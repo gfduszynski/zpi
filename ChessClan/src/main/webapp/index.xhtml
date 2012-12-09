@@ -68,22 +68,7 @@
                     <ui:include src="administration/dashboard.xhtml"/>
                 </sec:authorize>
             </c:if>
-            <h:panelGroup layout="block" styleClass="footer">
-                <h:panelGrid columns="4" columnClasses="footerCol1,footerCol2,footerCol3" styleClass="footerGrid">
-                    <h:panelGroup layout="block" styleClass="logoFooter"></h:panelGroup>
-                    <h:panelGroup>
-                        ChessClan - portal zarządzania turniejami szachowymi <br/>
-                        Politechnika Wrocławska 2012 <br/> projekt Zespołowego Przedsięwzięcia Inżynierskiego <br/> 
-                    </h:panelGroup>
-                    <h:panelGroup>
-                    Grzegorz Duszyński <br/>
-                    Daniel Engel <br/>
-                    Tomasz Piechaczek <br/>
-                    Mateusz Pokrywka <br/>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="footerFaces"></h:panelGroup>
-                </h:panelGrid>
-            </h:panelGroup>
+            <ui:include src="../pages/footer.xhtml"/>
         </h:panelGroup>
     </h:body>
 
