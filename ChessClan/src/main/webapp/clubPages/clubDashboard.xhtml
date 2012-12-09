@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:h="http://java.sun.com/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
+    <head>
         <title>ChessClan</title>
-    </h:head>
+    </head>
     <h:body>
         <ui:composition>
             <script>
@@ -21,35 +22,15 @@
                     <li><a href="#tabs-4">Nowy turniej</a></li>
                 </ul>
                 <div id="tabs-1">
-                    <h:form prependId="false" id="clubTmtsForm" onkeypress="if (event.keyCode == 13) {return false; }">
+                    <h:form prependId="false" id="clubTmtsForm">
                         <c:if test="#{(not empty ctBean.clubTournaments) and (not cTmtCBean.nowInMods)}">
-                            <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
-                                <h:panelGroup layout="block"  styleClass='#{loop.index%2==1?"tmtContainer right":"tmtContainer left"}'>
-                                    #{tmt.name} <a href="#{request.contextPath}/tournaments/#{tmt.id}">Wyświetl szczegółowy widok</a><br/>
-                                    Data: #{tmt.date}<br/>
-                                    Opis: #{tmt.description}<br/>
-                                    Ilość rund: #{tmt.numberOfRounds}<br/>
-                                    Punkty potrzebne do odejścia: #{tmt.pointsForBye}<br/>
-                                    <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2">
-                                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
-                                    </h:commandButton>
-                                    <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2">
-                                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
-                                    </h:commandButton>
-                                    <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Pokaż wyniki turnieju" styleClass="allButton2">
-                                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
-                                    </h:commandButton>
-                                    <h:commandButton value="Usuń turniej" styleClass="allButton2">
-                                        <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
-                                    </h:commandButton>
-                                </h:panelGroup>
-                            </c:forEach>
+                            <ui:include src="tournaments.xhtml"/>
                         </c:if>
                         <c:if test="#{empty ctBean.clubTournaments}">
                             <h:outputText value="Nie masz żadnych zgłoszonych turnieji."/>
                         </c:if>
                         <c:if test="#{cTmtCBean.nowInMods}">
-                            <ui:include src="tmtCreator.xhtml"/>
+                            <ui:include src="tournament.xhtml"/>
                         </c:if>
                     </h:form>
                 </div>

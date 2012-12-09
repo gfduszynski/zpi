@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:body>
+        <ui:composition>
+            <script type="text/javascript">
+                document.title = "ChessClan - Turniej - Wyniki";
+            </script>
+            <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
+                <h:outputText value="Turniej zakończony! Wyniki:"/>
+                <c:forEach items="#{cTmtCBean.results.keySet.iterator}" var="result" varStatus="loop">
+                    <h:outputText value="Miejsce #{loop.index+1}: #{result.firstName} #{result.lastName} Ilość punktów: #{cTmtCBean.results.get(result)}"/>
+                    <br/>
+                </c:forEach>
+            </c:if>
+        </ui:composition>
+    </h:body>
+</html>

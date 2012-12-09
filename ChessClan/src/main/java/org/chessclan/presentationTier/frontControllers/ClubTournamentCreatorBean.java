@@ -32,8 +32,7 @@ public class ClubTournamentCreatorBean implements Serializable {
 
     private boolean nowInMods;
     private boolean notValidCriteria;
-    private String searchFN;
-    private String searchLN;
+    private String search;
     private Tournament currentTmt;
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
@@ -52,10 +51,13 @@ public class ClubTournamentCreatorBean implements Serializable {
 
         nowInMods = true;
     }
+    
+    public int getNumberOfPlayers(){
+        return tmBO.filterUniquePairingCards(currentTmt.getCurrentRound()).size();
+    }
 
     public void addPlayer(User user) throws NotJoinableRound {
-        PairingCard result = tmBO.joinTournament(currentTmt, user);
-        this.currentTmt.getPairingCardSet().add(result);
+        tmBO.joinTournament(currentTmt, user);
     }
 
     public void removeUser(PairingCard pc) throws NotJoinableRound {
@@ -63,19 +65,11 @@ public class ClubTournamentCreatorBean implements Serializable {
     }
 
     public void findUsers() {
-        if (searchFN == null || searchFN.isEmpty()) {
-            if (searchLN == null || searchLN.isEmpty()) {
+        if (search == null || search.isEmpty()) {
                 this.notValidCriteria = true;
                 return;
-            } else {
-                this.foundUsers = umBO.findByLastname(searchLN);
-            }
         } else {
-            if (searchLN == null || searchLN.isEmpty()) {
-                this.foundUsers = umBO.findByFirstname(searchFN);
-            } else {
-                this.foundUsers = umBO.findByFirstnameAndLastname(searchFN, searchLN);
-            }
+            this.foundUsers = umBO.findByFirstNameContainingOrLastNameContaining(search, search);
         }
         if (foundUsers.size() > 0) {
             this.notValidCriteria = false;
@@ -131,21 +125,14 @@ public class ClubTournamentCreatorBean implements Serializable {
         this.tmBO = tmBO;
     }
 
-    public String getSearchFN() {
-        return searchFN;
+    public String getSearch() {
+        return search;
     }
 
-    public void setSearchFN(String searchFN) {
-        this.searchFN = searchFN;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
-    public String getSearchLN() {
-        return searchLN;
-    }
-
-    public void setSearchLN(String searchLN) {
-        this.searchLN = searchLN;
-    }
 
     public UserManagementBO getUmBO() {
         return umBO;

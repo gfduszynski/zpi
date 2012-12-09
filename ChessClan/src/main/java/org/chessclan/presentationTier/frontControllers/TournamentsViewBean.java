@@ -31,7 +31,6 @@ import org.chessclan.dataTier.models.User;
 @ViewScoped
 public class TournamentsViewBean implements Serializable {
 
-    @Transient
     @ManagedProperty("#{TournamentBO}")
     private TournamentBO tmBO;
     private List<Tournament> allTournaments;
