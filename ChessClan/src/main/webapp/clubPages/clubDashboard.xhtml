@@ -203,12 +203,14 @@
                         <h:panelGroup rendered="#{not crTmtBean.createTmtSuccess}">
                             <h:outputText rendered="#{not crTmtBean.dateValid}" styleClass="error right" value="Data turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
                             <h2>Nowy turniej</h2>
-                            <script type="text/javascript" charset="utf-8">
+                            <script type="text/javascript" charset="utf-8" >
+                                //<![CDATA[ 
                                 $(document).ready(function() {
                                     $("#tmtDate").datepicker({
                                         changeMonth: true,
                                         changeYear: true,
                                         dateFormat: "d-m-yy"});
+                                    $("#pointsSpinner").prop("disabled", true);
                                     $("#pointsSpinner").spinner({
                                         step: 0.5,
                                         spin: function( event, ui ) 
@@ -217,16 +219,27 @@
                                             if(!$.isNumeric(points)){
                                                 $('#drawPoints').html(' Podana wartość nie jest liczbą.');
                                             }else{
-                                                if(points>0){
-                                                    $('#drawPoints').html(' Punkty za remis: '+points/2);
-                                                }else{
-                                                    $('#drawPoints').html(' Liczba ta musi być dodatnia.');
+                                                if(points<1){
+                                                    $(this).spinner( "value", 1 );
+                                                    return false;
                                                 }
+                                                $('#drawPoints').html(' Punkty za remis: '+points/2);
                                             }
                                         }
                                     });
-                                    $("#roundsSpinner").spinner();                                    
+                                    $("#roundsSpinner").prop("disabled", true);
+                                    $("#roundsSpinner").spinner({
+                                        spin: function(event, ui)
+                                        {
+                                            if(ui.value < 1) 
+                                            {
+                                                $(this).spinner( "value", 1 );
+                                                return false;
+                                            }
+                                        }
+                                    });                                    
                                 });
+                                //]]>
                             </script>
                             <h:outputText id="nameError" rendered="#{not crTmtBean.nameValid}" styleClass="error" value="Nazwa turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
                             <h:inputText value="#{crTmtBean.tmtName}" id="tmtName">
@@ -249,9 +262,7 @@
                             <h:outputText value=" Punkty za remis: #{crTmtBean.pointsForBye/2}" id="drawPoints"/><br/>
                             <h:outputText rendered="#{not crTmtBean.roundsValid}" styleClass="error" value="Liczba rund turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
                             <h:outputText value="Ilość rund: "/>
-                            <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner" styleClass="marL5">
-                                <!--<f:ajax render="@form" listener="#{crTmtBean.validateRounds}"/>-->
-                            </h:inputText><br/>
+                            <h:inputText value="#{crTmtBean.numberOfRounds}" id="roundsSpinner" class="marL5"/><br/>
                             <h:panelGroup id="catsSubForm">
                                 <h:panelGroup layout="block" rendered="#{not empty crTmtBean.tmtCategories}" style="display: block;">
                                     <h4>Kategoria turnieju:</h4>
