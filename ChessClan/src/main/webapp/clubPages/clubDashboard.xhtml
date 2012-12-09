@@ -204,15 +204,11 @@
                     <h:outputScript library="js" name="validation.js"/>
                     <h:form prependId="false">
                         <h:panelGroup rendered="#{not crTmtBean.createTmtSuccess}">
-                            <h:inputHidden id="hiddenMsg" value="Opis turnieju niepoprawny."/>
+                            <h:inputHidden id="hiddenMsg" value="Opis turnieju niepoprawny.;Turniej musi posiadać kategorię."/>
                             <h2>Nowy turniej</h2>
                             <script type="text/javascript" charset="utf-8" >
                                 //<![CDATA[ 
                                 $(document).ready(function() {
-                                    $("#tmtDate").datepicker({
-                                        changeMonth: true,
-                                        changeYear: true,
-                                        dateFormat: "d-m-yy"});
                                     $("#pointsSpinner").prop("disabled", true);
                                     $("#pointsSpinner").spinner({
                                         step: 0.5,
@@ -247,7 +243,7 @@
                             <h:panelGroup id="tmtNameGroup">
                                 <h:panelGroup rendered="#{not crTmtBean.nameValid}">
                                     <script type="text/javascript">
-                                        showTips(tmtName, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 's');
+                                        showTips(tmtName, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 'e');
                                     </script>
                                 </h:panelGroup>
                                 <h:inputText value="#{crTmtBean.tmtName}" id="tmtName" alt="Nazwa turnieju niepoprawna.">
@@ -256,6 +252,14 @@
                             </h:panelGroup>
                             <h:outputText value="Data odbycia turnieju: " styleClass="addPostDate"/>
                             <h:panelGroup id="dateGroup">
+                                <script type="text/javascript">
+                                    $(document).ready(function(){
+                                        $("#tmtDate").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            dateFormat: "d-m-yy"});
+                                    });
+                                </script>
                                 <h:panelGroup rendered="#{not crTmtBean.dateValid}">
                                     <script type="text/javascript">
                                         showTips(tmtDate, function(val){
@@ -272,7 +276,7 @@
                             <h:panelGroup id="tmtDescGroup">
                                 <h:panelGroup rendered="#{not crTmtBean.descValid}">
                                     <script type="text/javascript">
-                                        showTips(tmtDescription, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 'w');
+                                        showTips(tmtDescription, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 'e');
                                     </script>
                                 </h:panelGroup>
                                 <h:inputTextarea value="#{crTmtBean.tmtDescription}" styleClass="addTourContent" id="tmtDescription">
@@ -298,21 +302,22 @@
                                     </c:forEach> 
                                 </h:panelGroup>
                                 <h:commandButton value="Wybierz kategorię" styleClass="allButton addPostButton" rendered="#{crTmtBean.tmtCategories.size() == 0}">
-                                    <f:ajax render="catsSubForm" execute="catsSubForm" listener="#{crTmtBean.addCategory}"/>
+                                    <f:ajax render="@form" listener="#{crTmtBean.addCategory}" onevent="hideTips(chooseCat)"/>
                                 </h:commandButton>
-                                <h:selectOneMenu value="#{crTmtBean.selectedCatId}" rendered="#{crTmtBean.tmtCategories.size() == 0}">
+                                <h:selectOneMenu value="#{crTmtBean.selectedCatId}" rendered="#{crTmtBean.tmtCategories.size() == 0}" id="chooseCat">
                                     <c:forEach items="#{crTmtBean.categories}" var="category">
                                         <f:selectItem itemLabel="#{category.name}" itemValue="#{category.id}"/>
                                     </c:forEach>
                                 </h:selectOneMenu>
-<!--                                <h:panelGroup layout="block" rendered="#{empty crTmtBean.tmtCategories}" lass="ui-state-highlight ui-corner-all">
-                                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                        <strong>Uwaga!</strong> Przed utworzeniem turnieju należy dodać kategorie, które będą na nim rozgrywane.</p>
-                                </h:panelGroup>-->
+                                <h:panelGroup rendered="#{not crTmtBean.categoriesValid}">
+                                    <script type="text/javascript">
+                                        showTips(chooseCat, function(val){return false;}, 1, false, 0, 'w');
+                                    </script>
+                                </h:panelGroup>
                             </h:panelGroup>
                             <br/>
                             <h:commandButton value="Dodaj turniej" styleClass="allButton addPostButton">
-                                <f:ajax event="click" execute="@form" render="@form :clubTmtsForm" listener="#{crTmtBean.saveTournament}"/>
+                                <f:ajax event="click" execute="@form" render="@form :clubTmtsForm" listener="#{crTmtBean.saveTournament}" onevent="hideAll()"/>
                             </h:commandButton>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{crTmtBean.createTmtSuccess}" class="ui-state-error ui-corner-all">

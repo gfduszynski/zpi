@@ -47,6 +47,7 @@ public class CreateTournamentBean implements Serializable {
     private boolean dateValid = true;
     private boolean pointsValid = true;
     private boolean roundsValid = true;
+    private boolean categoriesValid = true;
     private String pointsForBye = "1";
     private String numberOfRounds = "7";
     private boolean createTmtSuccess;
@@ -84,9 +85,14 @@ public class CreateTournamentBean implements Serializable {
             }
         }
     }
+    
+    public boolean validateCats(){
+        this.categoriesValid = (this.tmtCategories.size() != 0);
+        return categoriesValid;
+    }
 
     public void saveTournament() throws NotFinished, NoPlayers {
-        if (validateTournamentName() && validateTournamentDesc() && validateDate() && validatePoints() && validateRounds() && tmtCategories.size() > 0) {
+        if (validateCats() && validateTournamentName() && validateTournamentDesc() && validateDate() && validatePoints() && validateRounds() && tmtCategories.size() > 0) {
             Tournament t = tmBO.registerTournament(Integer.parseInt(numberOfRounds), Integer.parseInt(pointsForBye), tmtName, tmtDate, tmtDescription, user.getOwnedClub(), tmtCategories.get(0));
             this.createTmtSuccess = true;
             ctBean.getClubTournaments().add(t);
@@ -311,4 +317,14 @@ public class CreateTournamentBean implements Serializable {
     public void setRoundsValid(boolean roundsValid) {
         this.roundsValid = roundsValid;
     }
+
+    public boolean isCategoriesValid() {
+        return categoriesValid;
+    }
+
+    public void setCategoriesValid(boolean categoriesValid) {
+        this.categoriesValid = categoriesValid;
+    }
+    
+    
 }
