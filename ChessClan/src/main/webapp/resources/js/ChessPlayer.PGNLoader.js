@@ -51,7 +51,7 @@ function endsWith(str, suffix)
 function allowedFileMIMEType(file)
 {
     var f = file;
-    if (f.type.match('image.*') || f.type.match('audio.*') || f.type.match('application.*') || f.type.match('text.*') || f.type.match('example') || f.type.match('message') || f.type.match('model') || f.type.match('multipart.*'))
+    if (f.type.match('image.*') || f.type.match('audio.*') || f.type.match('application.*') || f.type.match('multipart.*'))
         return false;
     return true;
 }
@@ -220,12 +220,12 @@ function moveKingOrQueen(board, doX, doY, figura, who)
             }
         }
     }
-    jsonSP += '{"id":0,"fromX":' + zX + ',"fromY":' + zY + ',"toX":' + doX + ',"toY":' + doY + ',"isSingular":true}';
-    Board[zX][zY] = 'e';
-    Board[doX][doY] = figure;
     if (!found) {
         return {state: 'InvalidMoveExc', board: null, json: null};
     }
+    jsonSP += '{"id":0,"fromX":' + zX + ',"fromY":' + zY + ',"toX":' + doX + ',"toY":' + doY + ',"isSingular":true}';
+    Board[zX][zY] = 'e';
+    Board[doX][doY] = figure;
     return {state: 'OK', board: Board, json: jsonSP};
 }
 //poruszanie nieokreślonym bishopem                            
@@ -243,32 +243,20 @@ function moveUndeterminedBishop(board, posX, posY, who) {
     for (var i = 0; i < positions.length && !found; i++) {
         var cont = true;
         if (Math.abs(positions[i][0] - posX) === Math.abs(positions[i][1] - posY)) {
-            var startX;
-            var stopX;
-            var startY;
-            var stopY;
-            if (posX < positions[i][0]) {
-                startX = posX;
-                stopX = positions[i][0]
-            } else {
-                stopX = posX;
-                startX = positions[i][0]
-            }
-            if (posY < positions[i][1]) {
-                startY = posY;
-                stopY = positions[i][1]
-            } else {
-                stopY = posY;
-                startY = positions[i][1]
-            }
-            for (var j = 1; startX + j <= stopX && startY + j <= stopY && cont; j++) {
-                if (startX + j === stopX && startY + j === stopY) {
+            var startX = positions[i][0];
+            var startY = positions[i][1];
+            
+            var stepX = (posX-startX)/Math.abs(posX-startX);
+            var stepY = (posY-startY)/Math.abs(posY-startY);
+            
+            for (var j = 1;  j <= Math.abs(posX-startX) && cont; j++) {
+                if (startX + j*stepX === posX && startY + j*stepY === posY) {
                     zX = positions[i][0];
                     zY = positions[i][1];
                     cont = false;
                     found = true;
                 }
-                else if (Board[startX + j][startY + j] !== 'e') {
+                else if (Board[startX + j*stepX][startY + j*stepY] !== 'e') {
                     cont = false;
                     found = false;
                 }
@@ -486,18 +474,18 @@ function getMoveInJson(board, move, who) {
             } else {
                 //figure - figura, posX - numer pola ma osi X, posY - numer pola na osi Y 
                 var figure = move.charAt(0);
-                var posX = move.charCodeAt(1) - 97;
-                var posY = move.charCodeAt(2) - 49;
+                var posXs = move.charCodeAt(1) - 97;
+                var posYs = move.charCodeAt(2) - 49;
                 if (figure === 'K')
-                    response = moveKingOrQueen(board, posX, posY, 'K', who);
+                    response = moveKingOrQueen(board, posXs, posYs, 'K', who);
                 else if (figure === 'Q')
-                    response = moveKingOrQueen(board, posX, posY, 'Q', who);
+                    response = moveKingOrQueen(board, posXs, posYs, 'Q', who);
                 else if (figure === 'B')
-                    response = moveUndeterminedBishop(board, posX, posY, who);
+                    response = moveUndeterminedBishop(board, posXs, posYs, who);
                 else if (figure === 'N')
-                    response = moveUndeterminedKnight(board, posX, posY, who);
+                    response = moveUndeterminedKnight(board, posXs, posYs, who);
                 else if (figure === 'R')
-                    response = moveUndeterminedRook(board, posX, posY, who);
+                    response = moveUndeterminedRook(board, posXs, posYs, who);
             }
         } else if (move.length == 4) {
             // figure - figura, posX - numer pola ma osi X, posY - numer pola na osi Y, toX - docelowo na X, toY - docelowo na Y

@@ -12,7 +12,7 @@
                     });
             </script>
             <h:panelGrid columns="4" rendered="#{cdBean.createNewClub}" id="newClubGrid">
-                        <h:outputLabel for="name" value="Name"/>
+                        <h:outputLabel for="name" value="Nazwa"/>
                         <h:panelGroup id="name">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak.&lt;br/&gt;" styleClass="error" rendered="#{not cdBean.ncvalidation.get(0)}" escape="false"/>
                             <h:inputText value="#{cdBean.newclub.name}" id="nInput">
@@ -21,12 +21,12 @@
                         </h:panelGroup>
                         
                         
-                        <h:outputLabel for="owner" value="Owner"/>
+                        <h:outputLabel for="owner" value="Zarządca"/>
                         <h:selectOneMenu id="oInput" value="#{cdBean.ownerEmail}">
                             <f:selectItems value="#{cdBean.ownerList}" var="olist" itemValue="#{olist}" itemLabel="#{olist.label}"/>
                         </h:selectOneMenu>
              
-                        <h:outputLabel for="creation-date" value="Creation date"/>
+                        <h:outputLabel for="creation-date" value="Data utworzenia"/>
                         <h:panelGroup id="creation-date">
                             <h:outputText value="Pole wymagane.&lt;br/&gt;" styleClass="error" rendered="#{not cdBean.ncvalidation.get(1)}" escape="false"/>
                             <h:inputText value="#{cdBean.newclub.creationDate}" id="cdInput" class="dateForm">
@@ -35,29 +35,29 @@
                             </h:inputText>
                         </h:panelGroup>
 
-                        <h:outputLabel for="description" value="Description"/>
+                        <h:outputLabel for="description" value="Opis"/>
                         <h:inputTextarea id="description" value="#{cdBean.newclub.description}"/>
                         
-                        <h:commandButton value="save club" rendered="#{cdBean.createNewClub and cdBean.ncvalidation.get(0) and cdBean.ncvalidation.get(1)}" styleClass="allButton">
+                        <h:commandButton value="zapisz klub" rendered="#{cdBean.createNewClub and cdBean.ncvalidation.get(0) and cdBean.ncvalidation.get(1)}" styleClass="allButton">
                             <f:ajax listener="#{cdBean.saveNewClub()}" render="@form" execute="@form"/>
                         </h:commandButton>
                         
-                        <h:commandButton value="cancel" rendered="#{cdBean.createNewClub}" styleClass="allButton">
+                        <h:commandButton value="anuluj" rendered="#{cdBean.createNewClub}" styleClass="allButton">
                             <f:ajax listener="#{cdBean.cancelNewClub}" render="@form" execute="@form"/>
                         </h:commandButton>                              
             </h:panelGrid>
             
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new club" styleClass="allButton" rendered="#{not cdBean.createNewClub}">
+                <h:commandButton value="dodaj nowy klub" styleClass="allButton" rendered="#{not cdBean.createNewClub}">
                     <f:ajax listener="#{cdBean.addNewClub()}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" styleClass="allButton" rendered="#{(not cdBean.createNewClub) and cdBean.hasChecked}">
+                <h:commandButton value="edytuj wybrane" styleClass="allButton" rendered="#{(not cdBean.createNewClub) and cdBean.hasChecked}">
                     <f:ajax listener="#{cdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" styleClass="allButton" rendered="#{cdBean.deletable and not cdBean.createNewClub}">
+                <h:commandButton value="usuń wybrane" styleClass="allButton" rendered="#{cdBean.deletable and not cdBean.createNewClub}">
                     <f:ajax listener="#{cdBean.removeSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" styleClass="allButton" rendered="#{not cdBean.createNewClub and cdBean.hasChecked}">
+                <h:commandButton value="zapisz wybrane" styleClass="allButton" rendered="#{not cdBean.createNewClub and cdBean.hasChecked}">
                     <f:ajax listener="#{cdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
@@ -82,12 +82,12 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">No</f:facet>
+                    <f:facet name="header">Id</f:facet>
                     <h:outputText value="#{club.id}"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Owner</f:facet>
+                    <f:facet name="header">Zarządca</f:facet>
                     <h:outputText value="#{club.owner.email}" rendered="#{not cdBean.editable[club.id]}"/>
                     <h:selectOneMenu id="oInput" rendered="#{cdBean.editable[club.id]}" value="#{club.owner.email}">
                             <f:selectItems value="#{cdBean.ownerList}" var="olist" itemValue="#{olist}" itemLabel="#{olist.label}"/>
@@ -95,7 +95,7 @@
                 </h:column>
                 
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
+                    <f:facet name="header">Nazwa</f:facet>
                     <h:outputText value="#{club.name}" rendered="#{not cdBean.editable[club.id]}"/>
                     <h:panelGroup id="cname" rendered="#{cdBean.editable[club.id]}">
                         <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak." styleClass="error" rendered="#{not cdBean.getClubValidation(club.id).get(0)}" escape="false"/>
@@ -106,7 +106,7 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Creation date</f:facet>
+                    <f:facet name="header">Data utworzenia</f:facet>
                     <h:outputText value="#{club.creationDate}" rendered="#{not cdBean.editable[club.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
@@ -120,7 +120,7 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Description</f:facet>
+                    <f:facet name="header">Opis</f:facet>
                     <h:outputText value="#{club.description}" rendered="#{not cdBean.editable[club.id]}"/>
                     <h:inputTextarea value="#{club.description}" rendered="#{cdBean.editable[club.id]}"/>
                 </h:column>
@@ -128,17 +128,17 @@
 
                 <h:column>
                     <f:facet name="header"></f:facet>
-                    <h:commandLink value="edit" rendered="#{not cdBean.editable[club.id]}">
+                    <h:commandLink value="edytuj" rendered="#{not cdBean.editable[club.id]}">
                         <f:ajax listener="#{cdBean.selectOneEditable(club.id)}" execute="@form" render="@form"/>
                     </h:commandLink>
                     <h:panelGrid columns="1" class="buttons-column" styleClass="allButton">
-                        <h:commandLink value="update" rendered="#{cdBean.editable[club.id]}">
+                        <h:commandLink value="aktualizuj" rendered="#{cdBean.editable[club.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{cdBean.updateClub(club)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{cdBean.editable[club.id]}">
+                        <h:commandLink value="usuń" rendered="#{cdBean.editable[club.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{cdBean.removeClub(club)}"/>
                         </h:commandLink>
-                        <h:commandLink value="cancel" rendered="#{cdBean.editable[club.id]}">
+                        <h:commandLink value="anuluj" rendered="#{cdBean.editable[club.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{cdBean.deselectOneEditable(club.id)}"/>
                         </h:commandLink>
                     </h:panelGrid>
