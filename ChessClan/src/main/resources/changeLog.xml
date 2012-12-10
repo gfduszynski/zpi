@@ -144,7 +144,7 @@
             <column name="name" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="datetime">
+            <column name="date" type="timestamp">
                 <constraints nullable="false" />
             </column>
             <column name="points_for_bye" type="float" defaultValueNumeric="1.0">
