@@ -62,7 +62,7 @@ public class Tournament implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     @Size(min = 1, max = 2048)
     @Column(name = "description")

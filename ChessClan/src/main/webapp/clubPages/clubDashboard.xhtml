@@ -200,6 +200,12 @@
                     </h:form>
                 </div>
                 <div id="tabs-4">
+                    <h:outputStylesheet library="css" name="jquery.ui.timepicker.css"/>
+                    <h:outputScript library="js" name="jquery.ui.timepicker.js"/>
+                    <h:outputScript library="js" name="jquery.ui.timepicker-pl.js"/>
+                    <script type="text/javascript" charset="UTF-8">
+                        $.timepicker.regional['pl'];
+                    </script>
                     <h:outputStylesheet library="css" name="tipsy.css"/>
                     <h:outputScript library="js" name="jquery.tipsy.js"/>
                     <h:outputScript library="js" name="validation.js"/>
@@ -271,6 +277,25 @@
                                     <f:convertDateTime pattern="d-M-yyyy" />
                                     <f:ajax event="change" execute="@this" render="dateGroup" listener="#{crTmtBean.validateDate}" onevent="hideTips(tmtDate)"/>
                                 </h:inputText>
+                            </h:panelGroup>
+                            <h:panelGroup id="timeGroup">
+                                <h:inputHidden id="tmtHours" value="#{crTmtBean.hours}"/>
+                                <h:inputHidden id="tmtMinutes" value="#{crTmtBean.minutes}"/>
+                                <script type="text/javascript">
+                                    $(document).ready(function(){
+                                        $("#tmtTime").timepicker(
+                                        {
+                                            timeSeparator: ':', 
+                                            defaultTime:'12:00',
+                                            onClose:function(){
+                                                $("#tmtHours").val($("#tmtTime").timepicker("getHour"));
+                                                $("#tmtMinutes").val($("#tmtTime").timepicker("getMinute"));
+                                            }
+                                        });
+
+                                    });
+                                </script>
+                                <h:inputText id="tmtTime"/>
                             </h:panelGroup>
                             <br/>
                             <h:panelGroup id="tmtDescGroup">
