@@ -12,10 +12,11 @@
             <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
                 <h:panelGroup layout="block"  styleClass='#{loop.index%2==1?"tmtContainer right":"tmtContainer left"}'>
                     #{tmt.name} <a href="#{request.contextPath}/tournaments/#{tmt.id}">Wyświetl szczegółowy widok</a><br/>
-                    Data: #{tmt.date}<br/>
+                    Data: <h:outputText value="#{tmt.date}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText><br/>
                     Opis: #{tmt.description}<br/>
-                    Ilość rund: #{tmt.numberOfRounds}<br/>
-                    Punkty potrzebne do odejścia: #{tmt.pointsForBye}<br/>
+                    Liczba rund: #{tmt.numberOfRounds}<br/>
+                    Punkty uzyskiwane za wygraną partię: <h:outputText value="#{tmt.pointsForBye}"><f:convertNumber pattern="0"/></h:outputText><br/>
+                        Punkty uzyskiwane za zremisowanie partii: <h:outputText value="#{tmt.pointsForBye/2}"></h:outputText><br/>
                     <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2">
                         <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
                     </h:commandButton>

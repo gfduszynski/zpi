@@ -138,6 +138,7 @@ public class TournamentsViewBean implements Serializable {
     public void joinTournament(Tournament tmt) throws Round.NotJoinableRound {
         tmBO.joinTournament(tmt);
         this.joinedTmt = tmt;
+        loadTournaments();
     }
 
     public void leaveTournament(Tournament tmt) throws NotJoinableRound {
@@ -148,7 +149,7 @@ public class TournamentsViewBean implements Serializable {
             }
         }
         tmBO.leaveTournament(tmt, pc);
-
+        loadTournaments();
     }
 
     public boolean userIsMember(Tournament t) {
