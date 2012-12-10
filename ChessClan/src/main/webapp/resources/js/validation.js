@@ -10,7 +10,7 @@ function showTips(input, criteria, index, notErrorMsg, offst, pos){
         if(jInput.attr('alt') != undefined){
             var msg = jInput.attr('alt').split(';')[index || 0];
         }else{
-            var msg = $('#hiddenMsg').val();
+            var msg = $('#hiddenMsg').val().split(';')[index || 0];
         }
         if(notErrorMsg){
             msg = '<span style="color:green;">'+msg+'</span>';

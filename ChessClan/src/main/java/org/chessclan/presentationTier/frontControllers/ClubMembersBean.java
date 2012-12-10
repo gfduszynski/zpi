@@ -4,6 +4,7 @@
  */
 package org.chessclan.presentationTier.frontControllers;
 
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -11,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.chessclan.businessTier.businessObjects.ClubBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
+import org.chessclan.dataTier.models.Role;
 import org.chessclan.dataTier.models.User;
 
 /**
@@ -28,8 +30,7 @@ public class ClubMembersBean {
     @ManagedProperty(value = "#{loginBean.user}")
     private User user;
     private List<User> members;
-    private String searchFN;
-    private String searchLN;
+    private String search;
     private List<User> foundUsers;
     private boolean notValidCriteria;
 
@@ -51,22 +52,41 @@ public class ClubMembersBean {
     public void addMember(User u) {
         u.setUserClub(this.user.getOwnedClub());
         members.add(u);
+        foundUsers.remove(u);
         umBO.saveUser(u);
     }
 
+    public boolean isMember(User user) {
+        if (user.getUserClub() == null) {
+            return false;
+        }
+        return this.user.getOwnedClub().getId() == user.getUserClub().getId();
+    }
+
     public void findUsers() {
-        if (searchFN == null || searchFN.isEmpty()) {
-            if (searchLN == null || searchLN.isEmpty()) {
-                this.notValidCriteria = true;
-            } else {
-                this.foundUsers = umBO.findByLastname(searchLN);
-            }
+        if (search == null || search.isEmpty()) {
+            this.notValidCriteria = true;
+            return;
         } else {
-            if (searchLN == null || searchLN.isEmpty()) {
-                this.foundUsers = umBO.findByFirstname(searchFN);
-            } else {
-                this.foundUsers = umBO.findByFirstnameAndLastname(searchFN, searchLN);
+            this.foundUsers = umBO.findByFirstNameContainingOrLastNameContaining(search, search);
+            Iterator<User> it = foundUsers.iterator();
+            while (it.hasNext()) {
+                User u = it.next();
+                boolean isUser = false;
+                for (Role r : u.getRoleSet()) {
+                    if ("USER".equals(r.getRoleName())) {
+                        isUser = true;
+                    }
+                }
+                if (!isUser) {
+                    foundUsers.remove(u);
+                }
             }
+        }
+        if (foundUsers.size() > 0) {
+            this.notValidCriteria = false;
+        } else {
+            this.notValidCriteria = true;
         }
     }
 
@@ -102,22 +122,6 @@ public class ClubMembersBean {
         this.umBO = umBO;
     }
 
-    public String getSearchFN() {
-        return searchFN;
-    }
-
-    public void setSearchFN(String searchFN) {
-        this.searchFN = searchFN;
-    }
-
-    public String getSearchLN() {
-        return searchLN;
-    }
-
-    public void setSearchLN(String searchLN) {
-        this.searchLN = searchLN;
-    }
-
     public List<User> getFoundUsers() {
         return foundUsers;
     }
@@ -132,5 +136,13 @@ public class ClubMembersBean {
 
     public void setNotValidCriteria(boolean notValidCriteria) {
         this.notValidCriteria = notValidCriteria;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

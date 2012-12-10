@@ -21,11 +21,10 @@
                                 <c:if test="#{pc.opponent != null}">
                                     <h:panelGroup layout="block" styleClass="pairingcard">
                                         <div class="choose">
-                                            <h:selectOneRadio layout="pageDirection" value="#{state}" styleClass="option-list">
+                                            <h:selectOneRadio layout="pageDirection"  value="#{pc.score}" styleClass="option-list">
                                                 <f:selectItem itemValue="#{1}" itemLabel=""></f:selectItem>
                                                 <f:selectItem itemValue="#{0}" itemLabel=""></f:selectItem>
                                                 <f:selectItem itemValue="#{-1}" itemLabel=""></f:selectItem>
-                                                <f:ajax event="change" execute="@this" listener="#{cTmtCBean.winner(pc,state)}" render="pairing-card-list"></f:ajax>
                                             </h:selectOneRadio>
                                                 
                                         </div>

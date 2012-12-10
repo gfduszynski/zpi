@@ -42,10 +42,10 @@
                                     <h:outputText value="#{tmt.description}"/>
                                 </h:panelGroup>
                                 <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
-                                    <f:ajax render="@form" listener="#{atvBean.joinTournament(tmt)}"/>
+                                    <f:ajax render="@form" execute="@form" listener="#{atvBean.joinTournament(tmt)}"/>
                                 </h:commandButton>
                                 <h:commandButton value="Wypisz się" rendered="#{atvBean.isJoinable(tmt) and atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
-                                    <f:ajax render="@form" listener="#{atvBean.leaveTournament(tmt)}"/>
+                                    <f:ajax render="@form" execute="@form" listener="#{atvBean.leaveTournament(tmt)}"/>
                                 </h:commandButton>
 <!--                                <h:commandButton value="Zostałeś zapisany." rendered="#{atvBean.joinedTmt == tmt or atvBean.userIsMember(tmt)}" styleClass="allButtonNoHover width100 height50px" disabled="true"/>-->
                                 <h:commandButton value="Nie można już zapisywać się na ten turniej." rendered="#{not atvBean.isJoinable(tmt)}" styleClass="allButtonNoHover width100 height50px" disabled="true"/>

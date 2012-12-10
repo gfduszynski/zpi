@@ -1,11 +1,16 @@
 html{
     overflow-y: scroll;
+    font-variant: small-caps;
 }
 a {
     color: black;
 }
 a:hover{
     color:#00AAE8;
+}
+
+input, textarea,select{
+    font-variant:small-caps;
 }
 /* PODSTAWOWE STAŁE NARZĘDZIA:  */
 .displayNone{
