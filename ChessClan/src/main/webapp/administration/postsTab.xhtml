@@ -12,7 +12,7 @@
                 });
             </script>
             <h:panelGrid columns="4" rendered="#{pdBean.createNewPost}">
-                <h:outputLabel for="title" value="Title"/>
+                <h:outputLabel for="title" value="Tytuł"/>
                 <h:panelGroup id="title">
                     <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki.&lt;br/&gt;" styleClass="error" rendered="#{not pdBean.npvalidation.get(0)}" escape="false"/>
                     <h:inputText value="#{pdBean.newpost.title}" id="titleInput">
@@ -20,7 +20,7 @@
                     </h:inputText>
                 </h:panelGroup>
 
-                <h:outputLabel for="content" value="Content"/> 
+                <h:outputLabel for="content" value="Treść"/> 
                 <h:panelGroup id="content">
                     <h:outputText value="Pole wymagane, musi zawierać przynajmniej 30 znaków.&lt;br/&gt;" styleClass="error" rendered="#{not pdBean.npvalidation.get(1)}" escape="false"/>
                     <h:inputTextarea value="#{pdBean.newpost.content}" id="contentInput">
@@ -30,43 +30,43 @@
 
 
 
-                <h:outputLabel for="creation-date" value="Creation date"/>
+                <h:outputLabel for="creation-date" value="Data utworzenia"/>
                 <h:outputText id="creation-date" value="#{pdBean.newpost.dateCreated}">
                     <f:convertDateTime pattern="dd-MM-yyyy" />
                 </h:outputText>
 
 
-                <h:outputLabel for="expires-after" value="Expires after"/>
+                <h:outputLabel for="expires-after" value="Dostępny przez"/>
                 <h:selectOneMenu id="expires-after" value="#{pdBean.newExpiresAfter}">
-                    <f:selectItem itemValue="7" itemLabel="7 days" />
-                    <f:selectItem itemValue="14" itemLabel="14 days" />
-                    <f:selectItem itemValue="28" itemLabel="28 days" />
+                    <f:selectItem itemValue="7" itemLabel="tydzień" />
+                    <f:selectItem itemValue="14" itemLabel="2 tygodnie" />
+                    <f:selectItem itemValue="21" itemLabel="3 tygodnie" />
                 </h:selectOneMenu>
 
 
-                <h:commandButton value="save post" styleClass="allButton" rendered="#{pdBean.createNewPost and pdBean.npvalidation.get(0) and pdBean.npvalidation.get(1)}">
+                <h:commandButton value="zapisz wpis" styleClass="allButton" rendered="#{pdBean.createNewPost and pdBean.npvalidation.get(0) and pdBean.npvalidation.get(1)}">
                     <f:ajax listener="#{pdBean.saveNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="publish" styleClass="allButton" rendered="#{pdBean.createNewPost}">
+                <h:commandButton value="publikuj" styleClass="allButton" rendered="#{pdBean.createNewPost}">
                     <f:ajax listener="#{pdBean.publishNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="cancel" styleClass="allButton" rendered="#{pdBean.createNewPost}">
+                <h:commandButton value="anuluj" styleClass="allButton" rendered="#{pdBean.createNewPost}">
                     <f:ajax listener="#{pdBean.cancelNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>                              
             </h:panelGrid>
 
 
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new post"  styleClass="allButton"  rendered="#{not pdBean.createNewPost}">
+                <h:commandButton value="dodaj nowy wpis"  styleClass="allButton"  rendered="#{not pdBean.createNewPost}">
                     <f:ajax listener="#{pdBean.addNewPost}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected"  styleClass="allButton" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
+                <h:commandButton value="edytuj wybrane"  styleClass="allButton" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" styleClass="allButton" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
+                <h:commandButton value="usuń wybrane" styleClass="allButton" rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.deleteSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" styleClass="allButton"  rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
+                <h:commandButton value="zapisz wybrane" styleClass="allButton"  rendered="#{not pdBean.createNewPost and pdBean.hasChecked}">
                     <f:ajax listener="#{pdBean.saveSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
@@ -90,12 +90,12 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">No</f:facet>
+                    <f:facet name="header">Id</f:facet>
                     <h:outputText value="#{post.id}"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Title</f:facet>
+                    <f:facet name="header">Tytuł</f:facet>
                     <h:outputText value="#{post.title}" rendered="#{not pdBean.editable[post.id]}"/>
                     <h:panelGroup id="posttitle" rendered="#{pdBean.editable[post.id]}">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 3 znaki." styleClass="error" rendered="#{not pdBean.getPostValidation(post.id).get(0)}" escape="false"/>
@@ -105,9 +105,9 @@
                     </h:panelGroup>
                 </h:column>
 
-                <h:column>
-                    <f:facet name="header">Content</f:facet>
-                    <h:outputText value="#{post.content}" rendered="#{not pdBean.editable[post.id]}"/>
+                <h:column styleClass="postContent">
+                    <f:facet name="header">Treść</f:facet>
+                    <h:outputText value="#{post.content}" rendered="#{not pdBean.editable[post.id]}" />
                     <h:panelGroup id="postcontent" rendered="#{pdBean.editable[post.id]}">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 30 znaków." styleClass="error" rendered="#{not pdBean.getPostValidation(post.id).get(1)}" escape="false"/>
                             <h:inputTextarea value="#{post.content}" id="pcInput">
@@ -117,14 +117,14 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Creation date</f:facet>
+                    <f:facet name="header">Data utworzenia</f:facet>
                     <h:outputText value="#{post.dateCreated}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Published at</f:facet>
+                    <f:facet name="header">Opublikowano dnia</f:facet>
                     <h:outputText value="#{post.datePublished}" rendered="#{post.datePublished!=null}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
@@ -134,7 +134,7 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Expires after</f:facet>
+                    <f:facet name="header">Dostępny do</f:facet>
                     <h:outputText value="#{post.dateExpires}"> rendered="#{not pdBean.editable[post.id] and post.datePublished!=null}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
@@ -146,25 +146,25 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Created by</f:facet>
+                    <f:facet name="header">Dodany przez</f:facet>
                     <h:outputText value="#{post.user.email}"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header"></f:facet>
                     <h:panelGrid columns="1" class="buttons-column">
-                        <h:commandLink value="edit" rendered="#{not pdBean.editable[post.id]}">
+                        <h:commandLink value="edytuj" rendered="#{not pdBean.editable[post.id]}">
                             <f:ajax listener="#{pdBean.selectOneEditable(post.id)}" execute="@form" render="@form"/>
                         </h:commandLink>
                     </h:panelGrid>
                     <h:panelGrid columns="1" class="buttons-column">
-                        <h:commandLink value="update" rendered="#{pdBean.editable[post.id]}">
+                        <h:commandLink value="aktualizuj" rendered="#{pdBean.editable[post.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{pdBean.updatePost(post)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{pdBean.editable[post.id]}">
+                        <h:commandLink value="usuń" rendered="#{pdBean.editable[post.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{pdBean.deletePost(post)}"/>
                         </h:commandLink>
-                        <h:commandLink value="cancel" rendered="#{pdBean.editable[post.id]}">
+                        <h:commandLink value="anuluj" rendered="#{pdBean.editable[post.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{pdBean.deselectOneEditable(post.id)}"/>
                         </h:commandLink>
                     </h:panelGrid>

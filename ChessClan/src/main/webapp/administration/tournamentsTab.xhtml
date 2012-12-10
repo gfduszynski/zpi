@@ -14,14 +14,14 @@
                   
 
             <h:panelGrid columns="4" rendered="#{tdBean.createNewTournament}" id="newTournamentGrid">
-                        <h:outputLabel for="ntname" value="Name"/>
+                        <h:outputLabel for="ntname" value="Nazwa"/>
                         <h:panelGroup id="ntname">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 1 znak.&lt;br/&gt;" styleClass="error" rendered="#{not tdBean.ntvalidation.get(0)}" escape="false"/>
                             <h:inputText value="#{tdBean.newtournament.name}" id="ntInput">
                                 <f:ajax event="blur" execute="ntInput" render="ntname" listener="#{tdBean.validateName(tdBean.newtournament,tdBean.ntvalidation)}"/>
                             </h:inputText>
                         </h:panelGroup>
-                        <h:outputLabel for="ntdescription" value="Description"/>
+                        <h:outputLabel for="ntdescription" value="Opis"/>
                         <h:panelGroup id="ntdescription">
                             <h:outputText value="Pole wymagane, musi zawierać przynajmniej 30 znaków.&lt;br/&gt;" styleClass="error" rendered="#{not tdBean.ntvalidation.get(1)}" escape="false"/>
                             <h:inputText value="#{tdBean.newtournament.description}" id="ntDescInput">
@@ -30,18 +30,18 @@
                         </h:panelGroup>
                         
                         
-                        <h:outputLabel for="ntrounds" value="Rounds"/>
+                        <h:outputLabel for="ntrounds" value="Ilość rund"/>
                         <h:selectOneMenu id="ntroundsInput" value="#{tdBean.newtournament.numberOfRounds}">
                             <f:selectItems value="#{tdBean.roundsList}" var="roundslist" itemValue="#{roundslist}" itemLabel="#{roundslist.label}"/>
                         </h:selectOneMenu>
                         
                         
-                        <h:outputLabel for="ntpoints" value="Points for bye"/>
+                        <h:outputLabel for="ntpoints" value="Punkty za wygraną"/>
                         <h:selectOneMenu id="ntpointsInput" value="#{tdBean.newtournament.pointsForBye}">
                             <f:selectItems value="#{tdBean.pointsList}" var="pointslist" itemValue="#{pointslist}" itemLabel="#{pointslist.label}"/>
                         </h:selectOneMenu>
                         
-                        <h:outputLabel for="ntdate" value="Date"/>
+                        <h:outputLabel for="ntdate" value="Data"/>
                         <h:panelGroup id="ntdate">
                             <h:outputText value="Pole wymagane.&lt;br/&gt;" styleClass="error" rendered="#{not tdBean.ntvalidation.get(2)}" escape="false"/>
                             <h:inputText value="#{tdBean.newtournament.date}" id="ntcdInput" class="dateForm">
@@ -50,43 +50,38 @@
                             </h:inputText>
                         </h:panelGroup>
                                                 
-                        <h:outputLabel for="ntclub" value="Club"/>
+                        <h:outputLabel for="ntclub" value="Organizator"/>
                         <h:selectOneMenu id="ntclubInput" value="#{tdBean.newtournament.club.name}">
                             <f:selectItems value="#{tdBean.clubList}" var="clublist" itemValue="#{clublist}" itemLabel="#{clublist.label}"/>
                         </h:selectOneMenu>
              
-                        <h:outputLabel for="ntcategory" value="Category"/>
+                        <h:outputLabel for="ntcategory" value="Kategoria"/>
                         <h:selectOneMenu id="ntcategoryInput" value="#{tdBean.newtournament.category.name}">
                             <f:selectItems value="#{tdBean.categoryList}" var="catlist" itemValue="#{catlist}" itemLabel="#{catlist.label}"/>
                         </h:selectOneMenu>
 
-                        <h:commandButton styleClass="allButton" value="save tournament" rendered="#{tdBean.createNewTournament and tdBean.ntvalidation.get(0) and tdBean.ntvalidation.get(1) and tdBean.ntvalidation.get(2)}">
+                        <h:commandButton styleClass="allButton" value="zapisz turniej" rendered="#{tdBean.createNewTournament and tdBean.ntvalidation.get(0) and tdBean.ntvalidation.get(1) and tdBean.ntvalidation.get(2)}">
                             <f:ajax listener="#{tdBean.saveNewTournament}" render="@form" execute="@form"/>
                         </h:commandButton>
                         
-                        <h:commandButton styleClass="allButton" value="cancel" rendered="#{cdBean.createNewClub}">
+                        <h:commandButton styleClass="allButton" value="anuluj" rendered="#{cdBean.createNewClub}">
                             <f:ajax listener="#{tdBean.cancelNewClub}" render="@form" execute="@form"/>
                         </h:commandButton>                              
             </h:panelGrid>
 
             
             <div style="padding:10px 0px 10px 0px;" >
-                <h:commandButton value="add new tournament" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
+                <h:commandButton value="dodaj nowy turniej" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.addNewTournament}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="edit selected" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
+                <h:commandButton value="edytuj wybrane" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.setEditableForSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="remove selected" styleClass="allButton" rendered="#{tdBean.deletable and not tdBean.createNewTournament}">
+                <h:commandButton value="usuń wybrane" styleClass="allButton" rendered="#{tdBean.deletable and not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.removeSelected}" render="@form" execute="@form"/>
                 </h:commandButton>
-                <h:commandButton value="save selected" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
+                <h:commandButton value="zapisz wybrane" styleClass="allButton" rendered="#{not tdBean.createNewTournament}">
                     <f:ajax listener="#{tdBean.saveSelected}" render="@form" execute="@form"/>
-                </h:commandButton>
-                
-                
-                <h:commandButton value="generate torunaments" styleClass="allButton">
-                    <f:ajax listener="#{tdBean.generateTournaments}" render="@form" execute="@form"/>
                 </h:commandButton>
             </div>
 
@@ -109,24 +104,24 @@
                     </h:selectBooleanCheckbox>
                 </h:column>
                 <h:column>
-                    <f:facet name="header">No</f:facet>
+                    <f:facet name="header">Id</f:facet>
                     <h:outputText value="#{tournament.id}"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
+                    <f:facet name="header">Nazwa</f:facet>
                     <h:outputText value="#{tournament.name}" rendered="#{not tdBean.editable[tournament.id]}"/>
                     <h:inputText value="#{tournament.name}" rendered="#{tdBean.editable[tournament.id]}" />
                 </h:column>
                 
                 <h:column>
-                    <f:facet name="header">Description</f:facet>
+                    <f:facet name="header">Opis</f:facet>
                     <h:outputText value="#{tournament.description}" rendered="#{not tdBean.editable[tournament.id]}"/>
                     <h:inputText value="#{tournament.description}" rendered="#{tdBean.editable[tournament.id]}" />
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Date</f:facet>
+                    <f:facet name="header">Data</f:facet>
                     <h:outputText value="#{tournament.date}" rendered="#{not tdBean.editable[tournament.id]}">
                         <f:convertDateTime pattern="dd-MM-yyyy" />
                     </h:outputText>
@@ -142,17 +137,17 @@
 
                 <h:column>
                     <f:facet name="header"></f:facet>
-                    <h:commandLink value="edit" rendered="#{not tdBean.editable[tournament.id]}">
+                    <h:commandLink value="edytuj" rendered="#{not tdBean.editable[tournament.id]}">
                         <f:ajax listener="#{tdBean.selectOneEditable(tournament.id)}" execute="@form" render="@form"/>
                     </h:commandLink>
                     <h:panelGrid columns="1">
-                        <h:commandLink value="update" rendered="#{tdBean.editable[tournament.id]}">
+                        <h:commandLink value="aktualizuj" rendered="#{tdBean.editable[tournament.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{tdBean.updateTournament(tournament)}"/>
                         </h:commandLink>
-                        <h:commandLink value="remove" rendered="#{tdBean.editable[tournament.id]}">
+                        <h:commandLink value="usuń" rendered="#{tdBean.editable[tournament.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{tdBean.removeTournament(tournament)}"/>
                         </h:commandLink>
-                        <h:commandLink value="cancel" rendered="#{udBean.editable[tournament.id]}">
+                        <h:commandLink value="anuluj" rendered="#{udBean.editable[tournament.id]}">
                             <f:ajax execute="@form" render="@form" listener="#{tdBean.deselectOneEditable(tournament.id)}"/>
                         </h:commandLink>
                     </h:panelGrid>
