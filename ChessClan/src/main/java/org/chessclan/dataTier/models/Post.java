@@ -21,7 +21,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -29,7 +28,7 @@ import org.joda.time.DateTime;
  */
 @Entity
 @Table(name = "posts")
-public class Post implements Serializable {
+public class Post implements Serializable, Comparable<Post> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -78,23 +77,23 @@ public class Post implements Serializable {
         if (plt == null) {
             this.dateExpires = null;
         } else {
-            DateTime currentDate = new DateTime();
+            Calendar c = Calendar.getInstance();
             switch (plt.value) {
                 case 1:
-                    currentDate.plusDays(7);
+                    c.add(Calendar.DATE, 7);
                     break;
                 case 2:
-                    currentDate.plusDays(14);
+                    c.add(Calendar.DATE, 14);
                     break;
                 case 3:
-                    currentDate.plusDays(21);
+                    c.add(Calendar.DATE, 21);
                     break;
                 default:
-                    currentDate.plusDays(1);
+                    c.add(Calendar.DATE, 7);
                     break;
 
             }
-            this.dateExpires = currentDate.toDate();
+            this.dateExpires = c.getTime();
         }
     }
 
@@ -174,10 +173,14 @@ public class Post implements Serializable {
         }
         return true;
     }
-
     @Override
     public String toString() {
         return "org.chessclan.dataTier.models.Post[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(Post o) {
+        return -1*datePublished.compareTo(o.datePublished);
     }
 
     public enum PostLifeTime {

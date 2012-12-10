@@ -35,7 +35,7 @@
     </changeSet>
 
     <changeSet id="2" author="tjp">
-        <insert tableName="users">
+<!--        <insert tableName="users">
             <column name="id" valueNumeric="2"/>
             <column name="enabled" valueNumeric="true"/>
             <column name="first_name" value="Jan"/>
@@ -76,7 +76,7 @@
             <column name="name" value="Szarak"/>
             <column name="creation_date" valueDate="now()"/>
             <column name="description" value=" Tutaj znajduje się prosty opis klubu Szarak."/>
-        </insert>
+        </insert>-->
         
         <insert tableName="category">
             <column name="id" valueNumeric="1"/>
@@ -106,7 +106,7 @@
             <column name="content" value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
-            <column name="date_expires" valueDate="2014-09-24"/>
+            <column name="date_expires" valueDate="2014-09-21"/>
             <column name="user" valueNumeric="1"/>
         </insert>
         
@@ -116,7 +116,7 @@
             <column name="content" value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
-            <column name="date_expires" valueDate="2014-09-24"/>
+            <column name="date_expires" valueDate="2014-09-22"/>
             <column name="user" valueNumeric="1"/>
         </insert>
         
@@ -126,7 +126,7 @@
             <column name="content" value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"/>
             <column name="date_created" valueDate="now()"/>
             <column name="date_published" valueDate="now()"/>
-            <column name="date_expires" valueDate="2014-09-24"/>
+            <column name="date_expires" valueDate="2014-06-24"/>
             <column name="user" valueNumeric="1"/>
         </insert>
         

@@ -56,6 +56,7 @@ public class LoginBean implements Serializable {
         if (sessionMap.get("SPRING_SECURITY_LAST_EXCEPTION") != null) {
             if (sessionMap.get("SPRING_SECURITY_LAST_EXCEPTION") instanceof BadCredentialsException) {
                 this.loginError = true;
+                //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "dupa", "dupa"));
             } else {
                 setupLoggedUser();
             }

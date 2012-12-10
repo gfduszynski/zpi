@@ -91,6 +91,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         pc.setTournament(t);
         pc.setRound(t.getCurrentRound());
         pc.setColor(PairingCard.Color.NO_COLOR);
+        t.getPairingCardSet().add(pc);
         //u.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
     }
@@ -101,10 +102,12 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         if (t.getCurrentRound().getRoundState() != State.JOINING) {
             throw new Round.NotJoinableRound();
         }
-
+        rRepo.findOne(t.getCurrentRound().getId());
+        umBO.findUserById(pc.getPlayer().getId());
         t.getPairingCardSet().remove(pc);
         pcRepo.delete(pc);
-        return tRepo.saveAndFlush(t);
+        pcRepo.flush();
+        return t;
     }
 
     @Override
@@ -145,6 +148,19 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         }
         return tRepo.save(t);
     }
+    @Transactional
+    public Set<PairingCard> filterUniquePairingCards(Round currentRound){
+        Set<PairingCard> pairingCards = rRepo.findOne(currentRound.getId()).getPairingCardSet();
+        Set<PairingCard> newPairingCards = new HashSet<PairingCard>(pairingCards);
+        Iterator<PairingCard> iterator = pairingCards.iterator();
+        while(iterator.hasNext()){
+            PairingCard pc = iterator.next();
+            if(newPairingCards.contains(pc)&&pc.getOpponent()!=null){
+                newPairingCards.remove(pc.getOpponent());
+            }
+        }
+        return newPairingCards;
+    }
 
     private Set<PairingCard> mockupPairPlayers(Set<PairingCard> oldPairingCards, Round currentRound) {
         Set<PairingCard> newPairingCards = new HashSet<PairingCard>();
@@ -167,7 +183,6 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             PairingCard p = new PairingCard(sortedPlayers.get(0), currentRound);
             p.setByes(p.getByes() + 1);
             p.setColor(PairingCard.Color.NO_COLOR);
-            p.setScore(p.getScore() + 1);
             p.setOpponent(null);
             newPairingCards.add(p);
         }
@@ -271,17 +286,17 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Override
-    public Map<User, Integer> getResults(Tournament tmt) {
-        Map<User, Integer> result = new HashMap<User, Integer>();
+    public Map<User, Float> getResults(Tournament tmt) {
+        Map<User, Float> result = new HashMap<User, Float>();
         for (PairingCard pc : tmt.getPairingCardSet()) {
             if(!result.containsKey(pc.getPlayer()))
             {
-                result.put(pc.getPlayer(), (int)pc.getScore());
+                result.put(pc.getPlayer(), pc.getScore());
             }
             else
             {
-                Integer tmp = result.get(pc.getPlayer());
-                result.put(pc.getPlayer(), tmp+(int)pc.getScore());
+                Float tmp = result.get(pc.getPlayer());
+                result.put(pc.getPlayer(), tmp+pc.getScore());
             }
         }
         return result;
@@ -369,8 +384,10 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Override
+    @Transactional
     public void deleteTournament(Tournament t) {
-        if (t.getRoundSet() != null) {
+        t = tRepo.findOne(t.getId());
+        /*if (t.getRoundSet() != null) {
             for (Round r : t.getRoundSet()) {
                 rRepo.delete(r);
             }
@@ -379,8 +396,12 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             for (PairingCard pc : t.getPairingCardSet()) {
                 pcRepo.delete(pc);
             }
-        }
+        }*/
+        catRepo.findOne(t.getCategory().getId());
+        //rRepo.findOne(t.getCurrentRound().getId());
+        
         tRepo.delete(t);
+        tRepo.flush();
     }
 
     @Override
@@ -404,7 +425,8 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
                 tRes.getCurrentRound().getNextRound().getId().toString();
             }
         }
-
+        tRes.getCategory().getName();
+        tRes.getClub().getName();
         return tRes;
     }
 
@@ -447,5 +469,9 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             }
         }
         return userTmt;
+    }
+    @Override
+    public PairingCard savePairingCard(PairingCard pc){
+        return pcRepo.saveAndFlush(pc);
     }
 }

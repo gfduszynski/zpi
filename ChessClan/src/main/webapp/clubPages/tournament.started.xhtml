@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:body>
+        <ui:composition>
+            <script type="text/javascript">
+                document.title = "ChessClan - Turniej - W trakcie";
+            </script>
+            <h:commandLink value="Przejdź do następnej rundy »" styleClass="next-round">
+                <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
+            </h:commandLink>
+            <c:if test="#{cTmtCBean.currentTmt.state == 'STARTED'}">
+                <div class="tournament">
+                    <span class="pairingcards">
+                        <p>Rezultat rundy #{cTmtCBean.currentTmt.currentRound.number+1}</p>
+                        <h:panelGroup layout="block" styleClass="pairingcards-list" id="pairing-card-list">
+                            <c:forEach items="#{cTmtCBean.getFilteredCurrentRoundPC()}" var="pc" varStatus="loop">
+                                <c:if test="#{pc.opponent != null}">
+                                    <h:panelGroup layout="block" styleClass="pairingcard">
+                                        <div class="choose">
+                                            <h:selectOneRadio layout="pageDirection" value="#{state}" styleClass="option-list">
+                                                <f:selectItem itemValue="#{1}" itemLabel=""></f:selectItem>
+                                                <f:selectItem itemValue="#{0}" itemLabel=""></f:selectItem>
+                                                <f:selectItem itemValue="#{-1}" itemLabel=""></f:selectItem>
+                                                <f:ajax event="change" execute="@this" listener="#{cTmtCBean.winner(pc,state)}" render="pairing-card-list"></f:ajax>
+                                            </h:selectOneRadio>
+                                                
+                                        </div>
+                                        <div class="pairingcard-player #{pc.color == 'BLACK'?'black':'white'}">
+                                            <span>#{pc.player.firstName} #{pc.player.lastName}</span>
+                                            <p class="details">#{pc.player.email}</p>
+                                            <p class="details">#{pc.player.userClub.name}</p>
+                                        </div>
+                                        <div class="pairingcard-player #{pc.opponent.color == 'BLACK'?'black':'white'}">
+                                            <span>#{pc.opponent.player.firstName} #{pc.opponent.player.lastName}</span>
+                                            <p class="details">#{pc.opponent.player.email}</p>
+                                            <p class="details">#{pc.opponent.player.userClub.name}</p>
+                                        </div>
+                                    </h:panelGroup>
+                                </c:if>
+                                <c:if test="#{pc.opponent == null}">
+                                    <div class="pairingcard">
+                                        <div class="pairingcard-no-opponent">
+                                            <span>#{pc.player.firstName} #{pc.player.lastName} - wolny los</span>
+                                            <p class="details">#{pc.player.email}</p>
+                                            <p class="details">#{pc.player.userClub.name}</p>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                        </h:panelGroup>
+                    </span>
+                    <span class="spacer"></span>
+                    <h:panelGroup id="list" styleClass="tournament-summary">
+                        <p>Podsumowanie turnieju</p>
+                        <ul>
+                            <li>aktualna runda: <b>#{cTmtCBean.currentTmt.currentRound.number+1}</b></li>
+                            <li>liczba rund: <b>#{cTmtCBean.currentTmt.numberOfRounds}</b></li>
+                            <li>liczba graczy: <b>#{cTmtCBean.getNumberOfPlayers()}</b></li>
+                            <li>data rozpoczęcia: <b>#{cTmtCBean.currentTmt.date}</b></li>
+                            <li>kategoria: <b>#{cTmtCBean.currentTmt.category.name}</b></li>
+                            <li>klub: <b>#{cTmtCBean.currentTmt.club.name}</b></li>
+                            <li>punkty za wygraną: <b>#{cTmtCBean.currentTmt.pointsForBye}</b></li>
+                            <li>punkty za remis: <b>#{cTmtCBean.currentTmt.pointsForBye/2}</b></li>
+                        </ul>
+                    </h:panelGroup>
+                </div>
+            </c:if>
+            <h:commandLink value="Przejdź do następnej rundy »" styleClass="next-round">
+                <f:ajax execute="@form" render="@form" listener="#{cTmtCBean.goToNextRound}"/>
+            </h:commandLink>
+        </ui:composition>
+    </h:body>
+</html>

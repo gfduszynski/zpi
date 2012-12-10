@@ -78,7 +78,6 @@ public class EditClubProfileBean implements Serializable {
     }
 
     public boolean validateBD() {
-
         if (this.creationDate == null) {
             this.invalidBD = true;
             return false;

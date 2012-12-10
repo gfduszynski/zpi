@@ -36,7 +36,7 @@
                 <div id="newsSlider" class="news">
                     <ul>
                         <c:forEach items="#{lpBean.latestPosts}" var="post" varStatus="loop">
-                            <li class="news-item" onclick="$(location).attr('href', '#{request.contextPath}/posts/#{post.id}');">
+                            <li class="news-item" onclick="$(location).attr('href', '#{request.contextPath}/posts##{post.id}');">
                                 <div class="news-item-header">
                                     <span class="news-item-title">#{post.title}</span>
                                     <span class="news-item-date">#{post.datePublished}</span>
