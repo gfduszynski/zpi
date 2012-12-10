@@ -48,7 +48,7 @@
        
         <h:panelGroup layout="block" class="content" id="full-content">
             <ui:include src="../pages/header.xhtml"/>
-                <h1> Turnieje</h1>
+                <h1>Turnieje</h1>
 
                 <c:forEach items="#{atvBean.allTournaments}" begin="0" end="16" var="tmt" rendered="#{atvBean.selectedTournament == null}" varStatus="loop">
                 <h:outputLink value="#{request.contextPath}/tournaments/#{tmt.id}">
