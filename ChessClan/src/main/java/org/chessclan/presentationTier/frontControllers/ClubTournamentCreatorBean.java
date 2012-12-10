@@ -60,8 +60,8 @@ public class ClubTournamentCreatorBean implements Serializable {
         return tmBO.filterUniquePairingCards(currentTmt.getCurrentRound()).size();
     }
     
-    public void winner(PairingCard pc, int status){
-        switch(status){
+    public void winner(PairingCard pc){
+        switch((int)pc.getScore()){
             case 1:
                 pc.setScore(currentTmt.getPointsForBye());
                 pc.getOpponent().setScore(0);
@@ -111,6 +111,11 @@ public class ClubTournamentCreatorBean implements Serializable {
     }
 
     public void goToNextRound() {
+        if(this.currentTmt.getState() == Tournament.State.STARTED){
+            for(PairingCard pc:getFilteredCurrentRoundPC()){
+                winner(pc);
+            }
+        }
         try {
             this.currentTmt = tmBO.goToNextRound(currentTmt);
         } catch (NotFinished ex) {
@@ -190,9 +195,6 @@ public class ClubTournamentCreatorBean implements Serializable {
     }
 
     public Set<PairingCard> getFilteredCurrentRoundPC(){
-        Set<PairingCard> filterUniquePairingCards = this.tmBO.filterUniquePairingCards(this.currentTmt.getCurrentRound());
-        for(PairingCard pc:filterUniquePairingCards){
-        }
-        return filterUniquePairingCards;
+        return this.tmBO.filterUniquePairingCards(this.currentTmt.getCurrentRound());
     }
 }
