@@ -172,7 +172,7 @@
                                         <c:if test="#{!cmmBean.isMember(user)}">
                                             <div class="player">
                                                 <h:commandButton value="+" styleClass="add">
-                                                    <f:ajax render="@form" execute="@form" listener="#{cmmBean.addMember(user)}"/>
+                                                    <f:ajax render="@form" listener="#{cmmBean.addMember(user)}"/>
                                                 </h:commandButton>
                                                 <span>#{user.firstName} #{user.lastName}</span>
                                                 <p>#{user.email}</p>
@@ -187,7 +187,7 @@
                                 <c:forEach items="#{cmmBean.members}" var="member" varStatus="loop">
                                     <div class="player">
                                         <h:commandButton value="x" styleClass="remove">
-                                            <f:ajax render="@form" execute="@form" listener="#{cmmBean.removeMember(member)}"/>
+                                            <f:ajax render="@form" listener="#{cmmBean.removeMember(member)}"/>
                                         </h:commandButton>
                                         <span>#{member.firstName} #{member.lastName}</span>
                                     </div>

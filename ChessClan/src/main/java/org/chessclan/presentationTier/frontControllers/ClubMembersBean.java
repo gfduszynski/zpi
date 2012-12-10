@@ -52,6 +52,7 @@ public class ClubMembersBean {
     public void addMember(User u) {
         u.setUserClub(this.user.getOwnedClub());
         members.add(u);
+        foundUsers.remove(u);
         umBO.saveUser(u);
     }
 
