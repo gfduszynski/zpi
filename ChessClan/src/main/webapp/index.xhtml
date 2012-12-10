@@ -20,11 +20,15 @@
 
     <h:body>
         <h:panelGroup layout="block" class="content">
+            <div id="editContainer"></div>
             <ui:include src="pages/header.xhtml"/>
             <div class="body">            
-                <div id="editContainer"></div>
                 <c:if test="#{not loginBean.loggedUser}">
                     <h:panelGroup layout="block" class="elements">
+                        <!--                        <h:panelGroup layout="block" style="height:120px;width:900px;background-color:#DFDDDA;font-variant: small-caps;padding:30px;">
+                                                    <span style="font-size: 48px;">ChessClan</span><br/>
+                                                    <span style="font-size: 32px;">Miejsce dla każdego pasjonata szachów.</span>
+                                                </h:panelGroup>-->
                         <h:panelGroup layout="block" class="firstColumn">
                             <h:panelGroup layout="block" class="one">
 
