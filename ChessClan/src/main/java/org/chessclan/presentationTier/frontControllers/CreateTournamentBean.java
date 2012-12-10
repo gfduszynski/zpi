@@ -51,6 +51,8 @@ public class CreateTournamentBean implements Serializable {
     private String pointsForBye = "1";
     private String numberOfRounds = "7";
     private boolean createTmtSuccess;
+    private String hours = "12";
+    private String minutes = "00";
 
     public CreateTournamentBean() {
         this.tmtCategories = new LinkedList<Category>();
@@ -93,6 +95,8 @@ public class CreateTournamentBean implements Serializable {
 
     public void saveTournament() throws NotFinished, NoPlayers {
         if (validateCats() && validateTournamentName() && validateTournamentDesc() && validateDate() && validatePoints() && validateRounds() && tmtCategories.size() > 0) {
+            tmtDate.setHours(Integer.parseInt(hours));
+            tmtDate.setMinutes(Integer.parseInt(minutes));
             Tournament t = tmBO.registerTournament(Integer.parseInt(numberOfRounds), Integer.parseInt(pointsForBye), tmtName, tmtDate, tmtDescription, user.getOwnedClub(), tmtCategories.get(0));
             this.createTmtSuccess = true;
             ctBean.getClubTournaments().add(t);
@@ -324,6 +328,22 @@ public class CreateTournamentBean implements Serializable {
 
     public void setCategoriesValid(boolean categoriesValid) {
         this.categoriesValid = categoriesValid;
+    }
+
+    public String getHours() {
+        return hours;
+    }
+
+    public void setHours(String hours) {
+        this.hours = hours;
+    }
+
+    public String getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(String minutes) {
+        this.minutes = minutes;
     }
     
     
