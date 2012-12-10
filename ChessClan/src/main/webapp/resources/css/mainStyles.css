@@ -707,6 +707,29 @@ div#editContainer{
     text-align: left;
     font-variant: small-caps;
 }
+
+.tournament .pairingcards-list .scores{
+    height: 115px;
+    width: 110px;
+    float:right;
+    text-align: center;
+    vertical-align: middle;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+}
+.tournament .pairingcards-list .scores .up{width:110px;height:57.5px;display:block;color:white;
+    line-height: 57px;font-size:1.8em;}
+.tournament .pairingcards-list .scores .down{width:110px;height:57.5px;display:block;color:white;
+    line-height: 57px;font-size:1.8em;}
+
+.tournament .round-browser{
+    width: 440px;
+    height:100%;
+    min-height:400px;
+    margin:0px;
+    display: inline-block;
+    padding: 10px;
+    vertical-align: top;    
+}
 /* end of tournament view ----------------------------------------------------*/
 .postContainer{
     background-color: #EEEEEE;

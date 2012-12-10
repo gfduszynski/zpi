@@ -474,4 +474,29 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     public PairingCard savePairingCard(PairingCard pc){
         return pcRepo.saveAndFlush(pc);
     }
+    @Override
+    @Transactional
+    public List<Round> getRoundList(Tournament t) {
+        List<Round> rounds = rRepo.findRoundByTournamentOrderByNumberAsc(t);
+        for (Round r : rounds) {
+            if (r.getPairingCardSet() != null) {
+                for (PairingCard pc : r.getPairingCardSet()) {
+                    pc.getPlayer().getFirstName().toString();
+                    if (pc.getOpponent() != null) {
+                        pc.getOpponent().getPlayer().getFirstName().toString();
+                    }
+                }
+            }
+            Iterator<PairingCard> iterator = r.getPairingCardSet().iterator();
+            Set<PairingCard> newPairingCards = new HashSet<PairingCard>(r.getPairingCardSet());
+            while (iterator.hasNext()) {
+                PairingCard pc = iterator.next();
+                if (newPairingCards.contains(pc) && pc.getOpponent() != null) {
+                    newPairingCards.remove(pc.getOpponent());
+                }
+            }
+            r.setPairingCardSet(newPairingCards);
+        }
+        return rounds;
+    }
 }

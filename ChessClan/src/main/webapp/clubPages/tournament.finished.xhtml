@@ -10,11 +10,61 @@
                 document.title = "ChessClan - Turniej - Wyniki";
             </script>
             <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
-                <h:outputText value="Turniej zakończony! Wyniki:"/>
-                <c:forEach items="#{cTmtCBean.results.keySet().toArray()}" var="result" varStatus="loop">
-                    <h:outputText value="Miejsce #{loop.index+1}: #{result.firstName} #{result.lastName} Ilość punktów: #{cTmtCBean.results.get(result)}"/>
-                    <br/>
-                </c:forEach>
+                <div class="tournament">
+                    <h:panelGroup id="pc-list" styleClass="round-browser">
+                        <p>Przegląd rund</p>
+                        <div id="round-browser">
+                            <c:forEach items="#{cTmtCBean.roundList}" var="round" varStatus="loop">
+                                <c:if test="#{round.number>-1}">
+                                    <p class="round-number">Runda #{round.number+1}</p>
+                                    <h:panelGroup layout="block" styleClass="pairingcards-list" id="pairing-card-list">
+                                        <c:forEach items="#{round.pairingCardSet}" var="pc" varStatus="loop">
+                                            <c:if test="#{pc.opponent != null}">
+                                                <h:panelGroup layout="block" styleClass="pairingcard">
+                                                    <div class="scores">
+                                                        <span class="up">#{pc.score} pkt</span>
+                                                        <span class="down">#{pc.opponent.score} pkt</span>
+                                                    </div>
+                                                    <div class="pairingcard-player #{pc.color == 'BLACK'?'black':'white'}">
+                                                        <span>#{pc.player.firstName} #{pc.player.lastName}</span>
+                                                        <p class="details">#{pc.player.email}</p>
+                                                        <p class="details">#{pc.player.userClub.name}</p>
+                                                    </div>
+                                                    <div class="pairingcard-player #{pc.opponent.color == 'BLACK'?'black':'white'}">
+                                                        <span>#{pc.opponent.player.firstName} #{pc.opponent.player.lastName}</span>
+                                                        <p class="details">#{pc.opponent.player.email}</p>
+                                                        <p class="details">#{pc.opponent.player.userClub.name}</p>
+                                                    </div>
+                                                </h:panelGroup>
+                                            </c:if>
+                                            <c:if test="#{pc.opponent == null}">
+                                                <div class="pairingcard">
+                                                    <div class="pairingcard-no-opponent">
+                                                        <span>#{pc.player.firstName} #{pc.player.lastName} - wolny los</span>
+                                                        <p class="details">#{pc.player.email}</p>
+                                                        <p class="details">#{pc.player.userClub.name}</p>
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
+                                    </h:panelGroup>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                        <script type="text/javascript">
+                            $( "#round-browser" ).accordion({active:0, header: '.round-number' });
+                        </script>
+                    </h:panelGroup>
+                    <span class="spacer"></span>
+                    <h:panelGroup id="round-list" styleClass="tournament-summary">
+                        <p>Wyniki</p>
+                        <h:outputText value="Turniej zakończony! Wyniki:"/>
+                        <c:forEach items="#{cTmtCBean.results.keySet().toArray()}" var="result" varStatus="loop">
+                            <h:outputText value="Miejsce #{loop.index+1}: #{result.firstName} #{result.lastName} Ilość punktów: #{cTmtCBean.results.get(result)}"/>
+                            <br/>
+                        </c:forEach>
+                    </h:panelGroup>
+                </div>
             </c:if>
         </ui:composition>
     </h:body>
