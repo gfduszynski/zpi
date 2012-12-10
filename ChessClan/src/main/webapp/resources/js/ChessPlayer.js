@@ -121,7 +121,7 @@ function ChessPlayer(DOMTarget){
 			class: "chess-player-navigation-button"
 		}).html('>>'));
                 $(":last",this.navigation).bind("click",_this,function(e){
-                    while(_this.currentMove<_this.numberOfMoves){
+                    while(_this.currentMove<_this.game.moves.length){
 			e.data.nextMove();
                     }
 		});
@@ -135,8 +135,20 @@ function ChessPlayer(DOMTarget){
                     _this.camera.lookAt(_this.scene.position);
                     _this.renderer.render(_this.scene,_this.camera);
 		});
-		// Configure summary
-		
+                // Players
+                this.summary.append($('<span>').attr({
+			class: "chess-player-summary-players"
+		}).html("Biały: "+this.game.white+(this.game.result=='WHITE_WON'?"(Wygrał)":"")+'<br/>vs<br/>'+" Czarny: "+this.game.black+(this.game.result=='WHITE_WON'?"":"(Wygrał)")));
+		// Game info
+                this.summary.append($('<span>').attr({
+			class: "chess-player-summary-info"
+		}).html(this.game.event+', '+this.game.site+'<br/>'+this.game.date));
+                //Upload area
+                this.summary.append($('<span>').attr({
+			class: "chess-player-summary-upload",
+                        ondragenter: "this.classList.add('over');",
+                        ondragleave: "this.classList.remove('over');"
+		}).html('&nbsp;'));
 		
 		
 		// Add nodes to target
@@ -151,9 +163,30 @@ function ChessPlayer(DOMTarget){
 		this.initThree();
 		this.loadModels();
 		
-		
+                // Init .pgn loader
+                var _this = this;
+		plugListenersAndGetJSON(document.getElementById('chess-player-summary-'+$(this.target).attr("id")),function(so){
+                    if(so.state=="CorrectlyParsedSucc"){
+                        _this.game = so.json;
+                        _this.numberOfMoves=0;
+                        _this.currentMove = 0;
+                        $.each(so.json.moves,function(i,v){if(v.isSingular)_this.numberOfMoves++;});
+			_this.init();  // Init board
+                    }
+                });
 	}
-	
+    // resize
+    this.onWindowResize = function(event) {
+        var _this = event.data;
+        var WIDTH = $(_this.canvas).width(),
+            HEIGHT = $(_this.canvas).height();
+        _this.renderer.setSize(WIDTH, HEIGHT);
+        _this.camera.aspect = WIDTH / HEIGHT;
+        _this.camera.updateProjectionMatrix();
+        _this.renderer.render(_this.scene,_this.camera);
+
+
+    }
 		// Init Three
 	this.initThree = function(){
 		// set the scene size
@@ -224,6 +257,8 @@ function ChessPlayer(DOMTarget){
 		this.camera = camera;
 		this.scene = scene;
 		this.renderer = renderer;
+                // Add resize listner
+                $(window).resize( this, this.onWindowResize );
 	}
 	
 	this.loadModels = function(){
@@ -285,14 +320,14 @@ function ChessPlayer(DOMTarget){
 		var figure = this.boardState[x][y].pop();
 		if(figure){
 			if(rev && this.boardState[x][y].length>0){
-				var f = this.boardState[x][y][0].children;
+				var f = this.boardState[x][y][this.boardState[x][y].length-1].children;
 				for(var i=0; i<f.length; i++){
 					f[i].visible = true; // set visible if reversing
 				}
 			}
 				
 			if(!rev && this.boardState[toX][toY].length>0){
-				var f = this.boardState[toX][toY][0].children;
+				var f = this.boardState[toX][toY][this.boardState[toX][toY].length-1].children;
 				for(var i = 0; i<f.length; i++){
 					f[i].visible = false; // set not visible if not reversing
 				}
@@ -322,7 +357,7 @@ function ChessPlayer(DOMTarget){
 			pawn.castShadow = true;
 			pawn.receiveShadow  = true;
 			this.scene.add(pawn);
-			this.boardState[i%8][Math.floor(i/8)*7+(i<8?1:-1)].push(pawn);
+			this.boardState[i%8][Math.floor(i/8)*7+(i<8?1:-1)]=[pawn];
 		}
 		// setup rooks
 		for(var i = 0; i<4; i++){
@@ -340,7 +375,7 @@ function ChessPlayer(DOMTarget){
 			rook.castShadow = true;
 			rook.receiveShadow  = true;
 			this.scene.add(rook);
-			this.boardState[(i%2)*7][(i<2?0:7)].push(rook);
+			this.boardState[(i%2)*7][(i<2?0:7)]=[rook];
 		}
 		// setup knights
 		for(var i = 0; i<4; i++){
@@ -358,7 +393,7 @@ function ChessPlayer(DOMTarget){
 			knight.castShadow = true;
 			knight.receiveShadow  = true;
 			this.scene.add(knight);
-			this.boardState[(i%2)*5+1][(i<2?0:7)].push(knight);
+			this.boardState[(i%2)*5+1][(i<2?0:7)]=[knight];
 		}
 		// setup bishops
 		for(var i = 0; i<4; i++){
@@ -376,7 +411,7 @@ function ChessPlayer(DOMTarget){
 			bishop.castShadow = true;
 			bishop.receiveShadow  = true;
 			this.scene.add(bishop);
-			this.boardState[(i%2)*3+2][(i<2?0:7)].push(bishop);
+			this.boardState[(i%2)*3+2][(i<2?0:7)]=[bishop];
 		}
 		// setup queens
 		for(var i = 0; i<2; i++){
@@ -394,7 +429,7 @@ function ChessPlayer(DOMTarget){
 			queen.castShadow = true;
 			queen.receiveShadow  = true;
 			this.scene.add(queen);
-			this.boardState[4][(i<1?0:7)].push(queen);
+			this.boardState[4][(i<1?0:7)]=[queen];
 		}
 		// setup kings
 		for(var i = 0; i<2; i++){
@@ -412,7 +447,7 @@ function ChessPlayer(DOMTarget){
 			king.castShadow = true;
 			king.receiveShadow  = true;
 			this.scene.add(king);
-			this.boardState[3][(i<1?0:7)].push(king);
+			this.boardState[3][(i<1?0:7)]=[king];
 		}
 		this.renderer.render(this.scene, this.camera);
 	}

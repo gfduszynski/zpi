@@ -82,7 +82,7 @@ public class Tournament implements Serializable {
     private int numberOfRounds = 7;
     @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, mappedBy = "tournament", fetch = FetchType.LAZY)
     private Set<Round> roundSet = new HashSet<Round>();
-    @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, mappedBy = "tournament", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "tournament", fetch = FetchType.LAZY)
     private Set<PairingCard> pairingCardSet = new HashSet<PairingCard>();
 
     public Tournament() {

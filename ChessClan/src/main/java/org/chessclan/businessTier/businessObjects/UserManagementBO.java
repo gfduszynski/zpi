@@ -43,6 +43,8 @@ public interface UserManagementBO{
     @Transactional
     List<User> findByFirstnameAndLastname(String fn, String ln);
     @Transactional
+    List<User> findByFirstNameContainingOrLastNameContaining(String fn, String ln);
+    @Transactional
     List<User> findByFirstname(String fn);
     @Transactional
     List<User> findByLastname(String ln);
