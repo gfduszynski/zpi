@@ -1,6 +1,32 @@
 var JSONPrev = new JSONStateObject(null, null);
 var JSONStateAndObject = new JSONStateObject(null, null);
 // Podpinanie listenerów
+function plugListenersAndGetJSONForMultiple(myClass, visualisation)
+{//Sprawdzanie obsługi przeglądarek, czy object null etc.
+    var object;
+    if (isBrowserCompatible()) {
+        if (myClass === null || myClass === undefined || myClass==="") {
+            JSONStateAndObject.state = 'InvalidDropZoneExc';
+            visualisation(JSONStateAndObject);
+        } else {
+            object = $("."+myClass+":first");
+            object.addEventListener('dragover', handleDragOver, false);
+            object.addEventListener('drop', handleFileSelect, false);
+            setInterval(function() {
+                if (JSONPrev.state != JSONStateAndObject.state || JSONPrev.json != JSONStateAndObject.json)
+                {
+                    visualisation(JSONStateAndObject);
+                    JSONPrev = new JSONStateObject(JSONStateAndObject.state, JSONStateAndObject.json);
+                }
+            }, 1000);
+        }
+    } else {
+        object = $("."+myClass+":first"); 
+        object.style.visibility = "hidden";
+    }
+}
+
+
 function plugListenersAndGetJSON(object, visualisation)
 {//Sprawdzanie obsługi przeglądarek, czy object null etc.
     if (isBrowserCompatible()) {
