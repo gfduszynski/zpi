@@ -172,10 +172,10 @@
                                         <c:if test="#{!cmmBean.isMember(user)}">
                                             <div class="player">
                                                 <h:commandButton value="+" styleClass="add">
-                                                    <f:ajax render="@form" listener="#{cmmBean.addMember(user)}"/>
+                                                    <f:ajax render="foundUsers list" execute="@this" listener="#{cmmBean.addMember(user)}"/>
                                                 </h:commandButton>
                                                 <span>#{user.firstName} #{user.lastName}</span>
-                                                <p>#{user.email}</p>
+                                                <p class="details">#{user.email}</p>
                                             </div>
                                         </c:if>
                                     </c:forEach>
@@ -187,7 +187,7 @@
                                 <c:forEach items="#{cmmBean.members}" var="member" varStatus="loop">
                                     <div class="player">
                                         <h:commandButton value="x" styleClass="remove">
-                                            <f:ajax render="@form" listener="#{cmmBean.removeMember(member)}"/>
+                                            <f:ajax render="@form" execute="@this" listener="#{cmmBean.removeMember(member)}"/>
                                         </h:commandButton>
                                         <span>#{member.firstName} #{member.lastName}</span>
                                     </div>
@@ -228,7 +228,7 @@
                                         min: 1,
                                         spin: function( event, ui ) 
                                         {
-                                            $('#drawPoints').html(' Punkty za remis: '+ui.value/2);
+                                            $('#drawPoints').html(' Punkty zdobywane za remis: '+ui.value/2);
                                             $('#pointsHidden').attr('value', ui.value);
                                         }
                                     });
@@ -244,59 +244,85 @@
                                     $("#roundsSpinner").spinner('value',r);
                                 });
                             </script>
-                            <h:panelGroup id="tmtNameGroup">
-                                <h:panelGroup rendered="#{not crTmtBean.nameValid}">
-                                    <script type="text/javascript">
-                                        showTips(tmtName, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 'e');
-                                    </script>
-                                </h:panelGroup>
-                                <h:inputText value="#{crTmtBean.tmtName}" id="tmtName" alt="Nazwa turnieju niepoprawna.">
-                                    <f:ajax event="blur" execute="@this" render="tmtNameGroup" listener="#{crTmtBean.validateTournamentName}" onevent="hideTips(tmtName)"/>
-                                </h:inputText>
-                            </h:panelGroup>
-                            <h:outputText value="Data odbycia turnieju: " styleClass="addPostDate"/>
-                            <h:panelGroup id="dateGroup">
+
+
+                            <table class="width100">
+                                <tr>
+                                    <td class="pad10">
+                                        <h:outputText value="Nazwa turnieju: "/>
+                                    </td>
+                                    <td class="pad10">
+                                        <h:panelGroup id="tmtNameGroup">
+                                            <h:panelGroup rendered="#{not crTmtBean.nameValid}">
+                                                <script type="text/javascript">
+                                                    showTips(tmtName, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 'w');
+                                                </script>
+                                            </h:panelGroup>
+                                            <h:inputText value="#{crTmtBean.tmtName}" id="tmtName" alt="Nazwa turnieju niepoprawna.">
+                                                <f:ajax event="blur" execute="@this" render="tmtNameGroup" listener="#{crTmtBean.validateTournamentName}" onevent="hideTips(tmtName)"/>
+                                            </h:inputText>
+                                        </h:panelGroup>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pad10">
+                                        <h:outputText value="Data i godzina rozgrywek: "/>
+                                    </td>
+                                    <td class="pad10">
+                                        <h:panelGroup id="dateGroup">
+                                            <script type="text/javascript">
+                                                $(document).ready(function(){
+                                                    $("#tmtDate").datepicker({
+                                                        changeMonth: true,
+                                                        changeYear: true,
+                                                        dateFormat: "d-m-yy"});
+                                                });
+                                            </script>
+                                            <h:panelGroup rendered="#{not crTmtBean.dateValid}">
+                                                <script type="text/javascript">
+                                                    showTips(tmtDate, function(val){
+                                                        var dateRegex = /^(\d{1,2})\-(\d{1,2})\-(\d{4})$/; 
+                                                        if(val.match(dateRegex))return true; else return false;}, 0, false, 0, 'w');
+                                                </script>
+                                            </h:panelGroup>
+                                            <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate" alt="Data niepoprawna." onkeydown="return false;" styleClass="tmtDate">
+                                                <f:convertDateTime pattern="d-M-yyyy" />
+                                                <f:ajax event="change" execute="@this" render="dateGroup" listener="#{crTmtBean.validateDate}" onevent="hideTips(tmtDate)"/>
+                                            </h:inputText>
+                                        </h:panelGroup>
+
+
+                                        <h:panelGroup id="timeGroup">
+                                            <h:inputHidden id="tmtHours" value="#{crTmtBean.hours}"/>
+                                            <h:inputHidden id="tmtMinutes" value="#{crTmtBean.minutes}"/>
+                                            <script type="text/javascript">
+                                                $(document).ready(function(){
+                                                    $("#tmtTime").timepicker(
+                                                    {
+                                                        timeSeparator: ':', 
+                                                        defaultTime:'12:00',
+                                                        onClose:function(){
+                                                            $("#tmtHours").val($("#tmtTime").timepicker("getHour"));
+                                                            $("#tmtMinutes").val($("#tmtTime").timepicker("getMinute"));
+                                                        }
+                                                    });
+
+                                                });
+                                            </script>
+                                            <h:inputText value="12:00" id="tmtTime" onkeydown="return false;" styleClass="tmtDate"/>
+                                        </h:panelGroup>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <h:panelGroup id="tmtDescGroup">
                                 <script type="text/javascript">
                                     $(document).ready(function(){
-                                        $("#tmtDate").datepicker({
-                                            changeMonth: true,
-                                            changeYear: true,
-                                            dateFormat: "d-m-yy"});
-                                    });
-                                </script>
-                                <h:panelGroup rendered="#{not crTmtBean.dateValid}">
-                                    <script type="text/javascript">
-                                        showTips(tmtDate, function(val){
-                                            var dateRegex = /^(\d{1,2})\-(\d{1,2})\-(\d{4})$/; 
-                                            if(val.match(dateRegex))return true; else return false;}, 0, false, 0, 's');
-                                    </script>
-                                </h:panelGroup>
-                                <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate" alt="Data niepoprawna.">
-                                    <f:convertDateTime pattern="d-M-yyyy" />
-                                    <f:ajax event="change" execute="@this" render="dateGroup" listener="#{crTmtBean.validateDate}" onevent="hideTips(tmtDate)"/>
-                                </h:inputText>
-                            </h:panelGroup>
-                            <h:panelGroup id="timeGroup">
-                                <h:inputHidden id="tmtHours" value="#{crTmtBean.hours}"/>
-                                <h:inputHidden id="tmtMinutes" value="#{crTmtBean.minutes}"/>
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-                                        $("#tmtTime").timepicker(
-                                        {
-                                            timeSeparator: ':', 
-                                            defaultTime:'12:00',
-                                            onClose:function(){
-                                                $("#tmtHours").val($("#tmtTime").timepicker("getHour"));
-                                                $("#tmtMinutes").val($("#tmtTime").timepicker("getMinute"));
-                                            }
-                                        });
+                                        if ($('#tmtDescription')[0].value != '') 
+                                            $('#tmtDescription').css("background", "none").css("background-color", "white");
 
                                     });
                                 </script>
-                                <h:inputText id="tmtTime"/>
-                            </h:panelGroup>
-                            <br/>
-                            <h:panelGroup id="tmtDescGroup">
                                 <h:panelGroup rendered="#{not crTmtBean.descValid}">
                                     <script type="text/javascript">
                                         showTips(tmtDescription, function(val){if(val.length>1)return true; else return false;}, 0, false, 0, 'e');
@@ -306,37 +332,57 @@
                                     <f:ajax event="blur" execute="@this" render="tmtDescGroup" listener="#{crTmtBean.validateTournamentDesc}" onevent="hideTips(tmtDescription)"/>
                                 </h:inputTextarea>
                             </h:panelGroup><br/>
-                            <h:outputText rendered="#{not crTmtBean.pointsValid}" styleClass="error" value="Liczba punktów niepoprawna.&lt;br/&gt;" escape="false"/>
-                            <h:outputText value="Punkty do za wygranie partii: "/>
-                            <h:inputText id="pointsSpinner" styleClass="marL5"/>
-                            <h:outputText value=" Punkty za remis: #{crTmtBean.pointsForBye/2}" id="drawPoints"/><br/>
-                            <h:outputText rendered="#{not crTmtBean.roundsValid}" styleClass="error" value="Liczba rund turnieju niepoprawna.&lt;br/&gt;" escape="false"/>
-                            <h:outputText value="Liczba rund: "/>
-                            <h:inputText id="roundsSpinner" class="marL5"/><br/>
+
+                            <table>
+                                <tr>
+                                    <td class="pad10">
+                                        <h:outputText value="Punkty zdobywane za wygranie partii:"/>
+                                    </td>
+                                    <td>
+                                        <h:inputText id="pointsSpinner"/>
+                                    </td>
+                                    <td class="pad10">
+                                        <h:outputText value="Punkty zdobywane za remis: #{crTmtBean.pointsForBye/2}" id="drawPoints"/><br/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pad10">
+                                        <h:outputText value="Liczba rund: "/>
+                                    </td>
+                                    <td colspan="2">
+                                        <h:inputText id="roundsSpinner"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <span class="width100">Kategoria turnieju:</span>
                             <h:panelGroup id="catsSubForm">
                                 <h:panelGroup layout="block" rendered="#{not empty crTmtBean.tmtCategories}" style="display: block;">
-                                    <h4>Kategoria turnieju:</h4>
+
                                     <c:forEach items="#{crTmtBean.tmtCategories}" var="cat">
-                                        <h:outputText value="#{cat.name}"/>
-                                        <h:commandButton value="Usuń kategorię">
-                                            <f:ajax render="catsSubForm" listener="#{crTmtBean.removeCat(cat)}"/>
-                                        </h:commandButton>
-                                        <br/><br/>
+                                        <div class="player">
+                                            <h:commandButton value="x" styleClass="remove">
+                                                <f:ajax render="catsSubForm" listener="#{crTmtBean.removeCat(cat)}"/>
+                                            </h:commandButton>
+                                            <h:outputText value="#{cat.name}"/>
+                                        </div>
                                     </c:forEach> 
                                 </h:panelGroup>
-                                <h:commandButton value="Wybierz kategorię" styleClass="allButton addPostButton" rendered="#{crTmtBean.tmtCategories.size() == 0}">
-                                    <f:ajax render="catsSubForm" listener="#{crTmtBean.addCategory}" onevent="hideTips(chooseCat)"/>
-                                </h:commandButton>
-                                <h:selectOneMenu value="#{crTmtBean.selectedCatId}" rendered="#{crTmtBean.tmtCategories.size() == 0}" id="chooseCat">
-                                    <c:forEach items="#{crTmtBean.categories}" var="category">
-                                        <f:selectItem itemLabel="#{category.name}" itemValue="#{category.id}"/>
-                                    </c:forEach>
-                                </h:selectOneMenu>
-                                <h:panelGroup rendered="#{not crTmtBean.categoriesValid}">
-                                    <script type="text/javascript">
-                                        showTips(chooseCat, function(val){return false;}, 1, false, 0, 'w');
-                                    </script>
-                                </h:panelGroup>
+
+                                <div class="tournament">
+                                    <h:commandButton value="+" styleClass="allButton addPostButton" rendered="#{crTmtBean.tmtCategories.size() == 0}">
+                                        <f:ajax render="catsSubForm" execute="catsSubForm" listener="#{crTmtBean.addCategory}" onevent="hideTips(chooseCat)"/>
+                                    </h:commandButton>
+                                    <h:selectOneMenu value="#{crTmtBean.selectedCatId}" rendered="#{crTmtBean.tmtCategories.size() == 0}" id="chooseCat">
+                                        <c:forEach items="#{crTmtBean.categories}" var="category">
+                                            <f:selectItem itemLabel="#{category.name}" itemValue="#{category.id}"/>
+                                        </c:forEach>
+                                    </h:selectOneMenu>
+                                    <h:panelGroup rendered="#{not crTmtBean.categoriesValid}">
+                                        <script type="text/javascript">
+                                            showTips(chooseCat, function(val){return false;}, 1, false, 0, 'w');
+                                        </script>
+                                    </h:panelGroup>
+                                </div>
                             </h:panelGroup>
                             <br/>
                             <h:commandButton value="Dodaj turniej" styleClass="allButton addPostButton">

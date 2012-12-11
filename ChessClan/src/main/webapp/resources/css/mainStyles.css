@@ -7,10 +7,6 @@ a {
 a:hover{
     color:#00AAE8;
 }
-
-input, textarea,select{
-    font-variant:small-caps;
-}
 /* PODSTAWOWE STAŁE NARZĘDZIA:  */
 .displayNone{
     display:none;
@@ -346,10 +342,6 @@ div#editContainer{
 #tabs{
     width: 99%;
     min-height: 500px;
-}
-#tabs-1,#tabs-2,#tabs-3,#tabs-4{
-    width: 100%;
-    overflow: auto;
 }
 
 .noMargin{
@@ -1062,8 +1054,8 @@ allButtonNoHover{
     color: black;
 }
 .headerButton:hover {
-    background-color: #E09041;
-    color: white; 
+    background-color: white;
+    color: black; 
 }
 .addPostButton{
     width: 180px;
@@ -1130,19 +1122,26 @@ TABLE.userTable thead{
     color: white;
 }
 #tmtName{
-    width: 69%;
+    width:99%;
 }
-#tmtDate{
-    width: 10%;
+.tmtDate{
+    width: 343px;
+    text-align: center;
 }
 .addTourContent{
-    width: 100%;
+    width: 904px;
+    margin-left: 10px;
     overflow: auto;
     height: 200px;
     resize: none;
+    background: url("opisbcg.png.xhtml?ln=images") center center no-repeat; /* This ruins default border */
+    border: 1px solid #ABADB3; 
+    margin-top:15px;
 }
 #pointsSpinner,#roundsSpinner{
     width: 25px;
+    margin: 0px 20px;
+    text-align:center;
 }
 .tmtStartMenagingButton{
     width: 53%;

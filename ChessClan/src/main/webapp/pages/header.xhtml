@@ -106,7 +106,7 @@
                             }
                         </script>
                         <h:panelGroup layout="block" class="logoutStuff">
-                            <h:outputText value="Witaj, #{loginBean.user.ownedClub.name}." styleClass="hello"/><br/>
+                            <h:outputText value="#{loginBean.user.ownedClub.name}" styleClass="hello"/><br/>
                             <h:outputLink value="#{request.contextPath}/j_spring_security_logout" styleClass="headerButton">Wyloguj</h:outputLink>
                             <a onclick="showEditProfile();" href="#" class="headerButton">Edytuj profil</a>
                         </h:panelGroup>
