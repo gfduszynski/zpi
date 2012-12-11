@@ -1,96 +1,59 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:h="http://java.sun.com/jsf/html"
+<!DOCTYPE html>
+<html xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:sec="http://www.springframework.org/security/tags">
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>ChessClan</title>
-        <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAACQkJAD09PQASEhIAWFhYAAsLCwD9/f0AFBQUANLS0gANDQ0A////ALu7uwAGBgYAxMTEAGVlZQA6OjoADw8PABgYGAAzMzMACAgIABEREQCUlJQACgoKAPz8/AATExMADAwMAP7+/gAFBQUAOTk5AA4ODgAgICAABwcHAPn5+QAQEBAAo6OjAIGBgQBWVlYAioqKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhghIR0JEAUMAAAAAAAAAAoPHQUdFgUTGgAAAAAAAAAKChkZARYTCgoAAAAAAAAACgofBRMWAwoKAAAAAAAAAAoKGhYFFhcKCgAAAAAAAAAKCgoBHwUGCgoAAAAAAAAACgoKARYWCgoKAAAAAAAAAAoKCgwWHwoKCgAAAAAAAAAKJRATGwwWIgoAAAAAAAAACgoKBx0UCgoKAAAAAAAAAAoKIB8FEw0KCgAAAAAAAAAKCgEWGRYTCgoAAAAAAAAACgoQCREEHwoKAAAAAAAAAAoKDh4ZHCQKCgAAAAAAAAAKCggVBSMLCgoAAAAAAAAACgoKEgcHCgoKAAAAAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAAA=" rel="icon" type="image/x-icon" />
-        <h:outputScript library="js" name="jquery.dotdotdot.js"/>
+        <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAACQkJAD09PQASEhIAWFhYAAsLCwD9/f0AFBQUANLS0gANDQ0A////ALu7uwAGBgYAxMTEAGVlZQA6OjoADw8PABgYGAAzMzMACAgIABEREQCUlJQACgoKAPz8/AATExMADAwMAP7+/gAFBQUAOTk5AA4ODgAgICAABwcHAPn5+QAQEBAAo6OjAIGBgQBWVlYAioqKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhghIR0JEAUMAAAAAAAAAAoPHQUdFgUTGgAAAAAAAAAKChkZARYTCgoAAAAAAAAACgofBRMWAwoKAAAAAAAAAAoKGhYFFhcKCgAAAAAAAAAKCgoBHwUGCgoAAAAAAAAACgoKARYWCgoKAAAAAAAAAAoKCgwWHwoKCgAAAAAAAAAKJRATGwwWIgoAAAAAAAAACgoKBx0UCgoKAAAAAAAAAAoKIB8FEw0KCgAAAAAAAAAKCgEWGRYTCgoAAAAAAAAACgoQCREEHwoKAAAAAAAAAAoKDh4ZHCQKCgAAAAAAAAAKCggVBSMLCgoAAAAAAAAACgoKEgcHCgoKAAAAAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAAA=" rel="shortcut icon" />
         <h:outputScript library="js" name="jquery.js"/>
-        <h:outputScript library="js" name="jquery-ui.js"/>
-        <h:outputScript library="js" name="jquery.dotdotdot.js"/>
-        
-        <script>
-            var page = 1;
-            $(document).ready(function() {
-                 $(".group:lt(16)").show(1000);
-         });
-             
-             
-        </script>
-        
-        <script>
-            $(function(){
-                function previousPageFC(event) {
-                    page--;
-                    $('.group').hide();
-                    $('.group').slice((page-1)*16,page*16).show(1000);
-                    return false;
-                }
-                function nextPageFC(event) {
-                    page++;
-                    $('.group').hide();
-                    $('.group').slice((page-1)*16,page*16).show(1000);
-                    return false;
-                }
-                $('#previousPage').click(previousPageFC);
-                $('#gotonextPage').click(nextPageFC);
-                $('a[href$="-1"]').attr("href", "#");
-            });
-        </script>                
+        <h:outputScript library="js" name="jquery.mousewheel.min.js"/>
+        <h:outputStylesheet library="css" name="mainStyle.css"/>               
     </h:head>
     <h:body>
-       
+        <script type="text/javascript">
+            var lol;
+            $(function() {
+                $(".news-browser").mousewheel(function(event, delta) {
+                    this.scrollLeft -= (delta * 30);
+                    event.preventDefault();
+                });
+                $(window).bind('hashchange', function(e) {
+                    $(".news-browser-entry-target").removeClass("news-browser-entry-target");
+                    var id = document.location.href.split("#")[1];
+                    $(".news-browser-entry[id=" + id + "]").addClass("news-browser-entry-target");
+                });
+                var id = document.location.href.split("#")[1];
+                $(".news-browser-entry[id=" + id + "]").addClass("news-browser-entry-target");
+            });
+        </script>
         <h:panelGroup layout="block" class="content" id="full-content">
             <ui:include src="../pages/header.xhtml"/>
-                <h1> Turnieje</h1>
-
-                <c:forEach items="#{atvBean.allTournaments}" begin="0" end="16" var="tmt" rendered="#{atvBean.selectedTournament == null}" varStatus="loop">
-                <h:outputLink value="#{request.contextPath}/tournaments/#{tmt.id}">
-                    <h:panelGroup  styleClass='#{loop.index%3==1?"group postBox":(loop.index%3==2?"group postBox2":"group postBox3")}' layout="block" rendered="#{not empty atvBean.allTournaments}"  style="display: none">
-                        <h:outputText value="#{tmt.name}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;	white-space: pre; white-space: pre-wrap; white-space: pre-line; white-space: -pre-wrap; white-space: -o-pre-wrap; white-space: -moz-pre-wrap; white-space: -hp-pre-wrap; word-wrap: break-word;"/>
-                        <h:outputText value="Klubu: #{tmt.club.name}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
-                        <h:outputText value="Termin: #{tmt.date}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
-                        <h:outputText class="description" value="#{tmt.description}" style="overflow: hidden; display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
-                    </h:panelGroup>              
-                </h:outputLink>    
-            </c:forEach>
-                
-                <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament == null and not empty atvBean.allTournaments}" style="width: 960px; height: 100px;"></h:panelGroup>
-            <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament == null and not empty atvBean.allTournaments}" style="border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 960px; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px; z-index:100; position:fixed; bottom:0px;">
-               <h:panelGroup layout="block" id="prevPage" style="display: block; cursor: pointer; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;">&lt;</h:panelGroup>
-               <h:outputLink id="resetPage" value="#{request.contextPath}" style="display: block; min-width: 320px; height: 100px; float:left; text-align:center; text-decoration: none;background-color: #DFDDDA; color: #000;">&and;</h:outputLink>
-               <h:panelGroup layout="block" id="nextPage" style="display: block; cursor: pointer; padding-top: 20px; min-width: 320px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;">&gt;</h:panelGroup>
-            </h:panelGroup>
-            
-            
-            <h:panelGroup layout="block" rendered="#{empty atvBean.allTournaments and atvBean.selectedTournament == null}">
-                <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all">
-                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                        <strong>Niestety!</strong> Nie ma żadnych turniei zarejestrowanych w systemie.</p>
-                </h:panelGroup>
-            </h:panelGroup>
-            <h:panelGroup layout="block" rendered="#{atvBean.selectedTournament !=null}">
-
-                <h:panelGroup  layout="block" style="border: 1px solid #363636; margin: 2px; padding: 4px; background-color: #fff; color:#000; opacity:0.7; width: 960px; min-height: 350px; float: left; overflow: hidden;">
-                      <h:outputText value="#{atvBean.selectedTournament.name}" style="display: block; width: 100%; text-align:center; font: bold 16px Helvetica, Arial, sans-serif;"/>
-                      <h:outputText value="Klub: #{atvBean.selectedTournament.club.name}" style="display: block; width: 50%; float: left; font: 12px Helvetica, Arial, sans-serif;"/>
-                    <h:outputText value="Termin: #{atvBean.selectedTournament.date}" style="display: block; width: 50%; float: right; text-align: right; font: 12px Helvetica, Arial, sans-serif;"/>
-                    <h:outputText value="Opis: #{atvBean.selectedTournament.description}"     style="display: block; width: 100%; font: 12px Helvetica, Arial, sans-serif;"/>
-                </h:panelGroup>
-                <h:panelGroup layout="block" style="width: 100%; height: 110px; float: left;"></h:panelGroup>
-                <h:panelGroup layout="block" style="position:fixed; bottom: 0;  border: 1px solid #363636; margin: 2px; padding: 0px; background-color: #fff; color:#000; opacity:0.7; width: 968px; height: 100px; float: left; overflow: hidden; text-align: center; font-size: 60px;">
-                    <h:outputLink value="#{request.contextPath}/tournaments/#{atvBean.getPrevFromId(atvBean.selectedTournament.id)}" style="display: block; padding-top: 20px; min-width: 324px;  height: 100px; float:left; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&lt;" rendered="#{atvBean.getPrevFromId(atvBean.selectedTournament.id)!=-1}"/></h:outputLink>
-                    <h:outputLink value="#{request.contextPath}/tournaments" style="display: block; min-width: 320px; height: 100px; float:left; text-align:center; text-decoration: none;background-color: #DFDDDA; color: #000;">&and;</h:outputLink>
-                    <h:outputLink value="#{request.contextPath}/tournaments/#{atvBean.getNextFromId(atvBean.selectedTournament.id)}" style="display: block; padding-top: 20px; min-width: 324px; height: 100px; float:right; text-align: center; text-decoration: none; background-color: #353534; color: #fff;"><h:outputText value="&gt;" rendered="#{atvBean.getNextFromId(atvBean.selectedTournament.id)!=-1}"/></h:outputLink>                            
-                </h:panelGroup>
-            </h:panelGroup>
-
+            <div class="ui-state-highlight ui-corner-all">
+                <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>Aby zobaczyć więcej informacji o turniejach, wróć na stronę główną i zarejestruj się w naszym systemie!</p>
+            </div>
+            <a href="#{request.contextPath}" class="news-return-link"><p>« Powrót na stronę główną</p></a>
+            <div class="news-browser">
+                <c:forEach  items="#{atvBean.tmtDates}" var="date">
+                    <span class="news-browser-day">
+                        <div class="news-browser-entries">
+                            <c:forEach  items="#{atvBean.allTournaments}" var="tmt" varStatus="loop">
+                                <c:if test="#{tmt.date.equals(date)}">
+                                    <div id="#{tmt.id}" class="news-browser-entry">
+                                        <p class="title">#{tmt.name}</p>
+                                        <p class="author">#{tmt.club.name}</p>
+                                        <p class="date">#{tmt.date}</p>
+                                        <p class="content">#{tmt.description}</p>                                    
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                        <div class="news-browser-date">data odbycie się #{date}</div>
+                    </span>
+                </c:forEach>
+            </div>
+            <a href="#{request.contextPath}" class="news-return-link"><p>« Powrót na stronę główną</p></a>
+            <ui:include src="../pages/footer.xhtml"/>
         </h:panelGroup>
     </h:body>
 </html>

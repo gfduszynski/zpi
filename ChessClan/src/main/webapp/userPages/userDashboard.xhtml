@@ -21,36 +21,55 @@
                 </ul>
                 <div id="tabs-2">
                     <h:form prependId="false">
-                        <div class="filterTmtsBox">
-                            <h:selectBooleanCheckbox  value="#{atvBean.showMineOnly}">
-                                <f:ajax render="@form" execute="@this"/>
-                            </h:selectBooleanCheckbox>
-                            <h:outputText value="  Pokaż tylko te, w których biorę udział"/>
-                        </div><hr/>
-                        <c:forEach items="#{atvBean.showMineOnly == false?atvBean.allTournaments:atvBean.userTournaments}" var="tmt" varStatus="loop">
-                            <h:panelGroup styleClass='#{loop.index%4==0?"grayDark allPostBox":(loop.index%4==1?"gray allPostBox":(loop.index%4==2?"gray allPostBox":"grayDark allPostBox"))}' layout="block">
-                                <h:panelGroup layout="block" styleClass="allPostHeader pad10">
-                                    <h:outputText value="Kiedy: #{tmt.date}" styleClass="right marR5 "/>
-                                    <h:outputText value="#{tmt.name}" styleClass="bold"/><br/>
-                                    <h:outputText value="Nazwa klubu: #{tmt.club.name}"/><br/>
-                                    <h:outputText value="Stan: Nie rozpoczęty" rendered="#{atvBean.isJoinable(tmt)}"/>
-                                    <h:outputText value="Stan: Aktualnie trwa" rendered="#{atvBean.isStarted(tmt)}"/>
-                                    <h:outputText value="Stan: Zakończony" rendered="#{atvBean.isFinished(tmt)}"/><br/>
-                                    <hr/>
+                        <c:if test="#{atvBean.selectedTournament == null}">
+                            <div class="filterTmtsBox">
+                                <h:selectBooleanCheckbox  value="#{atvBean.showMineOnly}">
+                                    <f:ajax render="@form" execute="@this"/>
+                                </h:selectBooleanCheckbox>
+                                <h:outputText value="  Pokaż tylko te, w których biorę udział"/>
+                            </div><hr/>
+                            <c:forEach items="#{atvBean.showMineOnly == false?atvBean.allTournaments:atvBean.userTournaments}" var="tmt" varStatus="loop">
+
+
+                                <h:panelGroup layout="span"  styleClass='tournament-item'>
+                                    <div class="tournament-actions">
+                                        <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
+                                            <f:ajax render="@form" execute="@form" listener="#{atvBean.joinTournament(tmt)}"/>
+                                        </h:commandButton>
+                                        <h:commandButton value="Wypisz się" rendered="#{atvBean.isJoinable(tmt) and atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
+                                            <f:ajax render="@form" execute="@form" listener="#{atvBean.leaveTournament(tmt)}"/>
+                                        </h:commandButton>
+                                        <h:commandButton value="Wyniki" rendered="#{not atvBean.isJoinable(tmt)}" styleClass="width100 height50px">
+                                            <f:ajax render="@form" execute="@this" listener="#{atvBean.selectTmt(tmt)}"/>
+                                        </h:commandButton>
+                                    </div>
+                                    <p>#{tmt.name}</p>
+                                    <span>Start 
+                                        <h:outputText value="#{tmt.date}">
+                                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                        </h:outputText>
+                                        o godzinie
+                                        <h:outputText value="#{tmt.date}">
+                                            <f:convertDateTime pattern="hh:mm"/>
+                                        </h:outputText>
+                                    </span>
+                                    <span>
+                                        Runda: #{tmt.currentRound.number+1} / #{tmt.numberOfRounds}
+                                    </span>
+                                    <span>
+                                        Uczestnicy: #{tmt.currentRound!=null?tmt.currentRound.pairingCardSet.size():0}
+                                    </span>
+                                    <span>
+                                        Kategoria: #{tmt.category.name}
+                                    </span>
                                 </h:panelGroup>
-                                <h:panelGroup layout="block" class="allPostContent marL5">
-                                    <h:outputText value="#{tmt.description}"/>
-                                </h:panelGroup>
-                                <h:commandButton value="Zapisz się" rendered="#{atvBean.isJoinable(tmt) and not atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
-                                    <f:ajax render="@form" execute="@form" listener="#{atvBean.joinTournament(tmt)}"/>
-                                </h:commandButton>
-                                <h:commandButton value="Wypisz się" rendered="#{atvBean.isJoinable(tmt) and atvBean.userIsMember(tmt)}" styleClass="allButton2 width100 height50px">
-                                    <f:ajax render="@form" execute="@form" listener="#{atvBean.leaveTournament(tmt)}"/>
-                                </h:commandButton>
-<!--                                <h:commandButton value="Zostałeś zapisany." rendered="#{atvBean.joinedTmt == tmt or atvBean.userIsMember(tmt)}" styleClass="allButtonNoHover width100 height50px" disabled="true"/>-->
-                                <h:commandButton value="Nie można już zapisywać się na ten turniej." rendered="#{not atvBean.isJoinable(tmt)}" styleClass="allButtonNoHover width100 height50px" disabled="true"/>
-                            </h:panelGroup>
-                        </c:forEach>
+
+
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="#{atvBean.selectedTournament != null}">
+                            <ui:include src="tournament.fin.xhtml"/>
+                        </c:if>
                     </h:form>
                 </div>
                 <div id="tabs-3">

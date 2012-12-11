@@ -66,7 +66,7 @@
                             </c:forEach>
                         </div>
                         <script type="text/javascript">
-                            $( "#round-browser" ).accordion({active:0, header: '.round-number',heightStyle: "content" });
+                            $( "#round-browser" ).accordion({active:0, header: '.round-number',heightStyle: "content", collapsible: true});
                         </script>
                     </h:panelGroup>
                     <span class="spacer"></span>
@@ -76,8 +76,7 @@
                             <li>aktualna runda: <b>#{cTmtCBean.currentTmt.currentRound.number+1}</b></li>
                             <li>liczba rund: <b>#{cTmtCBean.currentTmt.numberOfRounds}</b></li>
                             <li>liczba graczy: <b>#{cTmtCBean.roundList.get(0).getPairingCardSet().size()}</b></li>
-                            <li>data rozpoczęcia: <b>#{cTmtCBean.currentTmt.date}</b></li>
-                            <li>kategoria: <b>#{cTmtCBean.currentTmt.category.name}</b></li>
+                    <li>data rozpoczęcia: <b><h:outputText value="#{atvBean.selectedTournament.date}"><f:convertDateTime pattern="yyyy-MM-dd hh:mm"/></h:outputText></b></li>                            <li>kategoria: <b>#{cTmtCBean.currentTmt.category.name}</b></li>
                             <li>klub: <b>#{cTmtCBean.currentTmt.club.name}</b></li>
                             <li>punkty za wygraną: <b>#{cTmtCBean.currentTmt.pointsForBye}</b></li>
                             <li>punkty za remis: <b>#{cTmtCBean.currentTmt.pointsForBye/2}</b></li>

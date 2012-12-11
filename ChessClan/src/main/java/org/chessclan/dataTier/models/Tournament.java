@@ -34,11 +34,15 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "tournaments")
-public class Tournament implements Serializable {
+public class Tournament implements Serializable, Comparable<Tournament> {
+
     public enum State {
+
         NOT_STARTED, STARTED, FINISHED;
     }
-    public class Exists extends Exception {}
+
+    public class Exists extends Exception {
+    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,7 +72,7 @@ public class Tournament implements Serializable {
     @Column(name = "description")
     private String description;
     @JoinColumn(name = "current_round", referencedColumnName = "id")
-    @OneToOne(optional = true, fetch = FetchType.LAZY, cascade={CascadeType.ALL, CascadeType.REMOVE})
+    @OneToOne(optional = true, fetch = FetchType.LAZY, cascade = {CascadeType.ALL, CascadeType.REMOVE})
     private Round currentRound;
     @JoinColumn(name = "category", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -102,7 +106,7 @@ public class Tournament implements Serializable {
         this.pointsForBye = pointForBye;
         this.numberOfRounds = numberOfRounds;
     }
-    
+
     public Integer getId() {
         return id;
     }
@@ -178,18 +182,18 @@ public class Tournament implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += ( id != null ? id.hashCode() : 0 );
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Tournament)) {
+        if (!( object instanceof Tournament )) {
             return false;
         }
         Tournament other = (Tournament) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (( this.id == null && other.id != null ) || ( this.id != null && !this.id.equals(other.id) )) {
             return false;
         }
         return true;
@@ -223,5 +227,9 @@ public class Tournament implements Serializable {
     public void setNumberOfRounds(int numberOfRounds) {
         this.numberOfRounds = numberOfRounds;
     }
-    
+
+    @Override
+    public int compareTo(Tournament t) {
+        return -1 * date.compareTo(t.date);
+    }
 }

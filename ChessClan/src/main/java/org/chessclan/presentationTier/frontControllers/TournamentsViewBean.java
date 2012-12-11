@@ -6,6 +6,8 @@ package org.chessclan.presentationTier.frontControllers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +17,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.Transient;
 import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.models.Round;
@@ -43,6 +44,9 @@ public class TournamentsViewBean implements Serializable {
     private User user;
     private Tournament joinedTmt;
     private boolean showMineOnly;
+    private List<Date> tmtDates;
+    private List<Round> roundList = null;
+    private Map<User, Float> results;
 
     public TournamentsViewBean() {
     }
@@ -69,6 +73,7 @@ public class TournamentsViewBean implements Serializable {
     }
 
     private void loadTournaments() {
+        this.tmtDates = new ArrayList<Date>();
         this.allTournaments = tmBO.findTournamentsWithClubAndRoundsAndPC();
         this.userTournaments = new ArrayList<Tournament>();
         if (user != null) {
@@ -79,6 +84,14 @@ public class TournamentsViewBean implements Serializable {
                         break;
                     }
                 }
+            }
+        }
+
+        //Sort posts by date
+        Collections.sort(this.allTournaments);
+        for (Tournament t : this.allTournaments) {
+            if (!tmtDates.contains(t.getDate())) {
+                tmtDates.add(t.getDate());
             }
         }
     }
@@ -112,6 +125,12 @@ public class TournamentsViewBean implements Serializable {
             }
             this.mapToPrevAndNext.put(mapTournaments.get(i), altmp);
         }
+    }
+    
+    public void selectTmt(Tournament t){
+        this.roundList = tmBO.getRoundList(t);
+        this.results = tmBO.getResults(t);
+        this.selectedTournament = t;
     }
 
     public boolean isJoinable(Tournament tmt) {
@@ -180,6 +199,7 @@ public class TournamentsViewBean implements Serializable {
 
     public Tournament getSelectedTournament() {
         return selectedTournament;
+        
     }
 
     public void setSelectedTournament(Tournament selectedTournament) {
@@ -261,4 +281,30 @@ public class TournamentsViewBean implements Serializable {
     public void setShowMineOnly(boolean showMineOnly) {
         this.showMineOnly = showMineOnly;
     }
+
+    public List<Date> getTmtDates() {
+        return tmtDates;
+    }
+
+    public void setTmtDates(List<Date> tmtDates) {
+        this.tmtDates = tmtDates;
+    }
+
+    public List<Round> getRoundList() {
+        return roundList;
+    }
+
+    public void setRoundList(List<Round> roundList) {
+        this.roundList = roundList;
+    }
+
+    public Map<User, Float> getResults() {
+        return results;
+    }
+
+    public void setResults(Map<User, Float> results) {
+        this.results = results;
+    }
+    
+    
 }

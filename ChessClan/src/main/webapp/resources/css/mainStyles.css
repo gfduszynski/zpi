@@ -378,6 +378,7 @@ div#editContainer{
 }
 .news-item {
     height: 70px;
+    width: 280px;
     list-style-type:none;
     text-align: justify; 
     text-justify: newspaper;

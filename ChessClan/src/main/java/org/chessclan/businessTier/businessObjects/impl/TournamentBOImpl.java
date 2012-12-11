@@ -135,29 +135,30 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         if (currentRound.getRoundState() == Round.State.JOINING) {
             currentRound.setRoundState(Round.State.FINISHED);
         }
-        
+
         if (currentRound.getNextRound() == null) {
             t.setState(Tournament.State.FINISHED);
         } else {
             t.setCurrentRound(currentRound.getNextRound());
             currentRound.getNextRound().setRoundState(State.STARTED);
             // Find pairs for players
-            
-            
-            
+
+
+
             Set<PairingCard> newPairingCards = mockupPairPlayers(currentRound.getPairingCardSet(), currentRound.getNextRound());
             currentRound.getNextRound().setPairingCardSet(newPairingCards);
         }
         return tRepo.save(t);
     }
+
     @Transactional
-    public Set<PairingCard> filterUniquePairingCards(Round currentRound){
+    public Set<PairingCard> filterUniquePairingCards(Round currentRound) {
         Set<PairingCard> pairingCards = rRepo.findOne(currentRound.getId()).getPairingCardSet();
         Set<PairingCard> newPairingCards = new HashSet<PairingCard>(pairingCards);
         Iterator<PairingCard> iterator = pairingCards.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             PairingCard pc = iterator.next();
-            if(newPairingCards.contains(pc)&&pc.getOpponent()!=null){
+            if (newPairingCards.contains(pc) && pc.getOpponent() != null) {
                 newPairingCards.remove(pc.getOpponent());
             }
         }
@@ -291,14 +292,11 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     public Map<User, Float> getResults(Tournament tmt) {
         Map<User, Float> result = new HashMap<User, Float>();
         for (PairingCard pc : tmt.getPairingCardSet()) {
-            if(!result.containsKey(pc.getPlayer()))
-            {
+            if (!result.containsKey(pc.getPlayer())) {
                 result.put(pc.getPlayer(), pc.getScore());
-            }
-            else
-            {
+            } else {
                 Float tmp = result.get(pc.getPlayer());
-                result.put(pc.getPlayer(), tmp+pc.getScore());
+                result.put(pc.getPlayer(), tmp + pc.getScore());
             }
         }
         return result;
@@ -353,11 +351,11 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     @Transactional
     public List<Tournament> findTournamentsByClub(Club club) {
         List<Tournament> tl = tRepo.findByClub(club);
-        for(Tournament t:tl){
-            if(t.getCurrentRound()!=null){
+        for (Tournament t : tl) {
+            if (t.getCurrentRound() != null) {
                 t.getCurrentRound().getPairingCardSet().size();
             }
-            if(t.getCategory()!=null){
+            if (t.getCategory() != null) {
                 t.getCategory().getName();
             }
         }
@@ -400,18 +398,18 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     public void deleteTournament(Tournament t) {
         t = tRepo.findOne(t.getId());
         /*if (t.getRoundSet() != null) {
-            for (Round r : t.getRoundSet()) {
-                rRepo.delete(r);
-            }
-        }
-        if (t.getPairingCardSet() != null) {
-            for (PairingCard pc : t.getPairingCardSet()) {
-                pcRepo.delete(pc);
-            }
-        }*/
+         for (Round r : t.getRoundSet()) {
+         rRepo.delete(r);
+         }
+         }
+         if (t.getPairingCardSet() != null) {
+         for (PairingCard pc : t.getPairingCardSet()) {
+         pcRepo.delete(pc);
+         }
+         }*/
         catRepo.findOne(t.getCategory().getId());
         //rRepo.findOne(t.getCurrentRound().getId());
-        
+
         tRepo.delete(t);
         tRepo.flush();
     }
@@ -427,7 +425,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         if (tRes.getPairingCardSet() != null) {
             for (PairingCard pc : tRes.getPairingCardSet()) {
                 pc.getPlayer().getFirstName().toString();
-                if(pc.getOpponent() != null){
+                if (pc.getOpponent() != null) {
                     pc.getOpponent().getPlayer().getFirstName().toString();
                 }
             }
@@ -450,13 +448,20 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
             if (t.getCurrentRound() != null) {
                 t.getCurrentRound().getRoundState().toString();
             }
-            if (!t.getPairingCardSet().isEmpty()) {
-                Iterator<PairingCard> iter = t.getPairingCardSet().iterator();
-                while (iter.hasNext()) {
-                    iter.next().getPlayer().getFirstName();
-                }
+
+            if (t.getCurrentRound() != null) {
+                t.getCurrentRound().getPairingCardSet().size();
+            }
+
+            if (t.getPairingCardSet() != null) {
+                t.getPairingCardSet().size();
+            }
+            if (t.getCategory() != null) {
+                t.getCategory().getName();
             }
         }
+
+
         return result;
     }
 
@@ -482,19 +487,22 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         }
         return userTmt;
     }
+
     @Override
     @Transactional
-    public PairingCard findOnePairingCard(int id){
+    public PairingCard findOnePairingCard(int id) {
         PairingCard pc = pcRepo.findOne(id);
-        if(pc!=null){
+        if (pc != null) {
             pc.getOpponent().getScore();;
         }
         return pc;
     }
+
     @Override
-    public PairingCard savePairingCard(PairingCard pc){
+    public PairingCard savePairingCard(PairingCard pc) {
         return pcRepo.saveAndFlush(pc);
     }
+
     @Override
     @Transactional
     public List<Round> getRoundList(Tournament t) {
@@ -505,11 +513,11 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
                     pc.getPlayer().getFirstName().toString();
                     if (pc.getOpponent() != null) {
                         pc.getOpponent().getPlayer().getFirstName().toString();
-                        if(pc.getOpponent().getGame()!=null){
+                        if (pc.getOpponent().getGame() != null) {
                             pc.getOpponent().getGame().getId();
                         }
                     }
-                    if(pc.getGame()!=null){
+                    if (pc.getGame() != null) {
                         pc.getGame().getId();
                     }
                 }

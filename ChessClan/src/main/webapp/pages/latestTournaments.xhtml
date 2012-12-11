@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <h:body>
         <ui:composition>
@@ -36,10 +37,10 @@
                 <div id="newsSlider2" class="news">
                     <ul>
                         <c:forEach items="#{ltmtsBean.latestTmts}" var="tmt" varStatus="loop">
-                            <li class="news-item" onclick="$(location).attr('href', '#{request.contextPath}/tournaments/#{tmt.id}');">
+                            <li class="news-item" onclick="$(location).attr('href', '#{request.contextPath}/tournaments##{tmt.id}');">
                                 <div class="news-item-header">
                                     <span class="news-item-title">#{tmt.name}</span>
-                                    <span class="news-item-date">#{tmt.date}</span>
+                                    <span class="news-item-date"><h:outputText value="#{tmt.date}"><f:convertDateTime pattern="yyyy-MM-dd hh:mm"/></h:outputText></span>
                                 </div>
                                 <span class="news-item-content">#{tmt.description}</span>
                             </li>
