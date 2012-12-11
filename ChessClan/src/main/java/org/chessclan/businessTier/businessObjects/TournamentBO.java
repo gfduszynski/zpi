@@ -54,4 +54,5 @@ public interface TournamentBO{
     @Transactional
     public Set<PairingCard> filterUniquePairingCards(Round currentRound);
     public PairingCard savePairingCard(PairingCard pc);
+    public List<Round> getRoundList(Tournament t);
 }
