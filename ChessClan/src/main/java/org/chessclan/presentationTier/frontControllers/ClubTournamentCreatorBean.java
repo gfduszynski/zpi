@@ -131,11 +131,16 @@ public class ClubTournamentCreatorBean implements Serializable {
     public void goToNextRound() {
         if(this.currentTmt.getState() == Tournament.State.STARTED){
             for(PairingCard pc:getFilteredCurrentRoundPC()){
-                winner(pc);
+                if(pc.getOpponent()!=null){
+                    winner(pc);
+                }else{
+                    pc.setScore(currentTmt.getPointsForBye());
+                }
             }
         }
         try {
             this.currentTmt = tmBO.goToNextRound(currentTmt);
+            this.currentTmt = tmBO.fetchRelations(currentTmt);
         } catch (NotFinished ex) {
             Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoPlayers ex) {

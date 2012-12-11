@@ -12,7 +12,7 @@
             <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
                 <div class="tournament">
                     <h:panelGroup id="pc-list" styleClass="round-browser">
-                        <p>Przegląd rund</p>
+                        <p>Przegląd rund:</p>
                         <div id="round-browser">
                             <c:forEach items="#{cTmtCBean.roundList}" var="round" varStatus="loop">
                                 <c:if test="#{round.number>-1}">
@@ -39,6 +39,9 @@
                                             </c:if>
                                             <c:if test="#{pc.opponent == null}">
                                                 <div class="pairingcard">
+                                                    <div class="scores-low">
+                                                        <span class="up">#{pc.score} pkt</span>
+                                                    </div>
                                                     <div class="pairingcard-no-opponent">
                                                         <span>#{pc.player.firstName} #{pc.player.lastName} - wolny los</span>
                                                         <p class="details">#{pc.player.email}</p>
@@ -57,12 +60,33 @@
                     </h:panelGroup>
                     <span class="spacer"></span>
                     <h:panelGroup id="round-list" styleClass="tournament-summary">
-                        <p>Wyniki</p>
-                        <h:outputText value="Turniej zakończony! Wyniki:"/>
-                        <c:forEach items="#{cTmtCBean.results.keySet().toArray()}" var="result" varStatus="loop">
-                            <h:outputText value="Miejsce #{loop.index+1}: #{result.firstName} #{result.lastName} Ilość punktów: #{cTmtCBean.results.get(result)}"/>
-                            <br/>
-                        </c:forEach>
+                        <p>Podsumowanie turnieju:</p>
+                        <ul>
+                            <li>aktualna runda: <b>#{cTmtCBean.currentTmt.currentRound.number+1}</b></li>
+                            <li>liczba rund: <b>#{cTmtCBean.currentTmt.numberOfRounds}</b></li>
+                            <li>liczba graczy: <b>#{cTmtCBean.roundList.get(0).getPairingCardSet().size()}</b></li>
+                            <li>data rozpoczęcia: <b>#{cTmtCBean.currentTmt.date}</b></li>
+                            <li>kategoria: <b>#{cTmtCBean.currentTmt.category.name}</b></li>
+                            <li>klub: <b>#{cTmtCBean.currentTmt.club.name}</b></li>
+                            <li>punkty za wygraną: <b>#{cTmtCBean.currentTmt.pointsForBye}</b></li>
+                            <li>punkty za remis: <b>#{cTmtCBean.currentTmt.pointsForBye/2}</b></li>
+                        </ul>
+                        <p>Wyniki:</p>
+                        <div class="pairingcards-list">
+                            <c:forEach items="#{cTmtCBean.results.keySet().toArray()}" var="result" varStatus="loop">
+                                <div class="pairingcard-result">
+                                    <div class="result-low">
+                                        <span class="up">##{loop.index+1}</span>
+                                        <span class="down">#{cTmtCBean.results.get(result)} pkt</span>
+                                    </div>
+                                    <div class="pairingcard-no-opponent">
+                                        <span>#{result.firstName} #{result.lastName}</span>
+                                        <p class="details">#{result.email}</p>
+                                        <p class="details">#{result.userClub.name}</p>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </h:panelGroup>
                 </div>
             </c:if>

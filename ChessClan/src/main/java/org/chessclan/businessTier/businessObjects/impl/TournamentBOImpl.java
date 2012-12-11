@@ -91,6 +91,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         pc.setTournament(t);
         pc.setRound(t.getCurrentRound());
         pc.setColor(PairingCard.Color.NO_COLOR);
+        pc.setScore(0);
         t.getPairingCardSet().add(pc);
         //u.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
