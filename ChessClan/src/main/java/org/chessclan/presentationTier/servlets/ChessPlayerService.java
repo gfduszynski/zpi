@@ -17,9 +17,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.chessclan.businessTier.businessObjects.TournamentBO;
 import org.chessclan.businessTier.businessObjects.UserManagementBO;
 import org.chessclan.dataTier.models.Game;
 import org.chessclan.dataTier.models.Move;
+import org.chessclan.dataTier.models.PairingCard;
 import org.chessclan.dataTier.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,6 +38,8 @@ public class ChessPlayerService {
     GameRepository gRepo;
     @Autowired
     UserManagementBO umBO;
+    @Autowired
+    TournamentBO tmBO;
 
     @PostConstruct
     public void initialize() {
@@ -60,6 +64,25 @@ public class ChessPlayerService {
             m.setPartOf(g);
         }
         gRepo.save(g);
+        return Response.status(200).entity("OK").build();
+    }
+    
+    @POST
+    @Path("/addGame/{param}")
+    public Response loadGame(@PathParam("param") int pcId,String x) {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        Game g = (Game) gson.fromJson(x, Game.class);
+        for(Move m : g.getMoves()){
+            m.setPartOf(g);
+        }
+        g = gRepo.save(g);
+        PairingCard pc = tmBO.findOnePairingCard(pcId);
+        if(pc!=null){
+            pc.setGame(g);
+            pc.getOpponent().setGame(g);
+            tmBO.savePairingCard(pc);
+            tmBO.savePairingCard(pc.getOpponent());
+        }
         return Response.status(200).entity("OK").build();
     }
 

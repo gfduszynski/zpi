@@ -23,6 +23,7 @@
             <h:outputScript library="js" name="OBJLoader.js"/>
             <h:outputScript library="js" name="OBJMTLLoader.js"/>
             <script type="text/javascript">
+                var cc = null;
                 $('#headerLogo').live('click', function() {
                     window.location = "#{request.contextPath}";
                 });     
@@ -30,7 +31,7 @@
                     $('#editContainer').load('userPages/editProfile.xhtml');
                 }
                 $(document).ready(function(){
-                    var cc = null;
+                    
                     $('.chess-player-show').click(function()
                     {
                         if(cc==null){

@@ -141,14 +141,13 @@ public class ClubTournamentCreatorBean implements Serializable {
         try {
             this.currentTmt = tmBO.goToNextRound(currentTmt);
             this.currentTmt = tmBO.fetchRelations(currentTmt);
+            if(currentTmt.getState() == Tournament.State.FINISHED){
+                this.results = tmBO.getResults(currentTmt);
+            }
         } catch (NotFinished ex) {
             Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoPlayers ex) {
             Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(currentTmt.getState() == Tournament.State.FINISHED)
-        {
-            this.results = tmBO.getResults(currentTmt);
         }
     }
 
