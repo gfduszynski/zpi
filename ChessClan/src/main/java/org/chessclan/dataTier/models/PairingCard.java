@@ -76,7 +76,10 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
     @NotNull
     @Column(name = "color_diff")
     private int colorDiff = 0;
-
+    @JoinColumn(name = "game", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Game game;
+    
     public PairingCard() {
     }
 
@@ -243,4 +246,14 @@ public class PairingCard implements Serializable, Comparable<PairingCard>{
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    
 }

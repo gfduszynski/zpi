@@ -9,7 +9,7 @@ function plugListenersAndGetJSONForMultiple(myClass, visualisation)
             JSONStateAndObject.state = 'InvalidDropZoneExc';
             visualisation(JSONStateAndObject);
         } else {
-            object = $("."+myClass+":first");
+            object = $("."+myClass+":first")[0];
             object.addEventListener('dragover', handleDragOver, false);
             object.addEventListener('drop', handleFileSelect, false);
             setInterval(function() {

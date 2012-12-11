@@ -53,6 +53,7 @@ public interface TournamentBO{
     Map<User, Float> getResults(Tournament t);
     @Transactional
     public Set<PairingCard> filterUniquePairingCards(Round currentRound);
+    public PairingCard findOnePairingCard(int id);
     public PairingCard savePairingCard(PairingCard pc);
     public List<Round> getRoundList(Tournament t);
 }

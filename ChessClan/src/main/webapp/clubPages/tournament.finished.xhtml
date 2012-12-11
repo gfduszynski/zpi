@@ -8,6 +8,7 @@
         <ui:composition>
             <script type="text/javascript">
                 document.title = "ChessClan - Turniej - Wyniki";
+                
             </script>
             <c:if test="#{cTmtCBean.currentTmt.state == 'FINISHED'}">
                 <div class="tournament">
@@ -21,7 +22,7 @@
                                         <c:forEach items="#{round.pairingCardSet}" var="pc" varStatus="loop">
                                             <c:if test="#{pc.opponent != null}">
                                                 <h:panelGroup layout="block" styleClass="pairingcard">
-                                                    <div class="scores">
+                                                    <div class="scores" onclick="if(cc==null){cc=new ChessPlayer($('#chess-player'));}cc.loadJSON('#{request.contextPath}/rest/cpService/#{pc.game.id}');$('.chess-player-show').click();">
                                                         <span class="up">#{pc.score} pkt</span>
                                                         <span class="down">#{pc.opponent.score} pkt</span>
                                                     </div>
