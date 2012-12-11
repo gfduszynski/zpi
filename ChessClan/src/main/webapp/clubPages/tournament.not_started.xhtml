@@ -14,7 +14,7 @@
             </h:commandLink>
             <div class="tournament">
                 <span class="invite">
-                    <p>Zaproś uczestników</p>
+                    <p>Zaproś uczestników:</p>
                     <div class="search">
                         <span>Wpisz imię lub nazwisko:</span>
                         <h:inputText value="#{cTmtCBean.search}">
@@ -40,7 +40,7 @@
                 </span>
                 <span class="spacer"></span>
                 <h:panelGroup id="list" styleClass="list">
-                    <p>Zaproszeni uczestnicy</p>
+                    <p>Zaproszeni uczestnicy:</p>
                     <c:forEach items="#{cTmtCBean.currentTmt.pairingCardSet}" var="pc" varStatus="loop">
                         <div class="player">
                             <h:commandButton value="x" styleClass="remove">

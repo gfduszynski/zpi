@@ -9,28 +9,45 @@
             <script type="text/javascript">
                 document.title = "ChessClan - Turnieje";
             </script>
-            <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
-                <h:panelGroup layout="block"  styleClass='#{loop.index%2==1?"tmtContainer right":"tmtContainer left"}'>
-                    #{tmt.name} <a href="#{request.contextPath}/tournaments/#{tmt.id}">Wyświetl szczegółowy widok</a><br/>
-                    Data: <h:outputText value="#{tmt.date}"><f:convertDateTime pattern="hh:mm dd-MM-yyyy"/></h:outputText><br/>
-                    Opis: #{tmt.description}<br/>
-                    Liczba rund: #{tmt.numberOfRounds}<br/>
-                    Punkty uzyskiwane za wygraną partię: <h:outputText value="#{tmt.pointsForBye}"><f:convertNumber pattern="0"/></h:outputText><br/>
-                        Punkty uzyskiwane za zremisowanie partii: <h:outputText value="#{tmt.pointsForBye/2}"></h:outputText><br/>
-                    <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Rozpocznij prowadzenie turnieju" styleClass="allButton2">
-                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
-                    </h:commandButton>
-                    <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj prowadzenie turnieju" styleClass="allButton2">
-                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
-                    </h:commandButton>
-                    <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Pokaż wyniki turnieju" styleClass="allButton2">
-                        <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
-                    </h:commandButton>
-                    <h:commandButton value="Usuń turniej" styleClass="allButton2">
-                        <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
-                    </h:commandButton>
-                </h:panelGroup>
-            </c:forEach>
+            <div class="tournament-list">
+                <c:forEach items="#{ctBean.clubTournaments}" var="tmt" varStatus="loop">
+                    <h:panelGroup layout="span"  styleClass='tournament-item'>
+                        <div class="tournament-actions">
+                            <h:commandButton rendered="#{tmt.state == 'NOT_STARTED'}" value="Start" styleClass="allButton2">
+                                <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
+                            </h:commandButton>
+                            <h:commandButton rendered="#{tmt.state == 'STARTED'}" value="Kontynuuj" styleClass="allButton2">
+                                <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
+                            </h:commandButton>
+                            <h:commandButton rendered="#{tmt.state == 'FINISHED'}" value="Wyniki" styleClass="allButton2">
+                                <f:ajax render="@form" listener="#{cTmtCBean.loadTmt(tmt)}"/>
+                            </h:commandButton>
+                            <h:commandButton value="Usuń" styleClass="allButton2">
+                                <f:ajax render="@form" listener="#{ctBean.removeTmt(tmt)}"/>
+                            </h:commandButton>
+                        </div>
+                    <p>#{tmt.name}</p>
+                    <span>Start 
+                        <h:outputText value="#{tmt.date}">
+                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                        </h:outputText>
+                        o godzinie
+                        <h:outputText value="#{tmt.date}">
+                            <f:convertDateTime pattern="hh:mm"/>
+                        </h:outputText>
+                    </span>
+                    <span>
+                        Runda: #{tmt.currentRound.number+1} / #{tmt.numberOfRounds}
+                    </span>
+                    <span>
+                        Uczestnicy: #{tmt.currentRound!=null?tmt.currentRound.pairingCardSet.size():0}
+                    </span>
+                    <span>
+                        Kategoria: #{tmt.category.name}
+                    </span>
+                    </h:panelGroup>
+                </c:forEach>
+            </div>
         </ui:composition>
     </h:body>
 </html>

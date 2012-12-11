@@ -1,6 +1,5 @@
 html{
     overflow-y: scroll;
-    font-variant: small-caps;
 }
 a {
     color: black;
@@ -541,6 +540,48 @@ div#editContainer{
     text-align: center;
     display: inline-table;
 }
+.tournament-list{
+    -moz-column-count:2;
+    -webkit-column-count:2;
+    column-count:2;
+    text-align: center;
+    width: 935px;
+}
+.tournament-actions{
+    height:80px;
+    width:100px;
+    float:right;
+    overflow: hidden;
+}
+.tournament-actions input[type="submit"]{
+    height:30px;
+    margin:5px;
+    width:90px;
+    text-align: center;
+    padding: 0px;
+}
+.tournament-item{
+    text-align: left;
+    padding: 5px;
+    border: 5px solid #E7E7E7;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+    color: white;
+    margin: 10px 8px 0 8px;
+    width: 420px;
+    height: 80px;
+    display: inline-block;
+    overflow: hidden;
+    font-variant: small-caps;
+}
+.tournament-item p{
+    margin: 0px;
+    font-size: 20px;
+}
+.tournament-item span{
+    display:block;
+    color: #E7E7E7;
+    font-size: 12px;
+}
 .tournament .spacer{
     height:100%;
     width:2px;
@@ -648,6 +689,16 @@ div#editContainer{
     display:inline-block;
     width:345px;
 }
+.tournament .pairingcards-list .pairingcard-result{
+    padding: 5px;
+    background-color: #E7E7E7;
+    margin-bottom: 10px;
+    text-align: left;
+    vertical-align: middle;
+    color: white;
+    display:inline-block;
+    width:300px;
+}
 .tournament .pairingcards-list .choose{
     height: 115px;
     width: 110px;
@@ -668,7 +719,7 @@ div#editContainer{
 }
 .tournament .pairingcards-list .pairingcard-no-opponent{
     height: 45px;
-    width: 330px;
+    /*width: 330px;*/
     background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
     color: white;
     padding: 5px;
@@ -707,6 +758,50 @@ div#editContainer{
 .tournament .tournament-summary ul{
     text-align: left;
     font-variant: small-caps;
+}
+
+.tournament .pairingcards-list .scores{
+    height: 115px;
+    width: 110px;
+    float:right;
+    text-align: center;
+    vertical-align: middle;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+}
+.tournament .pairingcards-list .scores-low{
+    height: 55px;
+    width: 110px;
+    float:right;
+    text-align: center;
+    vertical-align: middle;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+    line-height: 57px;font-size:1.8em;
+}
+.tournament .pairingcards-list .scores .up{width:110px;height:57.5px;display:block;color:white;
+    line-height: 57px;font-size:1.8em;}
+.tournament .pairingcards-list .scores .down{width:110px;height:57.5px;display:block;color:white;
+    line-height: 57px;font-size:1.8em;}
+.tournament .pairingcards-list .result-low{
+    height: 55px;
+    width: 110px;
+    float:right;
+    text-align: center;
+    vertical-align: middle;
+    background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
+    line-height: 57px;font-size:1.8em;
+}
+.tournament .pairingcards-list .result-low .up{width:110px;height:35px;display:block;color:white;
+    line-height: 35px;font-size:1em;}
+.tournament .pairingcards-list .result-low .down{width:110px;height:22px;display:block;color:#E7E7E7;
+    line-height: 22px;font-size:0.5em;}
+.tournament .round-browser{
+    width: 440px;
+    height:100%;
+    min-height:400px;
+    margin:0px;
+    display: inline-block;
+    padding: 10px;
+    vertical-align: top;    
 }
 /* end of tournament view ----------------------------------------------------*/
 .postContainer{

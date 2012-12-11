@@ -91,6 +91,7 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         pc.setTournament(t);
         pc.setRound(t.getCurrentRound());
         pc.setColor(PairingCard.Color.NO_COLOR);
+        pc.setScore(0);
         t.getPairingCardSet().add(pc);
         //u.getPairingCardSet().add(pc);
         return pcRepo.saveAndFlush(pc);
@@ -134,10 +135,11 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         if (currentRound.getRoundState() == Round.State.JOINING) {
             currentRound.setRoundState(Round.State.FINISHED);
         }
-        t.setCurrentRound(currentRound.getNextRound());
-        if (t.getCurrentRound() == null) {
+        
+        if (currentRound.getNextRound() == null) {
             t.setState(Tournament.State.FINISHED);
         } else {
+            t.setCurrentRound(currentRound.getNextRound());
             currentRound.getNextRound().setRoundState(State.STARTED);
             // Find pairs for players
             
@@ -348,8 +350,18 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
     }
 
     @Override
+    @Transactional
     public List<Tournament> findTournamentsByClub(Club club) {
-        return tRepo.findByClub(club);
+        List<Tournament> tl = tRepo.findByClub(club);
+        for(Tournament t:tl){
+            if(t.getCurrentRound()!=null){
+                t.getCurrentRound().getPairingCardSet().size();
+            }
+            if(t.getCategory()!=null){
+                t.getCategory().getName();
+            }
+        }
+        return tl;
     }
 
     // DAO Wrappers
@@ -471,7 +483,47 @@ public class TournamentBOImpl implements TournamentBO, Serializable {
         return userTmt;
     }
     @Override
+    @Transactional
+    public PairingCard findOnePairingCard(int id){
+        PairingCard pc = pcRepo.findOne(id);
+        if(pc!=null){
+            pc.getOpponent().getScore();;
+        }
+        return pc;
+    }
+    @Override
     public PairingCard savePairingCard(PairingCard pc){
         return pcRepo.saveAndFlush(pc);
+    }
+    @Override
+    @Transactional
+    public List<Round> getRoundList(Tournament t) {
+        List<Round> rounds = rRepo.findRoundByTournamentOrderByNumberAsc(t);
+        for (Round r : rounds) {
+            if (r.getPairingCardSet() != null) {
+                for (PairingCard pc : r.getPairingCardSet()) {
+                    pc.getPlayer().getFirstName().toString();
+                    if (pc.getOpponent() != null) {
+                        pc.getOpponent().getPlayer().getFirstName().toString();
+                        if(pc.getOpponent().getGame()!=null){
+                            pc.getOpponent().getGame().getId();
+                        }
+                    }
+                    if(pc.getGame()!=null){
+                        pc.getGame().getId();
+                    }
+                }
+            }
+            Iterator<PairingCard> iterator = r.getPairingCardSet().iterator();
+            Set<PairingCard> newPairingCards = new HashSet<PairingCard>(r.getPairingCardSet());
+            while (iterator.hasNext()) {
+                PairingCard pc = iterator.next();
+                if (newPairingCards.contains(pc) && pc.getOpponent() != null) {
+                    newPairingCards.remove(pc.getOpponent());
+                }
+            }
+            r.setPairingCardSet(newPairingCards);
+        }
+        return rounds;
     }
 }
