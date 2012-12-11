@@ -61,7 +61,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup id="wrongPost" rendered="#{upBean.postWrong}" layout="block" class="ui-state-error ui-corner-all">
                                             <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-                                                <strong>Hej!</strong> Dodawanie ogłoszeń to nie zabawa. Proszę wpisać prawidłowe ogłoszenie!</p>
+                                                Proszę wpisać prawidłowe ogłoszenie!</p>
                                         </h:panelGroup>
                                     </h:panelGroup>
                                     <!-- TYTUŁ -->
@@ -365,22 +365,19 @@
                                         </div>
                                     </c:forEach> 
                                 </h:panelGroup>
-
-                                <div class="tournament">
-                                    <h:commandButton value="+" styleClass="allButton addPostButton" rendered="#{crTmtBean.tmtCategories.size() == 0}">
-                                        <f:ajax render="catsSubForm" execute="catsSubForm" listener="#{crTmtBean.addCategory}" onevent="hideTips(chooseCat)"/>
-                                    </h:commandButton>
-                                    <h:selectOneMenu value="#{crTmtBean.selectedCatId}" rendered="#{crTmtBean.tmtCategories.size() == 0}" id="chooseCat">
-                                        <c:forEach items="#{crTmtBean.categories}" var="category">
-                                            <f:selectItem itemLabel="#{category.name}" itemValue="#{category.id}"/>
-                                        </c:forEach>
-                                    </h:selectOneMenu>
-                                    <h:panelGroup rendered="#{not crTmtBean.categoriesValid}">
-                                        <script type="text/javascript">
-                                            showTips(chooseCat, function(val){return false;}, 1, false, 0, 'w');
-                                        </script>
-                                    </h:panelGroup>
-                                </div>
+                                <h:commandButton value="+" styleClass="remove" rendered="#{crTmtBean.tmtCategories.size() == 0}">
+                                    <f:ajax render="catsSubForm" execute="catsSubForm" listener="#{crTmtBean.addCategory}" onevent="hideTips(chooseCat)"/>
+                                </h:commandButton>
+                                <h:selectOneMenu value="#{crTmtBean.selectedCatId}" rendered="#{crTmtBean.tmtCategories.size() == 0}" id="chooseCat">
+                                    <c:forEach items="#{crTmtBean.categories}" var="category">
+                                        <f:selectItem itemLabel="#{category.name}" itemValue="#{category.id}"/>
+                                    </c:forEach>
+                                </h:selectOneMenu>
+                                <h:panelGroup rendered="#{not crTmtBean.categoriesValid}">
+                                    <script type="text/javascript">
+                                        showTips(chooseCat, function(val){return false;}, 1, false, 0, 'w');
+                                    </script>
+                                </h:panelGroup>
                             </h:panelGroup>
                             <br/>
                             <h:commandButton value="Dodaj turniej" styleClass="allButton addPostButton">
@@ -390,7 +387,7 @@
                         <h:panelGroup rendered="#{crTmtBean.createTmtSuccess}">
                             <h:panelGroup layout="block" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
                                 <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                    <strong>Uwaga!</strong> Turniej został utworzony. Przejdź do zakładki "Turnieje", aby rozpocząć przeprowadzanie turnieji.</p>
+                                    <strong>Uwaga!</strong> Turniej został utworzony. Przejdź do zakładki "Turnieje", aby rozpocząć turniej.</p>
                             </h:panelGroup>
                             <h:commandButton value="Dodaj kolejny turniej" styleClass="allButton addPostButton">
                                 <f:ajax render="@form" execute="@form" listener="#{crTmtBean.addNextTmt}"/>

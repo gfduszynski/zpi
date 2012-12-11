@@ -72,9 +72,9 @@
                             <li>aktualna runda: <b>#{cTmtCBean.currentTmt.currentRound.number+1}</b></li>
                             <li>liczba rund: <b>#{cTmtCBean.currentTmt.numberOfRounds}</b></li>
                             <li>liczba graczy: <b>#{cTmtCBean.getNumberOfPlayers()}</b></li>
-                            <li>data rozpoczęcia: <b>#{cTmtCBean.currentTmt.date}</b></li>
+                            <li>data rozpoczęcia: <b><h:outputText value="#{cTmtCBean.currentTmt.date}"><f:convertDateTime pattern="yyyy-MM-dd hh:mm"/></h:outputText></b></li>
                             <li>kategoria: <b>#{cTmtCBean.currentTmt.category.name}</b></li>
-                            <li>klub: <b>#{cTmtCBean.currentTmt.club.name}</b></li>
+                            <li>nazwa klubu: <b>#{cTmtCBean.currentTmt.club.name}</b></li>
                             <li>punkty za wygraną: <b>#{cTmtCBean.currentTmt.pointsForBye}</b></li>
                             <li>punkty za remis: <b>#{cTmtCBean.currentTmt.pointsForBye/2}</b></li>
                         </ul>
