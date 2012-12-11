@@ -22,10 +22,20 @@
                                         <c:forEach items="#{round.pairingCardSet}" var="pc" varStatus="loop">
                                             <c:if test="#{pc.opponent != null}">
                                                 <h:panelGroup layout="block" styleClass="pairingcard">
-                                                    <div class="scores" onclick="if(cc==null){cc=new ChessPlayer($('#chess-player'));}cc.loadJSON('#{request.contextPath}/rest/cpService/#{pc.game.id}');$('.chess-player-show').click();">
-                                                        <span class="up">#{pc.score} pkt</span>
-                                                        <span class="down">#{pc.opponent.score} pkt</span>
-                                                    </div>
+                                                    <c:if test="#{pc.game==null}">
+                                                        <div class="scores">
+                                                            <span class="up">#{pc.score} pkt</span>
+                                                            <span class="down">#{pc.opponent.score} pkt</span>
+                                                        </div>
+                                                    </c:if>
+                                                    <c:if test="#{pc.game!=null}">
+                                                        <div class="scores" onclick="if(cc==null){cc=new ChessPlayer($('#chess-player'));}cc.loadJSON('#{request.contextPath}/rest/cpService/#{pc.game.id}');$('.chess-player-show').click();">
+                                                            <span class="chessplayer"></span>
+                                                            <span class="up">#{pc.score} pkt</span>
+                                                            <span class="down">#{pc.opponent.score} pkt</span>
+                                                        </div>
+                                                    </c:if>
+                                                    
                                                     <div class="pairingcard-player #{pc.color == 'BLACK'?'black':'white'}">
                                                         <span>#{pc.player.firstName} #{pc.player.lastName}</span>
                                                         <p class="details">#{pc.player.email}</p>
@@ -56,7 +66,7 @@
                             </c:forEach>
                         </div>
                         <script type="text/javascript">
-                            $( "#round-browser" ).accordion({active:0, header: '.round-number' });
+                            $( "#round-browser" ).accordion({active:0, header: '.round-number',heightStyle: "content" });
                         </script>
                     </h:panelGroup>
                     <span class="spacer"></span>

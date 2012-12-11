@@ -21,6 +21,7 @@
                                 <c:if test="#{pc.opponent != null}">
                                     <h:panelGroup layout="block" styleClass="pairingcard">
                                         <div class="choose loader-#{pc.id}">
+                                            <span class="chessplayer-upload" ondragenter="this.classList.add('over');" ondragleave="this.classList.remove('over');" ondrop="this.classList.remove('over');"></span>
                                             <h:selectOneRadio layout="pageDirection"  value="#{pc.score}" styleClass="option-list">
                                                 <f:selectItem itemValue="#{1}" itemLabel=""></f:selectItem>
                                                 <f:selectItem itemValue="#{0}" itemLabel=""></f:selectItem>
@@ -34,7 +35,7 @@
                                                             type: 'POST',
                                                             url: "#{request.contextPath}/rest/cpService/addGame/#{pc.id}",
                                                             data: JSON.stringify(so.json),
-                                                            success: function(){}
+                                                            success: function(){$(".loader-#{pc.id} .chessplayer-upload").animate({backgroundColor:"#CCE800"},1000,function(){$(".loader-#{pc.id} .chessplayer-upload").animate({backgroundColor:"#00AAE8 "},1000);});}
                                                         });
                                                     }
                                                 });
