@@ -172,10 +172,10 @@
                                         <c:if test="#{!cmmBean.isMember(user)}">
                                             <div class="player">
                                                 <h:commandButton value="+" styleClass="add">
-                                                    <f:ajax render="@form" listener="#{cmmBean.addMember(user)}"/>
+                                                    <f:ajax render="foundUsers list" execute="@this" listener="#{cmmBean.addMember(user)}"/>
                                                 </h:commandButton>
                                                 <span>#{user.firstName} #{user.lastName}</span>
-                                                <p>#{user.email}</p>
+                                                <p class="details">#{user.email}</p>
                                             </div>
                                         </c:if>
                                     </c:forEach>
@@ -187,7 +187,7 @@
                                 <c:forEach items="#{cmmBean.members}" var="member" varStatus="loop">
                                     <div class="player">
                                         <h:commandButton value="x" styleClass="remove">
-                                            <f:ajax render="@form" listener="#{cmmBean.removeMember(member)}"/>
+                                            <f:ajax render="@form" execute="@this" listener="#{cmmBean.removeMember(member)}"/>
                                         </h:commandButton>
                                         <span>#{member.firstName} #{member.lastName}</span>
                                     </div>
@@ -273,7 +273,7 @@
                                             if(val.match(dateRegex))return true; else return false;}, 0, false, 0, 's');
                                     </script>
                                 </h:panelGroup>
-                                <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate" alt="Data niepoprawna.">
+                                <h:inputText value="#{crTmtBean.tmtDate}" id="tmtDate" alt="Data niepoprawna." onkeydown="return false;">
                                     <f:convertDateTime pattern="d-M-yyyy" />
                                     <f:ajax event="change" execute="@this" render="dateGroup" listener="#{crTmtBean.validateDate}" onevent="hideTips(tmtDate)"/>
                                 </h:inputText>
@@ -295,7 +295,7 @@
 
                                     });
                                 </script>
-                                <h:inputText id="tmtTime"/>
+                                <h:inputText value="12:00" id="tmtTime" onkeydown="return false;"/>
                             </h:panelGroup>
                             <br/>
                             <h:panelGroup id="tmtDescGroup">
