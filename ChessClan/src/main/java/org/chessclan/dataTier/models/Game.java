@@ -91,6 +91,8 @@ public class Game implements Serializable {
     @JoinColumn(name = "owner", referencedColumnName = "id")
     @ManyToOne(optional = true, fetch = FetchType.EAGER)
     private User owner;
+    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+    private List<PairingCard> pairingCardList;
 
     public Game() {
     }
@@ -190,5 +192,13 @@ public class Game implements Serializable {
 
     public void setMoves(List<Move> moves) {
         this.moves = moves;
+    }
+
+    public List<PairingCard> getPairingCardList() {
+        return pairingCardList;
+    }
+
+    public void setPairingCardList(List<PairingCard> pairingCardList) {
+        this.pairingCardList = pairingCardList;
     }
 }

@@ -15,18 +15,30 @@
             <c:if test="#{cTmtCBean.currentTmt.state == 'STARTED'}">
                 <div class="tournament">
                     <span class="pairingcards">
-                        <p>Rezultat rundy #{cTmtCBean.currentTmt.currentRound.number+1}</p>
+                        <p>Rezultat rundy #{cTmtCBean.currentTmt.currentRound.number+1}:</p>
                         <h:panelGroup layout="block" styleClass="pairingcards-list" id="pairing-card-list">
                             <c:forEach items="#{cTmtCBean.getFilteredCurrentRoundPC()}" var="pc" varStatus="loop">
                                 <c:if test="#{pc.opponent != null}">
                                     <h:panelGroup layout="block" styleClass="pairingcard">
-                                        <div class="choose">
+                                        <div class="choose loader-#{pc.id}">
                                             <h:selectOneRadio layout="pageDirection"  value="#{pc.score}" styleClass="option-list">
                                                 <f:selectItem itemValue="#{1}" itemLabel=""></f:selectItem>
                                                 <f:selectItem itemValue="#{0}" itemLabel=""></f:selectItem>
                                                 <f:selectItem itemValue="#{-1}" itemLabel=""></f:selectItem>
                                             </h:selectOneRadio>
-                                                
+                                            <script type="text/javascript">
+                                                plugListenersAndGetJSONForMultiple("loader-#{pc.id}",function(so){
+                                                    if(so.state=="CorrectlyParsedSucc"){
+                                                        console.log("wysyłam json");
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "#{request.contextPath}/rest/cpService/addGame/#{pc.id}",
+                                                            data: JSON.stringify(so.json),
+                                                            success: function(){}
+                                                        });
+                                                    }
+                                                });
+                                            </script>
                                         </div>
                                         <div class="pairingcard-player #{pc.color == 'BLACK'?'black':'white'}">
                                             <span>#{pc.player.firstName} #{pc.player.lastName}</span>
@@ -54,7 +66,7 @@
                     </span>
                     <span class="spacer"></span>
                     <h:panelGroup id="list" styleClass="tournament-summary">
-                        <p>Podsumowanie turnieju</p>
+                        <p>Podsumowanie turnieju:</p>
                         <ul>
                             <li>aktualna runda: <b>#{cTmtCBean.currentTmt.currentRound.number+1}</b></li>
                             <li>liczba rund: <b>#{cTmtCBean.currentTmt.numberOfRounds}</b></li>

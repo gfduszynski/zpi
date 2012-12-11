@@ -219,6 +219,9 @@
             <column name="tournament" type="int">
                 <constraints nullable="false" />
             </column>
+            <column name="game" type="int">
+                <constraints nullable="true" />
+            </column>
             <column name="score" type="float" defaultValueNumeric="0">
                 <constraints nullable="false" />
             </column>
@@ -246,7 +249,6 @@
         <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="tournament"  constraintName="pcard_tournament_ref"  referencedTableName="tournaments"  referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="opponent"    constraintName="pcard_opponent_ref"    referencedTableName="pairing_cards" referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="player"      constraintName="pcard_player_ref"      referencedTableName="users"        referencedColumnNames="id"/>
-            
     </changeSet>
     
     <changeSet id="4" author="daniel">    
@@ -304,5 +306,8 @@
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="moves" baseColumnNames="partOf" constraintName="moves_game_ref" referencedTableName="games" referencedColumnNames="id"/>    
+    </changeSet>
+    <changeSet id="5" author="gfduszynski">
+        <addForeignKeyConstraint baseTableName="pairing_cards"      baseColumnNames="game"      constraintName="pcard_game_ref"          referencedTableName="games"        referencedColumnNames="id"/>    
     </changeSet>
 </databaseChangeLog>

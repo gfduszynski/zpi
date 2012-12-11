@@ -216,7 +216,6 @@
                             <h:inputHidden id="hiddenMsg" value="Opis turnieju niepoprawny.;Turniej musi posiadać kategorię."/>
                             <h2>Nowy turniej</h2>
                             <script type="text/javascript" charset="utf-8" >
-                                //<![CDATA[ 
                                 function setSpinnerFiends(){
                                     $("#roundsSpinner").val($("#roundsSpinner").spinner('value'));
                                     hideAll();
@@ -244,7 +243,6 @@
                                     });
                                     $("#roundsSpinner").spinner('value',r);
                                 });
-                                //]]>
                             </script>
                             <h:panelGroup id="tmtNameGroup">
                                 <h:panelGroup rendered="#{not crTmtBean.nameValid}">
