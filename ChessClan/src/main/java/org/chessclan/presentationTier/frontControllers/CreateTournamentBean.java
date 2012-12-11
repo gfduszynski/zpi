@@ -36,8 +36,8 @@ public class CreateTournamentBean implements Serializable {
     private User user;
     @ManagedProperty("#{ctBean}")
     ClubTournamentsBean ctBean;
-    private String tmtName = "[Nazwa turnieju]";
-    private String tmtDescription = "[Opis]";
+    private String tmtName;
+    private String tmtDescription;
     private Date tmtDate;
     private List<Category> categories;
     private LinkedList<Category> tmtCategories;
