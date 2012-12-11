@@ -991,7 +991,7 @@ TABLE.editTable tr:nth-child(even) td:nth-child(odd){
     margin: 0 0 0 10px;
 }
 #addPostContent{
-    width: 100%;
+    width: 845px;
     overflow: auto;
     height: 200px;
     resize: none;
@@ -1106,9 +1106,9 @@ TABLE.userTable thead{
     font-weight: bold;
 }
 .allPostContent{
-    margin: 0 5px 0 5px;
+    padding: 0 5px 0 5px;
     overflow-y: auto;
-    height: 125px;
+    height: 280px;
 }
 .allPostDate{
     display: inline-block;

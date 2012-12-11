@@ -143,7 +143,9 @@
                                                     <f:convertDateTime pattern="dd-mm-yyyy"/>
                                                 </h:outputText>
                                             </h:panelGroup>
-                                            <h:outputText value="#{post.content}"/>
+                                            <div class="allPostContent">
+                                                <h:outputText value="#{post.content}"/>
+                                            </div>
                                         </h:panelGroup>
                                     </c:forEach>
                                 </h:panelGroup>
@@ -389,7 +391,7 @@
                                 <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                     <strong>Uwaga!</strong> Turniej został utworzony. Przejdź do zakładki "Turnieje", aby rozpocząć turniej.</p>
                             </h:panelGroup>
-                            <h:commandButton value="Dodaj kolejny turniej" styleClass="allButton addPostButton">
+                            <h:commandButton value="Dodaj kolejny turniej" styleClass="allButton">
                                 <f:ajax render="@form" execute="@form" listener="#{crTmtBean.addNextTmt}"/>
                             </h:commandButton>
                         </h:panelGroup>

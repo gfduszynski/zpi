@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>ChessClan</title>
@@ -42,13 +42,13 @@
                                     <div id="#{tmt.id}" class="news-browser-entry">
                                         <p class="title">#{tmt.name}</p>
                                         <p class="author">#{tmt.club.name}</p>
-                                        <p class="date">#{tmt.date}</p>
+                                        <p class="date"><h:outputText value="#{tmt.date}"><f:convertDateTime pattern="yyyy-MM-dd hh:mm"/></h:outputText></p>
                                         <p class="content">#{tmt.description}</p>                                    
                                     </div>
                                 </c:if>
                             </c:forEach>
                         </div>
-                        <div class="news-browser-date">data odbycie się #{date}</div>
+                        <div class="news-browser-date">data odbycie się <h:outputText value="#{date}"><f:convertDateTime pattern="yyyy-MM-dd hh:mm"/></h:outputText></div>
                     </span>
                 </c:forEach>
             </div>

@@ -18,7 +18,7 @@
                             <c:forEach items="#{cTmtCBean.roundList}" var="round" varStatus="loop">
                                 <c:if test="#{round.number>-1}">
                                     <p class="round-number">Runda #{round.number+1}</p>
-                                    <h:panelGroup layout="block" styleClass="pairingcards-list" id="pairing-card-list">
+                                    <h:panelGroup layout="block" styleClass="pairingcards-list" >
                                         <c:forEach items="#{round.pairingCardSet}" var="pc" varStatus="loop">
                                             <c:if test="#{pc.opponent != null}">
                                                 <h:panelGroup layout="block" styleClass="pairingcard">

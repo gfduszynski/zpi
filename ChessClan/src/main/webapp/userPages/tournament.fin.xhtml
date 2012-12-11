@@ -9,7 +9,7 @@
                 
         </script>
         <h:commandLink value="« Powrót do listy turniei">
-            <f:ajax render="@form" execute="@this" listener="#{atvBean.setSelectedTournament(null)}"/>
+            <f:ajax render="@form" listener="#{atvBean.setSelectedTournament(null)}"/>
         </h:commandLink>
         <div class="tournament">
             <h:panelGroup id="pc-list" styleClass="round-browser">
@@ -18,7 +18,7 @@
                     <c:forEach items="#{atvBean.roundList}" var="round" varStatus="loop">
                         <c:if test="#{round.number>-1}">
                             <p class="round-number">Runda #{round.number+1}</p>
-                            <h:panelGroup layout="block" styleClass="pairingcards-list" id="pairing-card-list">
+                            <h:panelGroup layout="block" styleClass="pairingcards-list">
                                 <c:forEach items="#{round.pairingCardSet}" var="pc" varStatus="loop">
                                     <c:if test="#{pc.opponent != null}">
                                         <h:panelGroup layout="block" styleClass="pairingcard">
