@@ -625,7 +625,7 @@ div#editContainer{
     padding: 10px;
     vertical-align: top;
 }
-.tournament .player{
+.tournament .player, #catsSubForm .player{
     padding: 5px;
     height: 30px;
     width: 300px;
@@ -633,6 +633,9 @@ div#editContainer{
     background: #00AAE8 url("jqueryui/ui-bg_diagonals-small_75_00aae8_40x40.png.xhtml?ln=images") 50% 50% repeat;
     margin-bottom: 10px;
     text-align: left;
+}
+#catsSubForm .player{
+    border: 5px solid #E0E0E0;
 }
 .tournament .player .details{
     font-variant: small-caps;
