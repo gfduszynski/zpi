@@ -56,7 +56,7 @@ public class ClubTournamentCreatorBean implements Serializable {
         nowInMods = true;
         if(currentTmt.getState() == Tournament.State.FINISHED)
         {
-            this.roundList = tmBO.getRoundList(currentTmt);;
+            this.roundList = tmBO.getRoundList(currentTmt);
             this.results = tmBO.getResults(currentTmt);
         }
     }
@@ -143,6 +143,7 @@ public class ClubTournamentCreatorBean implements Serializable {
             this.currentTmt = tmBO.fetchRelations(currentTmt);
             if(currentTmt.getState() == Tournament.State.FINISHED){
                 this.results = tmBO.getResults(currentTmt);
+                this.roundList = tmBO.getRoundList(currentTmt);
             }
         } catch (NotFinished ex) {
             Logger.getLogger(ClubTournamentCreatorBean.class.getName()).log(Level.SEVERE, null, ex);
